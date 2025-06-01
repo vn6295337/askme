@@ -15,7 +15,7 @@ _Last Updated: 2025-06-01_
   - Most apps require internet access
   - Privacy policies are often unclear
   - Bloated applications with unnecessary features
-- **How They Use AskMe Lite**:
+- **How They Use AskMe**:
   - Runs local models on their device
   - Uses CLI version for quick access
   - Contributes to the open-source project
@@ -30,7 +30,7 @@ _Last Updated: 2025-06-01_
   - Doesn't want to manage API keys
   - Limited phone storage
   - Prefers mobile-first experiences
-- **How They Use AskMe Lite**:
+- **How They Use AskMe**:
   - Uses Android app for quick queries
   - Appreciates the clean, simple UI
   - Values the small app size
@@ -45,7 +45,7 @@ _Last Updated: 2025-06-01_
   - Limited good CLI tools for LLMs
   - Complex setup processes
   - Resource-heavy applications
-- **How They Use AskMe Lite**:
+- **How They Use AskMe**:
   - Integrates with shell scripts
   - Uses in automated workflows
   - Appreciates the lightweight nature

@@ -2,7 +2,7 @@
 
 # Planning Docs Overview
 
-This folder contains all planning documents for the AskMe Lite project, named and numbered for clarity. Refer to the document index for a full list.
+This folder contains all planning documents for the AskMe project, named and numbered for clarity. Refer to the document index for a full list.
 
 ## Table of Contents
 1. [Problem Statement & Goal](101_problem_statement.md)
