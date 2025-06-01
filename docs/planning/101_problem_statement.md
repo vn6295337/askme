@@ -1,3 +1,8 @@
+# 101_problem_statement.md
+
+_Version: 1.0_
+_Last Updated: 2025-06-01_
+
 # Problem Statement & Goal
 
 ## Problem

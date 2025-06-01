@@ -1,5 +1,7 @@
 # AskMe Lite - Directory Structure
 
+// Renamed to 109_directory_structure.md for consistency with numbering scheme
+
 This document outlines the complete directory structure of the AskMe Lite project in a hierarchical numbered format.
 
 ## 1. Root Directory

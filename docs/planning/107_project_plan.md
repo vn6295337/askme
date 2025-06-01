@@ -1,3 +1,5 @@
+// Renamed to 107_project_plan.md for consistency with numbering scheme
+
 # AskMe Lite - Project Plan
 
 ## Milestone 1: Project Setup & Foundation

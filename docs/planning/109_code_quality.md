@@ -1,3 +1,6 @@
+```markdown
+// Renamed to 108_code_quality.md for consistency with numbering scheme
+
 # Code Quality Standards
 
 This document outlines the code quality standards and static analysis setup for the AskMe Lite project.
@@ -88,3 +91,4 @@ Always add a comment explaining why the suppression is necessary.
 ## Code Style
 
 This project follows the [Kotlin Code Conventions](https://kotlinlang.org/docs/coding-conventions.html). Use the provided `detekt` configuration to enforce these conventions automatically.
+```

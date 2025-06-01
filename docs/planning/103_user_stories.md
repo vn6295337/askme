@@ -1,3 +1,8 @@
+# 103_user_stories.md
+
+_Version: 1.0_
+_Last Updated: 2025-06-01_
+
 # User Stories
 
 ## Core Flows

@@ -1,3 +1,8 @@
+# 102_user_personas.md
+
+_Version: 1.0_
+_Last Updated: 2025-06-01_
+
 # User Personas
 
 ## 1. Tech-Savvy Privacy Advocate

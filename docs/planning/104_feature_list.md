@@ -1,10 +1,15 @@
+# 104_feature_list.md
+
+_Version: 1.0_
+_Last Updated: 2025-06-01_
+
 # Feature List (MVP Scope)
 
 ## Must Have (MVP)
 
 ### Core Functionality
 - [ ] Basic text input for queries
-- [ ] Support for 3+ LLM providers (e.g., Ollama, LocalAI, etc.)
+- [ ] Support for 3+ LLM providers (Ollama, LocalAI, etc.)
 - [ ] Local model support for offline use
 - [ ] Simple response display
 - [ ] Model switching
@@ -30,28 +35,28 @@
 ## Future Enhancements
 
 ### Core Features
-- Voice input
-- Conversation history
-- Multiple language support
-- Model fine-tuning options
-- Plugin system for additional providers
+- [ ] Voice input for queries
+- [ ] Conversation history and management
+- [ ] Multiple language support
+- [ ] Model fine-tuning options
+- [ ] Plugin system for additional LLM providers
 
 ### Advanced UI/UX
-- Custom themes
-- Response formatting options
-- Keyboard shortcuts
-- Export/import conversations
-- Accessibility improvements
+- [ ] Custom themes and color schemes
+- [ ] Response formatting options (markdown, code, etc.)
+- [ ] Keyboard shortcuts (CLI and Android)
+- [ ] Export/import conversations
+- [ ] Accessibility improvements (screen reader, font size)
 
 ### Technical Improvements
-- Performance optimizations
-- Smaller app size
-- Better local model management
-- Advanced configuration options
-- Automated testing
+- [ ] Performance optimizations
+- [ ] Reduce app size further
+- [ ] Enhanced local model management (download, update, delete)
+- [ ] Advanced configuration options
+- [ ] Automated and property-based testing
 
 ### Integration
-- System share integration
-- Quick settings tile
-- Home screen widgets
-- Tasker/Linux automation support
+- [ ] System share integration (Android)
+- [ ] Quick settings tile (Android)
+- [ ] Home screen widgets (Android)
+- [ ] Tasker/Linux automation support

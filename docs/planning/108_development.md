@@ -1,3 +1,6 @@
+```markdown
+<!-- Renamed to 106_development_guide.md for consistency with numbering scheme -->
+
 # Development Setup Guide
 
 This guide will help you set up the development environment for AskMe Lite.
@@ -101,3 +104,4 @@ pre-commit install
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+```
