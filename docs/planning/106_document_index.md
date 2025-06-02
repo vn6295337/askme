@@ -14,4 +14,9 @@
 | 109 | [Code Quality Standards](109_code_quality.md) | 1.0 | 2025-05-29 | 2025-06-01 |
 | 110 | [Directory Structure](110_directory_structure.md) | 1.0 | 2025-05-29 | 2025-06-01 |
 
+## Document Index
+
+- [Project Checklist (Atomic & Precedence-Ordered)](105_checklist.md)  
+  The main, step-by-step checklist for all project activities, with parallelizable tasks shown as sub-checkpoints. For the previous version, see [105_checklist_archive_2025-06-02.md](105_checklist_archive_2025-06-02.md).
+
 *Last Updated: 2025-06-01*
