@@ -1,7 +1,11 @@
-// Renamed to 105_checklist.md for consistency with numbering scheme
+<!-- Version History -->
+| Version | Date (IST)   | Changes                                   |
+|---------|--------------|-------------------------------------------|
+| 1.0     | 2025-06-01   | Initial checklist, milestone activities   |
+| 1.1     | 2025-06-02   | Marked 1.1, 1.2 as complete, updated links|
 
-_Version: 1.0_
-_Last Updated: 2025-06-01_
+_Version: 1.1_
+_Last Updated: 2025-06-02_
 
 # Project Checklist
 

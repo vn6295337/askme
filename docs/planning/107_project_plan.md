@@ -1,4 +1,8 @@
-// Renamed to 107_project_plan.md for consistency with numbering scheme
+<!-- Version History -->
+| Version | Date (IST)   | Changes                                                      |
+|---------|--------------|--------------------------------------------------------------|
+| 1.0     | 2025-06-01   | Initial project plan, structure, and milestones              |
+| 1.1     | 2025-06-02   | Added MVP scope, success metrics, and finalized architecture |
 
 # AskMe Lite - Project Plan
 
