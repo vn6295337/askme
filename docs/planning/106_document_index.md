@@ -18,8 +18,8 @@
 ## Document Index
 
 - [Project Checklist (Atomic & Precedence-Ordered)](105_checklist.md)  
-  The main, step-by-step checklist for all project activities, with parallelizable tasks shown as sub-checkpoints. For the previous version, see [105_checklist_archive_2025-06-02.md](105_checklist_archive_2025-06-02.md).
+  The main, step-by-step checklist for all project activities, with parallelizable tasks shown as sub-checkpoints. For the previous version, see [../archives/20250602_105_checklist.md](../archives/20250602_105_checklist.md). Each checklist item is mapped to its corresponding reference in [Project Plan](107_project_plan.md) for traceability.
 - [Resource Planning Document](112_resource_planning.md)  
   Comprehensive overview of human and technical resources, action owners, and project-specific constraints for modular, quality-driven development.
 
-*Last Updated: 2025-06-01*
+*Last Updated: 2025-06-02*

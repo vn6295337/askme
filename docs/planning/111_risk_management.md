@@ -1,5 +1,7 @@
 # Risk Management Documentation
 
+> **Traceability:** Each atomic checklist item in [Checklist](105_checklist.md) is mapped to its corresponding reference in [Project Plan](107_project_plan.md) for full traceability.
+
 ## Purpose
 This document identifies potential risks for the AskMe project, assesses their severity and probability, specifies the project phase(s) where they are most relevant, and outlines strategies to mitigate them. Keeping this document updated will help ensure project success and resilience.
 

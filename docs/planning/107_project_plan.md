@@ -6,6 +6,8 @@
 
 # AskMe Lite - Project Plan
 
+> **Traceability:** Each atomic checklist item in [Checklist](105_checklist.md) is mapped to its corresponding reference in [Project Plan](107_project_plan.md) for full traceability.
+
 ## 1.1 Define MVP Scope and Success Metrics
 
 ### MVP Scope

@@ -2,6 +2,8 @@
 
 // Renamed to 109_directory_structure.md for consistency with numbering scheme
 
+> **Traceability:** Each atomic checklist item in [Checklist](planning/105_checklist.md) is mapped to its corresponding reference in [Project Plan](planning/107_project_plan.md) for full traceability.
+
 This document outlines the complete directory structure of the AskMe Lite project in a hierarchical numbered format.
 
 ## 1. Root Directory

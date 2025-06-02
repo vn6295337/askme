@@ -3,6 +3,8 @@
 
 # Development Setup Guide
 
+> **Traceability:** Each atomic checklist item in [Checklist](planning/105_checklist.md) is mapped to its corresponding reference in [Project Plan](planning/107_project_plan.md) for full traceability.
+
 This guide will help you set up the development environment for AskMe Lite.
 
 ## Prerequisites

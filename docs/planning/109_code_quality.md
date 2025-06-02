@@ -5,6 +5,8 @@
 
 This document outlines the code quality standards and static analysis setup for the AskMe Lite project.
 
+> **Traceability:** Each atomic checklist item in [Checklist](planning/105_checklist.md) is mapped to its corresponding reference in [Project Plan](planning/107_project_plan.md) for full traceability.
+
 ## Detekt Configuration
 
 The project uses [Detekt](https://detekt.dev/) for static code analysis of Kotlin code. The configuration is located at `config/detekt/detekt.yml`.

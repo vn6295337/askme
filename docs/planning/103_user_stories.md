@@ -3,6 +3,8 @@
 _Version: 1.0_
 _Last Updated: 2025-06-01_
 
+> **Traceability:** Each atomic checklist item in [Checklist](105_checklist.md) is mapped to its corresponding reference in [Project Plan](107_project_plan.md) for full traceability.
+
 # User Stories
 
 ## Core Flows
