@@ -2,6 +2,65 @@
 
 # AskMe Lite - Project Plan
 
+## 1.1 Define MVP Scope and Success Metrics
+
+### MVP Scope
+The MVP for AskMe Lite will deliver a privacy-focused, lightweight application for both Android and Linux CLI, enabling users to:
+- Input text queries and receive responses from LLMs
+- Connect to at least 3 LLM providers (Ollama, LocalAI, and one more)
+- Switch between LLM models easily
+- Operate fully offline when using local models
+- Use a clean, minimal UI (Android) and a basic CLI (Linux)
+- Ensure no data collection or telemetry; all data is stored locally
+- Provide basic error handling and a settings screen
+
+### Success Metrics
+- Response time < 2 seconds for local models
+- App size < 20MB
+- Zero data collection or tracking
+- Support for at least 3 LLM providers
+- Basic offline functionality
+
+### Status
+- [x] Defined MVP scope and success metrics (2025-06-02)
+- [ ] Review and refine as needed during implementation
+
+## 1.2 Finalize Technical Architecture and Component Design
+
+### High-Level Architecture
+- **Kotlin Multiplatform**: Shared core logic for Android and CLI.
+- **UI Layer**:
+  - Android: Jetpack Compose UI.
+  - CLI: Kotlinx.CLI for command parsing.
+- **Core Logic**:
+  - Query Processor: Handles user input, validation, and routing.
+  - Provider Manager: Manages LLM providers (Ollama, LocalAI, etc.).
+  - Settings Manager: App configuration and preferences.
+  - Local Model Manager: Handles local model files and execution.
+- **LLM Providers**:
+  - Standard provider interface (see API contracts).
+  - Local (Ollama, LocalAI) and cloud (optional, privacy-respecting).
+
+### Component Design
+- **Modules**:
+  - `01_androidApp/`: Android UI and platform code.
+  - `02_cli/`: CLI entry point and UI.
+  - `03_core/`: Shared business logic, provider interfaces, model management.
+- **Key Interfaces**:
+  - `LLMRequest`/`LLMResponse` for provider abstraction.
+  - Pluggable provider system for easy extension.
+- **Data Flow**:
+  1. User input (Android/CLI) → Core Logic
+  2. Core Logic → Provider Manager → LLM Provider
+  3. Provider → Response → Core Logic → UI
+
+### Tech Stack
+- Kotlin, Jetpack Compose, Kotlinx.CLI, Ktor Client, gRPC, Koin, SQLDelight (optional), Detekt.
+
+### Status
+- [x] Technical architecture and component design finalized (2025-06-02)
+- [ ] Review and refine as needed during implementation
+
 ## Milestone 1: Project Setup & Foundation
 
 ### Planning

@@ -23,8 +23,8 @@ This document tracks the status of all activities in the project plan. All activ
 ### Planning
 | ID   | Activity                                   | Status | Notes |
 |------|--------------------------------------------|--------|-------|
-| 1.1  | Define MVP scope and success metrics ([See Project Plan 1.1](107_project_plan.md))       | [ ]    |       |
-| 1.2  | Finalize technical architecture and component design ([See Project Plan 1.2](107_project_plan.md)) | [ ] | |
+| 1.1  | Define MVP scope and success metrics ([See Project Plan 1.1](107_project_plan.md))       | ✅    | Completed 2025-06-02 |
+| 1.2  | Finalize technical architecture and component design ([See Project Plan 1.2](107_project_plan.md)) | ✅    | Completed 2025-06-02 |
 | 1.3  | Set up development environment and tooling ([See Project Plan 1.3](107_project_plan.md)) | [ ]    |       |
 | 1.4  | Establish coding standards and quality gates ([See Project Plan 1.4](107_project_plan.md)) | [ ]  |       |
 | 1.5  | Create initial project repository structure ([See Project Plan 1.5](107_project_plan.md)) | [ ]   |       |
