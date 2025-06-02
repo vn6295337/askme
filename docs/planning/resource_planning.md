@@ -6,7 +6,7 @@
 
 | Role Title            | AI Assistant Name | Key Skill Sets                                      | Scope of Responsibility                                      |
 |-----------------------|------------------|-----------------------------------------------------|--------------------------------------------------------------|
-| Project Manager       | (You)            | Agile, planning, risk management, communication      | Overall project coordination, milestone tracking, risk review |
+| Project Manager       | PM-Human         | Agile, planning, risk management, communication      | Overall project coordination, milestone tracking, risk review |
 | Frontend Developer    | DevBot-A         | Kotlin, Jetpack Compose, UI/UX, Android, CLI         | Android app UI, CLI interface, user experience               |
 | Backend Developer     | DevBot-B         | Kotlin Multiplatform, API integration, LLMs          | Core logic, LLM provider integration, model management       |
 | QA Engineer           | TestBot-C        | Test automation, manual testing, CI/CD, coverage     | Test strategy, unit/integration/UI tests, quality gates      |
@@ -18,10 +18,10 @@
 
 | Checkpoints                                      | Action Owner | Status | Notes |
 |--------------------------------------------------|--------------|--------|-------|
-| Define MVP scope and success metrics             | (You)        | [ ]    |       |
-| Finalize technical architecture                  | (You)        | [ ]    |       |
+| Define MVP scope and success metrics             | PM-Human     | [ ]    |       |
+| Finalize technical architecture                  | PM-Human     | [ ]    |       |
 | Set up dev environment & repo                    | OpsBot-D     | [ ]    |       |
-| Establish coding standards & quality gates       | (You)        | [ ]    |       |
+| Establish coding standards & quality gates       | PM-Human     | [ ]    |       |
 | Implement Android UI (Compose)                   | DevBot-A     | [ ]    |       |
 | Implement CLI interface                          | DevBot-A     | [ ]    |       |
 | Implement core logic & LLM provider integration  | DevBot-B     | [ ]    |       |
@@ -30,6 +30,8 @@
 | Write user & API documentation                   | DocBot-F     | [ ]    |       |
 | Perform security & privacy review                | SecBot-E     | [ ]    |       |
 | Prepare release assets & deployment              | OpsBot-D     | [ ]    |       |
+| Conduct stakeholder demos & reviews              | PM-Human     | [ ]    |       |
+| Approve release & sign-off                       | PM-Human     | [ ]    |       |
 
 
 ## 2. Non-Human Resource Planning
