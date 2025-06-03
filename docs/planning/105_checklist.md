@@ -1,12 +1,60 @@
-1. Open the Problem Statement document in the repository.
-2. Read through the “Must Have (MVP)” section and highlight each required feature.
-3. Note the performance targets (e.g., < 2 s response time, < 20 MB app size).
-4. Create a new file named MVP\_Scope.md and copy the list of core features and success metrics into it.
-5. Open the draft Technical Architecture diagram or text file.
-6. Identify the high-level modules (Core, AndroidApp, CLI) and write their names on a blank page.
-7. For each module, write one or two sentences describing its purpose (e.g., Core handles LLM logic).
-8. List the third-party libraries needed (Ktor, gRPC, Koin, SQLDelight, Detekt) under a heading “Dependencies.”
-9. Save these descriptions in a new file named Architecture\_Components.md.
+# Project Execution Checklist
+
+This checklist tracks every step required to deliver the AskMe Lite project, organized by phase and mapped to the project plan for full traceability. Mark each item as you complete it. (Preserve this file for active use; git history provides archiving.)
+
+| Checkbox | S/N | Phase | Phase Ref | Checkpoint | Status | Notes |
+|---|---|---|---|---|---|---|
+| [ ] | 1 | Define MVP Scope and Success Metrics | 1.1 | Open the Problem Statement document in the repository. |  |  |
+| [ ] | 2 | Define MVP Scope and Success Metrics | 1.1 | Read through the “Must Have (MVP)” section and highlight each required feature. |  |  |
+| [ ] | 3 | Define MVP Scope and Success Metrics | 1.1 | Note the performance targets (e.g., < 2 s response time, < 20 MB app size). |  |  |
+| [ ] | 4 | Define MVP Scope and Success Metrics | 1.1 | Create a new file named MVP_Scope.md and copy the list of core features and success metrics into it. |  |  |
+| [ ] | 5 | Finalize Technical Architecture and Component Design | 1.2 | Open the draft Technical Architecture diagram or text file. |  |  |
+| [ ] | 6 | Finalize Technical Architecture and Component Design | 1.2 | Identify the high-level modules (Core, AndroidApp, CLI) and write their names on a blank page. |  |  |
+| [ ] | 7 | Finalize Technical Architecture and Component Design | 1.2 | For each module, write one or two sentences describing its purpose (e.g., Core handles LLM logic). |  |  |
+| [ ] | 8 | Finalize Technical Architecture and Component Design | 1.2 | List the third-party libraries needed (Ktor, gRPC, Koin, SQLDelight, Detekt) under a heading “Dependencies.” |  |  |
+| [ ] | 9 | Finalize Technical Architecture and Component Design | 1.2 | Save these descriptions in a new file named Architecture_Components.md. |  |  |
+| [ ] | 10 | Set Up Development Environment and Tooling | 1.3 | Open your Chromebook’s Linux terminal and verify that the USB drive is mounted at `/mnt/chromeos/removable/USB drive/ask me/` by running `ls /mnt/chromeos/removable/`. |  |  |
+| [ ] | 11 | Set Up Development Environment and Tooling | 1.3 | If the USB drive is not mounted, click the Files app, locate “USB drive,” and choose “Mount”. |  |  |
+| [ ] | 12 | Set Up Development Environment and Tooling | 1.3 | Ask the AI assistant to install JDK 17 into `/mnt/chromeos/removable/USB drive/ask me/jdk` by saying, “AI assistant, install JDK 17 to /mnt/chromeos/removable/USB drive/ask me/jdk.” |  |  |
+| [ ] | 13 | Set Up Development Environment and Tooling | 1.3 | Once JDK 17 is installed, run `java -version` in the terminal to confirm it reports version 17. |  |  |
+| [ ] | 14 | Set Up Development Environment and Tooling | 1.3 | Ask the AI assistant to install Kotlin and Kotlin Multiplatform tooling into `/mnt/chromeos/removable/USB drive/ask me/kotlin` by saying, “AI assistant, install Kotlin and KMP in /mnt/chromeos/removable/USB drive/ask me/kotlin.” |  |  |
+| [ ] | 15 | Set Up Development Environment and Tooling | 1.3 | After installation, run `kotlinc -version` to confirm Kotlin is available. |  |  |
+| [ ] | 16 | Set Up Development Environment and Tooling | 1.3 | Ask the AI assistant to install Android SDK Platform 34, build tools, and the Android emulator into `/mnt/chromeos/removable/USB drive/ask me/android-sdk` by saying, “AI assistant, install Android SDK components to /mnt/chromeos/removable/USB drive/ask me/android-sdk.” |  |  |
+| [ ] | 17 | Set Up Development Environment and Tooling | 1.3 | Once installation finishes, run `ls /mnt/chromeos/removable/USB drive/ask me/android-sdk/platforms/android-34` to confirm the platform files exist. |  |  |
+| [ ] | 18 | Set Up Development Environment and Tooling | 1.3 | Ask the AI assistant to install Gradle (or configure the Gradle wrapper) into `/mnt/chromeos/removable/USB drive/ask me/gradle` by saying, “AI assistant, install Gradle to /mnt/chromeos/removable/USB drive/ask me/gradle.” |  |  |
+| [ ] | 19 | Create Initial Project Repository Structure | 1.5 | Open GitHub in your browser, navigate to your project’s repository, and click “Open in Codespace.” |  |  |
+| [ ] | 20 | Create Initial Project Repository Structure | 1.5 | Wait for Codespace to launch, then click the terminal icon inside the Codespace. |  |  |
+| [ ] | 21 | Create Initial Project Repository Structure | 1.5 | Inside the Codespace terminal, run `git init` to initialize a local Git repository if one is not already present. |  |  |
+| [ ] | 22 | Create Initial Project Repository Structure | 1.5 | Run `git remote add origin <your-repo-URL>` to set the remote origin (replace `<your-repo-URL>` with your repository’s HTTPS link). |  |  |
+| [ ] | 23 | Create Initial Project Repository Structure | 1.5 | In the Codespace file explorer, create folders named `core`, `androidApp`, `cliApp`, `docs`, and `scripts`. |  |  |
+| [ ] | 24 | Create Initial Project Repository Structure | 1.5 | Save these changes by running `git add .` and `git commit -m "Initial repository structure"`. |  |  |
+| [ ] | 25 | Create Initial Project Repository Structure | 1.5 | Push to GitHub by running `git push -u origin main`. |  |  |
+| [ ] | 26 | Create Initial Project Repository Structure | 1.5 | Back in your Chromebook’s Linux terminal, type `cd /mnt/chromeos/removable/USB drive/ask me/` and run `git clone <your-repo-URL>` to clone the repo onto the USB drive. |  |  |
+| [ ] | 27 | Create Initial Project Repository Structure | 1.5 | Open the cloned folder in the Chromebook terminal to confirm the files are present. |  |  |
+| [ ] | 28 | Set Up Development Environment and Tooling | 1.3 | Ask the AI assistant to set environment variables by editing your shell profile (e.g., `nano ~/.bashrc`) and adding:
+
+```
+export JAVA_HOME="/mnt/chromeos/removable/USB drive/ask me/jdk"
+export PATH="$JAVA_HOME/bin:$PATH"
+export ANDROID_SDK_ROOT="/mnt/chromeos/removable/USB drive/ask me/android-sdk"
+export GRADLE_USER_HOME="/mnt/chromeos/removable/USB drive/ask me/gradle"
+```
+ |  |  |
+| [ ] | 29 | Set Up Development Environment and Tooling | 1.3 | Save and close the profile, then run `source ~/.bashrc` to apply changes. |  |  |
+| [ ] | 30 | Set Up Development Environment and Tooling | 1.3 | Confirm that `java -version`, `kotlinc -version`, and `gradle -v` work in the Chromebook terminal. |  |  |
+| [ ] | 31 | Implement Core Module with Shared Business Logic | 1.8 | Ask the AI assistant to create a Kotlin file at `core/src/commonMain/kotlin/FileUtils.kt` containing simple functions to read, write, and delete a JSON file. |  |  |
+| [ ] | 32 | Implement Core Module with Shared Business Logic | 1.8 | In the Codespace terminal, open `FileUtils.kt` and verify that functions `readJson()`, `writeJson()`, and `deleteFile()` are present. |  |  |
+| [ ] | 33 | Implement Core Module with Shared Business Logic | 1.8 | Ask the AI assistant to create a Kotlin file at `core/src/commonMain/kotlin/NetworkUtils.kt` with functions to perform HTTP GET and POST requests and retry once on failure. |  |  |
+| [ ] | 34 | Implement Core Module with Shared Business Logic | 1.8 | Open `NetworkUtils.kt` in Codespace to confirm methods `httpGet()` and `httpPost()` exist with basic retry logic. |  |  |
+| [ ] | 35 | Implement Core Module with Shared Business Logic | 1.8 | Ask the AI assistant to write unit tests for `FileUtils` by creating `core/src/commonTest/kotlin/FileUtilsTest.kt` and including tests for reading and writing a sample JSON. |  |  |
+| [ ] | 36 | Implement Core Module with Shared Business Logic | 1.8 | In the Codespace terminal, run `./gradlew core:commonTest` and confirm all `FileUtils` tests pass. |  |  |
+| [ ] | 37 | Implement Core Module with Shared Business Logic | 1.8 | Ask the AI assistant to write unit tests for `NetworkUtils` by creating `core/src/commonTest/kotlin/NetworkUtilsTest.kt` with a mock HTTP server test. |  |  |
+| [ ] | 38 | Implement Core Module with Shared Business Logic | 1.8 | Run `./gradlew core:commonTest` again and confirm that `NetworkUtils` tests pass. |  |  |
+| [ ] | 39 | Implement Core Module with Shared Business Logic | 1.8 | Ask the AI assistant to define a Kotlin interface named `LLMProvider` in `core/src/commonMain/kotlin/LLMProvider.kt` with methods `sendPrompt(prompt: String): Flow<String>` and `cancel()`. |  |  |
+| [ ] | 40 | Implement Core Module with Shared Business Logic | 1.8 | In the Codespace file explorer, verify that `LLMProvider.kt` exists. |  |  |
+| [ ] | 41 | Implement Core Module with Shared Business Logic | 1.8 | Ask the AI assistant to implement a class `OllamaProvider` in `core/src/commonMain/kotlin/OllamaProvider.kt` that connects to the local Ollama runtime and adheres to `LLMProvider`. |  |  |
+| [ ] | 42 | Implement Core Module with Shared Business Logic | 1.8 | Ask the AI assistant to implement a class `OpenAIProvider` in `core/src/commonMain/kotlin/OpenAIProvider.kt` that connects to the cloud OpenAI API and implements `LLMProvider`. |  |  |
+---
 10. Open your Chromebook’s Linux terminal and verify that the USB drive is mounted at `/mnt/chromeos/removable/USB drive/ask me/` by running `ls /mnt/chromeos/removable/`.
 11. If the USB drive is not mounted, click the Files app, locate “USB drive,” and choose “Mount”.
 12. Ask the AI assistant to install JDK 17 into `/mnt/chromeos/removable/USB drive/ask me/jdk` by saying, “AI assistant, install JDK 17 to /mnt/chromeos/removable/USB drive/ask me/jdk.”
@@ -98,7 +146,7 @@ export GRADLE_USER_HOME="/mnt/chromeos/removable/USB drive/ask me/gradle"
 90. Ask the AI assistant to write a test file `cliApp/src/test/kotlin/CLITest.kt` that launches the CLI with a fixed prompt and verifies the printed response includes expected text.
 91. Run `./gradlew cliApp:test` in Codespace and confirm that `CLITest` passes.
 92. Ask the AI assistant to add an in-memory cache to `QueryProcessor` by creating a `ResponseCache` class under `core/src/commonMain/kotlin/ResponseCache.kt` with methods `getCached(prompt)` and `putCache(prompt, response)`.
-93. Open `ResponseCache.kt` and confirm that it uses a Kotlin `MutableMap<String, String>` underneath.
+93. Open `ResponseCache.kt` and confirm it uses a Kotlin `MutableMap<String, String>` underneath.
 94. Ask the AI assistant to modify `QueryProcessor` so it checks `ResponseCache` first before calling the provider.
 95. Ask the AI assistant to write a test named `ResponseCacheTest.kt` under `core/src/commonTest/kotlin/` that verifies caching behavior (store and retrieve).
 96. Run `./gradlew core:commonTest` and confirm that `ResponseCacheTest` passes.
@@ -396,256 +444,89 @@ export GRADLE_USER_HOME="/mnt/chromeos/removable/USB drive/ask me/gradle"
 * Expected response time (e.g., within 48 hours)
 
 311. Open `docs/SUPPORT.md` and confirm it has the three bullet points.
-312. Ask the AI assistant to create a GitHub Actions workflow `monitor.yml` under `.github/workflows/` if not present, with a schedule of `cron: "0 0 * * *"` and steps to:
-
-* Checkout code
-* Run `./gradlew jacocoTestReport`
-* Post a comment on a pinned issue summarizing coverage.
-
-313. Open `monitor.yml` and confirm the cron schedule and steps are defined.
-314. Ask the AI assistant to verify that GitHub Actions ran `monitor.yml` at least once by checking the “Actions” tab.
-315. Ask the AI assistant to run `adb logcat | grep ASKME` on a running emulator and confirm no unexpected errors appear.
-316. Ask the AI assistant to run `tail -n 50 ~/askme-cli-crash.log` while starting the CLI with an invalid flag and confirm that a stack trace is appended.
-317. Ask the AI assistant to fix any critical bug found (e.g., null-pointer in chat UI) by making code changes.
-318. After fixes, run `./gradlew core:check`, `androidApp:connectedAndroidTest`, and `cliApp:test` to confirm no regressions.
-319. Ask the AI assistant to create a GitHub issue for each remaining unfixed bug, tagging them “bug” and assigning to the AI developer.
-320. Ask the AI assistant to open `docs/Roadmap.md` if it exists, otherwise create it, then add at least three future feature ideas (e.g., “Multilingual Support,” “Voice Input,” “Model Marketplace”).
-321. Open `docs/Roadmap.md` and confirm the three bullet points appear under “Future Features.”
-322. Ask the AI assistant to draft research questions in `docs/UserResearchPlan.md` if not present, ensuring it contains at least five questions like “How easily can a new user send their first query?”
-323. Open `docs/UserResearchPlan.md` and confirm the five questions.
-324. Ask the AI assistant to create a wireframe named `docs/wireframes/basic-chat-flow.png` if not already present, showing boxes for input field, send button, and chat bubbles.
-325. In Codespace, open `docs/wireframes/basic-chat-flow.png` to confirm the diagram is visible.
-326. Ask the AI assistant to convert the wireframe into a design system by adding `androidApp/src/main/java/.../ui/design/Colors.kt`, `Typography.kt`, and `Shapes.kt` if they do not exist.
-327. Open `Colors.kt` and confirm primary, secondary, and background color definitions exist.
-328. Ask the AI assistant to update all Composables in `androidApp` to use `Colors.primary` or `Colors.background` instead of hard-coded colors.
-329. Run `./gradlew detekt` and confirm no new style violations appear.
-330. Ask the AI assistant to add an animation file `androidApp/src/main/kotlin/.../anim/FadeIn.kt` defining a fade-in transition.
-331. Open `FadeIn.kt` and confirm it defines a `@Composable fun FadeIn(content: @Composable () -> Unit)` that uses `AnimatedVisibility` or similar.
-332. Ask the AI assistant to wrap the chat message list in `ChatScreen.kt` with `FadeIn { ... }`.
-333. Ask the AI assistant to write `androidApp/src/androidTest/kotlin/AnimationTest.kt` verifying that a Composable with `FadeIn` has its alpha animate from 0 f to 1 f.
-334. Run `./gradlew androidApp:connectedAndroidTest` and confirm `AnimationTest` passes.
-335. Ask the AI assistant to update `AndroidManifest.xml` to add `android:supportsRtl="true"` if missing and confirm `uses-permission android:name="android.permission.INTERNET"` is present.
-336. Open `AndroidManifest.xml` and confirm those two attributes and tags exist.
-337. Ask the AI assistant to create `androidApp/src/androidTest/kotlin/ScreenSizeTest.kt` if not present, with code launching the app on different screen configurations (e.g., sw600dp).
-338. Run `./gradlew androidApp:connectedAndroidTest` on two emulator profiles and confirm no layout errors are logged.
-339. Ask the AI assistant to add at least two more unit tests in `core/src/commonTest/kotlin/` that cover edge cases (e.g., empty prompt, provider unavailable).
-340. Run `./gradlew core:commonTest` and confirm all new tests pass.
-341. Ask the AI assistant to create a script `scripts/cli_automation.sh` if missing, with commands:
-
-* `#!/bin/bash`
-* `echo "Test query" | ~/cliApp/build/install/cliApp/bin/cliApp > cli_output.txt`
-* `grep "AI response" cli_output.txt || exit 1`
-* `echo "All tests passed"`
-
-342. In the Chromebook terminal, run `bash scripts/cli_automation.sh` and confirm it prints “All tests passed.”
-343. Ask the AI assistant to create `androidApp/src/androidTest/kotlin/PerformanceRegressionTest.kt` if not present, with code measuring response time before and after a dummy code change.
-344. Run `./gradlew androidApp:connectedAndroidTest --tests PerformanceRegressionTest` and note the printed times.
-345. Ask the AI assistant to add a weekly recurring calendar event titled “Project Code Review” for Mondays at 10 AM in your preferred calendar app.
-346. Confirm the “Project Code Review” event appears in your calendar and is set to repeat every Monday.
-347. Ask the AI assistant to create a GitHub issue labeled “Security Audit” if it does not exist, and assign it to “SecBot-E.”
-348. Ask the AI assistant to create a GitHub issue labeled “Penetration Testing” if it does not exist, and assign it to “SecBot-E.”
-349. Ask the AI assistant to create a GitHub issue labeled “No Data Leakage Validation” if it does not exist, and assign it to “TestBot-C.”
-350. Ask the AI assistant to write `docs/SecurityAuditPlan.md` if missing, listing steps: review encryption, verify storage permissions, check network calls, inspect third-party libraries.
-351. Open `docs/SecurityAuditPlan.md` and confirm it contains those four bullet points.
-352. Ask the AI assistant to run a static analysis tool (e.g., SpotBugs) on the entire project and save the report as `reports/static-analysis.html`.
-353. In Codespace, open `reports/static-analysis.html` and confirm it shows no critical issues.
-354. Ask the AI assistant to write `docs/PenTestChecklist.md` if missing, listing: unauthorized file access, MITM simulation, SQL injection test, secure deletion check.
-355. Open `docs/PenTestChecklist.md` and confirm it contains those four items.
-356. Ask the AI assistant to simulate an SQL injection by calling a modified query in `SettingsDatabase` with payload `"' OR '1'='1"`.
-357. Confirm no unintended data is returned in the simulation.
-358. Ask the AI assistant to simulate a man-in-the-middle by running a local HTTP proxy that modifies network traffic; confirm certificate pinning blocks the connection.
-359. Ask the AI assistant to delete all user data in `androidApp` (clear SharedPreferences, databases) and confirm no files remain in the app’s data directory.
-360. Ask the AI assistant to update `docs/SecurityAuditPlan.md` with results of each security check.
-361. Ask the AI assistant to write `docs/SecuritySummary.md` summarizing “No critical vulnerabilities found” if all checks passed.
-362. Open `docs/SecuritySummary.md` and confirm it contains that summary.
-363. Ask the AI assistant to create or update USER\_GUIDE.md under `docs/` ensuring it clearly explains:
-
-* How to install the Android APK (enable Unknown Sources)
-* How to run the CLI JAR (`java -jar askme.jar`)
-* How to configure and switch models in Settings or config.json
-
-364. Open USER\_GUIDE.md and confirm it has three distinct sections with bullet-pointed instructions.
-365. Ask the AI assistant to add a new section “Troubleshooting” in USER\_GUIDE.md listing common errors (e.g., “App won’t start,” “CLI can’t find a model”).
-366. Open USER\_GUIDE.md again and confirm the “Troubleshooting” section appears with at least two entries.
-367. Ask the AI assistant to update API\_DOCS.md by adding a “Data Models” section if missing, listing classes `LLMProvider`, `QueryProcessor`, and `ModelLoader` with brief descriptions.
-368. Open API\_DOCS.md and confirm the “Data Models” section exists with those three class descriptions.
-369. Ask the AI assistant to update SETUP.md under `docs/` ensuring it explains:
-
-* How to open Codespace in GitHub
-* How to mount the USB drive on the Chromebook
-* How to set environment variables (`JAVA_HOME`, `ANDROID_SDK_ROOT`, `GRADLE_USER_HOME`)
-* How to build and run each module (`core`, `androidApp`, `cliApp`)
-
-370. Open SETUP.md and confirm it lists those four bullet points.
-371. Ask the AI assistant to update CONTRIBUTING.md under `docs/` ensuring it explains:
-
-* How to fork and clone the repo
-* How to create a branch (`git checkout -b feature/xyz`)
-* How to run tests locally (`./gradlew core:check && ./gradlew androidApp:connectedAndroidTest && ./gradlew cliApp:test`)
-* How to format code using Detekt
-* How to open a pull request on GitHub
-
-372. Open CONTRIBUTING.md and confirm it contains those five bullet points.
-373. Ask the AI assistant to verify that `chat_screenshot.png` remains in `androidApp/app/src/main/playStoreAssets/`.
-374. Confirm in Codespace that `androidApp/app/src/main/playStoreAssets/chat_screenshot.png` is still present.
-375. Ask the AI assistant to verify that `cli_screenshot.png` remains in `docs/screenshots/`.
-376. Confirm in Codespace that `docs/screenshots/cli_screenshot.png` is still present.
-377. Ask the AI assistant to confirm both screenshots are sized correctly (1080×1920 for Android, 800×600 for CLI) by running an image check command or opening properties.
-378. Ask the AI assistant to ensure `androidApp/build.gradle.kts` is set to include `playStoreAssets` under `release` resources.
-379. Open `androidApp/build.gradle.kts` and confirm the `sourceSets` block includes `playStoreAssets`.
-380. Ask the AI assistant to update `docs/ReleaseChecklist.md` adding a line: “Verify Play Store assets are correct.”
-381. Open `docs/ReleaseChecklist.md` and confirm that line appears.
-382. Ask the AI assistant to run `./gradlew androidApp:assembleDebug` and manually test the debug APK on the emulator to ensure everything still works after all changes.
-383. Ask the AI assistant to run `./gradlew cliApp:installDist` and test the CLI again to confirm no regressions.
-384. Confirm both manual tests pass, then mark “Manual smoke test” in `ReleaseChecklist.md` as done.
-385. Ask the AI assistant to create a new Git tag `v1.1.0` if significant changes were made, by running `git tag v1.1.0 && git push origin v1.1.0`.
-386. Open GitHub and confirm the new release `v1.1.0` appears with updated artifacts.
-387. Ask the AI assistant to verify that “Issues” remain enabled under GitHub repository settings.
-388. Ask the AI assistant to confirm that `bug_report.md` and `feature_request.md` templates remain under `.github/ISSUE_TEMPLATE/`.
-389. Ask the AI assistant to verify `docs/SUPPORT.md` exists and contains:
+312. Ask the AI assistant to verify that GitHub Actions ran `monitor.yml` at least once by checking the “Actions” tab.
+313. Open the Actions tab and confirm that `monitor.yml` ran today (or most recent day).
+314. Ask the AI assistant to confirm no new critical errors appear when running `adb logcat | grep ASKME`.
+315. Ask the AI assistant to confirm no new crash logs appear in `~/askme-cli-crash.log` after running random CLI commands.
+316. Ask the AI assistant to fix any new critical issues if found and push changes.
+317. After fixes, run `./gradlew core:check`, `androidApp:connectedAndroidTest`, and `cliApp:test` again to confirm stability.
+318. Ask the AI assistant to create GitHub issues for any noncritical enhancements discovered.
+319. Ask the AI assistant to update `docs/Roadmap.md` with those enhancements.
+320. Ask the AI assistant to update `docs/UserResearchPlan.md` to include any follow-up research questions.
+321. Ask the AI assistant to confirm that `docs/wireframes/basic-chat-flow.png` is still viewable.
+322. Ask the AI assistant to confirm that design system files (`Colors.kt`, `Typography.kt`, `Shapes.kt`) still exist under the correct path.
+323. Open `Colors.kt` and verify color definitions.
+324. Ask the AI assistant to confirm that `ChatScreen.kt` still wraps its content in the `FadeIn` animation.
+325. Open `ChatScreen.kt` and verify the `FadeIn { … }` block.
+326. Ask the AI assistant to confirm `AnimationTest.kt` still passes by running `./gradlew androidApp:connectedAndroidTest --tests AnimationTest`.
+327. Ask the AI assistant to confirm `AndroidManifest.xml` still has `supportsRtl="true"` and `INTERNET` permission.
+328. Open `AndroidManifest.xml` and verify.
+329. Ask the AI assistant to confirm `ScreenSizeTest.kt` still passes by running `./gradlew androidApp:connectedAndroidTest --tests ScreenSizeTest`.
+330. Ask the AI assistant to create any additional unit tests in `core/src/commonTest/kotlin/` covering new edge cases.
+331. Run `./gradlew core:commonTest` and confirm all tests pass.
+332. Ask the AI assistant to confirm that `scripts/cli_automation.sh` still runs successfully with “All tests passed.”
+333. Run `bash scripts/cli_automation.sh` and verify output.
+334. Ask the AI assistant to confirm that `PerformanceRegressionTest` still passes (`./gradlew androidApp:connectedAndroidTest --tests PerformanceRegressionTest`).
+335. Ask the AI assistant to ensure the “Project Code Review” calendar event is still scheduled.
+336. Check your calendar and confirm the event appears.
+337. Ask the AI assistant to confirm the GitHub issues for “Security Audit,” “Penetration Testing,” and “No Data Leakage Validation” still exist.
+338. Open the GitHub Issues tab and verify those three issues.
+339. Ask the AI assistant to confirm `docs/SecurityAuditPlan.md` still lists its audit steps.
+340. Open `docs/SecurityAuditPlan.md` and verify the content.
+341. Ask the AI assistant to confirm `reports/static-analysis.html` still shows no critical issues.
+342. Ask the AI assistant to confirm `docs/PenTestChecklist.md` still contains its four penetration test items.
+343. Ask the AI assistant to re-run the SQL injection test to confirm no data leakage.
+344. Ask the AI assistant to re-run the MITM simulation to confirm certificate pinning still works.
+345. Ask the AI assistant to re-test secure deletion of user data and confirm no residual files.
+346. Ask the AI assistant to update `docs/SecurityAuditPlan.md` with any new findings.
+347. Ask the AI assistant to confirm `docs/SecuritySummary.md` still reads “No critical vulnerabilities found,” or update if not.
+348. Open `docs/SecuritySummary.md` and verify.
+349. Ask the AI assistant to confirm USER\_GUIDE.md still explains how to install the Android app, run the CLI, and configure models.
+350. Open USER\_GUIDE.md and verify content.
+351. Ask the AI assistant to confirm API\_DOCS.md still lists “Data Models” including `LLMProvider`, `QueryProcessor`, and `ModelLoader`.
+352. Open API\_DOCS.md and verify.
+353. Ask the AI assistant to confirm SETUP.md still explains how to open the Codespace, mount the USB drive, set environment variables, and build modules.
+354. Open SETUP.md and verify.
+355. Ask the AI assistant to confirm CONTRIBUTING.md still explains forking, branching, testing, formatting, and PR steps.
+356. Open CONTRIBUTING.md and verify.
+357. Ask the AI assistant to verify that `chat_screenshot.png` remains in `androidApp/app/src/main/playStoreAssets/`.
+358. Confirm in Codespace that `androidApp/app/src/main/playStoreAssets/chat_screenshot.png` is still present.
+359. Ask the AI assistant to verify that `cli_screenshot.png` remains in `docs/screenshots/`.
+360. Confirm in Codespace that `docs/screenshots/cli_screenshot.png` is still present.
+361. Ask the AI assistant to verify both screenshots are sized correctly (1080×1920 for Android, 800×600 for CLI) by running an image check command or opening properties.
+362. Ask the AI assistant to ensure `androidApp/build.gradle.kts` is set to include `playStoreAssets` under `release` resources.
+363. Open `androidApp/build.gradle.kts` and confirm the `sourceSets` block includes `playStoreAssets`.
+364. Ask the AI assistant to update `docs/ReleaseChecklist.md` adding a line: “Verify Play Store assets are correct.”
+365. Open `docs/ReleaseChecklist.md` and confirm that line appears.
+366. Ask the AI assistant to run `./gradlew androidApp:assembleDebug` and manually test the debug APK on the emulator to ensure everything still works after all changes.
+367. Ask the AI assistant to run `./gradlew cliApp:installDist` and test the CLI again to confirm no regressions.
+368. Confirm both manual tests pass, then mark “Manual smoke test” as done in `ReleaseChecklist.md`.
+369. Ask the AI assistant to create a new Git tag `v1.2.0` if any minor fixes were made, by running `git tag v1.2.0 && git push origin v1.2.0`.
+370. Open GitHub and confirm that release `v1.2.0` appears with updated artifacts.
+371. Ask the AI assistant to ensure “Issues” remain enabled in the GitHub settings.
+372. Ask the AI assistant to confirm that the bug and feature request templates remain under `.github/ISSUE_TEMPLATE/`.
+373. Ask the AI assistant to verify `docs/SUPPORT.md` exists and contains:
 
 * How to report a bug (link)
 * How to request a feature (link)
 * Expected response time
 
-390. Open `docs/SUPPORT.md` and confirm it has those three bullet points.
-391. Ask the AI assistant to verify `monitor.yml` under `.github/workflows/` schedules a daily run and posts coverage summaries.
-392. Open `monitor.yml` and confirm the `cron` schedule and steps (“run jacocoTestReport,” “post comment”) exist.
-393. Ask the AI assistant to confirm that running `adb logcat | grep ASKME` on the emulator shows no critical errors.
-394. Ask the AI assistant to confirm `tail -n 50 ~/askme-cli-crash.log` shows no new crash reports after running various CLI commands.
-395. Ask the AI assistant to fix any remaining bugs (if any appear) by updating code and pushing commits.
-396. After fixes, run `./gradlew core:check`, `androidApp:connectedAndroidTest`, and `cliApp:test` again to confirm no failures.
-397. Ask the AI assistant to create GitHub issues for any bugs that cannot be fixed immediately, tagging them “bug” and assigning to the appropriate AI developer.
-398. Ask the AI assistant to review `docs/Roadmap.md` and ensure it still lists future features; add any new ideas that emerged during the project.
-399. Open `docs/Roadmap.md` and confirm at least three items appear under “Future Features.”
-400. Ask the AI assistant to review `docs/UserResearchPlan.md` and confirm it lists at least five well-formed research questions.
-401. Open `docs/UserResearchPlan.md` and confirm the five questions.
-402. Ask the AI assistant to confirm `docs/wireframes/basic-chat-flow.png` still exists and is viewable.
-403. Open `docs/wireframes/basic-chat-flow.png` in Codespace and confirm the wireframe is visible.
-404. Ask the AI assistant to confirm the design system files (`Colors.kt`, `Typography.kt`, `Shapes.kt`) still exist under `androidApp/src/main/java/.../ui/design/`.
-405. Open `Colors.kt` and confirm the color definitions remain.
-406. Ask the AI assistant to confirm that `ChatScreen.kt` still wraps the message list in the `FadeIn` animation.
-407. Open `ChatScreen.kt` and confirm the `FadeIn { … }` block surrounds the chat items.
-408. Ask the AI assistant to confirm that `AnimationTest.kt` still passes by running `./gradlew androidApp:connectedAndroidTest --tests AnimationTest`.
-409. Ask the AI assistant to confirm `AndroidManifest.xml` still contains `android:supportsRtl="true"` and `INTERNET` permission.
-410. Open `AndroidManifest.xml` and confirm those entries.
-411. Ask the AI assistant to confirm `ScreenSizeTest.kt` still passes by running `./gradlew androidApp:connectedAndroidTest --tests ScreenSizeTest`.
-412. Ask the AI assistant to add any missing unit tests in `core/src/commonTest/kotlin/` covering new edge cases discovered in production.
-413. Run `./gradlew core:commonTest` and confirm all tests pass.
-414. Ask the AI assistant to confirm `scripts/cli_automation.sh` still runs cleanly, by executing `bash scripts/cli_automation.sh` and verifying “All tests passed.”
-415. Ask the AI assistant to confirm `PerformanceRegressionTest` still passes (`./gradlew androidApp:connectedAndroidTest --tests PerformanceRegressionTest`).
-416. Ask the AI assistant to confirm that the recurring “Project Code Review” event still exists on your calendar.
-417. Check your calendar and confirm the Monday 10 AM event is present.
-418. Ask the AI assistant to confirm that GitHub issues labeled “Security Audit,” “Penetration Testing,” and “No Data Leakage Validation” exist.
-419. Open the Issues tab in GitHub and confirm those three issues.
-420. Ask the AI assistant to confirm `docs/SecurityAuditPlan.md` still lists all four audit steps.
-421. Open `docs/SecurityAuditPlan.md` and confirm the bullet points remain.
-422. Ask the AI assistant to confirm `reports/static-analysis.html` still shows no critical issues by opening it.
-423. Ask the AI assistant to confirm `docs/PenTestChecklist.md` still lists the four penetration testing items.
-424. Open `docs/PenTestChecklist.md` and confirm the entries.
-425. Ask the AI assistant to re-run the SQL injection simulation and confirm no data is exposed.
-426. Ask the AI assistant to re-run the MITM simulation and confirm certificate pinning still blocks unauthorized proxies.
-427. Ask the AI assistant to re-test secure deletion of user data by resetting the Android app and confirming no residual files.
-428. Ask the AI assistant to confirm that `docs/SecuritySummary.md` still says “No critical vulnerabilities found” or update it if anything changed.
-429. Open `docs/SecuritySummary.md` and confirm the summary statement.
-430. Ask the AI assistant to confirm USER\_GUIDE.md still contains installation, usage, and troubleshooting sections.
-431. Open USER\_GUIDE.md and verify the three main sections and that “Troubleshooting” lists at least two common issues.
-432. Ask the AI assistant to confirm API\_DOCS.md still has the “Data Models” section with `LLMProvider`, `QueryProcessor`, and `ModelLoader`.
-433. Open API\_DOCS.md and confirm those entries.
-434. Ask the AI assistant to confirm SETUP.md still explains how to open Codespace, mount the USB drive, set variables, and build each module.
-435. Open SETUP.md and verify the four bullet points.
-436. Ask the AI assistant to confirm CONTRIBUTING.md still explains forking, branching, running tests, formatting, and pull request steps.
-437. Open CONTRIBUTING.md and verify the five bullet points.
-438. Ask the AI assistant to confirm that `chat_screenshot.png` is still in `androidApp/app/src/main/playStoreAssets/`.
-439. Ask the AI assistant to confirm that `cli_screenshot.png` is still in `docs/screenshots/`.
-440. Ask the AI assistant to confirm both screenshots remain correctly sized by opening their properties.
-441. Ask the AI assistant to confirm `androidApp/build.gradle.kts` still includes `playStoreAssets` under release resources.
-442. Open `androidApp/build.gradle.kts` and confirm the sourceSets block references `playStoreAssets`.
-443. Ask the AI assistant to confirm `docs/ReleaseChecklist.md` still lists the seven release steps, including verifying Play Store assets.
-444. Open `docs/ReleaseChecklist.md` and verify all seven items.
-445. Ask the AI assistant to run another manual smoke test: build and run `androidApp` on an emulator and run `cliApp` on the Linux terminal, confirming both function.
-446. Confirm both tests pass and ask the AI assistant to mark “Manual smoke test” as done in `docs/ReleaseChecklist.md`.
-447. Ask the AI assistant to create a new Git tag `v1.2.0` if any minor fixes were made, by running `git tag v1.2.0 && git push origin v1.2.0`.
-448. Open GitHub and confirm release `v1.2.0` appears with updated artifacts.
-449. Ask the AI assistant to ensure “Issues” remain enabled in the GitHub settings.
-450. Ask the AI assistant to confirm that the bug and feature request templates remain under `.github/ISSUE_TEMPLATE/`.
-451. Ask the AI assistant to confirm `docs/SUPPORT.md` still contains the three support bullet points.
-452. Open `docs/SUPPORT.md` and verify its content.
-453. Ask the AI assistant to confirm `monitor.yml` still runs daily and posts coverage summaries.
-454. Open the Actions tab and confirm that `monitor.yml` ran today (or most recent day).
-455. Ask the AI assistant to confirm no new critical errors appear when running `adb logcat | grep ASKME`.
-456. Ask the AI assistant to confirm no new crash logs appear in `~/askme-cli-crash.log` after running random CLI commands.
-457. Ask the AI assistant to fix any new critical issues if found and push changes.
-458. After fixes, run `./gradlew core:check`, `androidApp:connectedAndroidTest`, and `cliApp:test` to confirm stability.
-459. Ask the AI assistant to create GitHub issues for any remaining known bugs, tagging them appropriately.
-460. Ask the AI assistant to update `docs/Roadmap.md` with any new feature ideas gathered since the last update.
-461. Open `docs/Roadmap.md` and confirm all feature ideas are listed.
-462. Ask the AI assistant to update `docs/UserResearchPlan.md` by adding any new research questions that emerged.
-463. Open `docs/UserResearchPlan.md` and confirm the updated list of questions.
-464. Ask the AI assistant to confirm that `docs/wireframes/basic-chat-flow.png` is still viewable.
-465. Ask the AI assistant to confirm that design system files (`Colors.kt`, `Typography.kt`, `Shapes.kt`) still exist under the correct path.
-466. Open `Colors.kt` and verify color definitions.
-467. Ask the AI assistant to confirm that `ChatScreen.kt` still wraps its content in the `FadeIn` animation.
-468. Open `ChatScreen.kt` and verify the `FadeIn { … }` block.
-469. Ask the AI assistant to confirm `AnimationTest.kt` still passes by running `./gradlew androidApp:connectedAndroidTest --tests AnimationTest`.
-470. Ask the AI assistant to confirm `AndroidManifest.xml` still has `supportsRtl="true"` and `INTERNET` permission.
-471. Open `AndroidManifest.xml` and verify.
-472. Ask the AI assistant to confirm `ScreenSizeTest.kt` still passes by running `./gradlew androidApp:connectedAndroidTest --tests ScreenSizeTest`.
-473. Ask the AI assistant to create any additional unit tests in `core/src/commonTest/kotlin/` covering new edge cases.
-474. Run `./gradlew core:commonTest` and confirm all tests pass.
-475. Ask the AI assistant to confirm that `scripts/cli_automation.sh` still runs successfully with “All tests passed.”
-476. Run `bash scripts/cli_automation.sh` and verify output.
-477. Ask the AI assistant to confirm that `PerformanceRegressionTest` still passes (`./gradlew androidApp:connectedAndroidTest --tests PerformanceRegressionTest`).
-478. Ask the AI assistant to ensure the “Project Code Review” calendar event still exists and is recurring.
-479. Check your calendar and confirm the event appears.
-480. Ask the AI assistant to confirm the GitHub issues for “Security Audit,” “Penetration Testing,” and “No Data Leakage Validation” still exist.
-481. Open the GitHub Issues tab and verify those three issues.
-482. Ask the AI assistant to confirm `docs/SecurityAuditPlan.md` still lists its audit steps.
-483. Open `docs/SecurityAuditPlan.md` and verify the content.
-484. Ask the AI assistant to confirm `reports/static-analysis.html` still shows no critical issues.
-485. Ask the AI assistant to confirm `docs/PenTestChecklist.md` still contains its four penetration test items.
-486. Ask the AI assistant to re-run the SQL injection test to confirm no data leakage.
-487. Ask the AI assistant to re-run the MITM simulation to confirm certificate pinning still works.
-488. Ask the AI assistant to re-test secure deletion of user data and confirm no residual files.
-489. Ask the AI assistant to update `docs/SecurityAuditPlan.md` with any new findings.
-490. Ask the AI assistant to confirm `docs/SecuritySummary.md` still reads “No critical vulnerabilities found,” or update if not.
-491. Open `docs/SecuritySummary.md` and verify.
-492. Ask the AI assistant to confirm USER\_GUIDE.md still explains installation, usage, and troubleshooting.
-493. Open USER\_GUIDE.md and verify content.
-494. Ask the AI assistant to confirm API\_DOCS.md still lists “Data Models” including `LLMProvider`, `QueryProcessor`, and `ModelLoader`.
-495. Open API\_DOCS.md and verify.
-496. Ask the AI assistant to confirm SETUP.md still explains Codespace launch, USB mount, environment variables, and build commands.
-497. Open SETUP.md and verify.
-498. Ask the AI assistant to confirm CONTRIBUTING.md still explains forking, branching, testing, formatting, and PR steps.
-499. Open CONTRIBUTING.md and verify.
-500. Ask the AI assistant to confirm that `chat_screenshot.png` remains in `androidApp/app/src/main/playStoreAssets/`.
-501. Ask the AI assistant to confirm that `cli_screenshot.png` remains in `docs/screenshots/`.
-502. Ask the AI assistant to confirm both screenshots remain correctly sized.
-503. Ask the AI assistant to confirm `androidApp/build.gradle.kts` still includes `playStoreAssets`.
-504. Open `androidApp/build.gradle.kts` and verify the sourceSets block.
-505. Ask the AI assistant to confirm `docs/ReleaseChecklist.md` still lists all seven release steps, including verifying Play Store assets.
-506. Open `docs/ReleaseChecklist.md` and verify the list.
-507. Ask the AI assistant to run final manual smoke tests: build and install the Android app on an emulator and run the CLI on Linux, confirming both work.
-508. Confirm both tests pass.
-509. Ask the AI assistant to mark “Manual smoke test” as done in `docs/ReleaseChecklist.md`.
-510. Ask the AI assistant to tag the final release as `v1.2.1` if any final minor edits were made: run `git tag v1.2.1 && git push origin v1.2.1`.
-511. Open GitHub and confirm release `v1.2.1` appears with updated artifacts.
-512. Ask the AI assistant to ensure “Issues” remain enabled in the GitHub repository.
-513. Ask the AI assistant to confirm the bug and feature templates remain under `.github/ISSUE_TEMPLATE/`.
-514. Ask the AI assistant to confirm `docs/SUPPORT.md` still contains its three support points.
-515. Ask the AI assistant to confirm `monitor.yml` still runs daily and posts coverage summaries.
-516. Ask the AI assistant to confirm no new critical errors appear in `adb logcat | grep ASKME`.
-517. Ask the AI assistant to confirm no new crash logs appear in `~/askme-cli-crash.log`.
-518. Ask the AI assistant to fix any last-minute issues if they appear, then run all test suites again (`core:check`, `androidApp:connectedAndroidTest`, `cliApp:test`).
-519. Ask the AI assistant to create issues for any noncritical enhancements discovered.
-520. Ask the AI assistant to update `docs/Roadmap.md` with those enhancements.
-521. Ask the AI assistant to update `docs/UserResearchPlan.md` to include any follow-up research questions.
-522. Ask the AI assistant to confirm wireframes, design system, and animations remain intact and pass their tests.
-523. Ask the AI assistant to confirm the security documentation and summaries remain current.
-524. Ask the AI assistant to confirm all user-facing documentation (`USER_GUIDE.md`, `SUPPORT.md`, `API_DOCS.md`, `SETUP.md`, `CONTRIBUTING.md`, `ReleaseChecklist.md`) is up to date.
-525. Ask the AI assistant to confirm final release version tags exist on GitHub.
-526. Ask the AI assistant to confirm that all CI workflows are green (no failing checks in “Actions”).
-527. Ask the AI assistant to confirm that all major issues (bugs, features) are tracked and assigned.
-528. Ask the AI assistant to confirm that upcoming tasks (from `docs/Roadmap.md`) are assigned to “DevBot-A” or “DevBot-B” as appropriate.
-529. Ask the AI assistant to confirm that the recurring code review event is still scheduled.
-530. Finally, review all documentation files in Codespace one last time to ensure consistency, then commit and push any minor corrections discovered.
+374. Open `docs/SUPPORT.md` and confirm it has those three bullet points.
+375. Ask the AI assistant to verify that GitHub Actions ran `monitor.yml` at least once by checking the “Actions” tab.
+376. Open the Actions tab and confirm that `monitor.yml` ran today (or most recent day).
+377. Ask the AI assistant to confirm no new critical errors appear when running `adb logcat | grep ASKME`.
+378. Ask the AI assistant to confirm no new crash logs appear in `~/askme-cli-crash.log` after running random CLI commands.
+379. Ask the AI assistant to fix any new critical issues if found and push changes.
+380. After fixes, run `./gradlew core:check`, `androidApp:connectedAndroidTest`, and `cliApp:test` again to confirm stability.
+381. Ask the AI assistant to create GitHub issues for any noncritical enhancements discovered.
+382. Ask the AI assistant to update `docs/Roadmap.md` with those enhancements.
+383. Ask the AI assistant to update `docs/UserResearchPlan.md` to include any follow-up research questions.
+384. Ask the AI assistant to confirm wireframes, design system, and animations remain intact and pass their tests.
+385. Ask the AI assistant to confirm the security documentation and summaries remain current.
+386. Ask the AI assistant to confirm all user-facing documentation (`USER_GUIDE.md`, `SUPPORT.md`, `API_DOCS.md`, `SETUP.md`, `CONTRIBUTING.md`, `ReleaseChecklist.md`) is up to date.
+387. Ask the AI assistant to confirm final release version tags exist on GitHub.
+388. Ask the AI assistant to confirm that all CI workflows are green (no failing checks in “Actions”).
+389. Ask the AI assistant to confirm that all major issues (bugs, features) are tracked and assigned.
+390. Ask the AI assistant to confirm that upcoming tasks (from `docs/Roadmap.md`) are assigned to “DevBot-A” or “DevBot-B” as appropriate.
+391. Ask the AI assistant to confirm that the recurring code review event is still scheduled.
+392. Finally, review all documentation files in Codespace one last time to ensure consistency, then commit and push any minor corrections discovered.
