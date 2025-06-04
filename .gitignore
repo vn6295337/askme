@@ -1,0 +1,25 @@
+# Android system images and SDKs
+android/system-images/
+sdk/
+*.apk
+*.aab
+
+# Gradle build and cache
+.gradle/
+build/
+out/
+
+# IDE config files and folders
+.idea/
+*.iml
+
+# Kotlin build files
+*.kotlin_module
+*.class
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Other generated files
+*.log
