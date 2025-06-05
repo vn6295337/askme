@@ -1,22 +1,24 @@
-# Architecture Components
+# Architecture & Modules Overview
 
 ## Module Descriptions
-- **Core**: Handles all shared business logic, including query processing, provider management, and settings. This is the heart of the app's intelligence and privacy features.
-- **AndroidApp**: Provides a modern, user-friendly interface on Android devices using Jetpack Compose. Connects to the Core for all logic and model management.
-- **CLI**: Offers a simple command-line interface for Linux users, making it easy to interact with LLMs from the terminal. Also connects to the Core for all processing.
+- **Core**: Shared business logic, including query processing, provider management, and settings. The heart of the app's intelligence and privacy features.
+- **AndroidApp**: Modern, user-friendly interface for Android devices using Jetpack Compose. Connects to Core for all logic and model management.
+- **CLI**: Simple command-line interface for Linux users, making it easy to interact with LLMs from the terminal. Also connects to Core for all processing.
 
-## Dependencies
+## Dependencies & Versioning
+
+All dependencies and tools are version-pinned in the [Gradle version catalog](../../gradle/libs.versions.toml) for maximum compatibility and reproducibility. The rationale for each major tech choice and version alignment is documented at the top of that file.
+
+**Key technologies:**
+- Kotlin Multiplatform (shared logic)
+- Jetpack Compose (Android UI, via Compose BOM)
 - Ktor (networking)
 - gRPC (remote procedure calls)
 - Koin (dependency injection)
 - SQLDelight (local database)
-- Detekt (code quality/linting)
-- Jetpack Compose (Android UI)
-- Kotlin Multiplatform (shared logic)
 - AndroidX (core Android libraries)
 - JUnit, MockK, Kotest, Turbine (testing)
+- Detekt, ktlint (code quality)
 - Dokka (documentation)
-- ktlint (code formatting)
 
-**Versioning and rationale:**
-All versions are pinned and justified in `gradle/libs.versions.toml` to ensure maximum compatibility, reproducibility, and ease of maintenance. See the rationale section at the top of that file for details on each major tech choice and version alignment.
+For a concise summary, see this document. For full versioning and rationale, see `gradle/libs.versions.toml`.
