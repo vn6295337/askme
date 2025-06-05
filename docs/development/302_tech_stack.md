@@ -26,6 +26,8 @@
 
 ## Dependencies
 
+All dependencies are version-pinned and justified in `gradle/libs.versions.toml` for maximum compatibility and reproducibility. See the rationale section at the top of that file for details on each major tech choice and version alignment.
+
 ### Core
 - `kotlinx.coroutines`: For async operations
 - `kotlinx.serialization`: For JSON processing
@@ -33,7 +35,7 @@
 - `SQLDelight`: For local storage (if needed)
 
 ### Android
-- `androidx.compose.*`: For modern UI
+- `androidx.compose.*`: For modern UI (versioned via Compose BOM)
 - `androidx.security`: For secure storage
 - `androidx.lifecycle`: For ViewModel support
 
@@ -44,7 +46,7 @@
 ## Development Tools
 
 ### Build & Package
-- **Gradle with KTS**: For build automation
+- **Gradle with KTS**: For build automation (see version catalog for version pin)
   - **Why**: Better IDE support, type-safe DSL
 - **Docker**: For local development environment
   - **Why**: Consistent environment setup
@@ -54,6 +56,7 @@
 - **MockK**: For mocking in tests
 - **AndroidX Test**: For Android instrumentation tests
 - **Kotest**: For property-based testing
+- **Turbine**: For Flow testing
 
 ### Code Quality
 - **Detekt**: For static code analysis
@@ -77,3 +80,7 @@
 ## Performance Considerations
 - **ProGuard/R8**: For code shrinking and obfuscation
 - **Benchmarking**: Using Jetpack Benchmark for performance testing
+
+---
+
+**For all versioning, see `gradle/libs.versions.toml` and its rationale section.**
