@@ -1,11 +1,11 @@
 #!/bin/bash
 # Chromebook/USB sync script: keeps your USB drive and Google Drive folder 'askme-sync' in sync!
 # Run this on your Chromebook (with rclone installed and configured for Google Drive)
-# Make sure your USB is mounted at /mnt/chromeos/removable/USBdrive/askme
+# Make sure your USB is mounted at /mnt/chromeos/removable/usbdrive/askme
 
 REMOTE="askme"
 DRIVE_FOLDER="askme-sync"
-USB_FOLDER="/mnt/chromeos/removable/USBdrive/askme"
+USB_FOLDER="/mnt/chromeos/removable/usbdrive/askme"
 
 # Sync USB to Google Drive (upload new/changed files)
 echo "Uploading from USB to Google Drive..."

@@ -3,7 +3,7 @@
 This checklist tracks every step required to deliver the AskMe Lite project, organized by phase and mapped to the project plan for full traceability. Mark each item as you complete it. (Preserve this file for active use; git history provides archiving.)
 
 ## ✅ Architecture & Stack Alignment (2025-06-05)
-- [x] All module and dependency documentation consolidated into `Architecture_Components.md` for a single source of truth.
+- [x] All module and dependency documentation consolidated into `114_architecture_components.md` for a single source of truth.
 - [x] All dependencies and tools version-pinned in `gradle/libs.versions.toml` with detailed rationale for each major tech choice and version alignment.
 - [x] Compose BOM and Compose Compiler versions aligned with Kotlin and AGP for maximum stability.
 - [x] AndroidX Security set to most stable alpha (alpha04) for production use.
@@ -18,12 +18,12 @@ This checklist tracks every step required to deliver the AskMe Lite project, org
 | [ ] | 1 | Define MVP Scope and Success Metrics | 1.1 | Open the Problem Statement document in the repository. |  |  |
 | [ ] | 2 | Define MVP Scope and Success Metrics | 1.1 | Read through the “Must Have (MVP)” section and highlight each required feature. |  |  |
 | [ ] | 3 | Define MVP Scope and Success Metrics | 1.1 | Note the performance targets (e.g., < 2 s response time, < 20 MB app size). |  |  |
-| [ ] | 4 | Define MVP Scope and Success Metrics | 1.1 | Create a new file named MVP_Scope.md and copy the list of core features and success metrics into it. |  |  |
+| [ ] | 4 | Define MVP Scope and Success Metrics | 1.1 | Create a new file named 115_mvp_scope.md and copy the list of core features and success metrics into it. |  |  |
 | [ ] | 5 | Finalize Technical Architecture and Component Design | 1.2 | Open the draft Technical Architecture diagram or text file. |  |  |
 | [ ] | 6 | Finalize Technical Architecture and Component Design | 1.2 | Identify the high-level modules (Core, AndroidApp, CLI) and write their names on a blank page. |  |  |
 | [ ] | 7 | Finalize Technical Architecture and Component Design | 1.2 | For each module, write one or two sentences describing its purpose (e.g., Core handles LLM logic). |  |  |
 | [ ] | 8 | Finalize Technical Architecture and Component Design | 1.2 | List the third-party libraries needed (Ktor, gRPC, Koin, SQLDelight, Detekt) under a heading “Dependencies.” |  |  |
-| [ ] | 9 | Finalize Technical Architecture and Component Design | 1.2 | Save these descriptions in a new file named Architecture_Components.md. |  |  |
+| [ ] | 9 | Finalize Technical Architecture and Component Design | 1.2 | Save these descriptions in a new file named 114_architecture_components.md. |  |  |
 | [ ] | 10 | Set Up Development Environment and Tooling | 1.3 | Open your Chromebook’s Linux terminal and verify that the USB drive is mounted at `/mnt/chromeos/removable/USB drive/ask me/` by running `ls /mnt/chromeos/removable/`. |  |  |
 | [ ] | 11 | Set Up Development Environment and Tooling | 1.3 | If the USB drive is not mounted, click the Files app, locate “USB drive,” and choose “Mount”. |  |  |
 | [ ] | 12 | Set Up Development Environment and Tooling | 1.3 | Ask the AI assistant to install JDK 17 into `/mnt/chromeos/removable/USB drive/ask me/jdk` by saying, “AI assistant, install JDK 17 to /mnt/chromeos/removable/USB drive/ask me/jdk.” |  |  |

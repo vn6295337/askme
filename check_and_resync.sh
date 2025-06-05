@@ -9,7 +9,7 @@ LOCAL_FOLDER="/workspaces/askme"
 rclone check "$LOCAL_FOLDER" "$REMOTE:$DRIVE_FOLDER" --one-way --quiet
 if [ $? -ne 0 ]; then
   echo "Sync out of date. Re-syncing..."
-  ./sync_with_gdrive.sh
+  ./sync_scripts/codespace_sync_with_gdrive.sh
 else
   echo "Sync is healthy!"
 fi

@@ -4,7 +4,7 @@
 
 Your project uses two main workspaces:
 - **Codespace**: A cloud-based development environment (like a virtual computer in the cloud).
-- **USB Drive**: A physical storage device plugged into your Chromebook, located at `/mnt/chromeos/removable/USBdrive/askme`.
+- **USB Drive**: A physical storage device plugged into your Chromebook, located at `/mnt/chromeos/removable/usbdrive/askme`.
 
 These two workspaces are linked so you can:
 - Develop and test code in the Codespace (fast, flexible, always available)
@@ -69,21 +69,21 @@ These two workspaces are linked so you can:
 #### **C. Use the Provided Sync Scripts**
 
 ##### **1. Codespace <-> Google Drive**
-- Script: `sync_with_gdrive.sh`
+- Script: `codespace_sync_with_gdrive.sh`
 - Place in `/workspaces/askme/` in Codespace.
 - Usage:
   ```bash
-  ./sync_with_gdrive.sh
+  ./sync_scripts/codespace_sync_with_gdrive.sh
   ```
 - What it does: Uploads new/changed files from Codespace to Google Drive, then downloads new files from Google Drive to Codespace.
 
 ##### **2. Chromebook USB <-> Google Drive**
-- Script: `sync_usb_with_gdrive.sh`
-- Place on your Chromebook USB at `/mnt/chromeos/removable/USBdrive/askme/`.
+- Script: `usb_sync_with_gdrive.sh`
+- Place on your Chromebook USB at `/mnt/chromeos/removable/usbdrive/askme/`.
 - Usage:
   ```bash
-  chmod +x /mnt/chromeos/removable/USBdrive/askme/sync_usb_with_gdrive.sh
-  /mnt/chromeos/removable/USBdrive/askme/sync_usb_with_gdrive.sh
+  chmod +x /mnt/chromeos/removable/usbdrive/askme/sync_scripts/usb_sync_with_gdrive.sh
+  /mnt/chromeos/removable/usbdrive/askme/sync_scripts/usb_sync_with_gdrive.sh
   ```
 - What it does: Uploads new/changed files from USB to Google Drive, then downloads new files from Google Drive to USB.
 
@@ -113,7 +113,7 @@ These two workspaces are linked so you can:
 
 ## Example Scripts
 
-### 1. Codespace <-> Google Drive Sync Script (`sync_with_gdrive.sh`)
+### 1. Codespace <-> Google Drive Sync Script (`codespace_sync_with_gdrive.sh`)
 ```bash
 #!/bin/bash
 # This script syncs your Codespace project with your Google Drive folder 'askme-sync'.
@@ -127,13 +127,13 @@ rclone sync "$REMOTE:$DRIVE_FOLDER" "$LOCAL_FOLDER" --progress --exclude ".git/*
 echo "Sync complete! Your Codespace and Google Drive are now in sync."
 ```
 
-### 2. Chromebook USB <-> Google Drive Sync Script (`sync_usb_with_gdrive.sh`)
+### 2. Chromebook USB <-> Google Drive Sync Script (`usb_sync_with_gdrive.sh`)
 ```bash
 #!/bin/bash
 # Chromebook/USB sync script: keeps your USB drive and Google Drive folder 'askme-sync' in sync!
 REMOTE="askme"
 DRIVE_FOLDER="askme-sync"
-USB_FOLDER="/mnt/chromeos/removable/USBdrive/askme"
+USB_FOLDER="/mnt/chromeos/removable/usbdrive/askme"
 echo "Uploading from USB to Google Drive..."
 rclone sync "$USB_FOLDER" "$REMOTE:$DRIVE_FOLDER" --progress --exclude ".Trash-*/**"
 echo "Downloading from Google Drive to USB..."
@@ -141,7 +141,7 @@ rclone sync "$REMOTE:$DRIVE_FOLDER" "$USB_FOLDER" --progress --exclude ".Trash-*
 echo "Sync complete! Your USB drive and Google Drive are now in sync."
 ```
 
-### 3. Health Check & Auto-Restablish Script (`check_and_resync.sh`)
+### 3. Health Check & Auto-Restablish Script (`codespace_check_and_resync.sh`)
 ```bash
 #!/bin/bash
 # Checks if Google Drive and Codespace are in sync, and re-syncs if not.
@@ -152,7 +152,7 @@ LOCAL_FOLDER="/workspaces/askme"
 rclone check "$LOCAL_FOLDER" "$REMOTE:$DRIVE_FOLDER" --one-way --quiet
 if [ $? -ne 0 ]; then
   echo "Sync out of date. Re-syncing..."
-  ./sync_with_gdrive.sh
+  ./sync_scripts/codespace_sync_with_gdrive.sh
 else
   echo "Sync is healthy!"
 fi
