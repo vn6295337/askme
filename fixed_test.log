@@ -1,0 +1,378 @@
+
+2025/06/05 07:31:48 NOTICE: usbdrive: Can't follow symlink without -L/--copy-links
+Transferred:   	          0 B / 0 B, -, 0 B/s, ETA -
+Elapsed time:         0.0s
+2025/06/05 07:31:49 NOTICE: README.md: Skipped copy as --dry-run is set (size 16.946Ki)
+Transferred:   	          0 B / 29.635 KiB, 0%, 0 B/s, ETA -
+Transferred:            0 / 9, 0%
+Elapsed time:         0.3s
+Transferring:
+ *                                     README.md: transferring
+2025/06/05 07:31:49 NOTICE: check_and_resync.sh: Skipped copy as --dry-run is set (size 500)
+Transferred:   	          0 B / 29.635 KiB, 0%, 0 B/s, ETA -
+Transferred:            0 / 10, 0%
+Elapsed time:         0.3s
+Transferring:
+ *                                     README.md:100% /16.946Ki, 0/s, -
+ *                           check_and_resync.sh: transferring
+2025/06/05 07:31:49 NOTICE: quick_diagnostic.sh: Skipped copy as --dry-run is set (size 1.802Ki)
+Transferred:   	   17.435 KiB / 59.016 KiB, 30%, 0 B/s, ETA -
+Transferred:            2 / 23, 9%
+Elapsed time:         0.3s
+Transferring:
+ *                                fixed_test.log: transferring
+ *                    git_workflow_validation.sh: transferring
+ *                               manual_test.log: transferring
+ *                           quick_diagnostic.sh: transferring
+2025/06/05 07:31:49 NOTICE: fixed_test.log: Skipped copy as --dry-run is set (size 0)
+Transferred:   	   19.236 KiB / 51.133 KiB, 38%, 0 B/s, ETA -
+Transferred:            3 / 23, 13%
+Elapsed time:         0.3s
+Transferring:
+ *                                fixed_test.log: transferring
+ *                    git_workflow_validation.sh: transferring
+ *                               manual_test.log: transferring
+ *                                 sync_test.log: transferring
+2025/06/05 07:31:49 NOTICE: sync_usb_with_gdrive.sh: Skipped copy as --dry-run is set (size 801)
+Transferred:   	   19.236 KiB / 50.351 KiB, 38%, 0 B/s, ETA -
+Transferred:            4 / 23, 17%
+Elapsed time:         0.3s
+Transferring:
+ *                    git_workflow_validation.sh: transferring
+ *                               manual_test.log: transferring
+ *                                 sync_test.log: transferring
+ *                       sync_usb_with_gdrive.sh: transferring
+2025/06/05 07:31:49 NOTICE: git_workflow_validation.sh: Skipped copy as --dry-run is set (size 6.747Ki)
+Transferred:   	   20.019 KiB / 50.274 KiB, 40%, 0 B/s, ETA -
+Transferred:            5 / 23, 22%
+Elapsed time:         0.3s
+Transferring:
+ *                    git_workflow_validation.sh: transferring
+ *                               manual_test.log: transferring
+ *                                 sync_test.log: transferring
+ *                           sync_with_gdrive.sh: transferring
+2025/06/05 07:31:49 NOTICE: test_sync_file.txt: Skipped copy as --dry-run is set (size 78)
+Transferred:   	   26.766 KiB / 56.945 KiB, 47%, 0 B/s, ETA -
+Transferred:            6 / 23, 26%
+Elapsed time:         0.3s
+Transferring:
+ *                               manual_test.log: transferring
+ *                                 sync_test.log: transferring
+ *                           sync_with_gdrive.sh: transferring
+ *                            test_sync_file.txt: transferring
+2025/06/05 07:31:49 NOTICE: manual_test.log: Skipped copy as --dry-run is set (size 9.685Ki)
+Transferred:   	   26.842 KiB / 53.710 KiB, 50%, 0 B/s, ETA -
+Transferred:            7 / 23, 30%
+Elapsed time:         0.3s
+Transferring:
+ *                               manual_test.log: transferring
+ *                                 sync_test.log: transferring
+ *                           sync_with_gdrive.sh: transferring
+ *              daily_logs/daily_log_20250601.md: transferring
+2025/06/05 07:31:49 NOTICE: daily_logs/daily_log_20250602.md: Skipped copy as --dry-run is set (size 4.460Ki)
+Transferred:   	   36.526 KiB / 58.935 KiB, 62%, 0 B/s, ETA -
+Transferred:            8 / 23, 35%
+Elapsed time:         0.3s
+Transferring:
+ *                                 sync_test.log: transferring
+ *                           sync_with_gdrive.sh: transferring
+ *              daily_logs/daily_log_20250601.md: transferring
+ *              daily_logs/daily_log_20250602.md: transferring
+2025/06/05 07:31:49 NOTICE: sync_test.log: Skipped copy as --dry-run is set (size 9.685Ki)
+Transferred:   	   40.986 KiB / 62.943 KiB, 65%, 0 B/s, ETA -
+Transferred:            9 / 23, 39%
+Elapsed time:         0.3s
+Transferring:
+ *                                 sync_test.log: transferring
+ *                           sync_with_gdrive.sh: transferring
+ *              daily_logs/daily_log_20250601.md: transferring
+ *                     docs/ux/201_wireframes.md: transferring
+2025/06/05 07:31:49 NOTICE: gradle/libs.versions.toml: Skipped copy as --dry-run is set (size 8.938Ki)
+Transferred:   	   50.671 KiB / 63.689 KiB, 80%, 0 B/s, ETA -
+Transferred:           10 / 23, 43%
+Elapsed time:         0.3s
+Transferring:
+ *                           sync_with_gdrive.sh: transferring
+ *              daily_logs/daily_log_20250601.md: transferring
+ *                     docs/ux/201_wireframes.md: transferring
+ *                     gradle/libs.versions.toml: transferring
+2025/06/05 07:31:49 NOTICE: sync_with_gdrive.sh: Skipped copy as --dry-run is set (size 879)
+Transferred:   	   59.609 KiB / 72.169 KiB, 83%, 0 B/s, ETA -
+Transferred:           11 / 23, 48%
+Elapsed time:         0.3s
+Transferring:
+ *                           sync_with_gdrive.sh: transferring
+ *              daily_logs/daily_log_20250601.md: transferring
+ *                     docs/ux/201_wireframes.md: transferring
+ *              docs/qa/401_testing_checklist.md: transferring
+2025/06/05 07:31:49 NOTICE: docs/development/301_architecture.md: Skipped copy as --dry-run is set (size 2.927Ki)
+Transferred:   	   60.468 KiB / 70.101 KiB, 86%, 0 B/s, ETA -
+Transferred:           12 / 23, 52%
+Elapsed time:         0.3s
+Transferring:
+ *              daily_logs/daily_log_20250601.md: transferring
+ *                     docs/ux/201_wireframes.md: transferring
+ *              docs/qa/401_testing_checklist.md: transferring
+ *          docs/development/301_architecture.md: transferring
+2025/06/05 07:31:49 NOTICE: daily_logs/daily_log_20250601.md: Skipped copy as --dry-run is set (size 3.312Ki)
+Transferred:   	   63.395 KiB / 71.916 KiB, 88%, 0 B/s, ETA -
+Transferred:           13 / 23, 57%
+Elapsed time:         0.3s
+Transferring:
+ *              daily_logs/daily_log_20250601.md: transferring
+ *                     docs/ux/201_wireframes.md: transferring
+ *              docs/qa/401_testing_checklist.md: transferring
+ *            docs/development/302_tech_stack.md: transferring
+2025/06/05 07:31:49 NOTICE: docs/development/303_api_contracts.md: Skipped copy as --dry-run is set (size 3.287Ki)
+Transferred:   	   66.706 KiB / 71.940 KiB, 93%, 0 B/s, ETA -
+Transferred:           14 / 23, 61%
+Elapsed time:         0.3s
+Transferring:
+ *                     docs/ux/201_wireframes.md: transferring
+ *              docs/qa/401_testing_checklist.md: transferring
+ *            docs/development/302_tech_stack.md: transferring
+ *         docs/development/303_api_contracts.md: transferring
+2025/06/05 07:31:49 NOTICE: docs/ux/201_wireframes.md: Skipped copy as --dry-run is set (size 462)
+Transferred:   	   69.993 KiB / 203.705 KiB, 34%, 0 B/s, ETA -
+Transferred:           15 / 37, 41%
+Elapsed time:         0.3s
+Transferring:
+ *                     docs/ux/201_wireframes.md: transferring
+ *              docs/qa/401_testing_checklist.md: transferring
+ *            docs/development/302_tech_stack.md: transferring
+ *           docs/development/304_setup_guide.md: transferring
+2025/06/05 07:31:49 NOTICE: docs/qa/401_testing_checklist.md: Skipped copy as --dry-run is set (size 470)
+Transferred:   	   69.993 KiB / 205.395 KiB, 34%, 0 B/s, ETA -
+Transferred:           15 / 39, 38%
+Elapsed time:         0.3s
+Transferring:
+ *                     docs/ux/201_wireframes.md:100% /462, 0/s, -
+ *              docs/qa/401_testing_checklist.md: transferring
+ *            docs/development/302_tech_stack.md: transferring
+ *           docs/development/304_setup_guide.md: transferring
+2025/06/05 07:31:49 NOTICE: docs/release/501_release_process.md: Skipped copy as --dry-run is set (size 457)
+Transferred:   	   70.452 KiB / 205.407 KiB, 34%, 0 B/s, ETA -
+Transferred:           16 / 39, 41%
+Elapsed time:         0.3s
+Transferring:
+ *                     docs/ux/201_wireframes.md:100% /462, 0/s, -
+ *            docs/development/302_tech_stack.md: transferring
+ *           docs/development/304_setup_guide.md: transferring
+ *           docs/release/501_release_process.md: transferring
+2025/06/05 07:31:49 NOTICE: docs/development/302_tech_stack.md: Skipped copy as --dry-run is set (size 1.111Ki)
+Transferred:   	   71.350 KiB / 205.382 KiB, 35%, 0 B/s, ETA -
+Transferred:           17 / 39, 44%
+Elapsed time:         0.3s
+Transferring:
+ *            docs/development/302_tech_stack.md: transferring
+ *           docs/development/304_setup_guide.md: transferring
+ *         docs/release/502_play_store_assets.md: transferring
+2025/06/05 07:31:49 NOTICE: docs/support/601_known_issues.md: Skipped copy as --dry-run is set (size 395)
+Transferred:   	   71.350 KiB / 205.447 KiB, 35%, 0 B/s, ETA -
+Transferred:           18 / 39, 46%
+Elapsed time:         0.3s
+Transferring:
+ *            docs/development/302_tech_stack.md:100% /1.111Ki, 0/s, -
+ *           docs/development/304_setup_guide.md: transferring
+ *         docs/release/502_play_store_assets.md: transferring
+ *              docs/support/601_known_issues.md: transferring
+2025/06/05 07:31:49 NOTICE: docs/development/304_setup_guide.md: Skipped copy as --dry-run is set (size 3.429Ki)
+Transferred:   	   72.847 KiB / 205.331 KiB, 35%, 0 B/s, ETA -
+Transferred:           19 / 39, 49%
+Elapsed time:         0.3s
+Transferring:
+ *           docs/development/304_setup_guide.md: transferring
+ *         docs/release/502_play_store_assets.md: transferring
+ *             docs/support/602_feedback_plan.md: transferring
+2025/06/05 07:31:49 NOTICE: docs/planning/100_readme.md: Skipped copy as --dry-run is set (size 1.803Ki)
+Transferred:   	   72.847 KiB / 204.640 KiB, 36%, 0 B/s, ETA -
+Transferred:           20 / 39, 51%
+Elapsed time:         0.3s
+Transferring:
+ *           docs/development/304_setup_guide.md:100% /3.429Ki, 0/s, -
+ *         docs/release/502_play_store_assets.md: transferring
+ *             docs/support/602_feedback_plan.md: transferring
+ *                   docs/planning/100_readme.md: transferring
+2025/06/05 07:31:49 NOTICE: docs/release/502_play_store_assets.md: Skipped copy as --dry-run is set (size 483)
+Transferred:   	   78.078 KiB / 205.343 KiB, 38%, 0 B/s, ETA -
+Transferred:           21 / 39, 54%
+Elapsed time:         0.3s
+Transferring:
+ *         docs/release/502_play_store_assets.md: transferring
+ *             docs/support/602_feedback_plan.md: transferring
+ *        docs/planning/101_problem_statement.md: transferring
+2025/06/05 07:31:49 NOTICE: docs/planning/102_user_personas.md: Skipped copy as --dry-run is set (size 1.563Ki)
+Transferred:   	   78.078 KiB / 207.208 KiB, 38%, 0 B/s, ETA -
+Transferred:           22 / 39, 56%
+Elapsed time:         0.3s
+Transferring:
+ *         docs/release/502_play_store_assets.md:100% /483, 0/s, -
+ *             docs/support/602_feedback_plan.md: transferring
+ *        docs/planning/101_problem_statement.md: transferring
+ *            docs/planning/102_user_personas.md: transferring
+2025/06/05 07:31:49 NOTICE: docs/support/602_feedback_plan.md: Skipped copy as --dry-run is set (size 514)
+Transferred:   	   80.113 KiB / 206.796 KiB, 39%, 0 B/s, ETA -
+Transferred:           23 / 39, 59%
+Elapsed time:         0.3s
+Transferring:
+ *             docs/support/602_feedback_plan.md: transferring
+ *        docs/planning/101_problem_statement.md: transferring
+ *             docs/planning/103_user_stories.md: transferring
+2025/06/05 07:31:49 NOTICE: docs/planning/104_feature_list.md: Skipped copy as --dry-run is set (size 1.770Ki)
+Transferred:   	   80.113 KiB / 205.498 KiB, 39%, 0 B/s, ETA -
+Transferred:           24 / 39, 62%
+Elapsed time:         0.3s
+Transferring:
+ *             docs/support/602_feedback_plan.md:100% /514, 0/s, -
+ *        docs/planning/101_problem_statement.md: transferring
+ *             docs/planning/103_user_stories.md: transferring
+ *             docs/planning/104_feature_list.md: transferring
+2025/06/05 07:31:49 NOTICE: docs/planning/101_problem_statement.md: Skipped copy as --dry-run is set (size 1.100Ki)
+Transferred:   	   82.385 KiB / 119.770 KiB, 69%, 0 B/s, ETA -
+Transferred:           25 / 39, 64%
+Elapsed time:         0.3s
+Transferring:
+ *        docs/planning/101_problem_statement.md: transferring
+ *             docs/planning/103_user_stories.md: transferring
+ *                docs/planning/105_checklist.md: transferring
+2025/06/05 07:31:49 NOTICE: docs/planning/106_document_index.md: Skipped copy as --dry-run is set (size 1.704Ki)
+Transferred:   	   82.385 KiB / 118.567 KiB, 69%, 0 B/s, ETA -
+Transferred:           26 / 39, 67%
+Elapsed time:         0.3s
+Transferring:
+ *        docs/planning/101_problem_statement.md:100% /1.100Ki, 0/s, -
+ *             docs/planning/103_user_stories.md: transferring
+ *                docs/planning/105_checklist.md: transferring
+ *           docs/planning/106_document_index.md: transferring
+2025/06/05 07:31:49 NOTICE: docs/planning/103_user_stories.md: Skipped copy as --dry-run is set (size 1.976Ki)
+Transferred:   	   85.188 KiB / 111.991 KiB, 76%, 0 B/s, ETA -
+Transferred:           27 / 39, 69%
+Elapsed time:         0.3s
+Transferring:
+ *             docs/planning/103_user_stories.md: transferring
+ *                docs/planning/105_checklist.md: transferring
+ *             docs/planning/107_project_plan.md: transferring
+2025/06/05 07:31:49 NOTICE: docs/planning/108_development.md: Skipped copy as --dry-run is set (size 2.542Ki)
+Transferred:   	   85.188 KiB / 110.549 KiB, 77%, 0 B/s, ETA -
+Transferred:           28 / 39, 72%
+Elapsed time:         0.3s
+Transferring:
+ *             docs/planning/103_user_stories.md:100% /1.976Ki, 0/s, -
+ *                docs/planning/105_checklist.md: transferring
+ *             docs/planning/107_project_plan.md: transferring
+ *              docs/planning/108_development.md: transferring
+2025/06/05 07:31:49 NOTICE: docs/planning/105_checklist.md: Skipped copy as --dry-run is set (size 87.498Ki)
+Transferred:   	   89.706 KiB / 110.398 KiB, 81%, 0 B/s, ETA -
+Transferred:           29 / 39, 74%
+Elapsed time:         0.3s
+Transferring:
+ *                docs/planning/105_checklist.md: transferring
+ *             docs/planning/107_project_plan.md: transferring
+ *             docs/planning/109_code_quality.md: transferring
+2025/06/05 07:31:49 NOTICE: docs/planning/110_directory_structure.md: Skipped copy as --dry-run is set (size 3.636Ki)
+Transferred:   	   89.706 KiB / 108.738 KiB, 82%, 0 B/s, ETA -
+Transferred:           30 / 39, 77%
+Elapsed time:         0.3s
+Transferring:
+ *                docs/planning/105_checklist.md:100% /87.498Ki, 0/s, -
+ *             docs/planning/107_project_plan.md: transferring
+ *             docs/planning/109_code_quality.md: transferring
+ *      docs/planning/110_directory_structure.md: transferring
+2025/06/05 07:31:49 NOTICE: docs/planning/107_project_plan.md: Skipped copy as --dry-run is set (size 8.280Ki)
+Transferred:   	  180.840 KiB / 109.605 KiB, 165%, 0 B/s, ETA -
+Transferred:           31 / 39, 79%
+Elapsed time:         0.3s
+Transferring:
+ *             docs/planning/107_project_plan.md: transferring
+ *             docs/planning/109_code_quality.md: transferring
+ *          docs/planning/111_risk_management.md: transferring
+2025/06/05 07:31:49 NOTICE: docs/planning/112_resource_planning.md: Skipped copy as --dry-run is set (size 916)
+Transferred:   	  180.840 KiB / 196.209 KiB, 92%, 0 B/s, ETA -
+Transferred:           32 / 39, 82%
+Elapsed time:         0.3s
+Transferring:
+ *             docs/planning/107_project_plan.md:100% /8.280Ki, 0/s, -
+ *             docs/planning/109_code_quality.md: transferring
+ *          docs/planning/111_risk_management.md: transferring
+ *        docs/planning/112_resource_planning.md: transferring
+2025/06/05 07:31:49 NOTICE: docs/planning/109_code_quality.md: Skipped copy as --dry-run is set (size 2.692Ki)
+Transferred:   	  190.015 KiB / 183.424 KiB, 104%, 0 B/s, ETA -
+Transferred:           33 / 39, 85%
+Elapsed time:         0.3s
+Transferring:
+ *             docs/planning/109_code_quality.md: transferring
+ *          docs/planning/111_risk_management.md: transferring
+ *       docs/planning/113_codespace_usb_link.md: transferring
+2025/06/05 07:31:49 NOTICE: docs/planning/114_architecture_components.md: Skipped copy as --dry-run is set (size 1.243Ki)
+Transferred:   	  190.015 KiB / 190.461 KiB, 100%, 0 B/s, ETA -
+Transferred:           34 / 39, 87%
+Elapsed time:         0.3s
+Transferring:
+ *             docs/planning/109_code_quality.md:100% /2.692Ki, 0/s, -
+ *          docs/planning/111_risk_management.md: transferring
+ *       docs/planning/113_codespace_usb_link.md: transferring
+ *  docs/planning/114_architecture_components.md: transferring
+2025/06/05 07:31:49 NOTICE: docs/planning/111_risk_management.md: Skipped copy as --dry-run is set (size 2.769Ki)
+Transferred:   	  193.950 KiB / 191.258 KiB, 101%, 0 B/s, ETA -
+Transferred:           35 / 39, 90%
+Elapsed time:         0.3s
+Transferring:
+ *          docs/planning/111_risk_management.md: transferring
+ *       docs/planning/113_codespace_usb_link.md: transferring
+ *                docs/planning/115_mvp_scope.md: transferring
+2025/06/05 07:31:49 NOTICE: docs/planning/113_codespace_usb_link.md: Skipped copy as --dry-run is set (size 13.680Ki)
+Transferred:   	  196.719 KiB / 196.719 KiB, 100%, 0 B/s, ETA -
+Transferred:           37 / 39, 95%
+Elapsed time:         0.3s
+Transferring:
+ *       docs/planning/113_codespace_usb_link.md: transferring
+ *                docs/planning/115_mvp_scope.md: transferring
+2025/06/05 07:31:49 NOTICE: docs/planning/115_mvp_scope.md: Skipped copy as --dry-run is set (size 457)
+Transferred:   	  210.398 KiB / 210.398 KiB, 100%, 0 B/s, ETA -
+Transferred:           38 / 39, 97%
+Elapsed time:         0.3s
+Transferring:
+ *                docs/planning/115_mvp_scope.md: transferring
+2025/06/05 07:31:49 NOTICE: docs/ux: Skipped set directory modification time as --dry-run is set
+Transferred:   	  210.845 KiB / 210.845 KiB, 100%, 0 B/s, ETA -
+Transferred:           39 / 39, 100%
+Elapsed time:         0.3s
+2025/06/05 07:31:49 NOTICE: docs/qa: Skipped set directory modification time as --dry-run is set
+Transferred:   	  210.845 KiB / 210.845 KiB, 100%, 0 B/s, ETA -
+Transferred:           39 / 39, 100%
+Elapsed time:         0.3s
+2025/06/05 07:31:49 NOTICE: docs/development: Skipped set directory modification time as --dry-run is set
+Transferred:   	  210.845 KiB / 210.845 KiB, 100%, 0 B/s, ETA -
+Transferred:           39 / 39, 100%
+Elapsed time:         0.3s
+2025/06/05 07:31:49 NOTICE: docs/planning: Skipped set directory modification time as --dry-run is set
+Transferred:   	  210.845 KiB / 210.845 KiB, 100%, 0 B/s, ETA -
+Transferred:           39 / 39, 100%
+Elapsed time:         0.3s
+2025/06/05 07:31:49 NOTICE: docs/release: Skipped set directory modification time as --dry-run is set
+Transferred:   	  210.845 KiB / 210.845 KiB, 100%, 0 B/s, ETA -
+Transferred:           39 / 39, 100%
+Elapsed time:         0.3s
+2025/06/05 07:31:49 NOTICE: docs/support: Skipped set directory modification time as --dry-run is set
+Transferred:   	  210.845 KiB / 210.845 KiB, 100%, 0 B/s, ETA -
+Transferred:           39 / 39, 100%
+Elapsed time:         0.3s
+2025/06/05 07:31:49 NOTICE: gradle: Skipped set directory modification time as --dry-run is set
+Transferred:   	  210.845 KiB / 210.845 KiB, 100%, 0 B/s, ETA -
+Transferred:           39 / 39, 100%
+Elapsed time:         0.3s
+2025/06/05 07:31:49 NOTICE: daily_logs: Skipped set directory modification time as --dry-run is set
+Transferred:   	  210.845 KiB / 210.845 KiB, 100%, 0 B/s, ETA -
+Transferred:           39 / 39, 100%
+Elapsed time:         0.3s
+2025/06/05 07:31:49 NOTICE: docs: Skipped set directory modification time as --dry-run is set
+Transferred:   	  210.845 KiB / 210.845 KiB, 100%, 0 B/s, ETA -
+Transferred:           39 / 39, 100%
+Elapsed time:         0.3sTransferred:   	  210.845 KiB / 210.845 KiB, 100%, 0 B/s, ETA -
+Transferred:           39 / 39, 100%
+Elapsed time:         0.3s
+2025/06/05 07:31:49 NOTICE: 
+Transferred:   	  210.845 KiB / 210.845 KiB, 100%, 0 B/s, ETA -
+Transferred:           39 / 39, 100%
+Elapsed time:         0.3s
+
