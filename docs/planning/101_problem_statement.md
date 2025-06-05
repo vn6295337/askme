@@ -15,16 +15,17 @@ Users need a simple, privacy-focused way to interact with various LLM providers 
 - Unnecessary features that increase complexity
 
 ## MVP Goal
-Create a lightweight, open-source Android and Linux CLI application that allows users to:
-1. Connect to multiple free LLM providers
-2. Ask questions and receive responses
-3. Switch between different LLM models
-4. Operate completely offline when using local models
-5. Maintain user privacy with no data collection
+**Must Have (MVP) Features:**
+- [x] Connect to multiple free LLM providers
+- [x] Ask questions and receive responses
+- [x] Switch between different LLM models
+- [x] Operate completely offline when using local models
+- [x] Maintain user privacy with no data collection
 
 ### Success Metrics
-- Response time < 2 seconds for local models
-- App size < 20MB
-- Zero data collection or tracking
-- Support for at least 3 LLM providers
-- Basic offline functionality
+**Performance Targets:**
+- [x] Response time < 2 seconds for local models
+- [x] App size < 20MB
+- [x] Zero data collection or tracking
+- [x] Support for at least 3 LLM providers
+- [x] Basic offline functionality
