@@ -2,6 +2,17 @@
 
 This checklist tracks every step required to deliver the AskMe Lite project, organized by phase and mapped to the project plan for full traceability. Mark each item as you complete it. (Preserve this file for active use; git history provides archiving.)
 
+## ✅ Architecture & Stack Alignment (2025-06-05)
+- [x] All module and dependency documentation consolidated into `Architecture_Components.md` for a single source of truth.
+- [x] All dependencies and tools version-pinned in `gradle/libs.versions.toml` with detailed rationale for each major tech choice and version alignment.
+- [x] Compose BOM and Compose Compiler versions aligned with Kotlin and AGP for maximum stability.
+- [x] AndroidX Security set to most stable alpha (alpha04) for production use.
+- [x] All documentation now references the version catalog for authoritative versioning and rationale.
+- [x] Obsolete/duplicate docs (e.g., `HighLevelModules.md`, `archives/`) removed for clarity.
+- [x] All changes committed and pushed to the repository.
+
+## Core Project Steps
+
 | Checkbox | S/N | Phase | Phase Ref | Checkpoint | Status | Notes |
 |---|---|---|---|---|---|---|
 | [ ] | 1 | Define MVP Scope and Success Metrics | 1.1 | Open the Problem Statement document in the repository. |  |  |
@@ -275,7 +286,7 @@ export GRADLE_USER_HOME="/mnt/chromeos/removable/USB drive/ask me/gradle"
 | [ ] | 213 | Write User Guides | 7.1 | Open USER_GUIDE.md in Codespace and confirm it has three main sections with step-by-step bullet points. |  |  |
 | [ ] | 214 | Create API Documentation | 7.2 | Ask the AI assistant to update API_DOCS.md by adding a new section “Core Data Models” and listing data classes `LLMProvider`, `QueryResult`, and `ModelInfo`. |  |  |
 | [ ] | 215 | Create API Documentation | 7.2 | Open API_DOCS.md and confirm the new section appears with brief descriptions. |  |  |
-| [ ] | 216 | Document Setup and Installation | 7.3 | Ask the AI assistant to write SETUP.md under `docs/` if missing, explaining:
+| [ ] | 216 | Document Setup and Installation | 7.3 | Ask the AI assistant to write SETUP.md under `docs/` if missing, explaining how to:
 
 * How to open the Codespace in GitHub
 * How to mount the USB drive on Chromebook
@@ -400,7 +411,7 @@ export GRADLE_USER_HOME="/mnt/chromeos/removable/USB drive/ask me/gradle"
 | [ ] | 292 | Write User Guides | 7.1 | Open USER_GUIDE.md in Codespace and confirm it has three main sections with step-by-step bullet points. |  |  |
 | [ ] | 293 | Create API Documentation | 7.2 | Ask the AI assistant to update API_DOCS.md by adding a new section “Core Data Models” and listing data classes `LLMProvider`, `QueryResult`, and `ModelInfo`. |  |  |
 | [ ] | 294 | Create API Documentation | 7.2 | Open API_DOCS.md and confirm the new section appears with brief descriptions. |  |  |
-| [ ] | 295 | Document Setup and Installation | 7.3 | Ask the AI assistant to write SETUP.md under `docs/` if missing, explaining:
+| [ ] | 295 | Document Setup and Installation | 7.3 | Ask the AI assistant to write SETUP.md under `docs/` if missing, explaining how to:
 
 * How to open the Codespace in GitHub
 * How to mount the USB drive on Chromebook
