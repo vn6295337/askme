@@ -16,7 +16,6 @@ declare -A TIER_CONFIG=(
     ["GDRIVE_ESSENTIAL"]="14GB"     # Essential sync only
     ["BOX_BACKUP"]="10GB"           # Backup and overflow
     ["MEGA_ARCHIVE"]="20GB"         # Archive and large files
-    ["CODESPACE_ACTIVE"]="32GB"     # Active development
 )
 
 # Remote Configuration
@@ -289,63 +288,7 @@ EOF
 # Include everything else
 + **
 EOF
-            ;;
-        "TIER5_CODESPACE_ACTIVE")
-            cat > "$filter_file" << 'EOF'
-# Codespace: Active development files (~3-5GB)
-# IMPORTANT: Exclusions MUST come before inclusions!
-
-# Exclude large .git pack files only (keep .git for development)
-- **/.git/objects/pack/*.pack
-
-# Exclude IDE and build directories
-- .idea/**
-- **/.idea/**
-- .vscode/**
-- **/.vscode/**
-- .gradle/**
-- **/.gradle/**
-- build/**
-- **/build/**
-- out/**
-- **/out/**
-
-# Exclude temporary and cache files
-- **/*.tmp
-- **/*~
-- **/.DS_Store
-- **/*.log
-- **/*.lock
-
-# Exclude Android-specific build files
-- **/gradle-wrapper.jar
-- **/gradle-wrapper.properties
-- **/local.properties
-- **/*.keystore
-- **/*.jks
-- **/*.apk
-- **/*.ap_
-- **/*.dex
-- **/*.so
-- **/*.class
-
-# Exclude large binary files
-- **/*.jar
-- **/*.war
-- **/*.ear
-- **/*.img
-- **/*.iso
-
-# Exclude build artifacts
-- **/captures/**
-- **/generated/**
-- **/intermediates/**
-- **/node_modules/**
-- **/target/**
-
-# Include everything else
-+ **
-EOF
+            
             ;;
     esac
     
@@ -578,42 +521,19 @@ orchestrated_sync() {
                     ;;
             esac
             ;;
-        "cloud_to_codespace")
-            log "INFO" "ORCHESTRATOR" "Starting Cloud → Codespace tiered sync"
-            
-            # Pull from Git first
-            if [[ -d "${CODESPACE_PATH}/.git" ]]; then
-                cd "$CODESPACE_PATH"
-                git pull --rebase --autostash || log "WARN" "ORCHESTRATOR" "Git pull had issues"
-            fi
-            
-            # Sync essential files from Google Drive
-            if sync_tier "${PRIMARY_REMOTE}:${REMOTE_FOLDER}" "$CODESPACE_PATH" "TIER5_CODESPACE_ACTIVE" "Google Drive → Codespace"; then
-                log "SUCCESS" "ORCHESTRATOR" "Cloud → Codespace sync completed"
-            else
-                log "ERROR" "ORCHESTRATOR" "Cloud → Codespace sync failed"
-                return 1
-            fi
-            ;;
+       
         "full_backup")
             log "INFO" "ORCHESTRATOR" "Starting full backup cycle"
             
             # USB → Cloud (all tiers)
             orchestrated_sync "usb_to_cloud"
-            
-            # If in codespace, sync there too
-            if [[ "$(detect_environment)" == "codespace" ]]; then
-                orchestrated_sync "cloud_to_codespace"
-            fi
             ;;
     esac
 }
 
 # Environment detection
 detect_environment() {
-    if [[ -n "${CODESPACE_NAME:-}" || -d "/workspaces" ]]; then
-        echo "codespace"
-    elif [[ -d "/mnt/chromeos" ]]; then
+    if [[ -d "/mnt/chromeos" ]]; then
         echo "chromebook"
     else
         echo "unknown"
@@ -644,18 +564,6 @@ main() {
             echo "7. 🧪 Test Sync (Dry Run)"
             echo "8. 📋 View Sync Logs"
             echo "9. ❌ Exit"
-            ;;
-        "codespace")
-            echo -e "${BLUE}☁️  GitHub Codespace Environment Detected${NC}"
-            echo
-            echo "🏗️ CODESPACE SYNC OPTIONS:"
-            echo "1. 📥 Sync: Cloud → Codespace (Essential)"
-            echo "2. 📤 Commit & Push: Codespace → Git"
-            echo "3. 🔄 Full Cycle: Git Pull → Cloud Sync → Git Push"
-            echo "4. 📊 Development Status"
-            echo "5. 🧪 Test Sync (Dry Run)"
-            echo "6. 📋 View Logs"
-            echo "7. ❌ Exit"
             ;;
         *)
             log "ERROR" "SYSTEM" "Unknown environment - cannot proceed"
@@ -725,47 +633,7 @@ main() {
                 echo "No log file found yet."
             fi
             ;;
-        "codespace-1")
-            orchestrated_sync "cloud_to_codespace"
-            ;;
-        "codespace-2")
-            cd "$CODESPACE_PATH"
-            git add .
-            git commit -m "Auto-commit: Codespace sync $(date)" || true
-            git push || log "WARN" "GIT" "Push failed"
-            ;;
-        "codespace-3")
-            orchestrated_sync "cloud_to_codespace"
-            cd "$CODESPACE_PATH"
-            git add .
-            git commit -m "Auto-commit: Full cycle sync $(date)" || true
-            git push || log "WARN" "GIT" "Push failed"
-            ;;
-        "codespace-4")
-            echo -e "${PURPLE}📊 CODESPACE DEVELOPMENT STATUS${NC}"
-            check_tier_status "Codespace Environment" "$CODESPACE_PATH"
-            if [[ -d "${CODESPACE_PATH}/.git" ]]; then
-                cd "$CODESPACE_PATH"
-                echo -e "${CYAN}Git Status:${NC}"
-                git status --short || echo "Git status unavailable"
-                echo
-                echo -e "${CYAN}Recent Commits:${NC}"
-                git log --oneline -5 || echo "Git log unavailable"
-            fi
-            ;;
-        "codespace-5")
-            log "INFO" "TEST" "Running codespace dry-run test"
-            sync_tier "${PRIMARY_REMOTE}:${REMOTE_FOLDER}" "$CODESPACE_PATH" "TIER5_CODESPACE_ACTIVE" "Google Drive → Codespace (TEST)" "true"
-            ;;
-        "codespace-6")
-            if [[ -f "$LOG_FILE" ]]; then
-                echo -e "${CYAN}📋 Last 30 log entries:${NC}"
-                tail -30 "$LOG_FILE"
-            else
-                echo "No log file found yet."
-            fi
-            ;;
-        "chromebook-9"|"codespace-7")
+        "chromebook-9")
             log "INFO" "SYSTEM" "Exiting Hybrid Tiered Sync"
             exit 0
             ;;
