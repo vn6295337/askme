@@ -1,6 +1,6 @@
 #!/bin/bash
 # Hybrid Tiered Sync Architecture for AskMe Android Development
-# Optimized for: USB (Primary) → Google Drive (Essential) → Box.com (Backup) → Mega (Archive) → GitHub Codespace
+# Optimized for: USB (Primary) → Google Drive (Essential) → Box.com (Backup) → Mega (Archive)
 
 set -euo pipefail
 
@@ -8,7 +8,6 @@ set -euo pipefail
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 LOG_FILE="${SCRIPT_DIR}/tiered_sync.log"
 USB_PATH="/mnt/chromeos/removable/USBdrive/askme"
-CODESPACE_PATH="/workspaces/askme"
 
 # Tier Configuration
 declare -A TIER_CONFIG=(
@@ -53,11 +52,7 @@ log() {
 # Check if remote exists
 check_remote() {
     local remote="$1"
-    if rclone listremotes | grep -q "^${remote}:$"; then
-        return 0
-    else
-        return 1
-    fi
+    rclone listremotes | sed 's/://g' | grep -q "^${remote}$"
 }
 
 # Fixed size calculation function
@@ -288,7 +283,6 @@ EOF
 # Include everything else
 + **
 EOF
-            
             ;;
     esac
     
@@ -521,7 +515,6 @@ orchestrated_sync() {
                     ;;
             esac
             ;;
-       
         "full_backup")
             log "INFO" "ORCHESTRATOR" "Starting full backup cycle"
             
@@ -566,7 +559,7 @@ main() {
             echo "9. ❌ Exit"
             ;;
         *)
-            log "ERROR" "SYSTEM" "Unknown environment - cannot proceed"
+            log "ERROR" "SYSTEM" "Chromebook environment required - cannot proceed"
             exit 1
             ;;
     esac
@@ -574,35 +567,34 @@ main() {
     echo
     read -p "Choose option: " -r
     
-    case "$env-$REPLY" in
-        "chromebook-1")
+    case "$REPLY" in
+        "1")
             orchestrated_sync "usb_to_cloud"
             ;;
-        "chromebook-2")
+        "2")
             orchestrated_sync "cloud_to_usb"
             ;;
-        "chromebook-3")
+        "3")
             orchestrated_sync "usb_to_cloud"
             echo
             sync_tier "${PRIMARY_REMOTE}:${REMOTE_FOLDER}" "$USB_PATH" "TIER2_GDRIVE_ESSENTIAL" "Google Drive → USB"
             ;;
-        "chromebook-4")
+        "4")
             orchestrated_sync "full_backup"
             ;;
-        "chromebook-5")
+        "5")
             echo -e "${PURPLE}📊 TIER STATUS DASHBOARD${NC}"
             check_tier_status "TIER 1: USB Primary" "$USB_PATH"
             check_tier_status "TIER 2: Google Drive Essential" "${PRIMARY_REMOTE}:${REMOTE_FOLDER}"
             check_tier_status "TIER 3: Box.com Backup" "${SECONDARY_REMOTE}:${REMOTE_FOLDER}"
             check_tier_status "TIER 4: Mega Archive" "${ARCHIVE_REMOTE}:${REMOTE_FOLDER}"
             ;;
-        "chromebook-6")
+        "6")
             echo -e "${YELLOW}📝 Tier Configuration Summary:${NC}"
             echo "- TIER 1 (USB): Full development environment (${TIER_CONFIG[USB_PRIMARY]})"
             echo "- TIER 2 (Google Drive): Essential files only (${TIER_CONFIG[GDRIVE_ESSENTIAL]})"
             echo "- TIER 3 (Box.com): Backup and overflow (${TIER_CONFIG[BOX_BACKUP]})"
             echo "- TIER 4 (Mega): Archive and large files (${TIER_CONFIG[MEGA_ARCHIVE]})"
-            echo "- TIER 5 (Codespace): Active development (${TIER_CONFIG[CODESPACE_ACTIVE]})"
             echo
             echo "Filter rules are based on your project's Gradle structure and exclude:"
             echo "- Build artifacts (.gradle, build/, out/)"
@@ -611,7 +603,7 @@ main() {
             echo "- Android binaries (*.apk, *.dex, *.so)"
             echo "- Git objects and large packs"
             ;;
-        "chromebook-7")
+        "7")
             log "INFO" "TEST" "Running comprehensive dry-run test"
             echo "Select test tier:"
             echo "1. Google Drive Essential"
@@ -625,7 +617,7 @@ main() {
                 *) log "ERROR" "TEST" "Invalid test choice" ;;
             esac
             ;;
-        "chromebook-8")
+        "8")
             if [[ -f "$LOG_FILE" ]]; then
                 echo -e "${CYAN}📋 Last 50 log entries:${NC}"
                 tail -50 "$LOG_FILE"
@@ -633,7 +625,7 @@ main() {
                 echo "No log file found yet."
             fi
             ;;
-        "chromebook-9")
+        "9")
             log "INFO" "SYSTEM" "Exiting Hybrid Tiered Sync"
             exit 0
             ;;
