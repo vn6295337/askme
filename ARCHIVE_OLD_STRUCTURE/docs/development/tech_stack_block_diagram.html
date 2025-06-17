@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>'askme' Tech Stack</title>
+  <style>
+    body {
+      font-family: "Segoe UI", sans-serif;
+      background: #ffffff;
+      margin: 0;
+      padding: 8px;
+    }
+
+    .outer-wrapper {
+      display: flex;
+      justify-content: center;
+    }
+
+    .wrapper {
+      display: flex;
+      gap: 16px;
+      align-items: flex-start;
+      flex-wrap: wrap;
+      max-width: 640px;
+    }
+
+    .stack-column {
+      flex: 1;
+      max-width: 300px;
+    }
+
+    .sidebar-column {
+      flex: 1;
+      max-width: 300px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    h1 {
+      font-size: 1.2rem;
+      color: #111;
+      margin: 8px auto 16px auto;
+      text-align: center;
+      max-width: 960px;
+    }
+
+    .phase, .sidebar {
+      border-radius: 4px;
+      border: 1px solid #d0d0d0;
+      padding: 6px 10px;
+    }
+
+    .phase {
+      margin-bottom: 4px;
+    }
+
+    .phase h3, .sidebar h3 {
+      margin: 0 0 6px;
+      font-size: 0.82rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      text-align: center;
+    }
+
+    .grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px;
+      justify-content: center;
+    }
+
+    .block {
+      flex: 1 1 calc(50% - 4px);
+      min-width: 110px;
+      background: #ffffff;
+      border: 1px solid #d0d0d0;
+      border-radius: 4px;
+      padding: 4px 6px;
+      text-align: center;
+      font-size: 0.73rem;
+      line-height: 1.2;
+      box-sizing: border-box;
+    }
+
+    .arrow {
+      text-align: center;
+      font-size: 1.2rem;
+      line-height: 1.2;
+      color: #bbb;
+      margin: -2px 0 2px 0;
+    }
+
+    .notes {
+      font-size: 0.7rem;
+      color: #444;
+      padding: 4px 2px;
+      text-align: center;
+      border: none;
+      background: transparent;
+    }
+
+    /* Distinct background colors */
+    .foundation     { background-color: #e6f2ff; }
+    .ui             { background-color: #fff8e1; }
+    .core           { background-color: #e9f7ef; }
+    .network        { background-color: #f3e5f5; }
+    .data           { background-color: #fce4ec; }
+    .testing        { background-color: #e3f2fd; }
+    .documentation  { background-color: #f5f5f5; }
+  </style>
+</head>
+<body>
+
+  <h1>'askme' Tech Stack</h1>
+
+  <div class="outer-wrapper">
+    <div class="wrapper">
+      <!-- Main Stack Column -->
+      <div class="stack-column">
+
+        <div class="phase network">
+          <h3>📡 Network & Communication</h3>
+          <div class="grid">
+            <div class="block">Ktor 2.3.6<br/>Client Core + CIO</div>
+            <div class="block">Ktor Serialization<br/>Content Negot.</div>
+            <div class="block">gRPC Kotlin Stub 1.4.1</div>
+            <div class="block">gRPC Java Runtime 1.58.0</div>
+          </div>
+        </div>
+
+        <div class="arrow">↓</div>
+
+        <div class="phase core">
+          <h3>🧩 Multiplatform Core Layer</h3>
+          <div class="grid">
+            <div class="block">Coroutines 1.7.3</div>
+            <div class="block">Serialization 1.6.0</div>
+            <div class="block">DateTime 0.5.0</div>
+            <div class="block">AndroidX Core 1.12.0</div>
+            <div class="block">Lifecycle 2.7.0</div>
+            <div class="block">Security Crypto 1.1.0-α4</div>
+          </div>
+        </div>
+
+        <div class="arrow">↓</div>
+
+        <div class="phase ui">
+          <h3>🎨 UI & Presentation Layer</h3>
+          <div class="grid">
+            <div class="block">Compose UI + Tooling</div>
+            <div class="block">Material Design (Material3)</div>
+            <div class="block">Activity Compose 1.8.2</div>
+            <div class="block">Compose Compiler 1.5.4</div>
+            <div class="block">Compose BOM 2023.10.01</div>
+          </div>
+        </div>
+
+        <div class="arrow">↓</div>
+
+        <div class="phase foundation">
+          <h3>🧱 Development Foundation</h3>
+          <div class="grid">
+            <div class="block">JDK 17 (LTS)</div>
+            <div class="block">Kotlin 1.9.10</div>
+            <div class="block">Gradle 8.4</div>
+            <div class="block">AGP 8.1.4</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Sidebar Column -->
+      <div class="sidebar-column">
+        <div class="sidebar data">
+          <h3>📦 Data & Dependency Injection</h3>
+          <div class="grid">
+            <div class="block">SQLDelight 2.0.0<br/>Runtime Engine</div>
+            <div class="block">SQLDelight Drivers<br/>Android + SQLite</div>
+            <div class="block">Koin 3.5.0 Core</div>
+            <div class="block">Koin Android + Compose</div>
+          </div>
+        </div>
+
+        <div class="sidebar testing">
+          <h3>🧪 Testing & Quality Assurance</h3>
+          <div class="grid">
+            <div class="block">JUnit 5.10.1</div>
+            <div class="block">MockK + Kotest</div>
+            <div class="block">Turbine 1.0.0</div>
+            <div class="block">AndroidX Compose Test 1.5.0</div>
+            <div class="block">Detekt 1.23.4</div>
+            <div class="block">ktlint 0.50.0</div>
+          </div>
+        </div>
+
+        <div class="sidebar documentation">
+          <h3>📘 Documentation & Build Tools</h3>
+          <div class="grid">
+            <div class="block">Dokka 1.9.10<br/>(Kotlin Docs)</div>
+          </div>
+        </div>
+
+        <div class="notes">
+          <p><strong>Stack:</strong> Kotlin Multiplatform · Gradle 8.4 · Kotlin 1.9.10 · JDK 17</p>
+          <p><strong>Highlights:</strong> Compose BOM · SQLDelight · Koin · gRPC · Dokka</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</body>
+</html>
