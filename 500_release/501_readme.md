@@ -1,6 +1,6 @@
 # askme CLI
 
-**Version**: 1.0.0  
+**Version**: 1.0.1  
 **Status**: Production Ready ✅  
 **Repository**: https://github.com/vn6295337/askme
 
@@ -22,8 +22,8 @@ No API keys required for basic functionality with free providers.
 4. **Privacy First**: All processing local, API keys encrypted with AES-256
 5. **Cross Platform**: Linux, macOS, Windows with WSL support
 6. **Fast Response**: Under 2 seconds average response time
-7. **File Processing**: Process questions from files for batch operations
-8. **Interactive Mode**: Command history and session management
+7. **Multiple Input Methods**: Direct questions, file processing, interactive mode
+8. **Smart Provider Switching**: Easy switching between AI providers
 
 ## Installation
 
@@ -49,29 +49,49 @@ chmod +x askme
 ```bash
 git clone https://github.com/vn6295337/askme.git
 cd askme/300_implementation/askme-cli
+chmod +x gradlew
 ./gradlew cliApp:installDist
 ```
 
 ### Verification
 ```bash
 ./askme --version
-# Expected: askme CLI v1.0.0
+# Expected: askme CLI v1.0.1
 ```
 
 ## Usage
 
 ### Basic Commands
 
+**Direct Questions (Recommended)**
 ```bash
 ./askme "What is artificial intelligence?"
-./askme -p google "Explain quantum computing"
-./askme -f questions.txt -o answers.txt
-./askme -i  # Interactive mode
+./askme "Explain quantum computing in simple terms"
+./askme "What's the weather like today?"
+```
+
+**With Different Providers**
+```bash
+./askme -m google "What is machine learning?"
+./askme -m mistral "Explain blockchain technology"
+```
+
+**File-Based Input**
+```bash
+echo "What is the capital of France?" > question.txt
+./askme -f question.txt
+./askme -f questions.txt -m mistral
+```
+
+**Interactive Mode**
+```bash
+./askme -i                    # Use default Google provider
+./askme -i -m mistral        # Use Mistral provider
 ```
 
 ### Supported Providers
 
-1. **Google Gemini** (Free tier available)
+1. **Google Gemini** (Free tier available - default)
 2. **Mistral AI** (Free tier available)  
 3. **OpenAI** (API key required)
 4. **Anthropic** (API key required)
@@ -89,6 +109,42 @@ Create `~/.askme/config.json` for API key storage:
 }
 ```
 
+## Examples
+
+### Quick Questions
+```bash
+# Math problems
+./askme "What is 15% of 1,500?"
+
+# General knowledge
+./askme "Who invented the telephone?"
+
+# Explanations
+./askme "How does photosynthesis work?"
+
+# Current events
+./askme -m mistral "Latest developments in AI technology"
+```
+
+### Batch Processing
+```bash
+# Process multiple questions from file
+cat > questions.txt << EOF
+What is machine learning?
+How do neural networks work?
+What are the benefits of renewable energy?
+EOF
+
+./askme -f questions.txt -m google
+```
+
+### Provider Comparison
+```bash
+# Same question, different providers
+./askme -m google "Explain quantum computing"
+./askme -m mistral "Explain quantum computing"
+```
+
 ## Documentation
 
 1. **User Guide**: Complete usage instructions and examples
@@ -97,6 +153,25 @@ Create `~/.askme/config.json` for API key storage:
 4. **Contributing Guide**: Development and contribution guidelines
 5. **Release Notes**: Version history and feature updates
 6. **Known Issues**: Current limitations and workarounds
+
+## Troubleshooting
+
+### Common Issues
+
+**Permission Denied Error**
+```bash
+chmod +x askme
+chmod +x gradlew  # If building from source
+```
+
+**First Build Takes Long Time**
+- First Gradle build downloads dependencies (~10-15 minutes)
+- Subsequent builds are much faster (~1-2 minutes)
+
+**API Provider Errors**
+- Ensure internet connectivity
+- Check provider status pages for outages
+- Verify API keys if using paid providers
 
 ## Support
 
