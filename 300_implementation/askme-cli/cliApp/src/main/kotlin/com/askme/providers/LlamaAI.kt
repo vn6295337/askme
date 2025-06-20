@@ -8,16 +8,16 @@ import io.ktor.client.statement.*
 import io.ktor.http.*
 import kotlinx.serialization.json.*
 
-object MistralAI {
+object LlamaAI {
     private val client = HttpClient(CIO)
     
-    // List of free Mistral models to try in order
+    // List of free Llama models to try in order
     private val freeModels = listOf(
-        "mistral-small-latest",
-        "open-mistral-7b",
-        "open-mixtral-8x7b",
-        "open-mixtral-8x22b",
-        "mistral-medium-latest"
+        "meta-llama/Meta-Llama-3-8B-Instruct-Turbo",
+        "meta-llama/Llama-3-8b-chat-hf", 
+        "meta-llama/Meta-Llama-3-70B-Instruct-Turbo",
+        "meta-llama/Llama-2-7b-chat-hf",
+        "meta-llama/Llama-2-13b-chat-hf"
     )
     
     suspend fun chat(prompt: String, apiKey: String): String {
@@ -26,8 +26,8 @@ object MistralAI {
             val result = tryModel(prompt, apiKey, model)
             
             when {
-                result.startsWith("❌") && (result.contains("quota") || result.contains("rate limit") || result.contains("insufficient")) -> {
-                    // This model has quota/rate issues, try next one
+                result.startsWith("❌") && result.contains("non-serverless") -> {
+                    // This model requires paid tier, try next one
                     continue
                 }
                 result.startsWith("❌") && index == freeModels.size - 1 -> {
@@ -45,22 +45,18 @@ object MistralAI {
             }
         }
         
-        return "❌ Mistral API Error: All free models unavailable. Please check your API key or try again later."
+        return "❌ Llama API Error: All free models unavailable. Please check your API key or try again later."
     }
     
     private suspend fun tryModel(prompt: String, apiKey: String, model: String): String {
         return try {
-            // Escape the prompt properly
-            val escapedPrompt = prompt.trim().replace("\"", "\\\"").replace("\n", "\\n").replace("\r", "\\r")
-            
-            // Create raw JSON request with escaped prompt
             val requestJson = """
             {
                 "model": "$model",
                 "messages": [
                     {
                         "role": "user",
-                        "content": "$escapedPrompt"
+                        "content": "${prompt.trim().replace("\"", "\\\"").replace("\n", "\\n").replace("\r", "\\r")}"
                     }
                 ],
                 "max_tokens": 500,
@@ -68,7 +64,7 @@ object MistralAI {
             }
             """.trimIndent()
             
-            val httpResponse: HttpResponse = client.post("https://api.mistral.ai/v1/chat/completions") {
+            val httpResponse: HttpResponse = client.post("https://api.together.xyz/v1/chat/completions") {
                 header("Authorization", "Bearer $apiKey")
                 header("Content-Type", "application/json")
                 setBody(requestJson)
@@ -93,29 +89,29 @@ object MistralAI {
                     errorObj is JsonObject -> errorObj["message"]?.jsonPrimitive?.content
                     else -> "Unknown error format"
                 }
-                return "❌ Mistral API Error: $errorMessage"
+                return "❌ Llama API Error: $errorMessage"
             }
             
             // Check for detail (validation error)
             if (jsonObject.containsKey("detail")) {
                 val detail = jsonObject["detail"]?.toString() ?: "Invalid request format"
-                return "❌ Mistral API Error: $detail"
+                return "❌ Llama API Error: $detail"
             }
             
             // Extract response with better error handling
             val choices = jsonObject["choices"]?.jsonArray
             if (choices == null || choices.isEmpty()) {
-                return "❌ Mistral API Error: No choices in response from model $model"
+                return "❌ Llama API Error: No choices in response from model $model"
             }
             
             val firstChoice = choices.firstOrNull()?.jsonObject
             val message = firstChoice?.get("message")?.jsonObject
             val content = message?.get("content")?.jsonPrimitive?.content
             
-            content ?: "No response from Mistral model $model"
+            content ?: "No response from Llama model $model"
                 
         } catch (e: Exception) {
-            "❌ Mistral API Error: ${e.message}"
+            "❌ Llama API Error: ${e.message}"
         }
     }
 }
