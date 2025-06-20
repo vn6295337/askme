@@ -13,7 +13,7 @@ fun main(args: Array<String>) {
     
     val model by parser.option(ArgType.String, shortName = "m", description = "LLM model provider").default("google")
     val promptFile by parser.option(ArgType.String, shortName = "f", description = "File containing prompt text")
-    val interactive by parser.option(ArgType.Boolean, shortName = "i", description = "Interactive mode").default(false)
+    val nonInteractive by parser.option(ArgType.Boolean, shortName = "n", description = "Non-interactive mode (single query)").default(false)
     val smartMode by parser.option(ArgType.Boolean, shortName = "s", description = "Smart provider selection").default(false)
     val stats by parser.option(ArgType.Boolean, description = "Show provider performance stats").default(false)
     val question by parser.argument(ArgType.String, description = "Direct question to ask").optional()
@@ -58,71 +58,123 @@ fun main(args: Array<String>) {
         }
     }
     
+    suspend fun runInteractiveMode(provider: String, isSmartMode: Boolean = false) {
+        if (isSmartMode) {
+            println("🤖 askme CLI - Smart Interactive Mode")
+            println("🧠 Intelligent provider selection enabled")
+        } else {
+            println("🤖 askme CLI - Interactive Mode")
+            println("🎯 Selected model: $provider")
+        }
+        println("💡 Type 'exit' or 'quit' to end session")
+        println("💡 Type 'help' for available commands")
+        println("💡 Type 'switch <provider>' to change providers")
+        println()
+        
+        var currentProvider = provider
+        
+        while (true) {
+            print("📝 askme> ")
+            val input = readlnOrNull()?.trim() ?: break
+            
+            when {
+                input.isEmpty() -> continue
+                input.lowercase() in listOf("exit", "quit", "q") -> {
+                    println("👋 Goodbye!")
+                    break
+                }
+                input.lowercase() == "help" -> {
+                    println("""
+                    📚 Available Commands:
+                    • Simply type your question and press Enter
+                    • switch <provider> - Change AI provider (google, mistral, xai, llama)
+                    • stats - Show provider performance statistics
+                    • help - Show this help message
+                    • exit/quit/q - End session
+                    
+                    🤖 Available Providers:
+                    • google (Gemini) - Free tier available
+                    • mistral - Free tier available  
+                    • xai (Grok) - API key required
+                    • llama - Free tier available
+                    """.trimIndent())
+                }
+                input.lowercase().startsWith("switch ") -> {
+                    val newProvider = input.substring(7).trim().lowercase()
+                    if (newProvider in listOf("google", "gemini", "mistral", "xai", "grok", "llama", "together")) {
+                        currentProvider = when (newProvider) {
+                            "gemini" -> "google"
+                            "grok" -> "xai"
+                            "together" -> "llama"
+                            else -> newProvider
+                        }
+                        println("🔄 Switched to provider: $currentProvider")
+                    } else {
+                        println("❌ Unknown provider. Available: google, mistral, xai, llama")
+                    }
+                }
+                input.lowercase() == "stats" -> {
+                    println(IntelligentProviderManager.getProviderStats())
+                }
+                else -> {
+                    val response = if (isSmartMode) {
+                        IntelligentProviderManager.getSmartResponse(input)
+                    } else {
+                        processQuery(input, currentProvider)
+                    }
+                    println("💬 $response")
+                    println()
+                }
+            }
+        }
+    }
+    
     runBlocking {
         when {
             stats -> {
                 println(IntelligentProviderManager.getProviderStats())
             }
-            smartMode && promptFile != null -> {
-                val prompt = File(promptFile!!).readText()
-                println("🤖 askme CLI - Smart Mode (File Input)")
-                println("📄 File: $promptFile")
-                println(IntelligentProviderManager.getSmartResponse(prompt))
-            }
-            smartMode && interactive -> {
-                println("🤖 askme CLI - Smart Interactive Mode")
-                print("📝 Enter prompt: ")
-                val prompt = readlnOrNull() ?: ""
-                if (prompt.isNotEmpty()) {
-                    println(IntelligentProviderManager.getSmartResponse(prompt))
-                }
-            }
-            smartMode && question != null -> {
-                println("🤖 askme CLI - Smart Mode")
-                println(IntelligentProviderManager.getSmartResponse(question!!))
-            }
-            smartMode -> {
-                println("🤖 askme CLI - Smart Mode")
-                print("📝 Enter prompt: ")
-                val prompt = readlnOrNull() ?: ""
-                if (prompt.isNotEmpty()) {
-                    println(IntelligentProviderManager.getSmartResponse(prompt))
-                }
-            }
             promptFile != null -> {
                 val prompt = File(promptFile!!).readText()
-                println("🤖 askme CLI - Processing prompt from file: $promptFile")
-                println("🎯 Selected model: $model")
-                println("💬 Response: ${processQuery(prompt, model)}")
-            }
-            interactive -> {
-                println("🤖 askme CLI - Interactive Mode")
-                println("🎯 Selected model: $model")
-                print("📝 Enter prompt: ")
-                val prompt = readlnOrNull() ?: ""
-                if (prompt.isNotEmpty()) {
+                if (smartMode) {
+                    println("🤖 askme CLI - Smart Mode (File Input)")
+                    println("📄 File: $promptFile")
+                    println(IntelligentProviderManager.getSmartResponse(prompt))
+                } else {
+                    println("🤖 askme CLI - Processing prompt from file: $promptFile")
+                    println("🎯 Selected model: $model")
                     println("💬 Response: ${processQuery(prompt, model)}")
                 }
             }
+            question != null && nonInteractive -> {
+                // Single query mode
+                if (smartMode) {
+                    println("🤖 askme CLI - Smart Mode")
+                    println(IntelligentProviderManager.getSmartResponse(question!!))
+                } else {
+                    println("🤖 askme CLI - Direct Question")
+                    println("🎯 Selected model: $model")
+                    println("💬 Response: ${processQuery(question!!, model)}")
+                }
+            }
             question != null -> {
-                println("🤖 askme CLI - Direct Question")
-                println("🎯 Selected model: $model")
-                println("💬 Response: ${processQuery(question!!, model)}")
+                // Question provided but interactive mode is default
+                if (smartMode) {
+                    println("🤖 askme CLI - Smart Interactive Mode")
+                    println("🧠 Intelligent provider selection enabled")
+                    println("💬 ${IntelligentProviderManager.getSmartResponse(question!!)}")
+                } else {
+                    println("🤖 askme CLI - Interactive Mode")
+                    println("🎯 Selected model: $model")
+                    println("💬 Response: ${processQuery(question!!, model)}")
+                }
+                println()
+                println("🔄 Continuing in interactive mode...")
+                runInteractiveMode(model, smartMode)
             }
             else -> {
-                println("🤖 askme CLI - LLM Client v1.1")
-                println("✅ LIVE: Google Gemini + Mistral AI + Llama")
-                println("🧠 NEW: Smart Provider Selection")
-                println()
-                println("Usage:")
-                println("  askme \"your question here\"")
-                println("  askme -s \"smart question\"      # Auto-select best provider")
-                println("  askme -f <file> -m <provider>")
-                println("  askme -i -m <provider>")
-                println("  askme --stats                   # Show provider performance")
-                println()
-                println("Providers: google, mistral, llama")
-                println("Smart Mode: Use -s for automatic provider selection")
+                // Default: Interactive mode
+                runInteractiveMode(model, smartMode)
             }
         }
     }

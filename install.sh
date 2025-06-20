@@ -1,7 +1,7 @@
 #!/bin/bash
-# AskMe CLI - One-Click Installer
+# askme CLI - One-Click Installer
 # Version: 1.0.0
-# Compatible: Linux, macOS, Windows WSL
+# Compatible: Linux, macOS, Windows WSL, Android Termux
 
 set -e
 
@@ -18,7 +18,17 @@ NC='\033[0m' # No Color
 ASKME_VERSION="1.0.0"
 INSTALL_DIR="$HOME/.askme"
 BIN_DIR="$HOME/.local/bin"
-TEMP_DIR="/tmp/askme-install"
+
+# Detect environment and set appropriate temp directory
+if [[ "$PREFIX" == *"termux"* ]] || [[ -n "$TERMUX_VERSION" ]] || [[ "$HOME" == *"termux"* ]]; then
+    TEMP_DIR="$HOME/tmp/askme-install"
+    log_info() {
+        echo -e "${BLUE}ℹ️  $1${NC}"
+    }
+    log_info "Termux environment detected"
+else
+    TEMP_DIR="/tmp/askme-install"
+fi
 
 # GitHub repository
 GITHUB_REPO="https://github.com/vn6295337/askme"
@@ -28,9 +38,9 @@ print_banner() {
     echo -e "${PURPLE}"
     echo "╔═══════════════════════════════════════════════════════════╗"
     echo "║                                                           ║"
-    echo "║           🤖 ASKME CLI v$ASKME_VERSION                    ║"
+    echo "║                    🤖 ASKME CLI v$ASKME_VERSION                    ║"
     echo "║                                                           ║"
-    echo "║               Smart AI Assistant Installer                ║"
+    echo "║              Smart AI Assistant Installer                ║"
     echo "║                                                           ║"
     echo "╚═══════════════════════════════════════════════════════════╝"
     echo -e "${NC}"
@@ -62,8 +72,12 @@ check_requirements() {
         log_success "Java found: $JAVA_VERSION"
     else
         log_error "Java not found. Please install Java 17 or higher."
-        echo "  Ubuntu/Debian: sudo apt install openjdk-17-jdk"
-        echo "  macOS: brew install openjdk@17"
+        if [[ "$PREFIX" == *"termux"* ]] || [[ -n "$TERMUX_VERSION" ]]; then
+            echo "  Termux: pkg install openjdk-17"
+        else
+            echo "  Ubuntu/Debian: sudo apt install openjdk-17-jdk"
+            echo "  macOS: brew install openjdk@17"
+        fi
         exit 1
     fi
     
@@ -76,12 +90,18 @@ check_requirements() {
         log_success "Download tool: wget"
     else
         log_error "Neither curl nor wget found. Please install one of them."
+        if [[ "$PREFIX" == *"termux"* ]] || [[ -n "$TERMUX_VERSION" ]]; then
+            echo "  Termux: pkg install curl"
+        fi
         exit 1
     fi
     
     # Check tar
     if ! command -v tar >/dev/null 2>&1; then
         log_error "tar not found. Please install tar."
+        if [[ "$PREFIX" == *"termux"* ]] || [[ -n "$TERMUX_VERSION" ]]; then
+            echo "  Termux: pkg install tar"
+        fi
         exit 1
     fi
     
@@ -97,6 +117,7 @@ create_directories() {
     mkdir -p "$TEMP_DIR"
     
     log_success "Directories created successfully!"
+    log_info "Using temp directory: $TEMP_DIR"
 }
 
 download_askme() {
@@ -176,7 +197,7 @@ setup_api_keys() {
     
     echo -e "${CYAN}AskMe supports multiple AI providers:${NC}"
     echo "  🟢 Google Gemini (Free tier available)"
-    echo "  🔵 Mistral AI (Free tier available)"  
+    echo "  🔵 Mistral AI (Free tier available)"
     echo "  🟠 OpenAI (API key required)"
     echo "  🟣 Anthropic (API key required)"
     echo
@@ -244,7 +265,7 @@ print_completion() {
     echo -e "${GREEN}"
     echo "╔═══════════════════════════════════════════════════════════╗"
     echo "║                                                           ║"
-    echo "║                 🎉 INSTALLATION COMPLETE! 🎉              ║"
+    echo "║                  🎉 INSTALLATION COMPLETE! 🎉              ║"
     echo "║                                                           ║"
     echo "╚═══════════════════════════════════════════════════════════╝"
     echo -e "${NC}"
