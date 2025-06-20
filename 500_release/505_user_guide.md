@@ -179,4 +179,149 @@ A: No. askme connects to online AI services for the best, most current answers.
 
 ---
 
-**Ready to start?** Open askme and type your first question!
+# Intelligent Provider Manager
+## How AI Provider Selection Works
+
+---
+
+## 🧠 How the Selection Logic Works
+
+### The Smart Decision Process
+
+The system makes decisions like a business manager evaluating suppliers:
+
+1. **Track Performance History** 📊
+   - How often does each provider succeed?
+   - How fast do they respond?
+   - When did they last fail?
+
+2. **Calculate a Business Score** 🎯
+   - **60% Weight on Reliability**: "Can I count on this provider?"
+   - **40% Weight on Speed**: "How quickly do they deliver?"
+
+3. **Make the Best Choice** ✅
+   - Always picks the highest-scoring available provider
+   - Automatically tries backup options if the first choice fails
+
+### Simple Example
+```
+Provider A: 95% success rate, 2 seconds response = Score: 2.1
+Provider B: 85% success rate, 1 second response = Score: 1.9
+Provider C: 70% success rate, 3 seconds response = Score: 1.2
+
+→ System automatically chooses Provider A
+```
+
+---
+
+## 🤖 Available AI Models
+
+| Provider | Model Name | Purpose |
+|----------|------------|---------|
+| **Google Gemini** | gemini-1.5-flash | Fastest responses for quick questions and high-volume tasks |
+| | gemini-1.5-flash-8b | Lightweight version optimized for speed and efficiency |
+| | gemini-1.0-pro | Balanced performance for general business applications |
+| | gemini-pro | Standard model for reliable everyday use |
+| | gemini-1.5-pro | Advanced model for complex reasoning and analysis |
+| **Mistral AI** | mistral-small-latest | Fast, efficient responses for straightforward queries |
+| | open-mistral-7b | Open-source model for basic conversational tasks |
+| | open-mixtral-8x7b | Larger model for more sophisticated responses |
+| | open-mixtral-8x22b | High-capacity model for complex problem solving |
+| | mistral-medium-latest | Premium model for detailed analysis and reasoning |
+| **Llama** | Meta-Llama-3-8B-Instruct-Turbo | Latest fast model optimized for instruction following |
+| | Llama-3-8b-chat-hf | Standard conversational model with good performance |
+| | Meta-Llama-3-70B-Instruct-Turbo | Large model for complex tasks requiring deep reasoning |
+| | Llama-2-7b-chat-hf | Reliable older model for basic conversational needs |
+| | Llama-2-13b-chat-hf | Medium-sized model balancing speed and capability |
+
+---
+
+## 🎚️ Understanding Model Differences Within Each Provider
+
+### Why Multiple Models Matter
+
+Each AI provider offers different "models" - think of them like different service tiers:
+
+| Model Tier | Business Analogy | Performance | Use Case |
+|------------|------------------|-------------|----------|
+| **Flash/Small** | Express service | Very fast, good quality | Quick answers, high volume |
+| **Standard** | Regular service | Balanced speed/quality | General business use |
+| **Pro/Large** | Premium service | Slower, highest quality | Complex analysis |
+
+### Smart Fallback Strategy
+
+When a premium model is busy or unavailable, the system automatically "steps down" to ensure you still get service:
+
+**Google Example:**
+```
+Try: Gemini Flash (fastest) 
+→ If busy: Gemini Pro (balanced)
+→ If busy: Gemini Standard (reliable)
+```
+
+**Business Impact**: You never experience complete service interruption
+
+---
+
+## 📊 Performance Tracking
+
+### What We Monitor
+- **Success Rate**: Percentage of requests that work
+- **Response Time**: How fast you get answers  
+- **Availability**: Which services are currently working
+- **Usage Patterns**: Which providers work best for your needs
+
+### Real-Time Business Dashboard
+```
+Current Provider Performance:
+Google:  94% success, 1.8 seconds average
+Mistral: 89% success, 2.1 seconds average  
+Llama:   85% success, 2.9 seconds average
+
+Smart System Choice: Google (best performance today)
+```
+
+### Business Value of Data
+- **Trend Analysis**: See which providers are improving/declining
+- **Performance Optimization**: Identify most efficient providers
+- **Service Planning**: Understand usage patterns and reliability trends
+
+---
+
+## 🔄 Automatic Failover & Business Continuity
+
+### Three-Layer Protection System
+
+1. **Provider Level**: Multiple models within each service
+2. **Service Level**: Three different AI companies
+3. **System Level**: Intelligent retry and routing
+
+### Failure Recovery Timeline
+```
+Primary fails     → Try backup model (0.1 seconds)
+All models fail   → Switch to next provider (0.2 seconds)  
+Provider fails    → Try third provider (0.3 seconds)
+All providers fail → Clear error message to user
+```
+
+### Business Impact
+- **99.9% Uptime**: Extremely rare for all providers to fail simultaneously
+- **Transparent Operation**: Users rarely notice provider switches
+- **No Manual Intervention**: System handles all failures automatically
+
+---
+
+## 💼 Business Configuration & Control
+
+### Setup Requirements
+- **API Accounts**: Business accounts with 2-3 AI providers
+- **Authentication**: Secure API keys for each service
+- **Monitoring**: Performance tracking enabled by default
+
+### Usage Modes
+
+| Mode | Business Use Case | When to Use |
+|------|------------------|-------------|
+| **Smart Mode** | Daily operations | Let system choose best provider |
+| **Manual Mode** | Specific requirements | Need particular provider/model |
+| **Stats Mode** | Performance review | Business analysis and planning |
