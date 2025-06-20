@@ -1,8 +1,13 @@
 name: Release
+
 on:
   push:
     tags:
       - 'v*'  # Triggers on version tags like v1.0.0
+
+permissions:
+  contents: write  # Required for creating releases and uploading assets
+
 jobs:
   build-and-release:
     runs-on: ubuntu-latest
@@ -41,55 +46,32 @@ jobs:
         700_scripts/705_build_release.sh ${{ steps.get_version.outputs.VERSION }}
         
     - name: Create Release
-      id: create_release
-      uses: actions/create-release@v1
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        tag_name: ${{ github.ref }}
-        release_name: AskMe CLI v${{ steps.get_version.outputs.VERSION }}
-        body: |
-          ## 🚀 AskMe CLI v${{ steps.get_version.outputs.VERSION }}
-          
-          ### Quick Install
-          ```bash
-          curl -fsSL https://raw.githubusercontent.com/${{ github.repository }}/main/install.sh | bash
-          ```
-          
-          ### What's New
-          - Intelligent AI provider selection
-          - Support for Google Gemini, Mistral AI, OpenAI, and Anthropic
-          - Performance tracking and optimization
-          - One-click installation
-          - Privacy-first architecture with zero data collection
-          
-          ### Download
-          - **Recommended**: Use the one-click installer above
-          - **Manual**: Download the tar.gz file below
-          
-          ### Documentation
-          - [Installation Guide](https://github.com/${{ github.repository }}/blob/main/500_release/507_development_setup.md)
-          - [User Guide](https://github.com/${{ github.repository }}/blob/main/500_release/505_user_guide.md)
-          - [API Documentation](https://github.com/${{ github.repository }}/blob/main/500_release/506_api_docs.md)
-        draft: false
-        prerelease: false
+      run: |
+        gh release create "v${{ steps.get_version.outputs.VERSION }}" \
+          --title "AskMe CLI v${{ steps.get_version.outputs.VERSION }}" \
+          --notes "## 🚀 AskMe CLI v${{ steps.get_version.outputs.VERSION }}
         
-    - name: Upload Release Asset
-      uses: actions/upload-release-asset@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: ./dist/askme-cli-v${{ steps.get_version.outputs.VERSION }}.tar.gz
-        asset_name: askme-cli-v${{ steps.get_version.outputs.VERSION }}.tar.gz
-        asset_content_type: application/gzip
+        ### Quick Install
+        \`\`\`bash
+        curl -fsSL https://raw.githubusercontent.com/${{ github.repository }}/main/install.sh | bash
+        \`\`\`
         
-    - name: Upload Checksum
-      uses: actions/upload-release-asset@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: ./dist/askme-cli-v${{ steps.get_version.outputs.VERSION }}.sha256
-        asset_name: askme-cli-v${{ steps.get_version.outputs.VERSION }}.sha256
-        asset_content_type: text/plain
+        ### What's New
+        - Intelligent AI provider selection
+        - Support for Google Gemini, Mistral AI, OpenAI, and Anthropic
+        - Performance tracking and optimization
+        - One-click installation
+        - Privacy-first architecture with zero data collection
+        
+        ### Download
+        - **Recommended**: Use the one-click installer above
+        - **Manual**: Download the tar.gz file below
+        
+        ### Documentation
+        - [Installation Guide](https://github.com/${{ github.repository }}/blob/main/500_release/507_development_setup.md)
+        - [User Guide](https://github.com/${{ github.repository }}/blob/main/500_release/505_user_guide.md)
+        - [API Documentation](https://github.com/${{ github.repository }}/blob/main/500_release/506_api_docs.md)" \
+          ./dist/askme-cli-v${{ steps.get_version.outputs.VERSION }}.tar.gz \
+          ./dist/askme-cli-v${{ steps.get_version.outputs.VERSION }}.sha256
