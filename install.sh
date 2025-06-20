@@ -15,7 +15,7 @@ CYAN='\033[0;36m'
 NC='\033[0m' # No Color
 
 # Configuration
-ASKME_VERSION="1.0.0"
+ASKME_VERSION="1.1.0"
 INSTALL_DIR="$HOME/.askme"
 BIN_DIR="$HOME/.local/bin"
 
