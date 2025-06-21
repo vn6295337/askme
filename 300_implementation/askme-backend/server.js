@@ -136,6 +136,41 @@ const PROVIDERS = {
   }
 };
 
+
+// Main API endpoint
+app.post("/api/query", async (req, res) => {
+  try {
+    const { prompt, provider = "mistral", model } = req.body;
+    
+    if (!prompt) {
+      return res.status(400).json({ error: "Prompt is required" });
+    }
+    
+    const providerConfig = PROVIDERS[provider];
+    if (!providerConfig) {
+      return res.status(400).json({ error: `Unsupported provider: ${provider}` });
+    }
+    
+    const apiKey = API_KEYS[provider];
+    if (!apiKey) {
+      return res.status(500).json({ error: `API key not configured for ${provider}` });
+    }
+    
+    const url = providerConfig.url(apiKey, model);
+    const headers = providerConfig.headers(apiKey);
+    const requestBody = providerConfig.formatRequest(prompt, model);
+    
+    const response = await axios.post(url, requestBody, { headers });
+    const result = providerConfig.extractResponse(response.data);
+    
+    res.json({ response: result, provider, model: model || "default" });
+    
+  } catch (error) {
+    console.error(`API Error:`, error.message);
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
 // Health check endpoint
 app.get('/health', (req, res) => {
   res.json({ 
