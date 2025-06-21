@@ -147,3 +147,9 @@ app.get('/health', (req, res) => {
 
 // Provider fallback logic
 // Force complete restart Fri Jun 20 08:00:31 PM IST 2025
+
+// Start server
+app.listen(PORT, '0.0.0.0', () => {
+    console.log(`✅ AskMe Backend Proxy server running on port ${PORT}`);
+    console.log(`🌐 Health check: http://localhost:${PORT}/health`);
+});
