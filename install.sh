@@ -210,18 +210,18 @@ setup_embedded_api_keys() {
     if ! grep -q "GOOGLE_API_KEY" "$SHELL_RC" 2>/dev/null; then
         echo "" >> "$SHELL_RC"
         echo "# AskMe CLI - Embedded API Keys for Zero Configuration" >> "$SHELL_RC"
-        echo "export GOOGLE_API_KEY=\"$EMBEDDED_GOOGLE_KEY\"" >> "$SHELL_RC"
-        echo "export MISTRAL_API_KEY=\"$EMBEDDED_MISTRAL_KEY\"" >> "$SHELL_RC"
-        echo "export LLAMA_API_KEY=\"$EMBEDDED_LLAMA_KEY\"" >> "$SHELL_RC"
+        echo "export GOOGLE_API_KEY=YOUR_GOOGLE_API_KEY_HERE
+        echo "export MISTRAL_API_KEY=YOUR_MISTRAL_API_KEY_HERE
+        echo "export LLAMA_API_KEY=YOUR_LLAMA_API_KEY_HERE
         log_success "Embedded API keys configured"
     else
         log_info "API keys already configured"
     fi
     
     # Set for current session
-    export GOOGLE_API_KEY="$EMBEDDED_GOOGLE_KEY"
-    export MISTRAL_API_KEY="$EMBEDDED_MISTRAL_KEY"
-    export LLAMA_API_KEY="$EMBEDDED_LLAMA_KEY"
+    export GOOGLE_API_KEY=YOUR_GOOGLE_API_KEY_HERE
+    export MISTRAL_API_KEY=YOUR_MISTRAL_API_KEY_HERE
+    export LLAMA_API_KEY=YOUR_LLAMA_API_KEY_HERE
     
     log_success "AI providers ready for immediate use!"
 }

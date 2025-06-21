@@ -23,3 +23,14 @@ Thumbs.db
 
 # Other generated files
 *.log
+
+# API Keys and Environment Files
+.env
+.env.local
+.env.production
+*.env
+*api*key*
+config.json
+local.properties
+.askme/
+*.log
