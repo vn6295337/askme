@@ -16,8 +16,6 @@ dependencies {
     implementation("io.ktor:ktor-client-cio:2.3.6")
     implementation("io.ktor:ktor-client-content-negotiation:2.3.6")
     implementation("io.ktor:ktor-serialization-kotlinx-json:2.3.6")
-    
-    // Fix SLF4J warnings
     implementation("org.slf4j:slf4j-simple:2.0.9")
     
     testImplementation(kotlin("test"))
