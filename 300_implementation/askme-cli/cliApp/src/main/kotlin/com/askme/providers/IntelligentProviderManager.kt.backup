@@ -68,6 +68,11 @@ object IntelligentProviderManager {
     }
     
     suspend fun getSmartResponse(prompt: String): String {
+        val apiKeys = mapOf(
+            "google" to System.getenv("GOOGLE_API_KEY"),
+            "mistral" to System.getenv("MISTRAL_API_KEY"),
+            "llama" to System.getenv("LLAMA_API_KEY")
+        )
         
         // Get ranked providers by performance
         val rankedProviders = getRankedProviders()
@@ -81,11 +86,15 @@ object IntelligentProviderManager {
         
         // Try providers in order of preference
         for (providerName in rankedProviders.map { it.name }) {
-
+            val apiKey = apiKeys[providerName]
+            if (apiKey.isNullOrBlank()) {
+                println("⚠️  Skipping $providerName: No API key")
+                continue
+            }
             
             println("🎯 Trying $providerName...")
             
-            val result = tryProviderWithMetrics(providerName, prompt)
+            val result = tryProviderWithMetrics(providerName, prompt, apiKey)
             if (!result.startsWith("❌")) {
                 println("✅ Success with $providerName")
                 lastUsedProvider = providerName
@@ -95,18 +104,18 @@ object IntelligentProviderManager {
             }
         }
         
-        return "❌ All providers failed. Please check your internet connection and try again."
+        return "❌ All providers failed. Please check your API keys and try again."
     }
     
-    private suspend fun tryProviderWithMetrics(providerName: String, prompt: String): String {
+    private suspend fun tryProviderWithMetrics(providerName: String, prompt: String, apiKey: String): String {
         val startTime = System.currentTimeMillis()
         
         return try {
             val result = withTimeoutOrNull(30000) { // 30 second timeout
                 when (providerName) {
-                    "google" -> GoogleGemini.chat(prompt)
-                    "mistral" -> MistralAI.chat(prompt)
-                    "llama" -> LlamaAI.chat(prompt)
+                    "google" -> GoogleGemini.chat(prompt, apiKey)
+                    "mistral" -> MistralAI.chat(prompt, apiKey)
+                    "llama" -> LlamaAI.chat(prompt, apiKey)
                     else -> "❌ Unknown provider: $providerName"
                 }
             } ?: "❌ Timeout: Provider took too long to respond"
