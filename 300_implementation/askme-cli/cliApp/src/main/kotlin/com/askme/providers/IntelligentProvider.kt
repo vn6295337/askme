@@ -41,6 +41,7 @@ object IntelligentProvider {
             
             val result = tryProviderWithFallback(providerInstance, prompt)
             
+                println("🔧 DEBUG: Provider result: $result")
             if (!result.startsWith("❌")) {
                 println("✅ Success with ${provider.name}")
                 recordSuccess(provider.name)
