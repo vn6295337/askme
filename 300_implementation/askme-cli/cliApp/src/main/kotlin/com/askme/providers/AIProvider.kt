@@ -16,7 +16,8 @@ import kotlinx.serialization.Serializable
 data class BackendResponse(
     val response: String,
     val provider: String,
-    val model: String? = null
+    val model: String? = null,
+    val timestamp: String? = null
 )
 
 @Serializable
