@@ -1,5 +1,3 @@
-2025-06-23
-
 # askme API Model Update Plan
 
 ## 🚨 CRITICAL PRIORITY - Immediate Action Required
@@ -8,9 +6,8 @@
 **Timeline**: Immediate (these will cause failures)
 
 #### Backend Server Updates Required:
-**Files to update:**
-- `300_implementation/askme-backend/server.js` (Line 45-51)
-- `askme-backend/server.js` (Line 42-48)
+**File to update:**
+- `300_implementation/askme-backend/server.js` (PROVIDERS.google.models array)
 
 **Current (REMOVE):**
 ```javascript
@@ -37,7 +34,7 @@ models: [
 
 #### CLI Provider Updates Required:
 **File to update:**
-- `300_implementation/askme-cli/cliApp/src/main/kotlin/com/askme/providers/Providers.kt` (Line 7-13)
+- `300_implementation/askme-cli/cliApp/src/main/kotlin/com/askme/providers/Providers.kt` (GoogleProvider.getAvailableModels())
 
 **Current (REMOVE):**
 ```kotlin
@@ -68,8 +65,8 @@ override fun getAvailableModels(): List<String> = listOf(
 **Timeline**: Before June 30, 2025 (deprecation deadline)
 
 #### Backend Server Updates:
-**Files to update:**
-- `300_implementation/askme-backend/server.js` (Line 85-91)
+**File to update:**
+- `300_implementation/askme-backend/server.js` (PROVIDERS.llama.models array)
 
 **Current (REPLACE):**
 ```javascript
@@ -137,6 +134,8 @@ models: [
 - [ ] 1.3 Update Google provider selectBestModel() logic
 - [ ] 1.4 Test new Google models work correctly
 - [ ] 1.5 Deploy backend with new Google configuration
+- [ ] 1.6 Rebuild CLI release: `./gradlew cliApp:build` 
+- [ ] 1.7 Update build-release/ directory with new CLI build
 
 ### Phase 2: Model Routing Updates
 - [ ] 2.1 Update smart selection logic for new Google models
@@ -153,6 +152,14 @@ models: [
 - [ ] 4.2 Add new Llama models to configuration  
 - [ ] 4.3 Update intelligent routing for new capabilities
 - [ ] 4.4 Test all new models end-to-end
+
+---
+
+## 📂 Project Context
+
+**Current Status**: askme CLI is built and operational in `build-release/askme-cli/`
+**Documentation**: Plan will be saved to `800_misc_docs/api_model_update_plan.md`
+**Working Directory**: `/mnt/chromeos/removable/USBdrive/askme/`
 
 ---
 
