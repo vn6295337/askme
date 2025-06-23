@@ -42,9 +42,6 @@ const PROVIDERS = {
       "gemini-1.5-flash",           // Fast, efficient
       "gemini-1.5-flash-8b",        // Even faster
       "gemini-1.5-pro",             // Stable, capable
-      "gemini-2.5-pro",             // NEW - #1 LMArena model
-      "gemini-2.5-flash",           // NEW - Fast replacement for deprecated
-      "gemini-2.0-flash"            // NEW - Multimodal outputs
     ],
     url: (apiKey, model) => `https://generativelanguage.googleapis.com/v1/models/${model || "gemini-1.5-flash"}:generateContent?key=${apiKey}`,
     headers: () => ({
@@ -71,9 +68,6 @@ const PROVIDERS = {
       "open-mixtral-8x7b",         // Powerful open source
       "open-mixtral-8x22b",        // Most powerful open
       "mistral-medium-latest",     // Balanced performance
-      "mistral-medium-3",          // NEW - 90% Claude performance
-      "magistral-small",           // NEW - Reasoning model
-      "magistral-medium"           // NEW - Advanced reasoning
     ],
     url: () => "https://api.mistral.ai/v1/chat/completions",
     headers: (apiKey) => ({
@@ -99,11 +93,9 @@ const PROVIDERS = {
     models: [
       "meta-llama/Meta-Llama-3-8B-Instruct-Turbo",     // Fast, reliable
       "meta-llama/Llama-3-8b-chat-hf",                 // Standard chat
-      "meta-llama/Llama-3.3-70B-Instruct",             // UPDATED - Replaces deprecated 70B-Turbo
+      "meta-llama/Llama-3.3-70B-Instruct-Turbo",       // UPDATED - Replaces deprecated 70B-Turbo
       "meta-llama/Llama-2-7b-chat-hf",                 // Legacy support
       "meta-llama/Llama-2-13b-chat-hf",                // Legacy medium
-      "meta-llama/Llama-4-Maverick",                   // NEW - 400B MoE, 9-23x cheaper
-      "meta-llama/Llama-4-Scout"                       // NEW - 10M context length
     ],
     url: () => "https://api.together.xyz/v1/chat/completions",
     headers: (apiKey) => ({
