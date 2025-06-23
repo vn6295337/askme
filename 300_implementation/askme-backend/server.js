@@ -1,4 +1,4 @@
-// AskMe Backend Proxy Server - FIXED VERSION
+// AskMe Backend Proxy Server - UPDATED VERSION
 // Secure API key management and request proxying
 
 const express = require('express');
@@ -32,19 +32,19 @@ app.use('/api/', limiter);
 const API_KEYS = {
   google: process.env.GOOGLE_API_KEY,
   mistral: process.env.MISTRAL_API_KEY,
-  llama: process.env.LLAMA_API_KEY,
-  xai: process.env.XAI_API_KEY
+  llama: process.env.LLAMA_API_KEY
 };
 
-// Provider configurations
+// Provider configurations - UPDATED WITH LATEST MODELS
 const PROVIDERS = {
   google: {
     models: [
-      "gemini-1.5-flash",
-      "gemini-1.5-flash-8b",
-      "gemini-1.0-pro",
-      "gemini-pro",
-      "gemini-1.5-pro"
+      "gemini-1.5-flash",           // Fast, efficient
+      "gemini-1.5-flash-8b",        // Even faster
+      "gemini-1.5-pro",             // Stable, capable
+      "gemini-2.5-pro",             // NEW - #1 LMArena model
+      "gemini-2.5-flash",           // NEW - Fast replacement for deprecated
+      "gemini-2.0-flash"            // NEW - Multimodal outputs
     ],
     url: (apiKey, model) => `https://generativelanguage.googleapis.com/v1/models/${model || "gemini-1.5-flash"}:generateContent?key=${apiKey}`,
     headers: () => ({
@@ -66,11 +66,14 @@ const PROVIDERS = {
   
   mistral: {
     models: [
-      "mistral-small-latest",
-      "open-mistral-7b",
-      "open-mixtral-8x7b",
-      "open-mixtral-8x22b",
-      "mistral-medium-latest"
+      "mistral-small-latest",       // Fast, efficient
+      "open-mistral-7b",           // Open source
+      "open-mixtral-8x7b",         // Powerful open source
+      "open-mixtral-8x22b",        // Most powerful open
+      "mistral-medium-latest",     // Balanced performance
+      "mistral-medium-3",          // NEW - 90% Claude performance
+      "magistral-small",           // NEW - Reasoning model
+      "magistral-medium"           // NEW - Advanced reasoning
     ],
     url: () => "https://api.mistral.ai/v1/chat/completions",
     headers: (apiKey) => ({
@@ -94,11 +97,13 @@ const PROVIDERS = {
   
   llama: {
     models: [
-      "meta-llama/Meta-Llama-3-8B-Instruct-Turbo",
-      "meta-llama/Llama-3-8b-chat-hf",
-      "meta-llama/Meta-Llama-3-70B-Instruct-Turbo",
-      "meta-llama/Llama-2-7b-chat-hf",
-      "meta-llama/Llama-2-13b-chat-hf"
+      "meta-llama/Meta-Llama-3-8B-Instruct-Turbo",     // Fast, reliable
+      "meta-llama/Llama-3-8b-chat-hf",                 // Standard chat
+      "meta-llama/Llama-3.3-70B-Instruct",             // UPDATED - Replaces deprecated 70B-Turbo
+      "meta-llama/Llama-2-7b-chat-hf",                 // Legacy support
+      "meta-llama/Llama-2-13b-chat-hf",                // Legacy medium
+      "meta-llama/Llama-4-Maverick",                   // NEW - 400B MoE, 9-23x cheaper
+      "meta-llama/Llama-4-Scout"                       // NEW - 10M context length
     ],
     url: () => "https://api.together.xyz/v1/chat/completions",
     headers: (apiKey) => ({
@@ -118,24 +123,18 @@ const PROVIDERS = {
         return "Error processing Llama response";
       }
     }
-  },
-  
-  xai: {
-    models: ["grok-beta"],
-    url: () => "https://api.x.ai/v1/chat/completions",
-    headers: (apiKey) => ({
-      "Content-Type": "application/json",
-      "Authorization": `Bearer ${apiKey}`
-    }),
-    formatRequest: (prompt) => ({
-      model: "grok-beta",
-      messages: [{ role: "user", content: prompt }],
-      max_tokens: 1000
-    }),
-    extractResponse: (data) => data.choices?.[0]?.message?.content || "No response from xAI"
   }
 };
 
+// Health check endpoint
+app.get('/health', (req, res) => {
+  res.json({ 
+    status: 'healthy', 
+    timestamp: new Date().toISOString(),
+    version: '1.1.0',
+    providers: Object.keys(PROVIDERS)
+  });
+});
 
 // Main API endpoint
 app.post("/api/query", async (req, res) => {
@@ -148,43 +147,145 @@ app.post("/api/query", async (req, res) => {
     
     const providerConfig = PROVIDERS[provider];
     if (!providerConfig) {
-      return res.status(400).json({ error: `Unsupported provider: ${provider}` });
+      return res.status(400).json({ 
+        error: `Unsupported provider: ${provider}`,
+        availableProviders: Object.keys(PROVIDERS)
+      });
     }
     
     const apiKey = API_KEYS[provider];
     if (!apiKey) {
-      return res.status(500).json({ error: `API key not configured for ${provider}` });
+      return res.status(500).json({ 
+        error: `API key not configured for ${provider}`,
+        provider: provider
+      });
+    }
+    
+    // Validate model exists for provider
+    if (model && !providerConfig.models.includes(model)) {
+      return res.status(400).json({
+        error: `Model ${model} not supported for ${provider}`,
+        availableModels: providerConfig.models
+      });
     }
     
     const url = providerConfig.url(apiKey, model);
     const headers = providerConfig.headers(apiKey);
     const requestBody = providerConfig.formatRequest(prompt, model);
     
+    console.log(`📡 ${provider} request: ${model || 'default'} model`);
+    
     const response = await axios.post(url, requestBody, { headers });
     const result = providerConfig.extractResponse(response.data);
     
-    res.json({ response: result, provider, model: model || "default" });
+    res.json({ 
+      response: result, 
+      provider, 
+      model: model || providerConfig.models[0],
+      timestamp: new Date().toISOString()
+    });
     
   } catch (error) {
-    console.error(`API Error:`, error.message);
-    res.status(500).json({ error: "Internal server error" });
+    console.error(`❌ ${req.body.provider || 'Unknown'} API Error:`, error.message);
+    
+    // Better error handling
+    if (error.response) {
+      const status = error.response.status;
+      const message = error.response.data?.error?.message || error.message;
+      
+      return res.status(status).json({
+        error: `${req.body.provider || 'API'} Error: ${message}`,
+        provider: req.body.provider,
+        statusCode: status
+      });
+    }
+    
+    res.status(500).json({ 
+      error: "Internal server error",
+      provider: req.body.provider || "unknown"
+    });
   }
 });
 
-// Health check endpoint
-app.get('/health', (req, res) => {
-  res.json({ 
-    status: 'healthy', 
+// Provider status endpoint
+app.get('/api/providers', (req, res) => {
+  const providerStatus = Object.keys(PROVIDERS).map(provider => ({
+    name: provider,
+    available: !!API_KEYS[provider],
+    status: API_KEYS[provider] ? 'active' : 'unavailable',
+    models: PROVIDERS[provider].models,
+    modelCount: PROVIDERS[provider].models.length
+  }));
+  
+  res.json({
+    providers: providerStatus,
     timestamp: new Date().toISOString(),
-    version: '1.0.1'
+    totalProviders: providerStatus.length,
+    activeProviders: providerStatus.filter(p => p.available).length
   });
 });
 
-// Provider fallback logic
-// Force complete restart Fri Jun 20 08:00:31 PM IST 2025
+// Smart provider selection endpoint
+app.post('/api/smart', async (req, res) => {
+  const { prompt } = req.body;
+  
+  if (!prompt) {
+    return res.status(400).json({ error: 'Prompt is required' });
+  }
+  
+  // Simple smart selection logic (enhanced)
+  let selectedProvider = 'google'; // default
+  
+  const promptLower = prompt.toLowerCase();
+  if (promptLower.includes('code') || promptLower.includes('programming') || promptLower.includes('function')) {
+    selectedProvider = 'mistral';  // Good at code
+  } else if (promptLower.includes('creative') || promptLower.includes('story') || promptLower.includes('write')) {
+    selectedProvider = 'llama';    // Creative writing
+  } else if (promptLower.includes('analysis') || promptLower.includes('research') || promptLower.includes('explain')) {
+    selectedProvider = 'google';   // Analytical tasks
+  } else if (promptLower.includes('math') || promptLower.includes('calculate') || promptLower.includes('solve')) {
+    selectedProvider = 'google';   // Mathematical tasks
+  }
+  
+  // Forward to regular query endpoint
+  req.body.provider = selectedProvider;
+  return app._router.handle({ ...req, method: 'POST', url: '/api/query' }, res);
+});
+
+// Error handling middleware
+app.use((err, req, res, next) => {
+  console.error('Unhandled error:', err);
+  res.status(500).json({ 
+    error: 'Internal server error',
+    timestamp: new Date().toISOString()
+  });
+});
+
+// 404 handler
+app.use('*', (req, res) => {
+  res.status(404).json({ 
+    error: 'Endpoint not found',
+    availableEndpoints: ['/health', '/api/query', '/api/providers', '/api/smart']
+  });
+});
 
 // Start server
 app.listen(PORT, '0.0.0.0', () => {
-    console.log(`✅ AskMe Backend Proxy server running on port ${PORT}`);
-    console.log(`🌐 Health check: http://localhost:${PORT}/health`);
+  console.log(`✅ AskMe Backend Proxy server running on port ${PORT}`);
+  console.log(`🌐 Health check: http://localhost:${PORT}/health`);
+  console.log(`🤖 Query API: http://localhost:${PORT}/api/query`);
+  console.log(`📋 Providers: http://localhost:${PORT}/api/providers`);
+  console.log(`🧠 Smart API: http://localhost:${PORT}/api/smart`);
+  
+  // Verify API keys are loaded
+  const loadedKeys = Object.entries(API_KEYS)
+    .filter(([_, key]) => key)
+    .map(([provider, _]) => provider);
+  console.log(`🔑 Loaded API keys for: ${loadedKeys.join(', ')}`);
+  
+  if (loadedKeys.length === 0) {
+    console.warn('⚠️  No API keys loaded. Check your environment variables.');
+  }
 });
+
+module.exports = app;
