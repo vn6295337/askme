@@ -25,6 +25,22 @@ The askme CLI MVP has been successfully delivered, meeting all core requirements
 - **Performance**: Sub-2-second response times
 - **Privacy**: Zero external data collection
 
+### LLM Provider Models
+
+**Google (Gemini) Provider Models:**
+- `gemini-1.5-flash`
+- `gemini-1.5-flash-8b`
+
+**Mistral Provider Models:**
+- `mistral-small-latest`
+- `open-mistral-7b`
+- `open-mixtral-8x7b`
+- `open-mixtral-8x22b`
+- `mistral-medium-latest`
+
+**Llama Provider Models:**
+- `meta-llama/Llama-3-8b-chat-hf`
+
 ### Architecture Components
 - **KMP Foundation**: Kotlin Multiplatform core (commonMain)
 - **CLI Module**: Standalone JVM application

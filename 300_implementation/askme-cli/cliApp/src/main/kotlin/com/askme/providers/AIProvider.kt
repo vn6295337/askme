@@ -34,7 +34,7 @@ data class BackendError(
 
 // Provider interface
 interface AIProvider {
-    suspend fun chat(prompt: String): String
+    suspend fun chat(prompt: String, model: String? = null): String
     fun getProviderName(): String
     fun getAvailableModels(): List<String>
     fun selectBestModel(prompt: String): String
@@ -51,6 +51,8 @@ abstract class BaseProvider : AIProvider {
                 json(Json {
                     ignoreUnknownKeys = true
                     coerceInputValues = true
+		    isLenient = true
+		    encodeDefaults = true
                 })
             }
         }

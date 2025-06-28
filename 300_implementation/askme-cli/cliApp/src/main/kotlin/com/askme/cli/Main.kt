@@ -9,6 +9,7 @@ fun main(args: Array<String>) {
     val parser = ArgParser("askme")
     
     val model by parser.option(ArgType.String, shortName = "m", description = "Provider: auto, google, mistral, llama").default("auto")
+    val explicitModel by parser.option(ArgType.String, shortName = "e", description = "Explicit model to use (bypasses smart selection)")
     val promptFile by parser.option(ArgType.String, shortName = "f", description = "File containing prompt text")
     val smartMode by parser.option(ArgType.Boolean, shortName = "s", description = "Smart provider selection").default(false)
     val stats by parser.option(ArgType.Boolean, description = "Show provider stats").default(false)
@@ -25,17 +26,17 @@ fun main(args: Array<String>) {
                 promptFile != null -> {
                     val prompt = File(promptFile!!).readText().trim()
                     println("🤖 askme CLI - Processing file: $promptFile")
-                    val response = getResponse(prompt, model, smartMode)
+                    val response = getResponse(prompt, model, smartMode, explicitModel)
                     println(response)
                 }
                 question != null -> {
                     println("🤖 askme CLI - Direct Question")
-                    val response = getResponse(question!!, model, smartMode)
+                    val response = getResponse(question!!, model, smartMode, explicitModel)
                     println(response)
                 }
                 else -> {
                     // Interactive mode
-                    runInteractiveMode(model, smartMode)
+                    runInteractiveMode(model, smartMode, explicitModel)
                 }
             }
         } catch (e: Exception) {
@@ -45,8 +46,16 @@ fun main(args: Array<String>) {
     }
 }
 
-suspend fun getResponse(prompt: String, provider: String, smartMode: Boolean): String {
-    return if (smartMode || provider == "auto") {
+suspend fun getResponse(prompt: String, provider: String, smartMode: Boolean, explicitModel: String?): String {
+    return if (explicitModel != null) {
+        val selectedProvider = when (provider.lowercase()) {
+            "google", "gemini" -> GoogleProvider()
+            "mistral" -> MistralProvider()
+            "llama", "together" -> LlamaProvider()
+            else -> throw IllegalArgumentException("Unknown provider for explicit model: $provider")
+        }
+        "🎯 Provider: $provider, Model: $explicitModel\n" + (selectedProvider as AIProvider).chat(prompt, explicitModel)
+    } else if (smartMode || provider == "auto") {
         IntelligentProvider.processQuery(prompt)
     } else {
         val selectedProvider = when (provider.lowercase()) {
@@ -64,7 +73,7 @@ suspend fun getResponse(prompt: String, provider: String, smartMode: Boolean): S
     }
 }
 
-suspend fun runInteractiveMode(provider: String, smartMode: Boolean) {
+suspend fun runInteractiveMode(provider: String, smartMode: Boolean, explicitModel: String?) {
     println("🤖 AskMe CLI - Interactive Mode")
     if (smartMode || provider == "auto") {
         println("🧠 Intelligent provider selection enabled")
@@ -125,7 +134,7 @@ suspend fun runInteractiveMode(provider: String, smartMode: Boolean) {
                 }
             }
             else -> {
-                val response = getResponse(input, currentProvider, currentSmartMode)
+                val response = getResponse(input, currentProvider, currentSmartMode, explicitModel)
                 println(response)
                 println()
             }
