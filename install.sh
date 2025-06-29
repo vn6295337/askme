@@ -1,5 +1,5 @@
 #!/bin/bash
-# AskMe CLI - One-Click Installer with Embedded API Keys
+# AskMe CLI - One-Click Installer
 # Version: 1.1.0
 # Compatible: Linux, macOS, Windows WSL, Android Termux
 
@@ -32,11 +32,6 @@ fi
 GITHUB_REPO="https://github.com/vn6295337/askme"
 DOWNLOAD_URL="$GITHUB_REPO/releases/download/v$ASKME_VERSION/askme-cli-v$ASKME_VERSION.tar.gz"
 
-# Embedded API Keys for immediate functionality
-# These are free tier keys for public use
-EMBEDDED_GOOGLE_KEY="AIzaSyAYlP3wsjrhEawFQnHzdVXTbju02jW3In4"
-EMBEDDED_MISTRAL_KEY="T6lcWEHFFpLITnpvVoSLK1ETO8d3VtCS"  
-EMBEDDED_LLAMA_KEY="074ea9d34d8c7b5fa83171e138e340789c7d433885863420045ef817ca0f29a4"
 
 print_banner() {
     echo -e "${PURPLE}"
@@ -197,34 +192,6 @@ setup_environment() {
     export PATH="$PATH:$BIN_DIR"
 }
 
-setup_embedded_api_keys() {
-    log_info "Configuring embedded AI providers..."
-    
-    # Determine shell config file
-    SHELL_RC="$HOME/.bashrc"
-    if [[ "$SHELL" == *"zsh"* ]]; then
-        SHELL_RC="$HOME/.zshrc"
-    fi
-    
-    # Check if API keys are already configured
-    if ! grep -q "GOOGLE_API_KEY" "$SHELL_RC" 2>/dev/null; then
-        echo "" >> "$SHELL_RC"
-        echo "# AskMe CLI - Embedded API Keys for Zero Configuration" >> "$SHELL_RC"
-        echo "export GOOGLE_API_KEY=YOUR_GOOGLE_API_KEY_HERE
-        echo "export MISTRAL_API_KEY=YOUR_MISTRAL_API_KEY_HERE
-        echo "export LLAMA_API_KEY=YOUR_LLAMA_API_KEY_HERE
-        log_success "Embedded API keys configured"
-    else
-        log_info "API keys already configured"
-    fi
-    
-    # Set for current session
-    export GOOGLE_API_KEY=YOUR_GOOGLE_API_KEY_HERE
-    export MISTRAL_API_KEY=YOUR_MISTRAL_API_KEY_HERE
-    export LLAMA_API_KEY=YOUR_LLAMA_API_KEY_HERE
-    
-    log_success "AI providers ready for immediate use!"
-}
 
 cleanup() {
     log_info "Cleaning up temporary files..."
@@ -295,7 +262,6 @@ main() {
     download_askme
     install_askme
     setup_environment
-    setup_embedded_api_keys
     cleanup
     test_installation
     print_completion
