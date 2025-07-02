@@ -1,0 +1,59 @@
+# Google Drive: Essential development files only
+# IMPORTANT: Exclusions MUST come before inclusions in rclone!
+
+# Exclude .git directory and files
+- .git/**
+- **/.git/**
+- .gitignore
+- .github/**
+
+# Exclude IDE and build directories
+- .idea/**
+- **/.idea/**
+- .vscode/**
+- **/.vscode/**
+- .gradle/**
+- **/.gradle/**
+- build/**
+- **/build/**
+- out/**
+- **/out/**
+
+# Exclude temporary and cache files
+- **/*.tmp
+- **/*~
+- **/.DS_Store
+- **/*.log
+- **/*.lock
+
+# Exclude Android-specific build files
+- **/gradle-wrapper.jar
+- **/gradle-wrapper.properties
+- **/local.properties
+- **/*.keystore
+- **/*.jks
+- **/*.apk
+- **/*.ap_
+- **/*.dex
+- **/*.so
+- **/*.class
+
+# Exclude large binary files
+- **/*.jar
+- **/*.war
+- **/*.ear
+- **/*.img
+- **/*.iso
+
+# Exclude build artifacts and generated files
+- **/captures/**
+- **/generated/**
+- **/intermediates/**
+- **/node_modules/**
+- **/target/**
+
+# Exclude development container files
+- .devcontainer/**
+
+# NOW include everything else (this MUST be last)
++ **
