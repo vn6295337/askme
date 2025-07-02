@@ -18,12 +18,12 @@
 | Mistral | **magistral-medium** | No | **NEW** | **ADD - Advanced reasoning** | Yes |
 | **Llama** | Meta-Llama-3-8B-Instruct-Turbo | Yes | Active | Keep - Fast inference | Yes |
 | Llama | Llama-3-8b-chat-hf | Yes | Active | Keep - Standard chat | Yes |
-| Llama | Meta-Llama-3-70B-Instruct-Turbo | Yes | **DEPRECATING** | **REPLACE with Llama-3.3-70B-Instruct** | Yes |
+| Llama | Meta-Llama-3-70B-Instruct-Turbo | Yes | **DEPRECATING (Not in CLI Providers.kt)** | **REPLACE with Llama-3.3-70B-Instruct** | Yes |
 | Llama | Llama-2-7b-chat-hf | Yes | Active | Optional: upgrade to Llama-3-8b-chat-hf | Yes |
 | Llama | Llama-2-13b-chat-hf | Yes | Active | Optional: upgrade to newer Llama-3 models | Yes |
-| Llama | **Llama-3.3-70B-Instruct** | No | **NEW** | **ADD - Replace 70B-Turbo** | Yes |
-| Llama | **Llama-4-Maverick** | No | **NEW** | **ADD - 400B MoE, 9-23x cheaper** | Yes |
-| Llama | **Llama-4-Scout** | No | **NEW** | **ADD - 10M context length** | Yes |
+| Llama | **Llama-3.3-70B-Instruct** | No | **NEW (Not yet in CLI Providers.kt)** | **ADD - Replace 70B-Turbo** | Yes |
+| Llama | **Llama-4-Maverick** | No | **NEW (Not yet in CLI Providers.kt)** | **ADD - 400B MoE, 9-23x cheaper** | Yes |
+| Llama | **Llama-4-Scout** | No | **NEW (Not yet in CLI Providers.kt)** | **ADD - 10M context length** | Yes |
 
 ## Priority Actions:
 - 🔴 **URGENT**: Replace Google deprecated models:

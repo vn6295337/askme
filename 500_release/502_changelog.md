@@ -20,9 +20,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 **AI Provider Integration**
 
 1. Google Gemini API integration with gemini-pro model support
-2. Mistral AI API integration with mistral-medium model support
-3. OpenAI API framework with gpt-3.5-turbo and gpt-4 preparation
-4. Anthropic API framework with Claude model preparation
+2. Google Gemini API integration with gemini-pro model support
+3. Mistral AI API integration with mistral-medium model support
+4. Llama API integration with Llama-3-8b-chat-hf model support
 5. Provider selection and automatic failover capabilities
 6. Rate limiting and quota management per provider
 

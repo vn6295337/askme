@@ -23,11 +23,11 @@
 The following technologies form the foundation of the ask me CliApp project:
 
 1.1. **Kotlin Multiplatform** - Shared business logic for Android and CLI  
-1.2. **Jetpack Compose** - Modern Android UI (versioned via Compose BOM)  
-1.3. **Ktor** - Networking (API calls, multiplatform)  
-1.4. **gRPC** - Local model server communication  
-1.5. **Koin** - Dependency injection  
-1.6. **SQLDelight** - Local database  
+1.2. **Jetpack Compose** - Modern Android UI (versioned via Compose BOM) *[Note: For planned Android app, currently deferred]*
+1.3. **Ktor** - Networking (API calls, multiplatform)
+1.4. **gRPC** - Local model server communication *[Note: Planned for future local model integration, not currently used in CLI MVP]*
+1.5. **Koin** - Dependency injection
+1.6. **SQLDelight** - Local database *[Note: For planned Android app, currently deferred]*  
 1.7. **AndroidX** - Core Android libraries  
 1.8. **JUnit, MockK, Kotest, Turbine** - Testing framework suite  
 1.9. **Detekt, ktlint** - Code quality and style enforcement  

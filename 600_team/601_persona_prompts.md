@@ -228,7 +228,7 @@ Implements shared business logic and cross-platform functionality for askme CLI 
 **LLM Usage:**  
 - **Prompt Type(s):** Architecture design, business logic implementation, CLI integration, development coordination
 - **Sample Prompts or Patterns:**  
-  - `Implement ProviderManager for CLI with graceful error handling: Create intelligent failover sequence OpenAI → Anthropic → Google → Mistral with CLI-optimized retry logic, provider health monitoring for command-line output, and comprehensive error handling with user-friendly CLI messages. Notify API Integration Specialist of provider interface requirements, coordinate with CLI Development Specialist for CLI integration points, and update AI PM on CLI implementation progress.`
+  - `- Implement ProviderManager for CLI with graceful error handling: Create intelligent failover sequence Google → Mistral → Llama with CLI-optimized retry logic, provider health monitoring for command-line output, and comprehensive error handling with user-friendly CLI messages. Notify API Integration Specialist of provider interface requirements, coordinate with CLI Development Specialist for CLI integration points, and update AI PM on CLI implementation progress.`
   - `Coordinate CLI development handoff: Core query processing pipeline completed with Flow-based response handling optimized for CLI output. Initiate handoff to CLI Development Specialist for command-line integration, provide CLI-specific API contracts, update AI PM on shared module boundaries for CLI target, and report CLI milestone completion.`
   - `Handle CLI architecture decision: CLI-specific architectural choice requiring optimization: [CLI architecture question]. Coordinate with CLI Development Specialist for CLI impact assessment, escalate to AI PM for design guidance if needed, implement CLI-optimized approach, and communicate architectural decisions to affected personas through AI PM coordination.`
 
@@ -242,7 +242,7 @@ API Integration Specialist (provider coordination), CLI Development Specialist (
 # Name: API Integration Specialist
 
 **Purpose:**  
-Implements and maintains robust integrations with 4 LLM providers (OpenAI, Anthropic, Google, Mistral) specifically optimized for CLI applications including authentication, rate limiting, response parsing, and graceful error handling for command-line interface.
+Implements and maintains robust integrations with 3 LLM providers (Google, Mistral, Llama) specifically optimized for CLI applications including authentication, rate limiting, response parsing, and graceful error handling for command-line interface.
 
 **Primary Responsibilities:**  
 - Develop OpenAI, Anthropic, Google, and Mistral provider implementations optimized for CLI usage patterns

@@ -173,38 +173,21 @@ Bug Tracking Fields:
 - Escalation Path: [Secondary provider issues → Medium priority]
 ```
 
-### 3.3 OpenAI Provider Context
+### 3.3 Llama Provider Context
 ```yaml
-Provider: OpenAI
-Status: ⬜ FRAMEWORK READY (Blocked - Paid Tier Required)
+Provider: Llama
+Status: ✅ LIVE & OPERATIONAL
 API Version: v1
-Authentication: API Key (Bearer token)
-Endpoint: https://api.openai.com/v1/chat/completions
+Authentication: API Key
+Endpoint: https://api.together.xyz/v1/chat/completions
 Failover Priority: 3 (Tertiary)
-Security Status: ✅ Certificate pinning implemented
+Security Status: ✅ Certificate pinning active
 
 Bug Tracking Fields:
-- Provider ID: OPENAI
-- Integration Status: FRAMEWORK_READY
-- Blocking Issue: Requires paid API access for testing
-- Expected Activation: Upon API access availability
-```
-
-### 3.4 Anthropic Provider Context
-```yaml
-Provider: Anthropic (Claude)
-Status: ⬜ FRAMEWORK READY (Blocked - Paid Tier Required)
-API Version: v1
-Authentication: API Key (x-api-key header)
-Endpoint: https://api.anthropic.com/v1/messages
-Failover Priority: 4 (Quaternary)
-Security Status: ✅ Certificate pinning implemented
-
-Bug Tracking Fields:
-- Provider ID: ANTHROPIC
-- Integration Status: FRAMEWORK_READY
-- Blocking Issue: Requires paid API access for testing
-- Expected Activation: Upon API access availability
+- Provider ID: LLAMA
+- Integration Status: LIVE
+- Error Codes: [Provider-specific error mapping]
+- Escalation Path: [Tertiary provider issues → Low priority]
 ```
 
 ## 4. Security Issue Classification

@@ -1,0 +1,40 @@
+# Mega: Archive and large files (~15GB)
+# IMPORTANT: Exclusions MUST come before inclusions!
+
+# Exclude .git directory (most important)
+- .git/**
+- **/.git/**
+- *.git/**
+- .git/
+- **/.git/
+- .gitignore
+- .github/**
+
+# Exclude IDE and build directories
+- .idea/**
+- **/.idea/**
+- .vscode/**
+- **/.vscode/**
+- .gradle/**
+- **/.gradle/**
+- build/**
+- **/build/**
+- out/**
+- **/out/**
+
+# Exclude temporary files
+- **/*.tmp
+- **/*~
+- **/.DS_Store
+- **/*.log
+- **/*.lock
+
+# Exclude build artifacts
+- **/node_modules/**
+- **/target/**
+- **/captures/**
+- **/generated/**
+- **/intermediates/**
+
+# Include everything else
++ **

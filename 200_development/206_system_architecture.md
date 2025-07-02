@@ -251,9 +251,9 @@ Code Changes → Quality Checks → Tests → Build → Deploy
 
 ### 9.2 Local Services
 
-1. **Ollama:** Local model serving (future)
-2. **LocalAI:** Self-hosted inference (future)
-3. **Custom Models:** GGML/ONNX support (planned)
+1. **Ollama:** Local model serving (planned for future)
+2. **LocalAI:** Self-hosted inference (planned for future)
+3. **Custom Models:** GGML/ONNX support (planned for future)
 
 ---
 

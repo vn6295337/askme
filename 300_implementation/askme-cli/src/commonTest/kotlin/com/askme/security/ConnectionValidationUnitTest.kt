@@ -9,7 +9,7 @@ import kotlin.test.assertFalse
  * Security Test: Man-in-the-Middle Attack Prevention
  * Tests HTTPS enforcement, certificate validation, and secure communication
  */
-class ManInTheMiddleTest {
+class ConnectionValidationTest {
 
     @Test
     fun testHttpsEnforcement() {

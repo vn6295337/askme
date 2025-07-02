@@ -38,9 +38,7 @@
 ┌─────────────────────────────────────────────────────────────────────────────┐
 │                            DEVELOPMENT LAYER                                │
 ├─────────────────┬─────────────────┬─────────────────┬───────────────────────┤
-│ KMP Core        │ Android UI      │ API Integration │ Security Configuration│
-│ Developer       │ Developer       │ Specialist      │ Agent                 │
-├─────────────────┼─────────────────┴─────────────────┴───────────────────────┤
+API Integration Specialist      │ Security Configuration│
 │ CLI Development │ Module Architecture Specialist                            │
 │ Specialist      │                                                           │
 └─────────────────┴───────────────────────────────────────────────────────────┘

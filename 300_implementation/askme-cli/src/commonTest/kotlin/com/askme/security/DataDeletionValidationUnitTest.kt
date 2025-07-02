@@ -11,7 +11,7 @@ import kotlin.test.assertNotNull
  * Security Test: Secure Data Deletion
  * Tests secure deletion of sensitive data including API keys, configuration, and temporary files
  */
-class SecureDeletionTest {
+class DataDeletionValidationTest {
 
     @Test
     fun testApiKeySecureDeletion() {

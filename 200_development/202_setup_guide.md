@@ -172,6 +172,8 @@ export PATH=$PATH:$ANDROID_HOME/platform-tools
 
 ### 2.5 Run Local LLM (Optional)
 
+**Note: Local LLM support is not yet fully integrated into the askme CLI application. These steps are for setting up a local LLM server, but the application will not use it by default in the current MVP.**
+
 ```bash
 # Using Ollama
 docker run -d --name ollama -p 11434:11434 ollama/ollama

@@ -8,67 +8,25 @@ This document outlines current limitations, known issues, and workarounds for as
 
 ## Provider Limitations
 
-### OpenAI Integration
+### Deprecated Models (Backend Updated, CLI `Providers.kt` needs update)
 
-**Status**: Framework Ready - Blocked by API Access Requirements
+**Google Deprecated Models**
+*   `gemini-1.0-pro`: **REMOVE** - Returns 404
+*   `gemini-pro`: **REMOVE** - Returns 404
 
-**Issue Description**
+**Llama Deprecating Models**
+*   `meta-llama/Meta-Llama-3-70B-Instruct-Turbo`: **REPLACE** with `meta-llama/Llama-3.3-70B-Instruct` (by June 30, 2025)
 
-OpenAI integration is implemented and tested but currently blocked due to paid tier requirements for API access.
+*(No other provider-specific limitations in CLI MVP beyond general network connectivity)*
 
-**Current State**
+### Deprecated Models (Backend Updated, CLI `Providers.kt` needs update)
 
-1. Framework implementation complete with gpt-3.5-turbo and gpt-4 support
-2. Authentication system ready with Bearer token implementation
-3. Error handling and retry logic fully implemented
-4. Integration tests prepared but cannot execute without API access
+**Google Deprecated Models**
+*   `gemini-1.0-pro`: **REMOVE** - Returns 404
+*   `gemini-pro`: **REMOVE** - Returns 404
 
-**Impact**
-
-1. Users cannot access OpenAI models (ChatGPT, GPT-4) through askme CLI
-2. Provider selection limited to Google Gemini and Mistral AI for immediate use
-3. Fallback functionality works correctly when OpenAI configured but unavailable
-
-**Workaround**
-
-1. Use Google Gemini or Mistral AI as primary providers (both offer free tiers)
-2. Configure OpenAI credentials when API access becomes available
-3. Framework will automatically activate upon valid API key configuration
-
-**Expected Resolution**
-
-Integration will become fully operational upon API key provisioning. No code changes required.
-
-### Anthropic Integration
-
-**Status**: Framework Ready - Blocked by API Access Requirements
-
-**Issue Description**
-
-Anthropic (Claude) integration is implemented and tested but currently blocked due to paid tier requirements for API access.
-
-**Current State**
-
-1. Framework implementation complete with Claude-3-Sonnet and Claude-3-Opus support
-2. Authentication system ready with x-api-key header implementation
-3. Request/response handling fully implemented and tested
-4. Provider health monitoring prepared for activation
-
-**Impact**
-
-1. Users cannot access Anthropic Claude models through askme CLI
-2. Advanced reasoning capabilities available only through other providers
-3. Fallback system functions correctly when Anthropic configured but unavailable
-
-**Workaround**
-
-1. Use Google Gemini for fast responses and general queries
-2. Use Mistral AI for detailed analysis and comprehensive explanations
-3. Configure Anthropic credentials when API access becomes available
-
-**Expected Resolution**
-
-Integration will become fully operational upon API key provisioning. No code changes required.
+**Llama Deprecating Models**
+*   `meta-llama/Meta-Llama-3-70B-Instruct-Turbo`: **REPLACE** with `meta-llama/Llama-3.3-70B-Instruct` (by June 30, 2025)
 
 ## Platform Limitations
 

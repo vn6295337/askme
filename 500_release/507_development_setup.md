@@ -195,15 +195,10 @@ cat > ~/.askme/config.json << 'EOF'
       "model": "mistral-medium",
       "enabled": true
     },
-    "openai": {
-      "api_key": "your-development-openai-key",
-      "model": "gpt-3.5-turbo",
-      "enabled": false
-    },
-    "anthropic": {
-      "api_key": "your-development-anthropic-key", 
-      "model": "claude-3-sonnet",
-      "enabled": false
+    "llama": {
+      "api_key": "your-development-llama-key",
+      "model": "meta-llama/Llama-3-8b-chat-hf",
+      "enabled": true
     }
   },
   "default_provider": "google",
@@ -231,7 +226,7 @@ chmod 600 ~/.askme/config.json
 ./gradlew build
 
 # Build CLI distribution
-./gradlew cliApp:installDist
+./gradlew :cliApp:installDist
 ```
 
 **Verify Build**
@@ -252,13 +247,7 @@ ls -la cliApp/build/install/cliApp/bin/
 ./gradlew test
 
 # Run specific module tests
-./gradlew cliApp:test
-
-# Run tests with coverage
-./gradlew test jacocoTestReport
-
-# View test results
-open cliApp/build/reports/tests/test/index.html
+./gradlew :cliApp:test
 ```
 
 **Integration Tests**
@@ -329,7 +318,10 @@ git branch
 ./gradlew test
 
 # Test CLI functionality
-./gradlew cliApp:run --args="test query"
+./gradlew :cliApp:run --args="test query"
+
+# Run in interactive mode
+./gradlew :cliApp:run --args=""
 
 # Check code quality
 ./gradlew ktlintCheck detekt

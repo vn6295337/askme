@@ -1,6 +1,6 @@
 #!/bin/bash
 # AskMe CLI - One-Click Installer
-# Version: 1.1.0
+# Version: 1.2.1
 # Compatible: Linux, macOS, Windows WSL, Android Termux
 
 set -e
@@ -32,14 +32,13 @@ fi
 GITHUB_REPO="https://github.com/vn6295337/askme"
 DOWNLOAD_URL="$GITHUB_REPO/releases/download/v$ASKME_VERSION/askme-cli-v$ASKME_VERSION.tar.gz"
 
-
 print_banner() {
     echo -e "${PURPLE}"
     echo "╔═══════════════════════════════════════════════════════════╗"
     echo "║                                                           ║"
     echo "║                    🤖 ASKME CLI v$ASKME_VERSION                    ║"
     echo "║                                                           ║"
-    echo "║              Smart AI Assistant Installer                ║"
+    echo "║              Smart AI Assistant Installer                 ║"
     echo "║                 Zero Configuration Required               ║"
     echo "║                                                           ║"
     echo "╚═══════════════════════════════════════════════════════════╝"
@@ -192,7 +191,6 @@ setup_environment() {
     export PATH="$PATH:$BIN_DIR"
 }
 
-
 cleanup() {
     log_info "Cleaning up temporary files..."
     rm -rf "$TEMP_DIR"
@@ -226,27 +224,26 @@ print_completion() {
     echo "╚═══════════════════════════════════════════════════════════╝"
     echo -e "${NC}"
     echo
-    echo -e "${CYAN}🚀 Ready to Use Immediately:${NC}"
+    echo -e "${CYAN}🚀 Ready to Use:${NC}"
     echo "1. Start AI assistant: ${YELLOW}askme${NC}"
     echo "2. Ask any question: ${YELLOW}askme \"What is artificial intelligence?\"${NC}"
-    echo "3. Interactive mode: ${YELLOW}askme${NC} (default)"
-    echo "4. Switch providers: Type ${YELLOW}switch mistral${NC} in interactive mode"
-    echo "5. View help: ${YELLOW}askme --help${NC}"
+    echo "3. Interactive mode: ${YELLOW}askme -i${NC}"
+    echo "4. View help: ${YELLOW}askme --help${NC}"
     echo
     echo -e "${GREEN}✨ Zero Configuration Required! ✨${NC}"
-    echo "🤖 Google Gemini, Mistral AI, and Llama are ready to use"
-    echo "🔄 Interactive mode enabled by default"
+    echo "🤖 Google Gemini and Mistral AI are ready to use"
+    echo "🔄 Interactive mode for continuous conversations"
     echo "📱 Optimized for mobile and desktop use"
     echo
     echo -e "${CYAN}Example Usage:${NC}"
-    echo "${YELLOW}askme${NC}                           ${BLUE}# Start interactive session${NC}"
     echo "${YELLOW}askme \"Explain quantum computing\"${NC}  ${BLUE}# Quick question${NC}"
-    echo "${YELLOW}askme -s \"Best programming language\"${NC} ${BLUE}# Smart mode${NC}"
+    echo "${YELLOW}askme -i${NC}                          ${BLUE}# Start interactive session${NC}"
+    echo "${YELLOW}askme -m mistral \"Write a poem\"${NC}   ${BLUE}# Use specific model${NC}"
     echo
     echo -e "${PURPLE}Documentation: $GITHUB_REPO${NC}"
     echo -e "${PURPLE}Support: $GITHUB_REPO/issues${NC}"
     echo
-    echo -e "${CYAN}💡 Pro Tip: Simply type ${YELLOW}askme${NC} to start chatting with AI!${NC}"
+    echo -e "${CYAN}💡 Pro Tip: Simply type ${YELLOW}askme${NC} followed by your question!${NC}"
     echo
 }
 
@@ -254,7 +251,7 @@ print_completion() {
 main() {
     print_banner
     
-    log_info "Starting zero-configuration AskMe CLI installation..."
+    log_info "Starting AskMe CLI installation..."
     echo
     
     check_requirements

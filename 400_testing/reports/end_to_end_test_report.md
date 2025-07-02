@@ -185,6 +185,11 @@ val question by parser.argument(ArgType.String, description = "Direct question t
 
 # Output
 💬 Response: ❌ Provider openai not implemented yet
+
+./cliApp/build/install/cliApp/bin/cliApp -m anthropic -f test_question.txt
+
+# Output
+💬 Response: ❌ Provider anthropic not implemented yet
 ```
 
 ### 6. Edge Case Testing

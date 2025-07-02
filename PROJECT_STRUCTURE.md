@@ -3,8 +3,8 @@
 ## Root Level Organization
 ```
 askme/
-├── 001_readme.md                   # Main project overview
-├── 002_project_structure.md        # Project organization (this file)
+├── README.md                   # Main project overview
+├── PROJECT_STRUCTURE.md        # Project organization (this file)
 ├── 100_planning/                   # Project Planning & Management
 ├── 200_development/                # Technical Development Documentation
 ├── 300_implementation/             # Source Code & Applications
@@ -14,8 +14,8 @@ askme/
 ├── 700_scripts/                    # Development Tools & Scripts
 ├── 800_misc_docs/                  # Miscellaneous Documentation & Assets
 ├── build-release/                  # Production Build Distribution
-├── install.sh                     # Installation script
-└── release_workflow.yaml          # Release automation workflow
+├── INSTALL.sh                     # Installation script
+└── RELEASE_WORKFLOW.yaml          # Release automation workflow
 ```
 
 ## 100_planning/ - Project Planning & Management
@@ -80,10 +80,10 @@ askme/
     │   └── screenshots/            # CLI demonstration images
     └── src/                        # Shared source code
         └── commonTest/kotlin/com/askme/security/ # Security test suites
-            ├── ManInTheMiddleTest.kt
-            ├── SecureDeletionTest.kt
-            ├── SqlInjectionTest.kt
-            └── UnauthorizedFileAccessTest.kt
+            ├── ConnectionValidationUnitTest.kt
+            ├── DataDeletionValidationUnitTest.kt
+            ├── FileAccessValidationUnitTest.kt
+            └── InputValidationUnitTest.kt
 ```
 
 ## 400_testing/ - Quality Assurance & Testing
@@ -102,11 +102,12 @@ askme/
 
 ## 500_release/ - Release Management & Documentation
 ```
-├── 501_readme.md                   # Main project README
-├── 502_license                     # License information
-├── 503_changelog.md                # Version change log
-├── 504_release_notes.md            # Release notes and updates
-├── 505_user_guide.md               # Complete CLI user guide
+
+├── 501_license                     # License information
+├── 502_changelog.md                # Version change log
+├── 503_release_notes.md            # Release notes and updates
+├── 504_user_guide.md               # Complete CLI user guide
+├── 505_user_guide_simplified.md    # Simplified user guide for executives
 ├── 506_api_docs.md                 # Technical API documentation
 ├── 507_development_setup.md        # Development environment setup
 ├── 508_contributing.md             # Contribution guidelines
@@ -122,21 +123,23 @@ askme/
 
 ## 700_scripts/ - Development Tools & Automation
 ```
+├── 700_TIER4_MEGA_ARCHIVE_filter # Filter for mega archive
 ├── 701_sync_script.sh              # Cloud storage synchronization
 ├── 702_env_check.sh                # Environment validation script
 ├── 703_cli_automation.sh           # CLI automation utilities
 ├── 704_cli_performance_test.sh     # Performance testing script
-├── 704_installer.sh                # Installation automation script
 ├── 705_build_release.sh            # Release build automation
-└── tiered_sync.log                 # Synchronization operation logs
+└── 707_tiered_sync.log                 # Synchronization operation logs
 ```
 
 ## 800_misc_docs/ - Miscellaneous Documentation & Assets
 ```
-├── api_model_update_plan.md        # API model update strategy
-├── API Provider Model Status Table.pdf # Provider status reference
-├── api_provider_status_table.md    # Provider status documentation
-└── askme-cli_demo.mp4              # CLI demonstration video
+├── 801_api_model_update_plan.md        # API model update strategy
+├── 802_api_provider_status_table.md    # Provider status documentation
+├── 803_api_provider_status_table.pdf # Provider status reference
+├── 804_askme-cli_demo.mp4              # CLI demonstration video
+├── 805_llm_selection.html              # LLM selection diagram (HTML)
+└── 806_llm_selection.png               # LLM selection diagram (PNG)
 ```
 
 ## build-release/ - Production Distribution

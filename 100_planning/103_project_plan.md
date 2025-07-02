@@ -74,6 +74,9 @@ echo "What is artificial intelligence?" > test.txt
 
 # Mistral AI (Free) ✅ WORKING  
 ./gradlew cliApp:run --args="-f test.txt -m mistral" --quiet
+
+# Llama (Free) ✅ WORKING
+./gradlew cliApp:run --args="-f test.txt -m llama" --quiet
 ```
 
 ---

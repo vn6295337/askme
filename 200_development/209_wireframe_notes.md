@@ -20,7 +20,9 @@
 
 ## 1. Wireframe Status
 
-✅ **Text-based wireframe created as cli-chat-flow.txt**
+✅ **Text-based wireframe content is expected to be in `208_cli_wireframes.txt`**
+
+*Note: Please ensure the file `208_cli_wireframes.txt` exists in the same directory (`200_development/`) and contains the CLI wireframe specifications. If it is missing, please create it with the relevant wireframe content.*
 
 ## 2. Documentation Format
 

@@ -9,7 +9,7 @@ import kotlin.test.assertFalse
  * Security Test: Unauthorized File Access Prevention
  * Tests that the application properly restricts file access outside allowed directories
  */
-class UnauthorizedFileAccessTest {
+class FileAccessValidationTest {
 
     @Test
     fun testPreventAccessToSystemFiles() {

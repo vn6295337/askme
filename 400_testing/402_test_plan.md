@@ -79,17 +79,7 @@
 - ✅ Rate limiting compliance and handling
 
 #### 2.2.2 Framework Provider Preparation
-**OpenAI Provider**:
-- ⬜ Integration framework (blocked by paid tier requirement)
-- ✅ Authentication system ready for activation
-- ✅ Testing procedures documented and prepared
-- ✅ Framework ready for immediate activation
-
-**Anthropic Provider**:
-- ⬜ Claude integration (blocked by paid tier requirement)
-- ✅ Security framework implemented and ready
-- ✅ Performance testing framework prepared
-- ✅ Documentation and procedures complete
+*(No framework-ready providers in CLI MVP)*
 
 ### 2.3 Environment Limitations and Risk Mitigation
 

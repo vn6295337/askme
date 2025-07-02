@@ -198,13 +198,14 @@ iptables -D OUTPUT -d gemini-api.google.com -j DROP
 # Provider performance testing
 time ./askme -p google "Explain machine learning" > google_response.txt
 time ./askme -p mistral "Explain machine learning" > mistral_response.txt
+time ./askme -p llama "Explain machine learning" > llama_response.txt
 # Compare response times and quality
 ```
 
 **Expected Performance Validation Points**:
-- ✅ Both providers return valid responses
+- ✅ All providers return valid responses
 - ✅ Response times within acceptable limits
-- ✅ Quality comparison data for optimization
+- �� Quality comparison data for optimization
 - ✅ Provider selection guidance for users
 
 ## 4. Performance Testing Scenarios

@@ -4,6 +4,8 @@ import kotlinx.coroutines.withTimeoutOrNull
 
 object IntelligentProvider {
     
+    private const val DEFAULT_REQUEST_TIMEOUT_MS = 30000L // 30 seconds
+
     private val providers = listOf(
         GoogleProvider(),
         MistralProvider(),
@@ -64,7 +66,7 @@ object IntelligentProvider {
         
         return try {
             // Try with timeout
-            withTimeoutOrNull(30000) {
+            withTimeoutOrNull(DEFAULT_REQUEST_TIMEOUT_MS) {
                 provider.chat(prompt)
             } ?: "❌ Timeout: Request took too long"
             
@@ -119,13 +121,11 @@ object IntelligentProvider {
                 }
             }
             
-            stats.copy().apply { 
-                // Create a new instance with updated score for ranking
-            }
+            stats to score
         }
         
         // Sort by performance and suitability
-        return scoredProviders.sortedByDescending { it.score }
+        return scoredProviders.sortedByDescending { it.second }.map { it.first }
     }
     
     private fun getAnalysisSummary(analysis: PromptAnalysis): String {

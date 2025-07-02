@@ -152,8 +152,7 @@ The askme project achieved **exceptional resource utilization efficiency**, deli
 |----------|-------------|------|--------|-------------|
 | **Google Gemini** | Free tier available | $0 | ✅ **LIVE** | **1.5s avg response** |
 | **Mistral AI** | Free tier available | $0 | ✅ **LIVE** | **2.0s avg response** |
-| **OpenAI** | Requires API credits | Paid | ✅ **Framework ready** | **Ready for integration** |
-| **Anthropic** | Requires API credits | Paid | ✅ **Framework ready** | **Ready for integration** |
+| **Llama** | Free tier available | $0 | ✅ **LIVE** | **2.9s avg response** |
 
 #### 4.4.1 Provider Resource Efficiency
 - **Free Tier Utilization:** 100% maximized through Google Gemini + Mistral

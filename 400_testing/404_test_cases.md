@@ -400,7 +400,7 @@ fun `should prevent NoSQL injection attacks`() {
 
 #### TC-SEC-010: API Key Secure Deletion
 **Test Case**: Verify secure deletion of API keys from memory  
-**Implementation**: `SecureDeletionTest.kt`  
+**Implementation**: `DataDeletionValidationUnitTest.kt`  
 **Scenario Reference**: [403_test_scenarios.md](403_test_scenarios.md) - Section 2.2
 
 **Test Steps**:
@@ -567,7 +567,10 @@ fun `should clean all sensitive data on application shutdown`() {
 1. Block primary provider (Google) access
 2. ./askme "Test failover functionality"
 3. Verify automatic switch to secondary (Mistral)
-4. Restore primary provider access
+4. Block secondary provider (Mistral) access
+5. ./askme "Test failover functionality"
+6. Verify automatic switch to tertiary (Llama)
+7. Restore primary and secondary provider access
 ```
 
 **Expected Results**:
@@ -577,6 +580,50 @@ fun `should clean all sensitive data on application shutdown`() {
 - ✅ Automatic recovery when primary available
 
 **Status**: ✅ **IMPLEMENTED** - Failover logic operational
+
+### 3.3 Llama Provider Tests
+
+#### TC-PROV-005: Llama Authentication Testing
+**Test Case**: Validate Llama API authentication  
+**Pre-conditions**: Valid Llama API key configured  
+**Scenario Reference**: [403_test_scenarios.md](403_test_scenarios.md) - Section 3.2
+
+**Test Steps**:
+```bash
+1. ./askme -p llama "Test Llama authentication"
+2. Verify API authentication process
+3. Test authentication error handling
+4. Validate secure key transmission
+```
+
+**Expected Results**:
+- ✅ Successful Llama API authentication
+- ✅ Proper error handling for auth issues
+- ✅ Secure API communication
+- ✅ Clear error reporting
+
+**Status**: ✅ **LIVE & OPERATIONAL** - Llama integration working
+
+#### TC-PROV-006: Llama Response Processing
+**Test Case**: Validate response parsing and handling  
+**Pre-conditions**: Successful Llama authentication  
+**Scenario Reference**: [403_test_scenarios.md](403_test_scenarios.md) - Section 3.2
+
+**Test Steps**:
+```bash
+1. ./askme -p llama "What is the capital of France?"
+2. Verify response format and content
+3. Test with various query types
+4. Measure response processing time
+```
+
+**Expected Results**:
+- ✅ Responses parsed correctly
+- ✅ Content formatted properly for CLI display
+- ✅ Various query types handled appropriately
+- ✅ Processing time within performance targets
+
+**Status**: ✅ **LIVE & OPERATIONAL** - Response processing working
 
 ## 4. Performance Benchmark Test Cases
 

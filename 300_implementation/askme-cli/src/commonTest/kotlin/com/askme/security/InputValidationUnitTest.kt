@@ -9,7 +9,7 @@ import kotlin.test.assertFalse
  * Security Test: SQL Injection Prevention
  * Tests input sanitization and validation to prevent SQL injection attacks
  */
-class SqlInjectionTest {
+class InputValidationTest {
 
     @Test
     fun testBasicSqlInjectionPrevention() {

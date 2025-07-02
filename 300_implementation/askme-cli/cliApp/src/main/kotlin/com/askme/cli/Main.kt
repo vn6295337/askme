@@ -46,29 +46,29 @@ fun main(args: Array<String>) {
     }
 }
 
+fun getSpecificAIProvider(providerName: String): AIProvider? {
+    return when (providerName.lowercase()) {
+        "google", "gemini" -> GoogleProvider()
+        "mistral" -> MistralProvider()
+        "llama", "together" -> LlamaProvider()
+        else -> null
+    }
+}
+
 suspend fun getResponse(prompt: String, provider: String, smartMode: Boolean, explicitModel: String?): String {
     return if (explicitModel != null) {
-        val selectedProvider = when (provider.lowercase()) {
-            "google", "gemini" -> GoogleProvider()
-            "mistral" -> MistralProvider()
-            "llama", "together" -> LlamaProvider()
-            else -> throw IllegalArgumentException("Unknown provider for explicit model: $provider")
-        }
-        "🎯 Provider: $provider, Model: $explicitModel\n" + (selectedProvider as AIProvider).chat(prompt, explicitModel)
+        val selectedProvider = getSpecificAIProvider(provider)
+            ?: throw IllegalArgumentException("Unknown provider for explicit model: $provider")
+        "🎯 Provider: $provider, Model: $explicitModel\n" + selectedProvider.chat(prompt, explicitModel)
     } else if (smartMode || provider == "auto") {
         IntelligentProvider.processQuery(prompt)
     } else {
-        val selectedProvider = when (provider.lowercase()) {
-            "google", "gemini" -> GoogleProvider()
-            "mistral" -> MistralProvider()
-            "llama", "together" -> LlamaProvider()
-            else -> IntelligentProvider
-        }
-        
-        if (selectedProvider is IntelligentProvider) {
-            selectedProvider.processQuery(prompt)
+        val selectedProvider = getSpecificAIProvider(provider)
+        if (selectedProvider != null) {
+            "🎯 Provider: $provider\n" + selectedProvider.chat(prompt)
         } else {
-            "🎯 Provider: $provider\n" + (selectedProvider as AIProvider).chat(prompt)
+            // Fallback to intelligent provider if a specific one isn't found or "auto" is used
+            IntelligentProvider.processQuery(prompt)
         }
     }
 }

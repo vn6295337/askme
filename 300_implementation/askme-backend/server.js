@@ -178,7 +178,7 @@ app.post("/api/query", async (req, res) => {
     });
     
   } catch (error) {
-    console.error(`❌ ${req.body.provider || 'Unknown'} API Error:`, error.message);
+    console.error(`❌ ${req.body.provider || 'Unknown'} API Error:`, error);
     
     // Better error handling
     if (error.response) {
@@ -239,9 +239,58 @@ app.post('/api/smart', async (req, res) => {
     selectedProvider = 'google';   // Mathematical tasks
   }
   
-  // Forward to regular query endpoint
-  req.body.provider = selectedProvider;
-  return app._router.handle({ ...req, method: 'POST', url: '/api/query' }, res);
+  try {
+    const providerConfig = PROVIDERS[selectedProvider];
+    if (!providerConfig) {
+      return res.status(400).json({ 
+        error: `Unsupported provider: ${selectedProvider}`,
+        availableProviders: Object.keys(PROVIDERS)
+      });
+    }
+    
+    const apiKey = API_KEYS[selectedProvider];
+    if (!apiKey) {
+      return res.status(500).json({ 
+        error: `API key not configured for ${selectedProvider}`,
+        provider: selectedProvider
+      });
+    }
+    
+    const url = providerConfig.url(apiKey, null);
+    const headers = providerConfig.headers(apiKey);
+    const requestBody = providerConfig.formatRequest(prompt, null);
+    
+    console.log(`📡 ${selectedProvider} request: default model`);
+    
+    const response = await axios.post(url, requestBody, { headers });
+    const result = providerConfig.extractResponse(response.data);
+    
+    res.json({ 
+      response: result, 
+      provider: selectedProvider, 
+      model: providerConfig.models[0],
+      timestamp: new Date().toISOString()
+    });
+    
+  } catch (error) {
+    console.error(`❌ ${selectedProvider} API Error:`, error);
+    
+    if (error.response) {
+      const status = error.response.status;
+      const message = error.response.data?.error?.message || error.message;
+      
+      return res.status(status).json({
+        error: `${selectedProvider} API Error: ${message}`,
+        provider: selectedProvider,
+        statusCode: status
+      });
+    }
+    
+    res.status(500).json({ 
+      error: "Internal server error",
+      provider: selectedProvider
+    });
+  }
 });
 
 // Error handling middleware
@@ -255,9 +304,13 @@ app.use((err, req, res, next) => {
 
 // 404 handler
 app.use('*', (req, res) => {
+  const availableEndpoints = app._router.stack
+    .filter(r => r.route && r.route.path)
+    .map(r => r.route.path)
+    .filter(path => !path.includes('*')); // Exclude the catch-all route itself
   res.status(404).json({ 
     error: 'Endpoint not found',
-    availableEndpoints: ['/health', '/api/query', '/api/providers', '/api/smart']
+    availableEndpoints
   });
 });
 

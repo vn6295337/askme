@@ -53,8 +53,6 @@
 
 **Android Development**: Currently blocked due to SDK infrastructure issues. CLI MVP provides complete functionality.
 
-**Paid Provider Testing**: OpenAI and Anthropic integration requires paid API access.
-
 ---
 
 ## 🎯 Welcome Contributors

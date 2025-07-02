@@ -16,13 +16,21 @@ askme CLI 1.0.0 delivers production-ready AI integration with multiple providers
 
 **1. Multi-Provider AI Integration**
 
-Live integration with four major AI providers:
-1. Google Gemini - Fast, concise responses (Live & Operational)
-2. Mistral AI - Detailed, comprehensive responses (Live & Operational)  
-3. OpenAI - Framework ready (Requires API access)
-4. Anthropic - Framework ready (Requires API access)
+Live integration with three major AI providers:
+1. Google Gemini (`google`) - Fast, concise responses (Live & Operational)
+2. Mistral AI (`mistral`) - Detailed, comprehensive responses (Live & Operational)  
+3. Llama (`llama`) - via Together.ai (Live & Operational)
+4. OpenAI - Framework ready (Requires API access)
+5. Anthropic - Framework ready (Requires API access)
 
-**2. Privacy-First Architecture**
+**2. Smart Provider Selection**
+
+Intelligent provider selection based on the prompt:
+1. Automatically routes queries to the best provider.
+2. Analyzes prompt complexity to choose the right model.
+3. Provides provider performance statistics.
+
+**3. Privacy-First Architecture**
 
 Zero data collection implementation:
 1. Direct API communication without intermediary storage
@@ -31,10 +39,10 @@ Zero data collection implementation:
 4. No usage tracking or analytics collection
 5. Memory protection with automatic cleanup
 
-**3. Professional CLI Interface**
+**4. Professional CLI Interface**
 
 Command-line interface with enterprise features:
-1. Interactive mode with command history
+1. Interactive mode with command history and provider switching.
 2. File-based batch processing capabilities
 3. Multiple output formats and redirection
 4. Comprehensive help and configuration management
@@ -92,6 +100,11 @@ Robust error management for production reliability:
 2. Comprehensive error messages with actionable guidance
 3. Automatic retry logic with exponential backoff
 4. Network connectivity detection and reporting
+
+### Fixes
+
+- **Improved Deserialization:** Made the `model` field in the backend request optional. This prevents errors when the backend proxy returns a response without specifying the model, making the CLI more resilient.
+
 
 ### Supported Environments
 
@@ -176,10 +189,8 @@ Not applicable - This is the initial production release.
 **1. Provider Dependencies**
 
 Current limitations affecting some provider access:
-1. OpenAI integration requires paid API tier for testing
-2. Anthropic integration requires paid API access for activation
-3. Free tier quotas may limit usage for high-volume scenarios
-4. Network connectivity required for all AI provider operations
+1. Free tier quotas may limit usage for high-volume scenarios
+2. Network connectivity required for all AI provider operations
 
 **2. Platform Constraints**
 

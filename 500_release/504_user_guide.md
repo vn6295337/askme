@@ -220,19 +220,12 @@ Provider C: 70% success rate, 3 seconds response = Score: 1.2
 |----------|------------|---------|
 | **Google Gemini** | gemini-1.5-flash | Fastest responses for quick questions and high-volume tasks |
 | | gemini-1.5-flash-8b | Lightweight version optimized for speed and efficiency |
-| | gemini-1.0-pro | Balanced performance for general business applications |
-| | gemini-pro | Standard model for reliable everyday use |
-| | gemini-1.5-pro | Advanced model for complex reasoning and analysis |
 | **Mistral AI** | mistral-small-latest | Fast, efficient responses for straightforward queries |
 | | open-mistral-7b | Open-source model for basic conversational tasks |
 | | open-mixtral-8x7b | Larger model for more sophisticated responses |
 | | open-mixtral-8x22b | High-capacity model for complex problem solving |
 | | mistral-medium-latest | Premium model for detailed analysis and reasoning |
-| **Llama** | Meta-Llama-3-8B-Instruct-Turbo | Latest fast model optimized for instruction following |
-| | Llama-3-8b-chat-hf | Standard conversational model with good performance |
-| | Meta-Llama-3-70B-Instruct-Turbo | Large model for complex tasks requiring deep reasoning |
-| | Llama-2-7b-chat-hf | Reliable older model for basic conversational needs |
-| | Llama-2-13b-chat-hf | Medium-sized model balancing speed and capability |
+| **Llama** | meta-llama/Llama-3-8b-chat-hf | Standard conversational model with good performance |
 
 ---
 

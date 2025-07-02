@@ -15,9 +15,7 @@
 6. **Quality Assurance**: Zero code violations, comprehensive testing
 
 ### ❌ BLOCKED (Paid Tier Required)
-1. **OpenAI Provider**: Requires paid API access
-2. **Anthropic Provider**: Requires paid API access
-3. **Android Application**: Blocked by SDK infrastructure issues
+*(No blocked providers in CLI MVP)*
 
 ### 🎯 Performance Metrics
 1. **Response Time**: 1.92s average (target <2s ✅ EXCEEDED)
@@ -169,7 +167,7 @@ class GoogleProvider(private val apiKey: String) : AiProvider {
 **Request Format**:
 ```kotlin
 data class GoogleRequest(
-    override val model: String = "gemini-pro",
+    override val model: String = "gemini-1.5-flash",
     override val prompt: String,
     override val maxTokens: Int = 2000,
     override val temperature: Float = 0.7f,
@@ -203,7 +201,7 @@ class MistralProvider(private val apiKey: String) : AiProvider {
 **Request Format**:
 ```kotlin
 data class MistralRequest(
-    override val model: String = "mistral-medium",
+    override val model: String = "mistral-small-latest",
     override val prompt: String,
     override val maxTokens: Int = 2000,
     override val temperature: Float = 0.7f,
@@ -218,23 +216,23 @@ data class ChatMessage(
 )
 ```
 
-### 3. OpenAI Provider (Framework Ready)
+### 3. Llama Provider (Live)
 
-**Endpoint**: `https://api.openai.com/v1/chat/completions`
+**Endpoint**: `https://api.together.xyz/v1/chat/completions`
 
 **Implementation**:
 ```kotlin
-class OpenAIProvider(private val apiKey: String) : AiProvider {
+class LlamaProvider(private val apiKey: String) : AiProvider {
     override suspend fun query(request: QueryRequest): Flow<QueryResponse> {
         val httpRequest = HttpRequest.Builder()
             .url("$baseUrl/chat/completions")
             .header("Authorization", "Bearer $apiKey")
-            .post(request.toOpenAIFormat())
+            .post(request.toLlamaFormat())
             .build()
         
         return flow {
             val response = httpClient.execute(httpRequest)
-            emit(response.toQueryResponse("openai"))
+            emit(response.toQueryResponse("llama"))
         }
     }
 }
@@ -242,147 +240,14 @@ class OpenAIProvider(private val apiKey: String) : AiProvider {
 
 **Request Format**:
 ```kotlin
-data class OpenAIRequest(
-    override val model: String = "gpt-3.5-turbo",
+data class LlamaRequest(
+    override val model: String = "meta-llama/Llama-3-8b-chat-hf",
     override val prompt: String,
     override val maxTokens: Int = 2000,
     override val temperature: Float = 0.7f,
     override val topP: Float = 0.9f,
     override val stream: Boolean = false,
     val messages: List<ChatMessage>
-) : LLMRequest
-```
-
-### 4. Anthropic Provider (Framework Ready)
-
-**Endpoint**: `https://api.anthropic.com/v1/messages`
-
-**Implementation**:
-```kotlin
-class AnthropicProvider(private val apiKey: String) : AiProvider {
-    override suspend fun query(request: QueryRequest): Flow<QueryResponse> {
-        val httpRequest = HttpRequest.Builder()
-            .url("$baseUrl/messages")
-            .header("x-api-key", apiKey)
-            .header("anthropic-version", "2023-06-01")
-            .post(request.toAnthropicFormat())
-            .build()
-        
-        return flow {
-            val response = httpClient.execute(httpRequest)
-            emit(response.toQueryResponse("anthropic"))
-        }
-    }
-}
-```
-
-**Request Format**:
-```kotlin
-data class AnthropicRequest(
-    override val model: String = "claude-3-sonnet-20240229",
-    override val prompt: String,
-    override val maxTokens: Int = 2000,
-    override val temperature: Float = 0.7f,
-    override val topP: Float = 0.9f,
-    override val stream: Boolean = false,
-    val messages: List<AnthropicMessage>
-) : LLMRequest
-
-data class AnthropicMessage(
-    val role: String = "user",
-    val content: String
-)
-```
-
-### 5. Local Ollama Provider (Extensible)
-
-**Endpoint**: `http://localhost:11434/api/generate`
-
-**Implementation**:
-```kotlin
-class OllamaProvider(private val baseUrl: String = "http://localhost:11434") : AiProvider {
-    override suspend fun query(request: QueryRequest): Flow<QueryResponse> {
-        val httpRequest = HttpRequest.Builder()
-            .url("$baseUrl/api/generate")
-            .post(request.toOllamaFormat())
-            .build()
-        
-        return flow {
-            val response = httpClient.execute(httpRequest)
-            emit(response.toQueryResponse("ollama"))
-        }
-    }
-}
-```
-
-**Request Format**:
-```kotlin
-data class OllamaRequest(
-    override val model: String,
-    override val prompt: String,
-    override val maxTokens: Int = 2000,
-    override val temperature: Float = 0.7f,
-    override val topP: Float = 0.9f,
-    override val stream: Boolean = false,
-    val context: List<Int>? = null
-) : LLMRequest
-```
-
-**Response Format**:
-```kotlin
-data class OllamaResponse(
-    override val model: String,
-    val createdAt: String,
-    val response: String,
-    val done: Boolean,
-    val context: List<Int>?,
-    val totalDuration: Long?,
-    val loadDuration: Long?,
-    val promptEvalCount: Int?,
-    val evalCount: Int?,
-    val evalDuration: Long?
-) {
-    override val id: String = UUID.randomUUID().toString()
-    override val choices: List<Choice> = listOf(Choice(response, 0, if (done) "stop" else null))
-    override val usage: Usage = Usage(
-        promptEvalCount ?: 0,
-        evalCount ?: 0,
-        (promptEvalCount ?: 0) + (evalCount ?: 0)
-    )
-}
-```
-
-### 6. LocalAI Provider (Extensible)
-
-**Endpoint**: `http://localhost:8080/v1/completions`
-
-**Implementation**:
-```kotlin
-class LocalAIProvider(private val baseUrl: String = "http://localhost:8080") : AiProvider {
-    override suspend fun query(request: QueryRequest): Flow<QueryResponse> {
-        val httpRequest = HttpRequest.Builder()
-            .url("$baseUrl/v1/completions")
-            .post(request.toLocalAIFormat())
-            .build()
-        
-        return flow {
-            val response = httpClient.execute(httpRequest)
-            emit(response.toQueryResponse("localai"))
-        }
-    }
-}
-```
-
-**Request Format**:
-```kotlin
-data class LocalAIRequest(
-    override val model: String,
-    override val prompt: String,
-    override val maxTokens: Int = 2000,
-    override val temperature: Float = 0.7f,
-    override val topP: Float = 0.9f,
-    override val stream: Boolean = false,
-    val stop: List<String> = listOf("\n", "###")
 ) : LLMRequest
 ```
 
