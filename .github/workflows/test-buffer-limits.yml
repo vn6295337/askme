@@ -127,8 +127,6 @@ jobs:
         chmod +x 300_implementation/askme-cli/gradlew
         
     - name: Test Gradle Build Process
-      env:
-        JAVA_HOME: ${{ steps.setup-java.outputs.path }}
       run: |
         echo "=== TESTING GRADLE BUILD PROCESS ==="
         

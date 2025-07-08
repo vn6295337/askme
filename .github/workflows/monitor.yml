@@ -23,8 +23,6 @@ jobs:
         chmod +x 300_implementation/askme-cli/gradlew
         
     - name: Build CLI
-      env:
-        JAVA_HOME: ${{ steps.setup-java.outputs.path }}
       run: |
         cd 300_implementation/askme-cli
         ./gradlew cliApp:installDist

@@ -40,8 +40,6 @@ jobs:
         chmod +x 300_implementation/askme-cli/gradlew
         
     - name: Build release
-      env:
-        JAVA_HOME: ${{ steps.setup-java.outputs.path }}
       run: |
         cd 300_implementation/askme-cli
         ./gradlew clean build distTar distZip
