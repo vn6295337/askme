@@ -1,0 +1,42 @@
+name: Daily Performance Monitor
+
+on:
+  schedule:
+    - cron: '0 9 * * *'  # Daily at 9 AM UTC
+  workflow_dispatch:
+
+jobs:
+  performance-check:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Set up JDK 17
+      uses: actions/setup-java@v4
+      with:
+        java-version: '17'
+        distribution: 'temurin'
+        
+    - name: Build CLI
+      run: |
+        cd 300_implementation/askme-cli
+        ./gradlew cliApp:installDist
+        
+    - name: Performance Test
+      run: |
+        cd 300_implementation/askme-cli
+        echo "Testing CLI startup time..."
+        time ./cliApp/build/install/cliApp/bin/cliApp --help
+        
+    - name: Report Results
+      if: failure()
+      uses: actions/github-script@v6
+      with:
+        script: |
+          github.rest.issues.create({
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            title: 'Performance Monitor Alert',
+            body: 'Daily performance check failed. Please investigate.',
+            labels: ['performance', 'monitoring']
+          })

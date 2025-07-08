@@ -1,0 +1,241 @@
+name: Test Buffer Limits and 4KB Truncation
+
+on:
+  workflow_dispatch:
+    inputs:
+      test_type:
+        description: 'Type of test to run'
+        required: true
+        default: 'full'
+        type: choice
+        options:
+          - full
+          - quick
+          - buffer-only
+
+jobs:
+  test-buffer-limits:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Set up JDK 17
+      uses: actions/setup-java@v4
+      with:
+        java-version: '17'
+        distribution: 'temurin'
+        
+    - name: Check System Buffer Information
+      run: |
+        echo "=== SYSTEM BUFFER ANALYSIS ==="
+        echo "Page size: $(getconf PAGESIZE)"
+        echo "Line max: $(getconf LINE_MAX)"
+        echo "Pipe buffer: $(getconf PIPE_BUF)"
+        
+        echo "=== MEMORY INFORMATION ==="
+        free -h
+        
+        echo "=== FILE SYSTEM INFORMATION ==="
+        df -h
+        echo "Block size: $(stat -f -c "%s" .)"
+        
+        echo "=== I/O SETTINGS ==="
+        cat /proc/sys/fs/pipe-max-size
+        echo "Read ahead: $(cat /sys/block/*/queue/read_ahead_kb | head -1)"
+        
+        echo "=== PROCESS LIMITS ==="
+        ulimit -a
+        
+    - name: Create Test Files of Various Sizes
+      run: |
+        echo "=== CREATING TEST FILES ==="
+        
+        # Create files at critical size boundaries
+        dd if=/dev/zero of=test_1k.bin bs=1024 count=1
+        dd if=/dev/zero of=test_4k.bin bs=4096 count=1
+        dd if=/dev/zero of=test_8k.bin bs=8192 count=1
+        dd if=/dev/zero of=test_10k.bin bs=1024 count=10
+        
+        # Create a file similar to the original wrapper script
+        cat > large_wrapper_script.sh << 'EOF'
+        #!/bin/bash
+        # Simulated large CLASSPATH like the original issue
+        CLASSPATH=$APP_HOME/lib/cliApp.jar:$APP_HOME/lib/kotlinx-cli-jvm-0.3.4.jar:$APP_HOME/lib/ktor-client-cio-jvm-2.3.6.jar:$APP_HOME/lib/ktor-client-content-negotiation-jvm-2.3.6.jar:$APP_HOME/lib/ktor-client-core-jvm-2.3.6.jar:$APP_HOME/lib/ktor-serialization-kotlinx-json-jvm-2.3.6.jar:$APP_HOME/lib/ktor-events-jvm-2.3.6.jar:$APP_HOME/lib/ktor-websocket-serialization-jvm-2.3.6.jar:$APP_HOME/lib/ktor-http-cio-jvm-2.3.6.jar:$APP_HOME/lib/ktor-serialization-kotlinx-jvm-2.3.6.jar:$APP_HOME/lib/ktor-serialization-jvm-2.3.6.jar:$APP_HOME/lib/ktor-websockets-jvm-2.3.6.jar:$APP_HOME/lib/ktor-network-tls-jvm-2.3.6.jar:$APP_HOME/lib/ktor-http-jvm-2.3.6.jar:$APP_HOME/lib/ktor-network-jvm-2.3.6.jar:$APP_HOME/lib/ktor-utils-jvm-2.3.6.jar:$APP_HOME/lib/ktor-io-jvm-2.3.6.jar:$APP_HOME/lib/kotlinx-coroutines-jdk8-1.7.3.jar:$APP_HOME/lib/kotlinx-coroutines-core-jvm-1.7.3.jar:$APP_HOME/lib/kotlinx-coroutines-slf4j-1.7.3.jar:$APP_HOME/lib/kotlin-stdlib-jdk8-1.9.10.jar:$APP_HOME/lib/kotlinx-serialization-json-jvm-1.6.0.jar:$APP_HOME/lib/kotlinx-serialization-core-jvm-1.6.0.jar:$APP_HOME/lib/slf4j-simple-2.0.9.jar:$APP_HOME/lib/kotlin-stdlib-jdk7-1.9.10.jar:$APP_HOME/lib/kotlin-stdlib-1.9.10.jar:$APP_HOME/lib/slf4j-api-2.0.9.jar:$APP_HOME/lib/kotlin-stdlib-common-1.9.10.jar:$APP_HOME/lib/annotations-23.0.0.jar
+        
+        # Additional content to reach 9869 bytes
+        # This simulates the original problematic wrapper script
+        echo "Starting application..."
+        echo "Checking Java version..."
+        echo "Loading libraries..."
+        echo "Initializing components..."
+        echo "Setting up environment..."
+        echo "Validating configuration..."
+        echo "Starting main process..."
+        
+        # Main execution
+        exec "$JAVA_HOME/bin/java" $DEFAULT_JVM_OPTS $JAVA_OPTS $CLIAPP_OPTS -classpath "$CLASSPATH" com.example.Main "$@"
+        EOF
+        
+        # Make it exactly 9869 bytes like the original issue
+        truncate -s 9869 large_wrapper_script.sh
+        chmod +x large_wrapper_script.sh
+        
+        echo "=== FILE SIZES CREATED ==="
+        ls -la test_*.bin large_wrapper_script.sh
+        
+    - name: Test tar Processing with Different Sizes
+      run: |
+        echo "=== TESTING TAR PROCESSING ==="
+        
+        # Test each file size
+        for file in test_*.bin large_wrapper_script.sh; do
+          echo "Processing $file ($(stat -c%s $file) bytes)"
+          
+          # Create archive
+          tar -czf ${file}.tar.gz $file
+          
+          # Extract and check
+          mkdir -p test_extract
+          tar -xzf ${file}.tar.gz -C test_extract
+          
+          # Compare sizes
+          original_size=$(stat -c%s $file)
+          extracted_size=$(stat -c%s test_extract/$file)
+          
+          echo "  Original: $original_size bytes"
+          echo "  Extracted: $extracted_size bytes"
+          
+          if [ $original_size -ne $extracted_size ]; then
+            echo "  ❌ SIZE MISMATCH DETECTED!"
+            if [ $extracted_size -eq 4096 ]; then
+              echo "  🔍 TRUNCATION AT 4KB BOUNDARY CONFIRMED!"
+            fi
+          else
+            echo "  ✅ Size preserved"
+          fi
+          
+          # Clean up
+          rm -rf test_extract
+          echo ""
+        done
+        
+    - name: Test Gradle Build Process
+      run: |
+        echo "=== TESTING GRADLE BUILD PROCESS ==="
+        
+        # Find the correct Gradle wrapper location
+        find . -name "gradlew" -type f | head -5
+        
+        if [ -f "300_implementation/askme-cli/gradlew" ]; then
+          cd 300_implementation/askme-cli
+          echo "Building with Gradle from askme-cli directory..."
+          ./gradlew clean cliApp:installDist
+          cd cliApp
+        elif [ -f "300_implementation/askme-cli/cliApp/gradlew" ]; then
+          cd 300_implementation/askme-cli/cliApp
+          echo "Building with Gradle from cliApp directory..."
+          ./gradlew clean installDist
+        else
+          echo "❌ Gradle wrapper not found in expected locations"
+          echo "=== DIRECTORY STRUCTURE ==="
+          ls -la 300_implementation/askme-cli/
+          if [ -d "300_implementation/askme-cli/cliApp" ]; then
+            ls -la 300_implementation/askme-cli/cliApp/
+          fi
+          echo "=== GRADLE FILES ==="
+          find . -name "*.gradle*" -o -name "gradlew*" | head -10
+          exit 1
+        fi
+        
+        echo "=== CHECKING GENERATED WRAPPER SCRIPT ==="
+        wrapper_script="build/install/cliApp/bin/cliApp"
+        
+        if [ -f "$wrapper_script" ]; then
+          echo "Wrapper script size: $(stat -c%s $wrapper_script) bytes"
+          echo "Wrapper script lines: $(wc -l < $wrapper_script)"
+          
+          # Check for truncation indicators
+          if grep -q "ktor-serial" "$wrapper_script"; then
+            echo "🔍 Found truncation signature 'ktor-serial' in script!"
+          fi
+          
+          # Test the script
+          echo "=== TESTING SCRIPT SYNTAX ==="
+          if bash -n "$wrapper_script"; then
+            echo "✅ Script syntax is valid"
+          else
+            echo "❌ Script syntax errors detected (possible truncation)"
+          fi
+          
+          # Show end of script
+          echo "=== LAST 10 LINES OF SCRIPT ==="
+          tail -10 "$wrapper_script"
+        else
+          echo "❌ Wrapper script not found"
+        fi
+        
+        # Return to root directory
+        cd - > /dev/null || cd /github/workspace
+        
+    - name: Test GitHub Actions Upload Process
+      run: |
+        echo "=== TESTING UPLOAD PROCESS ==="
+        
+        # Create test archive
+        tar -czf test-release.tar.gz large_wrapper_script.sh
+        
+        # Check archive contents
+        echo "Archive contents:"
+        tar -tzf test-release.tar.gz
+        
+        # Extract and verify
+        mkdir -p upload_test
+        tar -xzf test-release.tar.gz -C upload_test
+        
+        # Check for truncation
+        if [ -f "upload_test/large_wrapper_script.sh" ]; then
+          upload_size=$(stat -c%s upload_test/large_wrapper_script.sh)
+          echo "File size after upload simulation: $upload_size bytes"
+          
+          if [ $upload_size -eq 4096 ]; then
+            echo "🚨 4KB TRUNCATION REPRODUCED!"
+          elif [ $upload_size -eq 9869 ]; then
+            echo "✅ File size preserved"
+          else
+            echo "⚠️ Unexpected size: $upload_size bytes"
+          fi
+        fi
+        
+    - name: System Call Tracing (if available)
+      run: |
+        echo "=== SYSTEM CALL TRACING ==="
+        
+        # Test if we can trace system calls
+        if command -v strace &> /dev/null; then
+          echo "Testing tar with strace..."
+          
+          # Create test file
+          echo "Creating test file for strace..."
+          dd if=/dev/zero of=strace_test.bin bs=4096 count=3
+          
+          # Trace tar operations
+          echo "Tracing tar operations..."
+          strace -e trace=read,write tar -czf strace_test.tar.gz strace_test.bin 2>&1 | grep -E "(read|write)" | head -20
+          
+        else
+          echo "strace not available in this environment"
+        fi
+        
+    - name: Summary Report
+      run: |
+        echo "=== BUFFER LIMIT TEST SUMMARY ==="
+        echo "System Page Size: $(getconf PAGESIZE) bytes"
+        echo "System Line Max: $(getconf LINE_MAX) bytes"
+        echo "Pipe Buffer: $(getconf PIPE_BUF) bytes"
+        echo ""
+        echo "This test helps identify if the 4KB truncation issue can be reproduced"
+        echo "in the GitHub Actions environment."
+        echo ""
+        echo "Key findings will be in the 'Test tar Processing' step above."
