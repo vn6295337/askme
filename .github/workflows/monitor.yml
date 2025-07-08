@@ -12,12 +12,19 @@ jobs:
     - uses: actions/checkout@v4
     
     - name: Set up JDK 17
+      id: setup-java
       uses: actions/setup-java@v4
       with:
         java-version: '17'
         distribution: 'temurin'
         
+    - name: Make scripts executable
+      run: |
+        chmod +x 300_implementation/askme-cli/gradlew
+        
     - name: Build CLI
+      env:
+        JAVA_HOME: ${{ steps.setup-java.outputs.path }}
       run: |
         cd 300_implementation/askme-cli
         ./gradlew cliApp:installDist
