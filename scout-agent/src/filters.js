@@ -43,9 +43,9 @@ class LLMFilters {
   }
 
   isFromUSOrEurope(model) {
-    const publisherText = (model.publisher || '').toLowerCase();
-    const nameText = (model.name || '').toLowerCase();
-    const sourceText = (model.sourceUrl || '').toLowerCase();
+    const publisherText = (typeof model.publisher === 'string' ? model.publisher : '').toLowerCase();
+    const nameText = (typeof model.name === 'string' ? model.name : '').toLowerCase();
+    const sourceText = (typeof model.sourceUrl === 'string' ? model.sourceUrl : '').toLowerCase();
     
     const combinedText = `${publisherText} ${nameText} ${sourceText}`;
     
@@ -55,10 +55,10 @@ class LLMFilters {
   }
 
   hasFreeAccess(model) {
-    const accessType = (model.accessType || '').toLowerCase();
-    const license = (model.license || '').toLowerCase();
-    const nameText = (model.name || '').toLowerCase();
-    const sourceText = (model.sourceUrl || '').toLowerCase();
+    const accessType = (typeof model.accessType === 'string' ? model.accessType : '').toLowerCase();
+    const license = (typeof model.license === 'string' ? model.license : '').toLowerCase();
+    const nameText = (typeof model.name === 'string' ? model.name : '').toLowerCase();
+    const sourceText = (typeof model.sourceUrl === 'string' ? model.sourceUrl : '').toLowerCase();
     
     const combinedText = `${accessType} ${license} ${nameText} ${sourceText}`;
     
@@ -72,9 +72,9 @@ class LLMFilters {
   }
 
   supportsEnglish(model) {
-    const nameText = (model.name || '').toLowerCase();
-    const publisherText = (model.publisher || '').toLowerCase();
-    const sourceText = (model.sourceUrl || '').toLowerCase();
+    const nameText = (typeof model.name === 'string' ? model.name : '').toLowerCase();
+    const publisherText = (typeof model.publisher === 'string' ? model.publisher : '').toLowerCase();
+    const sourceText = (typeof model.sourceUrl === 'string' ? model.sourceUrl : '').toLowerCase();
     
     const combinedText = `${nameText} ${publisherText} ${sourceText}`;
     
@@ -84,7 +84,7 @@ class LLMFilters {
   }
 
   isLikelyEnglishModel(model) {
-    const nameText = (model.name || '').toLowerCase();
+    const nameText = (typeof model.name === 'string' ? model.name : '').toLowerCase();
     
     const englishModelPatterns = [
       /\b(gpt|bert|t5|llama|mistral|falcon|vicuna|alpaca|claude|palm|bard)\b/,
@@ -96,9 +96,9 @@ class LLMFilters {
   }
 
   isDeprecated(model) {
-    const nameText = (model.name || '').toLowerCase();
-    const publisherText = (model.publisher || '').toLowerCase();
-    const sourceText = (model.sourceUrl || '').toLowerCase();
+    const nameText = (typeof model.name === 'string' ? model.name : '').toLowerCase();
+    const publisherText = (typeof model.publisher === 'string' ? model.publisher : '').toLowerCase();
+    const sourceText = (typeof model.sourceUrl === 'string' ? model.sourceUrl : '').toLowerCase();
     
     const combinedText = `${nameText} ${publisherText} ${sourceText}`;
     

@@ -44,16 +44,6 @@
   },
   "blogs": [
     {
-      "name": "OpenAI Blog",
-      "publisher": "OpenAI",
-      "url": "https://openai.com/blog",
-      "baseUrl": "https://openai.com",
-      "selector": "article",
-      "titleSelector": "h2",
-      "linkSelector": "a",
-      "dateSelector": "time"
-    },
-    {
       "name": "Anthropic Blog",
       "publisher": "Anthropic",
       "url": "https://www.anthropic.com/news",
