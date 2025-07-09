@@ -104,7 +104,7 @@ class BackendReporter {
   }
 
   async postToBackend(report) {
-    if (!this.backendUrl || this.backendUrl.includes('your-render-app')) {
+    if (!this.backendUrl) {
       console.log('Backend URL not configured, skipping backend submission');
       return;
     }
