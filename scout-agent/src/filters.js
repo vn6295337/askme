@@ -33,13 +33,25 @@ class LLMFilters {
   }
 
   filterModels(models) {
-    return models.filter(model => {
-      return this.isFromUSOrEurope(model) &&
-             this.hasFreeAccess(model) &&
-             this.supportsEnglish(model) &&
-             !this.isDeprecated(model) &&
-             this.isActive(model);
-    });
+    return models
+      .filter(model => {
+        return this.isFromUSOrEurope(model) &&
+               this.hasFreeAccess(model) &&
+               this.supportsEnglish(model) &&
+               !this.isDeprecated(model) &&
+               this.isActive(model);
+      })
+      .map(model => {
+        // Enrich model with required fields
+        const enriched = this.enrichModelData(model);
+        
+        // Ensure country is populated
+        if (!enriched.country || enriched.country === 'Unknown') {
+          enriched.country = this.extractCountry(model);
+        }
+        
+        return enriched;
+      });
   }
 
   isFromUSOrEurope(model) {
@@ -129,9 +141,13 @@ class LLMFilters {
   }
 
   extractCountry(model) {
-    const publisherText = (model.publisher || '').toLowerCase();
-    const sourceText = (model.sourceUrl || '').toLowerCase();
+    const publisherText = (typeof model.publisher === 'string' ? model.publisher : '').toLowerCase();
+    const sourceText = (typeof model.sourceUrl === 'string' ? model.sourceUrl : '').toLowerCase();
+    const nameText = (typeof model.name === 'string' ? model.name : '').toLowerCase();
     
+    const combinedText = `${publisherText} ${sourceText} ${nameText}`;
+    
+    // Company-based detection
     const countryMap = {
       'openai': 'US',
       'anthropic': 'US',
@@ -140,18 +156,61 @@ class LLMFilters {
       'meta': 'US',
       'facebook': 'US',
       'huggingface': 'US',
+      'together': 'US',
       'mistral': 'France',
       'deepmind': 'UK',
-      'stability': 'UK'
+      'stability': 'UK',
+      'cohere': 'US',
+      'ai21': 'US',
+      'together.ai': 'US',
+      'together.xyz': 'US'
     };
     
     for (const [company, country] of Object.entries(countryMap)) {
-      if (publisherText.includes(company) || sourceText.includes(company)) {
+      if (combinedText.includes(company)) {
         return country;
       }
     }
     
-    return 'Unknown';
+    // URL-based detection
+    if (sourceText.includes('github.com') || sourceText.includes('huggingface.co')) {
+      // For GitHub/HuggingFace, try to detect from organization names
+      const orgPatterns = {
+        'microsoft': 'US',
+        'google': 'US',
+        'meta-llama': 'US',
+        'openai': 'US',
+        'anthropic': 'US',
+        'mistralai': 'France',
+        'bigscience': 'Europe',
+        'eleutherai': 'US',
+        'stanford': 'US',
+        'berkeley': 'US',
+        'mit': 'US',
+        'deepmind': 'UK'
+      };
+      
+      for (const [org, country] of Object.entries(orgPatterns)) {
+        if (combinedText.includes(org)) {
+          return country;
+        }
+      }
+      
+      // Default for GitHub/HuggingFace models without clear attribution
+      return 'US';
+    }
+    
+    // Domain-based detection
+    if (sourceText.includes('.ai') || sourceText.includes('.com')) {
+      return 'US'; // Most .ai and .com domains are US-based
+    }
+    
+    if (sourceText.includes('.eu') || sourceText.includes('.uk') || sourceText.includes('.de') || sourceText.includes('.fr')) {
+      return 'Europe';
+    }
+    
+    // Default for models that pass US/Europe filter
+    return 'US';
   }
 
   extractModelSize(model) {
