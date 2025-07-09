@@ -1,0 +1,107 @@
+{
+  "github": {
+    "enabled": true,
+    "queries": [
+      "language:Python topic:llm topic:free",
+      "language:Python topic:language-model topic:open-source",
+      "language:Python topic:transformer topic:free",
+      "language:JavaScript topic:llm topic:free",
+      "topic:large-language-model topic:free"
+    ],
+    "perPage": 30
+  },
+  "huggingface": {
+    "enabled": true,
+    "baseUrl": "https://huggingface.co/api/models",
+    "filters": {
+      "pipeline_tag": "text-generation",
+      "sort": "lastModified",
+      "direction": -1,
+      "limit": 50
+    }
+  },
+  "arxiv": {
+    "enabled": true,
+    "baseUrl": "http://export.arxiv.org/api/query",
+    "searchTerms": [
+      "large language model",
+      "transformer language model",
+      "llm",
+      "open source language model",
+      "free language model"
+    ],
+    "maxResults": 20
+  },
+  "papersWithCode": {
+    "enabled": true,
+    "baseUrl": "https://paperswithcode.com/api/v1/papers/",
+    "searchTerms": [
+      "language model",
+      "transformer",
+      "llm",
+      "large language model"
+    ]
+  },
+  "blogs": [
+    {
+      "name": "OpenAI Blog",
+      "publisher": "OpenAI",
+      "url": "https://openai.com/blog",
+      "baseUrl": "https://openai.com",
+      "selector": "article",
+      "titleSelector": "h2",
+      "linkSelector": "a",
+      "dateSelector": "time"
+    },
+    {
+      "name": "Anthropic Blog",
+      "publisher": "Anthropic",
+      "url": "https://www.anthropic.com/news",
+      "baseUrl": "https://www.anthropic.com",
+      "selector": "article",
+      "titleSelector": "h2",
+      "linkSelector": "a",
+      "dateSelector": "time"
+    },
+    {
+      "name": "Google AI Blog",
+      "publisher": "Google",
+      "url": "https://ai.googleblog.com/",
+      "baseUrl": "https://ai.googleblog.com",
+      "selector": ".post",
+      "titleSelector": "h3",
+      "linkSelector": "a",
+      "dateSelector": ".publishdate"
+    },
+    {
+      "name": "Microsoft AI Blog",
+      "publisher": "Microsoft",
+      "url": "https://blogs.microsoft.com/ai/",
+      "baseUrl": "https://blogs.microsoft.com",
+      "selector": "article",
+      "titleSelector": "h2",
+      "linkSelector": "a",
+      "dateSelector": "time"
+    },
+    {
+      "name": "Meta AI Blog",
+      "publisher": "Meta",
+      "url": "https://ai.meta.com/blog/",
+      "baseUrl": "https://ai.meta.com",
+      "selector": "article",
+      "titleSelector": "h2",
+      "linkSelector": "a",
+      "dateSelector": "time"
+    },
+    {
+      "name": "Hugging Face Blog",
+      "publisher": "Hugging Face",
+      "url": "https://huggingface.co/blog",
+      "baseUrl": "https://huggingface.co",
+      "selector": "article",
+      "titleSelector": "h2",
+      "linkSelector": "a",
+      "dateSelector": "time"
+    }
+  ]
+}

@@ -5,6 +5,8 @@ const express = require('express');
 const cors = require('cors');
 const rateLimit = require('express-rate-limit');
 const axios = require('axios');
+const fs = require('fs-extra');
+const path = require('path');
 require('dotenv').config();
 
 const app = express();
@@ -33,6 +35,25 @@ const API_KEYS = {
   google: process.env.GOOGLE_API_KEY,
   mistral: process.env.MISTRAL_API_KEY,
   llama: process.env.LLAMA_API_KEY
+};
+
+// LLM Scout Agent configuration
+const AGENT_AUTH_TOKEN = process.env.AGENT_AUTH_TOKEN || 'scout-agent-default-token';
+const LLMS_FILE_PATH = path.join(__dirname, 'data', 'llms.json');
+
+// Ensure data directory exists
+fs.ensureDirSync(path.dirname(LLMS_FILE_PATH));
+
+// Authentication middleware for agent requests
+const authenticateAgent = (req, res, next) => {
+  const authHeader = req.headers.authorization;
+  const token = authHeader && authHeader.split(' ')[1];
+  
+  if (!token || token !== AGENT_AUTH_TOKEN) {
+    return res.status(401).json({ error: 'Unauthorized agent access' });
+  }
+  
+  next();
 };
 
 // Provider configurations - UPDATED WITH LATEST MODELS
@@ -291,6 +312,120 @@ app.post('/api/smart', async (req, res) => {
       provider: selectedProvider
     });
   }
+});
+
+// LLM Scout Agent endpoints
+app.post('/api/llms', authenticateAgent, async (req, res) => {
+  try {
+    const { models, metadata } = req.body;
+    
+    if (!models || !Array.isArray(models)) {
+      return res.status(400).json({ error: 'Models array is required' });
+    }
+    
+    const llmData = {
+      models: models,
+      metadata: {
+        lastUpdated: new Date().toISOString(),
+        totalModels: models.length,
+        agentVersion: metadata?.agentVersion || 'unknown',
+        runId: metadata?.runId || 'unknown',
+        sources: metadata?.sources || []
+      }
+    };
+    
+    await fs.writeJson(LLMS_FILE_PATH, llmData, { spaces: 2 });
+    
+    console.log(`📊 LLM data updated: ${models.length} models from agent`);
+    
+    res.json({ 
+      success: true,
+      message: 'LLM data updated successfully',
+      modelsCount: models.length,
+      timestamp: new Date().toISOString()
+    });
+    
+  } catch (error) {
+    console.error('❌ LLM data update error:', error);
+    res.status(500).json({ 
+      error: 'Failed to update LLM data',
+      details: error.message
+    });
+  }
+});
+
+app.get('/api/llms', async (req, res) => {
+  try {
+    const exists = await fs.pathExists(LLMS_FILE_PATH);
+    
+    if (!exists) {
+      return res.json({
+        models: [],
+        metadata: {
+          lastUpdated: null,
+          totalModels: 0,
+          message: 'No LLM data available yet'
+        }
+      });
+    }
+    
+    const llmData = await fs.readJson(LLMS_FILE_PATH);
+    
+    // Filter and format for client consumption
+    const filters = req.query;
+    let filteredModels = llmData.models || [];
+    
+    if (filters.country) {
+      filteredModels = filteredModels.filter(model => 
+        model.country?.toLowerCase() === filters.country.toLowerCase()
+      );
+    }
+    
+    if (filters.accessType) {
+      filteredModels = filteredModels.filter(model => 
+        model.accessType?.toLowerCase().includes(filters.accessType.toLowerCase())
+      );
+    }
+    
+    if (filters.source) {
+      filteredModels = filteredModels.filter(model => 
+        model.source?.toLowerCase() === filters.source.toLowerCase()
+      );
+    }
+    
+    res.json({
+      models: filteredModels,
+      metadata: {
+        ...llmData.metadata,
+        filteredCount: filteredModels.length,
+        appliedFilters: filters
+      }
+    });
+    
+  } catch (error) {
+    console.error('❌ LLM data fetch error:', error);
+    res.status(500).json({ 
+      error: 'Failed to fetch LLM data',
+      details: error.message
+    });
+  }
+});
+
+app.get('/api/llms/health', (req, res) => {
+  fs.pathExists(LLMS_FILE_PATH).then(exists => {
+    res.json({
+      status: 'healthy',
+      dataFile: exists ? 'exists' : 'missing',
+      lastCheck: new Date().toISOString(),
+      agentEndpoint: '/api/llms',
+      clientEndpoint: '/api/llms'
+    });
+  }).catch(error => {
+    res.status(500).json({
+      status: 'unhealthy',
+      error: error.message
+    });
+  });
 });
 
 // Error handling middleware
