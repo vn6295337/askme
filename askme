@@ -1,0 +1,21 @@
+#!/bin/bash
+# AskMe CLI Wrapper Script
+# This script provides easy access to the AskMe CLI application
+
+# Get the directory where this script is located
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
+# Path to the actual cliApp executable
+CLI_APP="$SCRIPT_DIR/300_implementation/askme-cli/cliApp/build/install/cliApp/bin/cliApp"
+
+# Check if the CLI app exists
+if [ ! -f "$CLI_APP" ]; then
+    echo "Error: cliApp not found at $CLI_APP"
+    echo "Please build the application first:"
+    echo "  cd 300_implementation/askme-cli"
+    echo "  ./gradlew cliApp:installDist"
+    exit 1
+fi
+
+# Forward all arguments to the actual CLI app
+exec "$CLI_APP" "$@"
