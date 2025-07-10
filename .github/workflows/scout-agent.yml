@@ -31,8 +31,8 @@ jobs:
     
     - name: Install dependencies
       run: |
-        cd scout-agent
-        npm install --prefix 999_node_modules
+        cd scout-agent/001_config
+        npm install
     
     - name: Create environment file
       run: |
