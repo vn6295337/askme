@@ -27,16 +27,16 @@ jobs:
       with:
         node-version: '18'
         cache: 'npm'
-        cache-dependency-path: 'scout-agent/001_config/package.json'
+        cache-dependency-path: 'askme/scout-agent/001_config/package.json'
     
     - name: Install dependencies
       run: |
-        cd scout-agent
+        cd askme/scout-agent
         npm install --prefix 999_node_modules
     
     - name: Create environment file
       run: |
-        cd scout-agent
+        cd askme/scout-agent
         cat > 002_env/.env << EOF
         BACKEND_URL=${{ secrets.BACKEND_URL }}
         AGENT_AUTH_TOKEN=${{ secrets.AGENT_AUTH_TOKEN }}
@@ -44,7 +44,7 @@ jobs:
     
     - name: Run LLM discovery
       run: |
-        cd scout-agent
+        cd askme/scout-agent
         npm run start
       env:
         BACKEND_URL: ${{ secrets.BACKEND_URL }}
@@ -55,7 +55,7 @@ jobs:
       uses: actions/upload-artifact@v4
       with:
         name: discovery-results-${{ github.run_number }}
-        path: scout-agent/400_data/
+        path: askme/scout-agent/400_data/
         retention-days: 30
     
     - name: Notify on failure
