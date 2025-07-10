@@ -1,6 +1,6 @@
 {
   "github": {
-    "enabled": true,
+    "enabled": false,
     "queries": [
       "language:Python topic:llm topic:free",
       "language:Python topic:language-model topic:open-source",

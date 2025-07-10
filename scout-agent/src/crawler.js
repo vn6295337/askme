@@ -46,11 +46,16 @@ class LLMCrawler {
   }
 
   async crawlGitHub() {
+    if (!this.sources.github?.enabled) {
+      console.log('GitHub crawling is disabled');
+      return [];
+    }
+    
     await this.rateLimit('github.com');
     const models = [];
     
     try {
-      const searchQueries = [
+      const searchQueries = this.sources.github.queries || [
         'language:Python topic:llm topic:free',
         'language:Python topic:language-model topic:open-source',
         'language:Python topic:transformer topic:free'
@@ -95,18 +100,23 @@ class LLMCrawler {
   }
 
   async crawlHuggingFace() {
+    if (!this.sources.huggingface?.enabled) {
+      console.log('Hugging Face crawling is disabled');
+      return [];
+    }
+    
     await this.rateLimit('huggingface.co');
     const models = [];
     
     try {
-      const response = await axios.get('https://huggingface.co/api/models', {
-        params: {
-          filter: 'text-generation',
-          sort: 'lastModified',
-          direction: -1,
-          limit: 50
-        }
-      });
+      const params = {
+        filter: 'text-generation',
+        sort: this.sources.huggingface.filters.sort || 'downloads',
+        direction: this.sources.huggingface.filters.direction || -1,
+        limit: this.sources.huggingface.filters.limit || 30
+      };
+      
+      const response = await axios.get('https://huggingface.co/api/models', { params });
       
       for (const model of response.data) {
         const publisher = model.modelId.split('/')[0];
@@ -137,53 +147,9 @@ class LLMCrawler {
   }
 
   async crawlArxiv() {
-    await this.rateLimit('arxiv.org');
-    const models = [];
-    
-    try {
-      const searchTerms = ['large language model', 'transformer', 'llm'];
-      
-      for (const term of searchTerms) {
-        const response = await axios.get('http://export.arxiv.org/api/query', {
-          params: {
-            search_query: `all:${term}`,
-            start: 0,
-            max_results: 20,
-            sortBy: 'submittedDate',
-            sortOrder: 'descending'
-          }
-        });
-        
-        const $ = cheerio.load(response.data, { xmlMode: true });
-        
-        $('entry').each((i, entry) => {
-          const title = $(entry).find('title').text().trim();
-          const authors = $(entry).find('author name').map((i, el) => $(el).text()).get();
-          const published = $(entry).find('published').text();
-          const link = $(entry).find('id').text();
-          
-          const model = {
-            name: title,
-            publisher: authors.join(', '),
-            country: 'Unknown', // Default country field
-            sourceUrl: link,
-            releaseDate: published,
-            accessType: 'Research Paper',
-            license: 'Academic Use',
-            inferenceSupport: 'Unknown',
-            source: 'arXiv'
-          };
-          
-          models.push(model);
-        });
-        
-        await this.rateLimit('arxiv.org');
-      }
-    } catch (error) {
-      console.error('arXiv crawl error:', error.message);
-    }
-    
-    return models;
+    // arXiv is disabled to focus on production models
+    console.log('arXiv crawling is disabled');
+    return [];
   }
 
   async crawlCompanyModels() {
