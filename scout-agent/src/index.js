@@ -22,7 +22,8 @@ async function main() {
     
     if (validatedModels.length > 0) {
       await reporter.sendToBackend(validatedModels);
-      console.log('Data sent to backend successfully');
+      await reporter.exportToCsv(validatedModels);
+      console.log('Data sent to backend and CSV exported successfully');
     }
     
     process.exit(0);
