@@ -27,11 +27,13 @@ class LLMCrawler {
     try {
       const githubModels = await this.crawlGitHub();
       const huggingFaceModels = await this.crawlHuggingFace();
-      const arxivModels = await this.crawlArxiv();
-      const papersWithCodeModels = await this.crawlPapersWithCode();
+      const companyModels = await this.crawlCompanyModels();
       const blogModels = await this.crawlBlogs();
+      const modelTrackingModels = await this.crawlModelTracking();
+      const techNewsModels = await this.crawlTechNews();
+      const apiDocsModels = await this.crawlApiDocs();
       
-      allModels.push(...githubModels, ...huggingFaceModels, ...arxivModels, ...papersWithCodeModels, ...blogModels);
+      allModels.push(...githubModels, ...huggingFaceModels, ...companyModels, ...blogModels, ...modelTrackingModels, ...techNewsModels, ...apiDocsModels);
       
       const filteredModels = filters.filterModels(allModels);
       const deduplicatedModels = this.removeDuplicates(filteredModels);
@@ -107,19 +109,25 @@ class LLMCrawler {
       });
       
       for (const model of response.data) {
-        const modelData = {
-          name: model.modelId,
-          publisher: model.modelId.split('/')[0],
-          country: 'Unknown', // Default country field
-          sourceUrl: `https://huggingface.co/${model.modelId}`,
-          releaseDate: model.lastModified,
-          accessType: 'Open Source',
-          license: model.cardData?.license || 'Unknown',
-          inferenceSupport: 'API/CPU/GPU',
-          source: 'Hugging Face'
-        };
+        const publisher = model.modelId.split('/')[0];
+        const reputableOrgs = this.sources.huggingface.reputableOrganizations || [];
         
-        models.push(modelData);
+        // Only include models from reputable organizations
+        if (reputableOrgs.includes(publisher)) {
+          const modelData = {
+            name: model.modelId,
+            publisher: publisher,
+            country: 'Unknown',
+            sourceUrl: `https://huggingface.co/${model.modelId}`,
+            releaseDate: model.lastModified,
+            accessType: 'Open Source',
+            license: model.cardData?.license || 'Unknown',
+            inferenceSupport: 'API/CPU/GPU',
+            source: 'Hugging Face'
+          };
+          
+          models.push(modelData);
+        }
       }
     } catch (error) {
       console.error('Hugging Face crawl error:', error.message);
@@ -178,49 +186,121 @@ class LLMCrawler {
     return models;
   }
 
-  async crawlPapersWithCode() {
-    await this.rateLimit('paperswithcode.com');
+  async crawlCompanyModels() {
     const models = [];
     
-    try {
-      const response = await axios.get('https://paperswithcode.com/api/v1/papers/', {
-        params: {
-          q: 'language model',
-          ordering: '-published'
-        }
-      });
-      
-      for (const paper of response.data.results.slice(0, 20)) {
-        const model = {
-          name: paper.title,
-          publisher: paper.authors || 'Unknown',
-          country: 'Unknown', // Default country field
-          sourceUrl: paper.url_abs || paper.url_pdf,
-          releaseDate: paper.published,
-          accessType: 'Research Paper',
-          license: 'Academic Use',
-          inferenceSupport: 'Unknown',
-          source: 'Papers with Code'
-        };
+    // Add predefined company models
+    const companySources = ['openai', 'anthropic', 'google', 'meta', 'mistral', 'cohere'];
+    
+    for (const company of companySources) {
+      if (this.sources[company]?.enabled) {
+        const companyModels = this.sources[company].models || [];
         
-        models.push(model);
+        for (const modelName of companyModels) {
+          const model = {
+            name: modelName,
+            publisher: this.getCompanyName(company),
+            country: this.getCompanyCountry(company),
+            sourceUrl: this.getCompanyUrl(company, modelName),
+            releaseDate: 'Unknown',
+            accessType: this.getAccessType(company),
+            license: this.getLicense(company),
+            inferenceSupport: 'API',
+            source: 'Company'
+          };
+          
+          models.push(model);
+        }
       }
-    } catch (error) {
-      console.error('Papers with Code crawl error:', error.message);
     }
     
     return models;
   }
+  
+  getCompanyName(company) {
+    const names = {
+      'openai': 'OpenAI',
+      'anthropic': 'Anthropic',
+      'google': 'Google',
+      'meta': 'Meta',
+      'mistral': 'Mistral AI',
+      'cohere': 'Cohere'
+    };
+    return names[company] || company;
+  }
+  
+  getCompanyCountry(company) {
+    const countries = {
+      'openai': 'US',
+      'anthropic': 'US',
+      'google': 'US',
+      'meta': 'US',
+      'mistral': 'France',
+      'cohere': 'Canada'
+    };
+    return countries[company] || 'Unknown';
+  }
+  
+  getCompanyUrl(company, modelName) {
+    const baseUrls = {
+      'openai': 'https://platform.openai.com/docs/models',
+      'anthropic': 'https://docs.anthropic.com/claude/docs/models-overview',
+      'google': 'https://ai.google.dev/models',
+      'meta': 'https://llama.meta.com/',
+      'mistral': 'https://docs.mistral.ai/getting-started/models/',
+      'cohere': 'https://docs.cohere.com/docs/models'
+    };
+    return baseUrls[company] || '';
+  }
+  
+  getAccessType(company) {
+    const accessTypes = {
+      'openai': 'Commercial API',
+      'anthropic': 'Commercial API',
+      'google': 'Free Tier/Commercial API',
+      'meta': 'Open Source',
+      'mistral': 'Open Source/Commercial API',
+      'cohere': 'Free Tier/Commercial API'
+    };
+    return accessTypes[company] || 'Unknown';
+  }
+  
+  getLicense(company) {
+    const licenses = {
+      'openai': 'Proprietary',
+      'anthropic': 'Proprietary',
+      'google': 'Apache 2.0/Proprietary',
+      'meta': 'Custom Open Source',
+      'mistral': 'Apache 2.0/Proprietary',
+      'cohere': 'Proprietary'
+    };
+    return licenses[company] || 'Unknown';
+  }
 
   async crawlBlogs() {
+    return this.crawlGenericSources(this.sources.blogs || [], 'Blog');
+  }
+
+  async crawlModelTracking() {
+    return this.crawlGenericSources(this.sources.modelTracking || [], 'Model Tracking');
+  }
+
+  async crawlTechNews() {
+    return this.crawlGenericSources(this.sources.techNews || [], 'Tech News');
+  }
+
+  async crawlApiDocs() {
+    return this.crawlGenericSources(this.sources.apiDocs || [], 'API Documentation');
+  }
+
+  async crawlGenericSources(sources, sourceType) {
     const models = [];
-    const blogSources = this.sources.blogs || [];
     
-    for (const blogSource of blogSources) {
+    for (const source of sources) {
       try {
-        await this.rateLimit(new URL(blogSource.url).hostname);
+        await this.rateLimit(new URL(source.url).hostname);
         
-        const response = await axios.get(blogSource.url, {
+        const response = await axios.get(source.url, {
           headers: {
             'User-Agent': 'askme-scout-agent/1.0.0'
           }
@@ -228,33 +308,63 @@ class LLMCrawler {
         
         const $ = cheerio.load(response.data);
         
-        $(blogSource.selector).each((i, element) => {
-          const title = $(element).find(blogSource.titleSelector).text().trim();
-          const link = $(element).find(blogSource.linkSelector).attr('href');
-          const date = $(element).find(blogSource.dateSelector).text();
+        $(source.selector).each((i, element) => {
+          const title = $(element).find(source.titleSelector).text().trim();
+          const link = $(element).find(source.linkSelector).attr('href');
+          const date = $(element).find(source.dateSelector).text();
           
-          if (title && link) {
+          if (title && link && this.isRelevantToModels(title)) {
             const model = {
               name: title,
-              publisher: blogSource.publisher,
-              country: 'Unknown', // Default country field
-              sourceUrl: link.startsWith('http') ? link : `${blogSource.baseUrl}${link}`,
+              publisher: source.publisher,
+              country: this.getPublisherCountry(source.publisher),
+              sourceUrl: link.startsWith('http') ? link : `${source.baseUrl}${link}`,
               releaseDate: date,
-              accessType: 'Blog Post',
+              accessType: this.getAccessTypeFromSource(sourceType),
               license: 'Unknown',
               inferenceSupport: 'Unknown',
-              source: 'Blog'
+              source: sourceType
             };
             
             models.push(model);
           }
         });
       } catch (error) {
-        console.error(`Blog crawl error for ${blogSource.url}:`, error.message);
+        console.error(`${sourceType} crawl error for ${source.url}:`, error.message);
       }
     }
     
     return models;
+  }
+
+  isRelevantToModels(title) {
+    const keywords = [
+      'llm', 'model', 'gpt', 'claude', 'gemini', 'llama', 'mistral', 'release', 'launched',
+      'api', 'ai', 'language model', 'transformer', 'chat', 'assistant', 'upgrade', 'update',
+      'new version', 'deprecated', 'discontinued', 'beta', 'preview'
+    ];
+    
+    return keywords.some(keyword => title.toLowerCase().includes(keyword));
+  }
+
+  getPublisherCountry(publisher) {
+    const countries = {
+      'OpenAI': 'US', 'Anthropic': 'US', 'Google': 'US', 'Meta': 'US', 'Microsoft': 'US',
+      'Mistral AI': 'France', 'Cohere': 'Canada', 'Hugging Face': 'France',
+      'TechCrunch': 'US', 'VentureBeat': 'US', 'The Verge': 'US', 'LlamaIndex': 'US',
+      'FutureTools': 'US', 'Epoch AI': 'UK', 'Crescendo AI': 'US'
+    };
+    return countries[publisher] || 'Unknown';
+  }
+
+  getAccessTypeFromSource(sourceType) {
+    const accessTypes = {
+      'Model Tracking': 'Open Source/Commercial',
+      'Tech News': 'News Article',
+      'API Documentation': 'API Reference',
+      'Blog': 'Blog Post'
+    };
+    return accessTypes[sourceType] || 'Unknown';
   }
 
   removeDuplicates(models) {
