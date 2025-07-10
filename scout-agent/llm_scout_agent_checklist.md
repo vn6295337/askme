@@ -131,7 +131,18 @@
 81. - [x] Monitor first week of automated discovery runs
 82. - [x] Document operational procedures and maintenance tasks
 
+## Section: Production Debugging and Optimization
+
+83. - [x] Debug and fix GitHub Actions workflow permissions and artifact issues
+84. - [x] Fix runtime TypeError in filtering logic with proper type checking
+85. - [x] Remove problematic OpenAI blog source causing 403 errors
+86. - [x] Resolve model validation failures by auto-populating country field
+87. - [x] Enhance country detection with comprehensive company/domain mapping
+88. - [x] Fix backend URL validation preventing successful data submission
+89. - [x] Verify end-to-end flow with successful model discovery and storage
+90. - [x] Test and validate 9+ models passing through complete pipeline
+
 ---
 
 **Next Phase**: CLI Integration (requires separate checklist)  
-**Total Items**: 82 serialized development tasks
+**Total Items**: 90 serialized development tasks (82 original + 8 debugging/optimization)

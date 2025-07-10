@@ -4,7 +4,7 @@ const path = require('path');
 
 class BackendReporter {
   constructor() {
-    this.backendUrl = process.env.BACKEND_URL || 'https://your-render-app.onrender.com';
+    this.backendUrl = process.env.BACKEND_URL || 'https://askme-backend-proxy.onrender.com';
     this.authToken = process.env.AGENT_AUTH_TOKEN || 'your-auth-token';
     this.outputDir = path.join(__dirname, '..', 'output');
   }
@@ -104,8 +104,8 @@ class BackendReporter {
   }
 
   async postToBackend(report) {
-    if (!this.backendUrl) {
-      console.log('Backend URL not configured, skipping backend submission');
+    if (!this.backendUrl || this.backendUrl === 'https://your-render-app.onrender.com') {
+      console.log('Backend URL not configured or using placeholder, skipping backend submission');
       return;
     }
 
