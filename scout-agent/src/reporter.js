@@ -28,6 +28,7 @@ class BackendReporter {
 
   async ensureOutputDir() {
     await fs.ensureDir(this.outputDir);
+    console.log(`Output directory ensured: ${this.outputDir}`);
   }
 
   enrichModels(models) {
