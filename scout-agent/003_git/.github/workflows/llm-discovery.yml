@@ -9,9 +9,9 @@ on:
   push:
     branches: [ main, master ]
     paths:
-      - 'askme/scout-agent/100_src/**'
-      - 'askme/scout-agent/001_config/**'
-      - 'askme/scout-agent/003_git/.github/workflows/llm-discovery.yml'
+      - 'scout-agent/100_src/**'
+      - 'scout-agent/001_config/**'
+      - 'scout-agent/003_git/.github/workflows/llm-discovery.yml'
 
 jobs:
   discover-and-export:
@@ -28,15 +28,17 @@ jobs:
       uses: actions/setup-node@v4
       with:
         node-version: '20'
+        cache: 'npm'
+        cache-dependency-path: 'scout-agent/001_config/package.json'
         
     - name: Install dependencies
       run: |
-        cd askme/scout-agent
+        cd scout-agent
         npm install --prefix 999_node_modules
         
     - name: Create environment file
       run: |
-        cd askme/scout-agent
+        cd scout-agent
         cat > 002_env/.env << EOF
         BACKEND_URL=${{ secrets.BACKEND_URL || 'https://askme-backend-proxy.onrender.com' }}
         AGENT_AUTH_TOKEN=${{ secrets.AGENT_AUTH_TOKEN || 'default-token' }}
@@ -47,13 +49,13 @@ jobs:
         BACKEND_URL: ${{ secrets.BACKEND_URL || 'https://askme-backend-proxy.onrender.com' }}
         AGENT_AUTH_TOKEN: ${{ secrets.AGENT_AUTH_TOKEN || 'default-token' }}
       run: |
-        cd askme/scout-agent
+        cd scout-agent
         echo "Starting LLM discovery..."
         npm start
         
     - name: Verify output files
       run: |
-        cd askme/scout-agent
+        cd scout-agent
         echo "Checking generated files..."
         ls -la 400_data/
         echo "CSV content preview:"
@@ -66,13 +68,13 @@ jobs:
         
     - name: Copy files to data directory
       run: |
-        cd askme/scout-agent
+        cd scout-agent
         # Copy latest files
-        cp 400_data/llm-models-latest.csv ../../data/exports/llm-models-latest.csv
+        cp 400_data/llm-models-latest.csv ../data/exports/llm-models-latest.csv
         
         # Create timestamped copies
         TIMESTAMP=$(date -u +"%Y-%m-%d_%H-%M-%S")
-        cp 400_data/llm-models-latest.csv "../../data/exports/llm-models-$TIMESTAMP.csv"
+        cp 400_data/llm-models-latest.csv "../data/exports/llm-models-$TIMESTAMP.csv"
         
         echo "Files copied to data directory with timestamp: $TIMESTAMP"
         
@@ -113,7 +115,7 @@ jobs:
           echo "No changes to commit"
         else
           TIMESTAMP=$(date -u +"%Y-%m-%d %H:%M:%S UTC")
-          MODELS_COUNT=$(wc -l < askme/scout-agent/400_data/llm-models-latest.csv 2>/dev/null || echo "unknown")
+          MODELS_COUNT=$(wc -l < scout-agent/400_data/llm-models-latest.csv 2>/dev/null || echo "unknown")
           
           git commit -m "📊 LLM Discovery Update - $TIMESTAMP
 
@@ -140,7 +142,7 @@ jobs:
           🤖 Automated LLM Discovery Report
           
           **Discovery Date:** $(date -u)
-          **Models Found:** $(wc -l < askme/scout-agent/400_data/llm-models-latest.csv 2>/dev/null || echo "unknown")
+          **Models Found:** $(wc -l < scout-agent/400_data/llm-models-latest.csv 2>/dev/null || echo "unknown")
           
           ### Downloads
           - [CSV Export](../../data/exports/llm-models-latest.csv)
@@ -154,6 +156,6 @@ jobs:
       with:
         name: llm-discovery-data
         path: |
-          askme/scout-agent/400_data/
+          scout-agent/400_data/
           data/
         retention-days: 30
