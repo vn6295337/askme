@@ -29,7 +29,7 @@ jobs:
       with:
         node-version: '20'
         cache: 'npm'
-        cache-dependency-path: 'scout-agent/001_config/package.json'
+        cache-dependency-path: 'scout-agent/001_config/package-lock.json'
         
     - name: Install dependencies
       run: |

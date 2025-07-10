@@ -1,0 +1,57 @@
+name: LLM Scout Agent (Fallback - No Cache)
+
+on:
+  schedule:
+    # Run every Sunday at 2 AM UTC
+    - cron: '0 2 * * 0'
+  
+  workflow_dispatch:
+    # Allow manual triggering
+    inputs:
+      debug:
+        description: 'Enable debug mode'
+        required: false
+        default: 'false'
+        type: boolean
+
+jobs:
+  scout:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+      
+    - name: Setup Node.js (No Cache)
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+    
+    - name: Install dependencies
+      run: |
+        cd scout-agent
+        npm install --prefix 999_node_modules
+    
+    - name: Create environment file
+      run: |
+        cd scout-agent
+        cat > 002_env/.env << EOF
+        BACKEND_URL=${{ secrets.BACKEND_URL }}
+        AGENT_AUTH_TOKEN=${{ secrets.AGENT_AUTH_TOKEN }}
+        EOF
+    
+    - name: Run LLM discovery
+      run: |
+        cd scout-agent
+        npm run start
+      env:
+        BACKEND_URL: ${{ secrets.BACKEND_URL }}
+        AGENT_AUTH_TOKEN: ${{ secrets.AGENT_AUTH_TOKEN }}
+    
+    - name: Upload discovery results
+      if: always()
+      uses: actions/upload-artifact@v4
+      with:
+        name: discovery-results-${{ github.run_number }}
+        path: scout-agent/400_data/
+        retention-days: 30
