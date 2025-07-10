@@ -4,7 +4,7 @@
   "description": "Autonomous agent for discovering free LLM models",
   "main": "100_src/index.js",
   "scripts": {
-    "start": "NODE_PATH=/home/km_project/askme/scout-agent/999_node_modules/node_modules node 100_src/index.js",
+    "start": "NODE_PATH=999_node_modules/node_modules node 100_src/index.js",
     "test": "jest --config 001_config/test-config.js",
     "test:watch": "jest --config 001_config/test-config.js --watch",
     "crawl": "node 100_src/data-crawler.js",
