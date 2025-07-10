@@ -9,7 +9,10 @@
     "test:watch": "jest --watch",
     "crawl": "node src/crawler.js",
     "schedule": "node src/scheduler.js",
-    "start-local": "./start-agent.sh"
+    "start-local": "./start-agent.sh",
+    "export": "./export-data.sh",
+    "convert": "node scripts/json-to-csv.js",
+    "discover-and-export": "npm start && npm run convert && ./export-data.sh"
   },
   "dependencies": {
     "axios": "^1.6.0",
