@@ -71,6 +71,7 @@ class LLMCrawler {
           const model = {
             name: repo.name,
             publisher: repo.owner.login,
+            country: 'Unknown', // Default country field
             sourceUrl: repo.html_url,
             releaseDate: repo.created_at,
             accessType: 'Open Source',
@@ -109,6 +110,7 @@ class LLMCrawler {
         const modelData = {
           name: model.modelId,
           publisher: model.modelId.split('/')[0],
+          country: 'Unknown', // Default country field
           sourceUrl: `https://huggingface.co/${model.modelId}`,
           releaseDate: model.lastModified,
           accessType: 'Open Source',
@@ -155,6 +157,7 @@ class LLMCrawler {
           const model = {
             name: title,
             publisher: authors.join(', '),
+            country: 'Unknown', // Default country field
             sourceUrl: link,
             releaseDate: published,
             accessType: 'Research Paper',
@@ -191,6 +194,7 @@ class LLMCrawler {
         const model = {
           name: paper.title,
           publisher: paper.authors || 'Unknown',
+          country: 'Unknown', // Default country field
           sourceUrl: paper.url_abs || paper.url_pdf,
           releaseDate: paper.published,
           accessType: 'Research Paper',
@@ -233,6 +237,7 @@ class LLMCrawler {
             const model = {
               name: title,
               publisher: blogSource.publisher,
+              country: 'Unknown', // Default country field
               sourceUrl: link.startsWith('http') ? link : `${blogSource.baseUrl}${link}`,
               releaseDate: date,
               accessType: 'Blog Post',

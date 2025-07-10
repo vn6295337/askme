@@ -4,11 +4,12 @@
   "description": "Autonomous agent for discovering free LLM models",
   "main": "src/index.js",
   "scripts": {
-    "start": "node src/index.js",
+    "start": "NODE_PATH=/home/km_project/askme/scout-agent/node_modules node src/index.js",
     "test": "jest",
     "test:watch": "jest --watch",
     "crawl": "node src/crawler.js",
-    "schedule": "node src/scheduler.js"
+    "schedule": "node src/scheduler.js",
+    "start-local": "./start-agent.sh"
   },
   "dependencies": {
     "axios": "^1.6.0",

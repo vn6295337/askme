@@ -3,7 +3,7 @@
 # askme CLI Automation Testing Script
 # Tests predefined input cases to verify CLI functionality
 
-CLI_PATH="/mnt/chromeos/removable/USBdrive/askme/300_implementation/askme-cli/cliApp/build/install/cliApp/bin/cliApp"
+CLI_PATH="/home/km_project/askme/300_implementation/askme-cli/cliApp/build/install/cliApp/bin/cliApp"
 LOG_FILE="/home/km_project/askme-automation-test.log"
 
 echo "=== askme CLI Automation Test Started: $(date) ===" | tee -a $LOG_FILE

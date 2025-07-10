@@ -2,7 +2,7 @@
 
 echo "🔍 Scanning Android development environment under USBdrive/askme..."
 
-ROOT="/mnt/chromeos/removable/USBdrive/askme"
+ROOT="/home/km_project/askme"
 MISSING=0
 
 check_dir() {

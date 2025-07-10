@@ -21,7 +21,7 @@
     }
   },
   "arxiv": {
-    "enabled": true,
+    "enabled": false,
     "baseUrl": "http://export.arxiv.org/api/query",
     "searchTerms": [
       "large language model",

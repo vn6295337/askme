@@ -17,9 +17,13 @@ class BackendReporter {
       const report = this.generateReport(enrichedModels);
       
       await this.saveLocalCopy(report);
-      await this.postToBackend(report);
       
-      console.log('Report sent to backend successfully');
+      try {
+        await this.postToBackend(report);
+        console.log('Report sent to backend successfully');
+      } catch (backendError) {
+        console.log('Backend submission failed, but local copy was saved successfully');
+      }
     } catch (error) {
       console.error('Failed to send report to backend:', error);
       throw error;
@@ -135,13 +139,19 @@ class BackendReporter {
       }
     } catch (error) {
       if (error.response) {
-        console.error('Backend error:', error.response.status, error.response.data);
+        console.error('Backend error:', error.response.status, error.response.statusText);
+        if (error.response.data) {
+          console.error('Response data:', error.response.data);
+        }
+        // Don't throw error for backend issues - continue with local save
+        console.log('Continuing with local save only due to backend error');
       } else if (error.request) {
-        console.error('Network error:', error.message);
+        console.error('Network error - backend unreachable:', error.message);
+        console.log('Continuing with local save only due to network error');
       } else {
         console.error('Request setup error:', error.message);
+        throw error;
       }
-      throw error;
     }
   }
 

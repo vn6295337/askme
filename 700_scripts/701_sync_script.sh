@@ -7,7 +7,7 @@ set -euo pipefail
 # Configuration
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 LOG_FILE="${SCRIPT_DIR}/tiered_sync.log"
-USB_PATH="/mnt/chromeos/removable/USBdrive/askme"
+USB_PATH="/home/km_project/askme"
 
 # Tier Configuration
 declare -A TIER_CONFIG=(
