@@ -20,6 +20,121 @@
       "limit": 50
     }
   },
+  "apiProviders": [
+    {
+      "name": "Together AI",
+      "publisher": "Together AI",
+      "url": "https://docs.together.ai/docs/inference-models",
+      "apiUrl": "https://api.together.xyz/models",
+      "type": "api",
+      "accessType": "freemium",
+      "enabled": true
+    },
+    {
+      "name": "Replicate",
+      "publisher": "Replicate",
+      "url": "https://replicate.com/collections/language-models",
+      "apiUrl": "https://api.replicate.com/v1/collections/language-models",
+      "type": "api",
+      "accessType": "freemium",
+      "enabled": true
+    },
+    {
+      "name": "OpenRouter",
+      "publisher": "OpenRouter",
+      "url": "https://openrouter.ai/docs",
+      "apiUrl": "https://openrouter.ai/api/v1/models",
+      "type": "api",
+      "accessType": "freemium",
+      "enabled": true
+    },
+    {
+      "name": "Perplexity",
+      "publisher": "Perplexity AI",
+      "url": "https://docs.perplexity.ai/docs/model-cards",
+      "type": "api",
+      "accessType": "freemium",
+      "enabled": true
+    },
+    {
+      "name": "Cohere",
+      "publisher": "Cohere",
+      "url": "https://docs.cohere.com/docs/models",
+      "type": "api",
+      "accessType": "freemium",
+      "enabled": true
+    }
+  ],
+  "communityNews": [
+    {
+      "name": "The Sequence",
+      "publisher": "The Sequence",
+      "url": "https://thesequence.substack.com/",
+      "feedUrl": "https://thesequence.substack.com/feed",
+      "type": "rss",
+      "keywords": ["model", "launch", "release", "llm", "gpt", "claude"],
+      "enabled": true
+    },
+    {
+      "name": "AI Research",
+      "publisher": "AI Research",
+      "url": "https://www.airesearch.com/",
+      "type": "scrape",
+      "selector": "article",
+      "keywords": ["model", "announcement", "release"],
+      "enabled": true
+    },
+    {
+      "name": "Papers with Code",
+      "publisher": "Papers with Code",
+      "url": "https://paperswithcode.com/greatest",
+      "apiUrl": "https://paperswithcode.com/api/v1/papers/",
+      "type": "api",
+      "keywords": ["language model", "llm", "gpt", "transformer"],
+      "enabled": true
+    },
+    {
+      "name": "Reddit ML",
+      "publisher": "Reddit",
+      "url": "https://www.reddit.com/r/MachineLearning/",
+      "feedUrl": "https://www.reddit.com/r/MachineLearning/.rss",
+      "type": "rss",
+      "keywords": ["model", "release", "open source", "api"],
+      "enabled": true
+    }
+  ],
+  "leaderboards": [
+    {
+      "name": "Chatbot Arena",
+      "publisher": "LMSYS",
+      "url": "https://huggingface.co/spaces/lmsys/chatbot-arena-leaderboard",
+      "apiUrl": "https://huggingface.co/api/spaces/lmsys/chatbot-arena-leaderboard",
+      "type": "leaderboard",
+      "enabled": true
+    },
+    {
+      "name": "Open LLM Leaderboard",
+      "publisher": "Hugging Face",
+      "url": "https://huggingface.co/spaces/HuggingFaceH4/open_llm_leaderboard",
+      "apiUrl": "https://huggingface.co/api/spaces/HuggingFaceH4/open_llm_leaderboard",
+      "type": "leaderboard",
+      "enabled": true
+    },
+    {
+      "name": "LMSYS Leaderboard",
+      "publisher": "LMSYS",
+      "url": "https://chat.lmsys.org/?leaderboard",
+      "type": "leaderboard",
+      "enabled": true
+    },
+    {
+      "name": "Big-Bench",
+      "publisher": "Google",
+      "url": "https://github.com/google/BIG-bench",
+      "type": "leaderboard",
+      "enabled": true
+    }
+  ],
   "blogs": [
     {
       "name": "Hugging Face Blog",
