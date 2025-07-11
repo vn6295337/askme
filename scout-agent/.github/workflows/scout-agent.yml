@@ -22,6 +22,9 @@ on:
 jobs:
   scout:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      issues: write
     
     steps:
     - name: Checkout repository
@@ -47,6 +50,7 @@ jobs:
         cat > .env << EOF
         BACKEND_URL=${{ secrets.BACKEND_URL }}
         AGENT_AUTH_TOKEN=${{ secrets.AGENT_AUTH_TOKEN }}
+        HUGGINGFACE_TOKEN=${{ secrets.HUGGINGFACE_TOKEN }}
         EOF
     
     - name: Run LLM discovery
@@ -56,6 +60,7 @@ jobs:
       env:
         BACKEND_URL: ${{ secrets.BACKEND_URL }}
         AGENT_AUTH_TOKEN: ${{ secrets.AGENT_AUTH_TOKEN }}
+        HUGGINGFACE_TOKEN: ${{ secrets.HUGGINGFACE_TOKEN }}
     
     - name: Upload discovery results
       if: always()
