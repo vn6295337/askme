@@ -34,16 +34,13 @@ class LLMFilters {
 
   filterModels(models) {
     return models.filter(model => {
-      return this.isFromUSOrEurope(model) &&
-             this.hasFreeAccess(model) &&
-             this.supportsEnglish(model) &&
-             !this.isDeprecated(model) &&
-             this.isActive(model);
+      return this.hasFreeAccess(model) &&
+             !this.isDeprecated(model);
     });
   }
 
   isFromUSOrEurope(model) {
-    const publisherText = (model.publisher || '').toLowerCase();
+    const publisherText = this.getStringField(model.publisher);
     const nameText = (model.name || '').toLowerCase();
     const sourceText = (model.sourceUrl || '').toLowerCase();
     
@@ -73,7 +70,7 @@ class LLMFilters {
 
   supportsEnglish(model) {
     const nameText = (model.name || '').toLowerCase();
-    const publisherText = (model.publisher || '').toLowerCase();
+    const publisherText = this.getStringField(model.publisher);
     const sourceText = (model.sourceUrl || '').toLowerCase();
     
     const combinedText = `${nameText} ${publisherText} ${sourceText}`;
@@ -97,7 +94,7 @@ class LLMFilters {
 
   isDeprecated(model) {
     const nameText = (model.name || '').toLowerCase();
-    const publisherText = (model.publisher || '').toLowerCase();
+    const publisherText = this.getStringField(model.publisher);
     const sourceText = (model.sourceUrl || '').toLowerCase();
     
     const combinedText = `${nameText} ${publisherText} ${sourceText}`;
@@ -128,8 +125,15 @@ class LLMFilters {
     return enriched;
   }
 
+  getStringField(field) {
+    if (Array.isArray(field)) {
+      return field.join(', ').toLowerCase();
+    }
+    return (field || '').toLowerCase();
+  }
+
   extractCountry(model) {
-    const publisherText = (model.publisher || '').toLowerCase();
+    const publisherText = this.getStringField(model.publisher);
     const sourceText = (model.sourceUrl || '').toLowerCase();
     
     const countryMap = {

@@ -30,13 +30,14 @@ class LLMCrawler {
       
       const githubModels = await this.crawlGitHub();
       const huggingFaceModels = await this.crawlHuggingFace();
-      const arxivModels = await this.crawlArxiv();
-      const papersWithCodeModels = await this.crawlPapersWithCode();
       const blogModels = await this.crawlBlogs();
       
-      allModels.push(...fallbackModels, ...githubModels, ...huggingFaceModels, ...arxivModels, ...papersWithCodeModels, ...blogModels);
+      allModels.push(...fallbackModels, ...githubModels, ...huggingFaceModels, ...blogModels);
       
-      const filteredModels = filters.filterModels(allModels);
+      // Enrich models with additional data before filtering
+      const enrichedModels = allModels.map(model => filters.enrichModelData(model));
+      
+      const filteredModels = filters.filterModels(enrichedModels);
       const deduplicatedModels = this.removeDuplicates(filteredModels);
       
       console.log(`Total models collected: ${allModels.length}, after filtering: ${deduplicatedModels.length}`);
@@ -45,7 +46,8 @@ class LLMCrawler {
     } catch (error) {
       console.error('Error during model discovery:', error);
       // Return fallback models if everything fails
-      return this.getFallbackModels();
+      const fallbackModels = this.getFallbackModels();
+      return fallbackModels.map(model => filters.enrichModelData(model));
     }
   }
 
@@ -116,13 +118,27 @@ class LLMCrawler {
     const models = [];
     
     try {
+      // Check if HuggingFace token is available
+      const hfToken = process.env.HUGGINGFACE_TOKEN || process.env.HF_TOKEN;
+      const headers = {
+        'User-Agent': 'askme-scout-agent/1.0.0'
+      };
+      
+      if (hfToken && hfToken !== 'undefined' && hfToken.length > 10) {
+        headers['Authorization'] = `Bearer ${hfToken}`;
+        console.log('Using authenticated HuggingFace API requests');
+      } else {
+        console.warn('No valid HuggingFace token found, using unauthenticated requests (limited rate)');
+      }
+      
       const response = await axios.get('https://huggingface.co/api/models', {
         params: {
           filter: 'text-generation',
           sort: 'lastModified',
           direction: -1,
           limit: 50
-        }
+        },
+        headers
       });
       
       for (const model of response.data) {
@@ -146,87 +162,6 @@ class LLMCrawler {
     return models;
   }
 
-  async crawlArxiv() {
-    await this.rateLimit('arxiv.org');
-    const models = [];
-    
-    try {
-      const searchTerms = ['large language model', 'transformer', 'llm'];
-      
-      for (const term of searchTerms) {
-        const response = await axios.get('http://export.arxiv.org/api/query', {
-          params: {
-            search_query: `all:${term}`,
-            start: 0,
-            max_results: 20,
-            sortBy: 'submittedDate',
-            sortOrder: 'descending'
-          }
-        });
-        
-        const $ = cheerio.load(response.data, { xmlMode: true });
-        
-        $('entry').each((i, entry) => {
-          const title = $(entry).find('title').text().trim();
-          const authors = $(entry).find('author name').map((i, el) => $(el).text()).get();
-          const published = $(entry).find('published').text();
-          const link = $(entry).find('id').text();
-          
-          const model = {
-            name: title,
-            publisher: authors.join(', '),
-            sourceUrl: link,
-            releaseDate: published,
-            accessType: 'Research Paper',
-            license: 'Academic Use',
-            inferenceSupport: 'Unknown',
-            source: 'arXiv'
-          };
-          
-          models.push(model);
-        });
-        
-        await this.rateLimit('arxiv.org');
-      }
-    } catch (error) {
-      console.error('arXiv crawl error:', error.message);
-    }
-    
-    return models;
-  }
-
-  async crawlPapersWithCode() {
-    await this.rateLimit('paperswithcode.com');
-    const models = [];
-    
-    try {
-      const response = await axios.get('https://paperswithcode.com/api/v1/papers/', {
-        params: {
-          q: 'language model',
-          ordering: '-published'
-        }
-      });
-      
-      for (const paper of response.data.results.slice(0, 20)) {
-        const model = {
-          name: paper.title,
-          publisher: paper.authors || 'Unknown',
-          sourceUrl: paper.url_abs || paper.url_pdf,
-          releaseDate: paper.published,
-          accessType: 'Research Paper',
-          license: 'Academic Use',
-          inferenceSupport: 'Unknown',
-          source: 'Papers with Code'
-        };
-        
-        models.push(model);
-      }
-    } catch (error) {
-      console.error('Papers with Code crawl error:', error.message);
-    }
-    
-    return models;
-  }
 
   async crawlBlogs() {
     const models = [];

@@ -76,7 +76,7 @@ class LLMSchema {
   }
 
   isValidModelSize(size) {
-    const sizePattern = /^(\\d+(\\.\\d+)?)(B|M|K|billion|million|thousand)$/i;
+    const sizePattern = /^(\d+(\.\d+)?)(B|M|K|billion|million|thousand)$/i;
     return sizePattern.test(size) || size === 'Unknown';
   }
 
