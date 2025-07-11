@@ -153,18 +153,31 @@ class BackendReporter {
       return 'No models to export';
     }
     
-    const headers = Object.keys(models[0]);
+    // Define specific headers matching the refined output format
+    const headers = ['name', 'shortName', 'country', 'modelSize', 'releaseDate', 'accessType', 'license', 'capabilities', 'validation_notes'];
     csvRows.push(headers.join(','));
     
     models.forEach(model => {
       const row = headers.map(header => {
-        const value = model[header] || '';
+        let value = model[header] || '';
+        
+        // Handle array fields
+        if (Array.isArray(value)) {
+          value = value.join(' & ');
+        }
+        
+        // Handle object fields
+        if (typeof value === 'object' && value !== null) {
+          value = JSON.stringify(value);
+        }
+        
+        // Escape CSV values
         return typeof value === 'string' ? `"${value.replace(/"/g, '""')}"` : value;
       });
       csvRows.push(row.join(','));
     });
     
-    const csvContent = csvRows.join('\\n');
+    const csvContent = csvRows.join('\n');
     const filename = `llm-models-${Date.now()}.csv`;
     const filepath = path.join(this.outputDir, filename);
     
