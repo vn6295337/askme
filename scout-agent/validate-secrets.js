@@ -50,20 +50,23 @@ const GITHUB_SECRETS = {
   'AGENT_AUTH_TOKEN': 'Secure authentication token for agent'
 };
 
-// Render.com environment variables
-const RENDER_ENV_VARS = {
-  // Existing (should already be set)
-  'GOOGLE_API_KEY': 'Google Gemini API key',
-  'MISTRAL_API_KEY': 'Mistral AI API key', 
-  'LLAMA_API_KEY': 'Together.ai Llama API key',
-  
-  // New API providers (newly added)
+// API Keys for 9 approved providers
+const API_KEYS = {
+  'GEMINI_API_KEY': 'Google Gemini API key',
+  'MISTRAL_API_KEY': 'Mistral AI API key',
+  'TOGETHER_API_KEY': 'Together.ai API key for LLaMA models',
   'COHERE_API_KEY': 'Cohere API key for conversational AI',
   'GROQ_API_KEY': 'Groq API key for ultra-fast inference',
   'HUGGINGFACE_API_KEY': 'HuggingFace API token for community models',
   'OPENROUTER_API_KEY': 'OpenRouter API key for multi-provider access',
   'AI21_API_KEY': 'AI21 Studio API key for Jurassic models',
-  'REPLICATE_API_KEY': 'Replicate API token for model hosting',
+  'REPLICATE_API_TOKEN': 'Replicate API token for model hosting'
+};
+
+// Render.com environment variables
+const RENDER_ENV_VARS = {
+  // API keys for approved providers
+  ...API_KEYS,
   
   // New for scout agent
   'AGENT_AUTH_TOKEN': 'Scout agent authentication token'
@@ -118,6 +121,41 @@ function generateSecureToken() {
     result += chars.charAt(Math.floor(Math.random() * chars.length));
   }
   return result;
+}
+
+function checkAPIKeys() {
+  console.log('\\n🔑 API Keys Check:');
+  
+  let availableProviders = 0;
+  const keyResults = [];
+  
+  Object.entries(API_KEYS).forEach(([keyName, description]) => {
+    const value = process.env[keyName];
+    const present = !!value;
+    const valid = present && value.length > 10 && !value.includes('your-') && !value.includes('example');
+    
+    if (valid) {
+      availableProviders++;
+    }
+    
+    keyResults.push({
+      name: keyName,
+      description,
+      present,
+      valid
+    });
+    
+    const status = valid ? '✅' : (present ? '⚠️' : '❌');
+    console.log(`  ${status} ${keyName}: ${present ? 'Set' : 'Not set'}`);
+    
+    if (present && !valid) {
+      console.log(`      Issue: API key appears to be invalid or placeholder`);
+    }
+  });
+  
+  console.log(`\\n  📊 Available providers: ${availableProviders}/${Object.keys(API_KEYS).length}`);
+  
+  return { availableProviders, keyResults };
 }
 
 function checkLocalEnvironment() {
@@ -326,6 +364,9 @@ async function runValidation() {
   // Check local environment
   const localCheck = checkLocalEnvironment();
   
+  // Check API keys for approved providers
+  const apiCheck = checkAPIKeys();
+  
   // Test connectivity
   await testConnectivity();
   
@@ -340,11 +381,20 @@ async function runValidation() {
   console.log('📊 Validation Summary:');
   console.log('='.repeat(60));
   
-  if (localCheck.allValid) {
+  const hasMinimumProviders = apiCheck.availableProviders >= 3;
+  const allSystemsValid = localCheck.allValid && hasMinimumProviders;
+  
+  if (allSystemsValid) {
     console.log('✅ All required environment variables are valid');
+    console.log(`✅ ${apiCheck.availableProviders} API providers available`);
     console.log('🚀 Ready for production deployment!');
   } else {
-    console.log('❌ Some required environment variables are missing or invalid');
+    if (!localCheck.allValid) {
+      console.log('❌ Some required environment variables are missing or invalid');
+    }
+    if (!hasMinimumProviders) {
+      console.log(`❌ Insufficient API providers (${apiCheck.availableProviders}/9 available, minimum 3 required)`);
+    }
     console.log('⚠️  Please fix issues before production deployment');
   }
   
@@ -354,7 +404,7 @@ async function runValidation() {
   console.log('3. Test manual workflow trigger');
   console.log('4. Monitor first automated run');
   
-  process.exit(localCheck.allValid ? 0 : 1);
+  process.exit(allSystemsValid ? 0 : 1);
 }
 
 // Run validation
