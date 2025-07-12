@@ -98,19 +98,12 @@ jobs:
       working-directory: scout-agent
       run: npm install
       
-    - name: Validate API keys availability
+    - name: Validate backend connectivity
       working-directory: scout-agent
       run: node validate-secrets.js
       env:
-        GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
-        MISTRAL_API_KEY: ${{ secrets.MISTRAL_API_KEY }}
-        TOGETHER_API_KEY: ${{ secrets.TOGETHER_API_KEY }}
-        COHERE_API_KEY: ${{ secrets.COHERE_API_KEY }}
-        GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
-        HUGGINGFACE_API_KEY: ${{ secrets.HUGGINGFACE_API_KEY }}
-        OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
-        AI21_API_KEY: ${{ secrets.AI21_API_KEY }}
-        REPLICATE_API_TOKEN: ${{ secrets.REPLICATE_API_TOKEN }}
+        BACKEND_URL: ${{ secrets.BACKEND_URL }}
+        AGENT_AUTH_TOKEN: ${{ secrets.AGENT_AUTH_TOKEN }}
         
     - name: Run model validation
       working-directory: scout-agent
@@ -123,18 +116,11 @@ jobs:
         export SPECIFIC_PROVIDER="${{ github.event.inputs.provider }}"
         export ANNOUNCEMENT_URL="${{ github.event.inputs.announcement_url }}"
         
-        # Run validation with context
-        node validate-models.js
+        # Run validation with context through backend proxy
+        node validate-models-backend.js
       env:
-        GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
-        MISTRAL_API_KEY: ${{ secrets.MISTRAL_API_KEY }}
-        TOGETHER_API_KEY: ${{ secrets.TOGETHER_API_KEY }}
-        COHERE_API_KEY: ${{ secrets.COHERE_API_KEY }}
-        GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
-        HUGGINGFACE_API_KEY: ${{ secrets.HUGGINGFACE_API_KEY }}
-        OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
-        AI21_API_KEY: ${{ secrets.AI21_API_KEY }}
-        REPLICATE_API_TOKEN: ${{ secrets.REPLICATE_API_TOKEN }}
+        BACKEND_URL: ${{ secrets.BACKEND_URL }}
+        AGENT_AUTH_TOKEN: ${{ secrets.AGENT_AUTH_TOKEN }}
         VALIDATION_TRIGGER: ${{ github.event_name }}
         TRIGGER_REASON: ${{ github.event.inputs.trigger_reason || 'Automated trigger' }}
         SPECIFIC_PROVIDER: ${{ github.event.inputs.provider }}
