@@ -9,7 +9,13 @@ object IntelligentProvider {
     private val providers = listOf(
         GoogleProvider(),
         MistralProvider(),
-        LlamaProvider()
+        LlamaProvider(),
+        CohereProvider(),
+        GroqProvider(),
+        HuggingFaceProvider(),
+        OpenRouterProvider(),
+        AI21Provider(),
+        ReplicateProvider()
     )
     
     // Performance tracking for intelligent selection

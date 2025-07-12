@@ -34,7 +34,13 @@ app.use('/api/', limiter);
 const API_KEYS = {
   google: process.env.GOOGLE_API_KEY,
   mistral: process.env.MISTRAL_API_KEY,
-  llama: process.env.LLAMA_API_KEY
+  llama: process.env.LLAMA_API_KEY,
+  cohere: process.env.COHERE_API_KEY,
+  groq: process.env.GROQ_API_KEY,
+  huggingface: process.env.HUGGINGFACE_API_KEY,
+  openrouter: process.env.OPENROUTER_API_KEY,
+  ai21: process.env.AI21_API_KEY,
+  replicate: process.env.REPLICATE_API_KEY
 };
 
 // LLM Scout Agent configuration
@@ -134,6 +140,196 @@ const PROVIDERS = {
         return data.choices?.[0]?.message?.content || "No response from Llama";
       } catch (e) {
         return "Error processing Llama response";
+      }
+    }
+  },
+  
+  cohere: {
+    models: [
+      "command",                        // Main conversational model
+      "command-light",                  // Faster, lightweight version
+      "command-nightly",                // Latest experimental features
+      "command-r",                      // Retrieval-optimized
+      "command-r-plus"                  // Enhanced retrieval
+    ],
+    url: () => "https://api.cohere.ai/v1/chat",
+    headers: (apiKey) => ({
+      "Content-Type": "application/json",
+      "Authorization": `Bearer ${apiKey}`
+    }),
+    formatRequest: (prompt, model) => ({
+      model: model || "command",
+      message: prompt,
+      max_tokens: 500,
+      temperature: 0.7
+    }),
+    extractResponse: (data) => {
+      try {
+        return data.text || data.message || "No response from Cohere";
+      } catch (e) {
+        return "Error processing Cohere response";
+      }
+    }
+  },
+  
+  groq: {
+    models: [
+      "llama-3.3-70b-versatile",        // Latest Llama 3.3
+      "llama-3.1-70b-versatile",        // Llama 3.1 70B
+      "llama-3.1-8b-instant",           // Fast 8B model
+      "mixtral-8x7b-32768",             // Mixtral with long context
+      "gemma2-9b-it",                   // Google Gemma 2
+      "gemma-7b-it"                     // Google Gemma 7B
+    ],
+    url: () => "https://api.groq.com/openai/v1/chat/completions",
+    headers: (apiKey) => ({
+      "Content-Type": "application/json",
+      "Authorization": `Bearer ${apiKey}`
+    }),
+    formatRequest: (prompt, model) => ({
+      model: model || "llama-3.3-70b-versatile",
+      messages: [{ role: "user", content: prompt }],
+      max_tokens: 500,
+      temperature: 0.7
+    }),
+    extractResponse: (data) => {
+      try {
+        return data.choices?.[0]?.message?.content || "No response from Groq";
+      } catch (e) {
+        return "Error processing Groq response";
+      }
+    }
+  },
+  
+  huggingface: {
+    models: [
+      "microsoft/DialoGPT-large",       // Conversational AI
+      "microsoft/DialoGPT-medium",      // Medium conversational
+      "facebook/blenderbot-400M-distill", // Facebook's chatbot
+      "google/flan-t5-large",           // Instruction-following
+      "microsoft/CodeBERT-base"         // Code understanding
+    ],
+    url: (apiKey, model) => `https://api-inference.huggingface.co/models/${model || "microsoft/DialoGPT-large"}`,
+    headers: (apiKey) => ({
+      "Content-Type": "application/json",
+      "Authorization": `Bearer ${apiKey}`
+    }),
+    formatRequest: (prompt) => ({
+      inputs: prompt,
+      parameters: {
+        max_length: 500,
+        temperature: 0.7,
+        return_full_text: false
+      }
+    }),
+    extractResponse: (data) => {
+      try {
+        if (Array.isArray(data)) {
+          return data[0]?.generated_text || data[0]?.text || "No response from HuggingFace";
+        }
+        return data.generated_text || data.text || data.response || "No response from HuggingFace";
+      } catch (e) {
+        return "Error processing HuggingFace response";
+      }
+    }
+  },
+  
+  openrouter: {
+    models: [
+      "anthropic/claude-3-haiku",       // Fast Claude model
+      "meta-llama/llama-3.1-8b-instruct", // Llama via OpenRouter
+      "mistralai/mistral-7b-instruct",  // Mistral via OpenRouter
+      "google/gemma-7b-it",             // Gemma via OpenRouter
+      "microsoft/wizardlm-2-8x22b"      // WizardLM via OpenRouter
+    ],
+    url: () => "https://openrouter.ai/api/v1/chat/completions",
+    headers: (apiKey) => ({
+      "Content-Type": "application/json",
+      "Authorization": `Bearer ${apiKey}`,
+      "HTTP-Referer": "https://askme-backend-proxy.onrender.com",
+      "X-Title": "AskMe CLI"
+    }),
+    formatRequest: (prompt, model) => ({
+      model: model || "anthropic/claude-3-haiku",
+      messages: [{ role: "user", content: prompt }],
+      max_tokens: 500,
+      temperature: 0.7
+    }),
+    extractResponse: (data) => {
+      try {
+        return data.choices?.[0]?.message?.content || "No response from OpenRouter";
+      } catch (e) {
+        return "Error processing OpenRouter response";
+      }
+    }
+  },
+  
+  ai21: {
+    models: [
+      "j2-light",                       // Fast, efficient
+      "j2-mid",                         // Balanced performance
+      "j2-ultra",                       // Most capable
+      "jamba-instruct"                  // Latest instruction model
+    ],
+    url: (apiKey, model) => `https://api.ai21.com/studio/v1/${model || "j2-light"}/complete`,
+    headers: (apiKey) => ({
+      "Content-Type": "application/json",
+      "Authorization": `Bearer ${apiKey}`
+    }),
+    formatRequest: (prompt) => ({
+      prompt: prompt,
+      maxTokens: 500,
+      temperature: 0.7,
+      topP: 1,
+      stopSequences: []
+    }),
+    extractResponse: (data) => {
+      try {
+        return data.completions?.[0]?.data?.text || "No response from AI21";
+      } catch (e) {
+        return "Error processing AI21 response";
+      }
+    }
+  },
+  
+  replicate: {
+    models: [
+      "meta/llama-2-70b-chat",          // Llama 2 70B
+      "meta/llama-2-13b-chat",          // Llama 2 13B
+      "mistralai/mixtral-8x7b-instruct-v0.1", // Mixtral
+      "meta/codellama-34b-instruct"     // Code-focused model
+    ],
+    url: () => "https://api.replicate.com/v1/predictions",
+    headers: (apiKey) => ({
+      "Content-Type": "application/json",
+      "Authorization": `Token ${apiKey}`
+    }),
+    formatRequest: (prompt, model) => ({
+      version: this.getModelVersion(model || "meta/llama-2-70b-chat"),
+      input: {
+        prompt: prompt,
+        max_length: 500,
+        temperature: 0.7
+      }
+    }),
+    getModelVersion: (model) => {
+      // Model version mappings for Replicate
+      const versions = {
+        "meta/llama-2-70b-chat": "02e509c789964a7ea8736978a43525956ef40397be9033abf9fd2badfe68c9e3",
+        "meta/llama-2-13b-chat": "f4e2de70d66816a838a89eeeb621910adffb0dd0baba3976c96980970978018d",
+        "mistralai/mixtral-8x7b-instruct-v0.1": "cf18decbf51c27fed6bbdc3492312c1c903222a56e3fe9ca02d6cbe5198afc10",
+        "meta/codellama-34b-instruct": "7fdf82bb301ebeea7ba2b9e4d19b4e49d1ce6faae5c0ddc6b5af9f33d52ee346"
+      };
+      return versions[model] || versions["meta/llama-2-70b-chat"];
+    },
+    extractResponse: (data) => {
+      try {
+        if (data.output && Array.isArray(data.output)) {
+          return data.output.join('') || "No response from Replicate";
+        }
+        return data.output || "No response from Replicate";
+      } catch (e) {
+        return "Error processing Replicate response";
       }
     }
   }
@@ -246,7 +442,7 @@ app.post('/api/smart', async (req, res) => {
     return res.status(400).json({ error: 'Prompt is required' });
   }
   
-  // Simple smart selection logic (enhanced)
+  // Enhanced smart selection logic with new providers
   let selectedProvider = 'google'; // default
   
   const promptLower = prompt.toLowerCase();
@@ -258,6 +454,12 @@ app.post('/api/smart', async (req, res) => {
     selectedProvider = 'google';   // Analytical tasks
   } else if (promptLower.includes('math') || promptLower.includes('calculate') || promptLower.includes('solve')) {
     selectedProvider = 'google';   // Mathematical tasks
+  } else if (promptLower.includes('fast') || promptLower.includes('quick') || promptLower.includes('instant')) {
+    selectedProvider = 'groq';     // Ultra-fast inference
+  } else if (promptLower.includes('conversation') || promptLower.includes('chat') || promptLower.includes('talk')) {
+    selectedProvider = 'cohere';   // Conversational AI
+  } else if (promptLower.includes('open source') || promptLower.includes('community') || promptLower.includes('hugging')) {
+    selectedProvider = 'huggingface'; // Community models
   }
   
   try {

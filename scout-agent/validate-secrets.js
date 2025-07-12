@@ -57,6 +57,14 @@ const RENDER_ENV_VARS = {
   'MISTRAL_API_KEY': 'Mistral AI API key', 
   'LLAMA_API_KEY': 'Together.ai Llama API key',
   
+  // New API providers (newly added)
+  'COHERE_API_KEY': 'Cohere API key for conversational AI',
+  'GROQ_API_KEY': 'Groq API key for ultra-fast inference',
+  'HUGGINGFACE_API_KEY': 'HuggingFace API token for community models',
+  'OPENROUTER_API_KEY': 'OpenRouter API key for multi-provider access',
+  'AI21_API_KEY': 'AI21 Studio API key for Jurassic models',
+  'REPLICATE_API_KEY': 'Replicate API token for model hosting',
+  
   // New for scout agent
   'AGENT_AUTH_TOKEN': 'Scout agent authentication token'
 };
