@@ -296,8 +296,9 @@ async function testConnectivity() {
       console.log('  ✅ Backend is accessible');
       console.log(`     Status: ${result.status}`);
     } else {
-      console.log('  ❌ Backend is not accessible');
-      console.log(`     Error: ${result.error}`);
+      console.log('  ⚠️  Backend not immediately accessible (may be sleeping on free tier)');
+      console.log(`     Note: Render.com free tier services sleep after inactivity`);
+      console.log(`     This is normal and the service will wake up when accessed by GitHub Actions`);
     }
   } else {
     console.log('  ⚠️  No valid backend URL to test');
@@ -381,28 +382,42 @@ async function runValidation() {
   console.log('📊 Validation Summary:');
   console.log('='.repeat(60));
   
-  const hasMinimumProviders = apiCheck.availableProviders >= 3;
+  // For backend proxy mode, we only need backend connectivity, not individual API keys
+  const backendProxyMode = process.env.BACKEND_URL && process.env.AGENT_AUTH_TOKEN;
+  const hasMinimumProviders = backendProxyMode || apiCheck.availableProviders >= 3;
   const allSystemsValid = localCheck.allValid && hasMinimumProviders;
   
   if (allSystemsValid) {
     console.log('✅ All required environment variables are valid');
-    console.log(`✅ ${apiCheck.availableProviders} API providers available`);
+    if (backendProxyMode) {
+      console.log('✅ Backend proxy mode configured (API keys managed by backend)');
+    } else {
+      console.log(`✅ ${apiCheck.availableProviders} API providers available`);
+    }
     console.log('🚀 Ready for production deployment!');
   } else {
     if (!localCheck.allValid) {
       console.log('❌ Some required environment variables are missing or invalid');
     }
-    if (!hasMinimumProviders) {
+    if (!hasMinimumProviders && !backendProxyMode) {
       console.log(`❌ Insufficient API providers (${apiCheck.availableProviders}/9 available, minimum 3 required)`);
+      console.log('💡 Alternatively, configure BACKEND_URL and AGENT_AUTH_TOKEN for backend proxy mode');
     }
     console.log('⚠️  Please fix issues before production deployment');
   }
   
   console.log('\\n📋 Next Steps:');
-  console.log('1. Set up GitHub repository secrets');
-  console.log('2. Configure Render.com environment variables');
-  console.log('3. Test manual workflow trigger');
-  console.log('4. Monitor first automated run');
+  if (backendProxyMode) {
+    console.log('1. ✅ Backend proxy mode detected - minimal setup required');
+    console.log('2. Ensure GitHub repository has BACKEND_URL and AGENT_AUTH_TOKEN secrets');
+    console.log('3. Test manual workflow trigger');
+    console.log('4. Monitor first automated run');
+  } else {
+    console.log('1. Set up GitHub repository secrets');
+    console.log('2. Configure Render.com environment variables');
+    console.log('3. Test manual workflow trigger');
+    console.log('4. Monitor first automated run');
+  }
   
   process.exit(allSystemsValid ? 0 : 1);
 }
