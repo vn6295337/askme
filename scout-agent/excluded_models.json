@@ -1,8 +1,8 @@
 {
   "metadata": {
-    "timestamp": "2025-07-12T13:35:31.184Z",
-    "trigger": "manual",
-    "reason": "Manual validation",
+    "timestamp": "2025-07-12T13:42:00.067Z",
+    "trigger": "push",
+    "reason": "Automated trigger",
     "specific_provider": null,
     "announcement_url": null,
     "total_models_checked": 42,
