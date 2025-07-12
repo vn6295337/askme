@@ -1,5 +1,9 @@
 name: Scout Agent - Model Validation
 
+permissions:
+  contents: write
+  actions: read
+
 on:
   workflow_dispatch:
     inputs:
@@ -89,12 +93,10 @@ jobs:
       uses: actions/setup-node@v4
       with:
         node-version: '18'
-        cache: 'npm'
-        cache-dependency-path: scout-agent/package-lock.json
         
     - name: Install dependencies
       working-directory: scout-agent
-      run: npm ci
+      run: npm install
       
     - name: Validate API keys availability
       working-directory: scout-agent
@@ -150,6 +152,8 @@ jobs:
     - name: Commit updated model data
       if: github.ref == 'refs/heads/feature/enhanced-filtering-sources'
       working-directory: scout-agent
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: |
         git config --local user.email "action@github.com"
         git config --local user.name "GitHub Action"
@@ -174,5 +178,9 @@ jobs:
         
         COMMIT_MSG="$COMMIT_MSG [skip ci]"
         
-        git diff --staged --quiet || git commit -m "$COMMIT_MSG"
-        git push
+        if ! git diff --staged --quiet; then
+          git commit -m "$COMMIT_MSG"
+          git push origin feature/enhanced-filtering-sources
+        else
+          echo "No changes to commit"
+        fi
