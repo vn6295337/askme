@@ -1,40 +1,39 @@
 {
   "metadata": {
-    "timestamp": "2025-07-12T12:13:37.055Z",
+    "timestamp": "2025-07-12T13:35:31.184Z",
     "trigger": "manual",
     "reason": "Manual validation",
     "specific_provider": null,
     "announcement_url": null,
-    "total_models_checked": 13,
-    "total_validated_models": 11,
-    "total_excluded_models": 2,
-    "geographic_filtering": {
+    "total_models_checked": 42,
+    "total_validated_models": 42,
+    "total_excluded_models": 0,
+    "quality_filtering": {
       "enabled": true,
-      "allowed_regions": [
-        "North America",
-        "Europe"
+      "criteria": [
+        "Trusted organizations",
+        "Academic institutions",
+        "Established model families",
+        "HuggingFace quality metrics",
+        "SLM efficiency",
+        "Open source licensing"
       ],
-      "geographic_exclusions": 2,
-      "geographic_exclusion_rate": "15.4%",
-      "other_exclusions": 0
+      "quality_review_needed": 0,
+      "quality_review_rate": "0.0%",
+      "immediately_approved": 42
     },
     "providers_with_models": [
+      "ai21",
+      "cohere",
       "google",
+      "groq",
+      "huggingface",
       "llama",
-      "mistral"
+      "mistral",
+      "openrouter",
+      "replicate"
     ],
     "backend_proxy_used": true
   },
-  "excluded_models": [
-    {
-      "model_name": "open-mixtral-8x7b",
-      "provider": "mistral",
-      "reason": "Geographic restriction: Geographic origin unclear - defaulting to exclusion for safety"
-    },
-    {
-      "model_name": "open-mixtral-8x22b",
-      "provider": "mistral",
-      "reason": "Geographic restriction: Geographic origin unclear - defaulting to exclusion for safety"
-    }
-  ]
+  "excluded_models": []
 }

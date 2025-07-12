@@ -1,31 +1,158 @@
 {
   "metadata": {
-    "timestamp": "2025-07-12T12:13:37.055Z",
+    "timestamp": "2025-07-12T13:35:31.184Z",
     "trigger": "manual",
     "reason": "Manual validation",
     "specific_provider": null,
     "announcement_url": null,
-    "total_models_checked": 13,
-    "total_validated_models": 11,
-    "total_excluded_models": 2,
-    "geographic_filtering": {
+    "total_models_checked": 42,
+    "total_validated_models": 42,
+    "total_excluded_models": 0,
+    "quality_filtering": {
       "enabled": true,
-      "allowed_regions": [
-        "North America",
-        "Europe"
+      "criteria": [
+        "Trusted organizations",
+        "Academic institutions",
+        "Established model families",
+        "HuggingFace quality metrics",
+        "SLM efficiency",
+        "Open source licensing"
       ],
-      "geographic_exclusions": 2,
-      "geographic_exclusion_rate": "15.4%",
-      "other_exclusions": 0
+      "quality_review_needed": 0,
+      "quality_review_rate": "0.0%",
+      "immediately_approved": 42
     },
     "providers_with_models": [
+      "ai21",
+      "cohere",
       "google",
+      "groq",
+      "huggingface",
       "llama",
-      "mistral"
+      "mistral",
+      "openrouter",
+      "replicate"
     ],
     "backend_proxy_used": true
   },
   "models": [
+    {
+      "model_name": "j2-light",
+      "provider": "ai21",
+      "api_available": true,
+      "registration_required": true,
+      "free_tier": true,
+      "auth_method": "api_key",
+      "documentation_url": "",
+      "notes": "Validated through backend proxy",
+      "quality_verified": true,
+      "trusted_source": true,
+      "validation_reason": "Trusted organization identified"
+    },
+    {
+      "model_name": "j2-mid",
+      "provider": "ai21",
+      "api_available": true,
+      "registration_required": true,
+      "free_tier": true,
+      "auth_method": "api_key",
+      "documentation_url": "",
+      "notes": "Validated through backend proxy",
+      "quality_verified": true,
+      "trusted_source": true,
+      "validation_reason": "Trusted organization identified"
+    },
+    {
+      "model_name": "j2-ultra",
+      "provider": "ai21",
+      "api_available": true,
+      "registration_required": true,
+      "free_tier": true,
+      "auth_method": "api_key",
+      "documentation_url": "",
+      "notes": "Validated through backend proxy",
+      "quality_verified": true,
+      "trusted_source": true,
+      "validation_reason": "Trusted organization identified"
+    },
+    {
+      "model_name": "jamba-instruct",
+      "provider": "ai21",
+      "api_available": true,
+      "registration_required": true,
+      "free_tier": true,
+      "auth_method": "api_key",
+      "documentation_url": "",
+      "notes": "Validated through backend proxy",
+      "quality_verified": true,
+      "trusted_source": true,
+      "validation_reason": "Trusted organization identified"
+    },
+    {
+      "model_name": "command",
+      "provider": "cohere",
+      "api_available": true,
+      "registration_required": true,
+      "free_tier": true,
+      "auth_method": "api_key",
+      "documentation_url": "",
+      "notes": "Validated through backend proxy",
+      "quality_verified": true,
+      "trusted_source": true,
+      "validation_reason": "Trusted organization identified"
+    },
+    {
+      "model_name": "command-light",
+      "provider": "cohere",
+      "api_available": true,
+      "registration_required": true,
+      "free_tier": true,
+      "auth_method": "api_key",
+      "documentation_url": "",
+      "notes": "Validated through backend proxy",
+      "quality_verified": true,
+      "trusted_source": true,
+      "validation_reason": "Trusted organization identified"
+    },
+    {
+      "model_name": "command-nightly",
+      "provider": "cohere",
+      "api_available": true,
+      "registration_required": true,
+      "free_tier": true,
+      "auth_method": "api_key",
+      "documentation_url": "",
+      "notes": "Validated through backend proxy",
+      "quality_verified": true,
+      "trusted_source": true,
+      "validation_reason": "Trusted organization identified"
+    },
+    {
+      "model_name": "command-r",
+      "provider": "cohere",
+      "api_available": true,
+      "registration_required": true,
+      "free_tier": true,
+      "auth_method": "api_key",
+      "documentation_url": "",
+      "notes": "Validated through backend proxy",
+      "quality_verified": true,
+      "trusted_source": true,
+      "validation_reason": "Trusted organization identified"
+    },
+    {
+      "model_name": "command-r-plus",
+      "provider": "cohere",
+      "api_available": true,
+      "registration_required": true,
+      "free_tier": true,
+      "auth_method": "api_key",
+      "documentation_url": "",
+      "notes": "Validated through backend proxy",
+      "quality_verified": true,
+      "trusted_source": true,
+      "validation_reason": "Trusted organization identified"
+    },
     {
       "model_name": "gemini-1.5-flash",
       "provider": "google",
@@ -35,9 +162,9 @@
       "auth_method": "api_key",
       "documentation_url": "",
       "notes": "Validated through backend proxy",
-      "geographic_origin_verified": true,
-      "allowed_region": true,
-      "origin_reason": "Approved region model pattern detected"
+      "quality_verified": true,
+      "trusted_source": true,
+      "validation_reason": "Trusted organization identified"
     },
     {
       "model_name": "gemini-1.5-flash-8b",
@@ -48,9 +175,9 @@
       "auth_method": "api_key",
       "documentation_url": "",
       "notes": "Validated through backend proxy",
-      "geographic_origin_verified": true,
-      "allowed_region": true,
-      "origin_reason": "Approved region model pattern detected"
+      "quality_verified": true,
+      "trusted_source": true,
+      "validation_reason": "Trusted organization identified"
     },
     {
       "model_name": "gemini-1.5-pro",
@@ -61,9 +188,152 @@
       "auth_method": "api_key",
       "documentation_url": "",
       "notes": "Validated through backend proxy",
-      "geographic_origin_verified": true,
-      "allowed_region": true,
-      "origin_reason": "Approved region model pattern detected"
+      "quality_verified": true,
+      "trusted_source": true,
+      "validation_reason": "Trusted organization identified"
+    },
+    {
+      "model_name": "gemma-7b-it",
+      "provider": "groq",
+      "api_available": true,
+      "registration_required": true,
+      "free_tier": true,
+      "auth_method": "api_key",
+      "documentation_url": "",
+      "notes": "Validated through backend proxy",
+      "quality_verified": true,
+      "trusted_source": true,
+      "validation_reason": "Trusted organization identified"
+    },
+    {
+      "model_name": "gemma2-9b-it",
+      "provider": "groq",
+      "api_available": true,
+      "registration_required": true,
+      "free_tier": true,
+      "auth_method": "api_key",
+      "documentation_url": "",
+      "notes": "Validated through backend proxy",
+      "quality_verified": true,
+      "trusted_source": true,
+      "validation_reason": "Trusted organization identified"
+    },
+    {
+      "model_name": "llama-3.1-70b-versatile",
+      "provider": "groq",
+      "api_available": true,
+      "registration_required": true,
+      "free_tier": true,
+      "auth_method": "api_key",
+      "documentation_url": "",
+      "notes": "Validated through backend proxy",
+      "quality_verified": true,
+      "trusted_source": true,
+      "validation_reason": "Trusted organization identified"
+    },
+    {
+      "model_name": "llama-3.1-8b-instant",
+      "provider": "groq",
+      "api_available": true,
+      "registration_required": true,
+      "free_tier": true,
+      "auth_method": "api_key",
+      "documentation_url": "",
+      "notes": "Validated through backend proxy",
+      "quality_verified": true,
+      "trusted_source": true,
+      "validation_reason": "Trusted organization identified"
+    },
+    {
+      "model_name": "llama-3.3-70b-versatile",
+      "provider": "groq",
+      "api_available": true,
+      "registration_required": true,
+      "free_tier": true,
+      "auth_method": "api_key",
+      "documentation_url": "",
+      "notes": "Validated through backend proxy",
+      "quality_verified": true,
+      "trusted_source": true,
+      "validation_reason": "Trusted organization identified"
+    },
+    {
+      "model_name": "mixtral-8x7b-32768",
+      "provider": "groq",
+      "api_available": true,
+      "registration_required": true,
+      "free_tier": true,
+      "auth_method": "api_key",
+      "documentation_url": "",
+      "notes": "Validated through backend proxy",
+      "quality_verified": true,
+      "trusted_source": true,
+      "validation_reason": "Trusted organization identified"
+    },
+    {
+      "model_name": "facebook/blenderbot-400M-distill",
+      "provider": "huggingface",
+      "api_available": true,
+      "registration_required": true,
+      "free_tier": true,
+      "auth_method": "api_key",
+      "documentation_url": "",
+      "notes": "Validated through backend proxy",
+      "quality_verified": true,
+      "trusted_source": true,
+      "validation_reason": "Trusted organization identified"
+    },
+    {
+      "model_name": "google/flan-t5-large",
+      "provider": "huggingface",
+      "api_available": true,
+      "registration_required": true,
+      "free_tier": true,
+      "auth_method": "api_key",
+      "documentation_url": "",
+      "notes": "Validated through backend proxy",
+      "quality_verified": true,
+      "trusted_source": true,
+      "validation_reason": "Trusted organization identified"
+    },
+    {
+      "model_name": "microsoft/CodeBERT-base",
+      "provider": "huggingface",
+      "api_available": true,
+      "registration_required": true,
+      "free_tier": true,
+      "auth_method": "api_key",
+      "documentation_url": "",
+      "notes": "Validated through backend proxy",
+      "quality_verified": true,
+      "trusted_source": true,
+      "validation_reason": "Trusted organization identified"
+    },
+    {
+      "model_name": "microsoft/DialoGPT-large",
+      "provider": "huggingface",
+      "api_available": true,
+      "registration_required": true,
+      "free_tier": true,
+      "auth_method": "api_key",
+      "documentation_url": "",
+      "notes": "Validated through backend proxy",
+      "quality_verified": true,
+      "trusted_source": true,
+      "validation_reason": "Trusted organization identified"
+    },
+    {
+      "model_name": "microsoft/DialoGPT-medium",
+      "provider": "huggingface",
+      "api_available": true,
+      "registration_required": true,
+      "free_tier": true,
+      "auth_method": "api_key",
+      "documentation_url": "",
+      "notes": "Validated through backend proxy",
+      "quality_verified": true,
+      "trusted_source": true,
+      "validation_reason": "Trusted organization identified"
     },
     {
       "model_name": "meta-llama/Llama-2-13b-chat-hf",
@@ -74,9 +344,9 @@
       "auth_method": "api_key",
       "documentation_url": "",
       "notes": "Validated through backend proxy",
-      "geographic_origin_verified": true,
-      "allowed_region": true,
-      "origin_reason": "Approved company identified"
+      "quality_verified": true,
+      "trusted_source": true,
+      "validation_reason": "Trusted organization identified"
     },
     {
       "model_name": "meta-llama/Llama-2-7b-chat-hf",
@@ -87,9 +357,9 @@
       "auth_method": "api_key",
       "documentation_url": "",
       "notes": "Validated through backend proxy",
-      "geographic_origin_verified": true,
-      "allowed_region": true,
-      "origin_reason": "Approved company identified"
+      "quality_verified": true,
+      "trusted_source": true,
+      "validation_reason": "Trusted organization identified"
     },
     {
       "model_name": "meta-llama/Llama-3-8b-chat-hf",
@@ -100,9 +370,9 @@
       "auth_method": "api_key",
       "documentation_url": "",
       "notes": "Validated through backend proxy",
-      "geographic_origin_verified": true,
-      "allowed_region": true,
-      "origin_reason": "Approved company identified"
+      "quality_verified": true,
+      "trusted_source": true,
+      "validation_reason": "Trusted organization identified"
     },
     {
       "model_name": "meta-llama/Llama-3.3-70B-Instruct-Turbo",
@@ -113,9 +383,9 @@
       "auth_method": "api_key",
       "documentation_url": "",
       "notes": "Validated through backend proxy",
-      "geographic_origin_verified": true,
-      "allowed_region": true,
-      "origin_reason": "Approved company identified"
+      "quality_verified": true,
+      "trusted_source": true,
+      "validation_reason": "Trusted organization identified"
     },
     {
       "model_name": "meta-llama/Meta-Llama-3-8B-Instruct-Turbo",
@@ -126,9 +396,9 @@
       "auth_method": "api_key",
       "documentation_url": "",
       "notes": "Validated through backend proxy",
-      "geographic_origin_verified": true,
-      "allowed_region": true,
-      "origin_reason": "Approved company identified"
+      "quality_verified": true,
+      "trusted_source": true,
+      "validation_reason": "Trusted organization identified"
     },
     {
       "model_name": "mistral-medium-latest",
@@ -139,9 +409,9 @@
       "auth_method": "api_key",
       "documentation_url": "",
       "notes": "Validated through backend proxy",
-      "geographic_origin_verified": true,
-      "allowed_region": true,
-      "origin_reason": "Approved company identified"
+      "quality_verified": true,
+      "trusted_source": true,
+      "validation_reason": "Trusted organization identified"
     },
     {
       "model_name": "mistral-small-latest",
@@ -152,9 +422,9 @@
       "auth_method": "api_key",
       "documentation_url": "",
       "notes": "Validated through backend proxy",
-      "geographic_origin_verified": true,
-      "allowed_region": true,
-      "origin_reason": "Approved company identified"
+      "quality_verified": true,
+      "trusted_source": true,
+      "validation_reason": "Trusted organization identified"
     },
     {
       "model_name": "open-mistral-7b",
@@ -165,9 +435,152 @@
       "auth_method": "api_key",
       "documentation_url": "",
       "notes": "Validated through backend proxy",
-      "geographic_origin_verified": true,
-      "allowed_region": true,
-      "origin_reason": "Approved company identified"
+      "quality_verified": true,
+      "trusted_source": true,
+      "validation_reason": "Trusted organization identified"
+    },
+    {
+      "model_name": "open-mixtral-8x22b",
+      "provider": "mistral",
+      "api_available": true,
+      "registration_required": true,
+      "free_tier": true,
+      "auth_method": "api_key",
+      "documentation_url": "",
+      "notes": "Validated through backend proxy",
+      "quality_verified": true,
+      "trusted_source": true,
+      "validation_reason": "Trusted organization identified"
+    },
+    {
+      "model_name": "open-mixtral-8x7b",
+      "provider": "mistral",
+      "api_available": true,
+      "registration_required": true,
+      "free_tier": true,
+      "auth_method": "api_key",
+      "documentation_url": "",
+      "notes": "Validated through backend proxy",
+      "quality_verified": true,
+      "trusted_source": true,
+      "validation_reason": "Trusted organization identified"
+    },
+    {
+      "model_name": "anthropic/claude-3-haiku",
+      "provider": "openrouter",
+      "api_available": true,
+      "registration_required": true,
+      "free_tier": true,
+      "auth_method": "api_key",
+      "documentation_url": "",
+      "notes": "Validated through backend proxy",
+      "quality_verified": true,
+      "trusted_source": true,
+      "validation_reason": "Trusted organization identified"
+    },
+    {
+      "model_name": "google/gemma-7b-it",
+      "provider": "openrouter",
+      "api_available": true,
+      "registration_required": true,
+      "free_tier": true,
+      "auth_method": "api_key",
+      "documentation_url": "",
+      "notes": "Validated through backend proxy",
+      "quality_verified": true,
+      "trusted_source": true,
+      "validation_reason": "Trusted organization identified"
+    },
+    {
+      "model_name": "meta-llama/llama-3.1-8b-instruct",
+      "provider": "openrouter",
+      "api_available": true,
+      "registration_required": true,
+      "free_tier": true,
+      "auth_method": "api_key",
+      "documentation_url": "",
+      "notes": "Validated through backend proxy",
+      "quality_verified": true,
+      "trusted_source": true,
+      "validation_reason": "Trusted organization identified"
+    },
+    {
+      "model_name": "microsoft/wizardlm-2-8x22b",
+      "provider": "openrouter",
+      "api_available": true,
+      "registration_required": true,
+      "free_tier": true,
+      "auth_method": "api_key",
+      "documentation_url": "",
+      "notes": "Validated through backend proxy",
+      "quality_verified": true,
+      "trusted_source": true,
+      "validation_reason": "Trusted organization identified"
+    },
+    {
+      "model_name": "mistralai/mistral-7b-instruct",
+      "provider": "openrouter",
+      "api_available": true,
+      "registration_required": true,
+      "free_tier": true,
+      "auth_method": "api_key",
+      "documentation_url": "",
+      "notes": "Validated through backend proxy",
+      "quality_verified": true,
+      "trusted_source": true,
+      "validation_reason": "Trusted organization identified"
+    },
+    {
+      "model_name": "meta/codellama-34b-instruct",
+      "provider": "replicate",
+      "api_available": true,
+      "registration_required": true,
+      "free_tier": true,
+      "auth_method": "api_key",
+      "documentation_url": "",
+      "notes": "Validated through backend proxy",
+      "quality_verified": true,
+      "trusted_source": true,
+      "validation_reason": "Trusted organization identified"
+    },
+    {
+      "model_name": "meta/llama-2-13b-chat",
+      "provider": "replicate",
+      "api_available": true,
+      "registration_required": true,
+      "free_tier": true,
+      "auth_method": "api_key",
+      "documentation_url": "",
+      "notes": "Validated through backend proxy",
+      "quality_verified": true,
+      "trusted_source": true,
+      "validation_reason": "Trusted organization identified"
+    },
+    {
+      "model_name": "meta/llama-2-70b-chat",
+      "provider": "replicate",
+      "api_available": true,
+      "registration_required": true,
+      "free_tier": true,
+      "auth_method": "api_key",
+      "documentation_url": "",
+      "notes": "Validated through backend proxy",
+      "quality_verified": true,
+      "trusted_source": true,
+      "validation_reason": "Trusted organization identified"
+    },
+    {
+      "model_name": "mistralai/mixtral-8x7b-instruct-v0.1",
+      "provider": "replicate",
+      "api_available": true,
+      "registration_required": true,
+      "free_tier": true,
+      "auth_method": "api_key",
+      "documentation_url": "",
+      "notes": "Validated through backend proxy",
+      "quality_verified": true,
+      "trusted_source": true,
+      "validation_reason": "Trusted organization identified"
     }
   ]
 }

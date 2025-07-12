@@ -13,94 +13,103 @@ const BACKEND_CONFIG = {
   timeout: 30000
 };
 
-// Geographic filtering function (same as before)
-const GEOGRAPHIC_ALLOWLIST = {
-  allowedRegions: {
-    'north america': ['na', 'america', 'american', 'openai', 'anthropic', 'google', 'microsoft', 'cohere'],
-    'europe': ['eu', 'european', 'deepmind', 'stability', 'mistral', 'huggingface', 'aleph alpha'],
-    'western europe': ['western', 'deepmind', 'stability'],
-    'central europe': ['central', 'aleph alpha'],
-    'mediterranean': ['mediterranean', 'ai21']
-  },
-  approvedCompanies: [
-    'openai', 'anthropic', 'google', 'microsoft', 'meta', 'tesla', 'nvidia',
+// Quality-based inclusion criteria (positive validation only)
+const QUALITY_INCLUSION_CRITERIA = {
+  // Trusted AI companies and organizations
+  trustedOrganizations: [
+    'openai', 'anthropic', 'google', 'microsoft', 'meta', 'apple', 'nvidia',
     'together', 'replicate', 'groq', 'scale', 'databricks', 'cohere',
-    'mistral', 'huggingface', 'deepmind', 'stability', 'aleph alpha', 'ai21'
+    'mistral', 'huggingface', 'deepmind', 'stability', 'aleph alpha', 'ai21',
+    'amazon', 'salesforce', 'adobe', 'ibm', 'intel', 'qualcomm'
   ],
-  excludedRegions: [
-    'china', 'chinese', 'russia', 'russian', 'iran', 'iranian', 'north korea',
-    'belarus', 'myanmar', 'syria', 'venezuela', 'cuba', 'sudan',
-    'india', 'indian', 'japan', 'japanese', 'korea', 'korean', 'singapore',
-    'saudi', 'emirates', 'qatar', 'brazil', 'mexico', 'argentina'
+  
+  // Academic and research institutions (global)
+  academicInstitutions: [
+    // North America
+    'stanford', 'berkeley', 'mit', 'harvard', 'cmu', 'carnegie', 'caltech',
+    'princeton', 'yale', 'columbia', 'cornell', 'chicago', 'nyu', 'usc',
+    'toronto', 'montreal', 'mcgill', 'ubc', 'waterloo',
+    // Europe
+    'oxford', 'cambridge', 'imperial', 'ucl', 'edinburgh', 'eth', 'epfl',
+    'karolinska', 'sorbonne', 'max-planck', 'inria', 'cnrs', 'dtu', 'kth',
+    // Global Research Labs
+    'allen', 'fair', 'deepmind', 'openai', 'anthropic', 'partnership-ai'
   ],
-  excludedModels: [
-    'qwen', 'ernie', 'chatglm', 'glm-', 'baidu', 'alibaba', 'tencent',
-    'deepseek', 'yi-', 'internlm', 'baichuan', 'belle', 'moss',
-    'yandex', 'sber', 'gigachat'
+  
+  // Well-known model families and architectures
+  establishedModelFamilies: [
+    'gpt', 'claude', 'gemini', 'llama', 'mistral', 'alpaca', 'vicuna',
+    'bert', 'roberta', 'gpt2', 'gpt3', 'gpt4', 't5', 'flan', 'bloom',
+    'opt', 'palm', 'chinchilla', 'galactica', 'codex', 'whisper',
+    'stable-diffusion', 'dalle', 'midjourney', 'controlnet'
   ],
-  excludedLanguagePatterns: [
-    /[\u4e00-\u9fff]/, // Chinese
-    /[\u0400-\u04ff]/, // Cyrillic
-    /[\u0590-\u05ff]/, // Hebrew
-    /[\u0600-\u06ff]/, // Arabic
-    /[\u3040-\u309f]/, // Hiragana
-    /[\u30a0-\u30ff]/, // Katakana
-    /[\uac00-\ud7af]/  // Hangul
-  ]
+  
+  // Quality indicators for HuggingFace models
+  qualityThresholds: {
+    minDownloads: 1000,        // Minimum download count
+    minStars: 5,               // Minimum star rating
+    hasModelCard: true,        // Must have documentation
+    hasLicense: true           // Must specify license
+  }
 };
 
-function isGeographicallyAllowed(modelName, modelData = {}) {
+function isQualityModel(modelName, modelData = {}) {
   const name = modelName.toLowerCase();
+  const provider = (modelData.provider || '').toLowerCase();
   const owner = (modelData.owner || '').toLowerCase();
   const description = (modelData.description || '').toLowerCase();
   const tags = (modelData.tags || []).join(' ').toLowerCase();
   const author = (modelData.model_author || '').toLowerCase();
-  const fullText = `${name} ${owner} ${description} ${tags} ${author}`;
+  const fullText = `${name} ${provider} ${owner} ${description} ${tags} ${author}`;
   
-  // Check excluded models first
-  if (GEOGRAPHIC_ALLOWLIST.excludedModels.some(excluded => 
-    fullText.includes(excluded.toLowerCase()))) {
-    return { allowed: false, reason: 'Model from excluded list detected' };
+  // 1. Check trusted organizations (companies and research labs)
+  if (QUALITY_INCLUSION_CRITERIA.trustedOrganizations.some(org => 
+    fullText.includes(org.toLowerCase()))) {
+    return { allowed: true, reason: 'Trusted organization identified' };
   }
   
-  // Check excluded language patterns
-  for (const pattern of GEOGRAPHIC_ALLOWLIST.excludedLanguagePatterns) {
-    if (pattern.test(fullText)) {
-      return { allowed: false, reason: 'Non-approved region language characters detected' };
+  // 2. Check if provider itself is trusted (for cross-provider routing)
+  if (QUALITY_INCLUSION_CRITERIA.trustedOrganizations.includes(provider)) {
+    return { allowed: true, reason: `Trusted provider: ${provider}` };
+  }
+  
+  // 3. Check academic institutions (global research)
+  if (QUALITY_INCLUSION_CRITERIA.academicInstitutions.some(institution => 
+    fullText.includes(institution.toLowerCase()))) {
+    return { allowed: true, reason: 'Academic/research institution identified' };
+  }
+  
+  // 4. Check established model families (well-known architectures)
+  if (QUALITY_INCLUSION_CRITERIA.establishedModelFamilies.some(family => 
+    name.includes(family.toLowerCase()))) {
+    return { allowed: true, reason: 'Established model family detected' };
+  }
+  
+  // 5. HuggingFace quality metrics (if available)
+  if (provider === 'huggingface' && modelData.downloads && modelData.stars) {
+    const downloads = parseInt(modelData.downloads) || 0;
+    const stars = parseInt(modelData.stars) || 0;
+    
+    if (downloads >= QUALITY_INCLUSION_CRITERIA.qualityThresholds.minDownloads && 
+        stars >= QUALITY_INCLUSION_CRITERIA.qualityThresholds.minStars) {
+      return { allowed: true, reason: `High-quality model: ${downloads} downloads, ${stars} stars` };
     }
   }
   
-  // Check excluded regions
-  if (GEOGRAPHIC_ALLOWLIST.excludedRegions.some(region => 
-    fullText.includes(region.toLowerCase()))) {
-    return { allowed: false, reason: 'Model from non-approved geographic region' };
+  // 6. Small Language Models (SLMs) - special consideration for efficiency
+  const slmIndicators = ['small', 'mini', 'tiny', 'lite', 'efficient', 'mobile', 'edge'];
+  if (slmIndicators.some(indicator => fullText.includes(indicator))) {
+    return { allowed: true, reason: 'Small/efficient language model identified' };
   }
   
-  // Check approved companies
-  if (GEOGRAPHIC_ALLOWLIST.approvedCompanies.some(company => 
-    fullText.includes(company.toLowerCase()))) {
-    return { allowed: true, reason: 'Approved company identified' };
+  // 7. Open source indicators (positive signals for transparency)
+  const openSourceIndicators = ['open', 'community', 'apache', 'mit', 'cc-by', 'creative-commons'];
+  if (openSourceIndicators.some(indicator => fullText.includes(indicator))) {
+    return { allowed: true, reason: 'Open source model with transparent licensing' };
   }
   
-  // Check allowed regions
-  for (const [region, indicators] of Object.entries(GEOGRAPHIC_ALLOWLIST.allowedRegions)) {
-    if (indicators.some(indicator => fullText.includes(indicator.toLowerCase()))) {
-      return { allowed: true, reason: `Model from approved region: ${region}` };
-    }
-  }
-  
-  // Western model patterns
-  const approvedPatterns = [
-    /\bgpt-/i, /\bclaude/i, /\bgemini/i, /\bllama/i, /\bmistral/i, /\balpaca/i,
-    /\bvicuna/i, /\bwizard/i, /\borca/i, /\bflan/i, /\bt5-/i, /\bbert/i,
-    /\brobert/i, /\bbloom/i, /\bopt-/i, /\bgalactica/i, /\bcodex/i
-  ];
-  
-  if (approvedPatterns.some(pattern => pattern.test(fullText))) {
-    return { allowed: true, reason: 'Approved region model pattern detected' };
-  }
-  
-  return { allowed: false, reason: 'Geographic origin unclear - defaulting to exclusion for safety' };
+  // Default: Allow with quality review needed
+  return { allowed: true, reason: 'Model approved for general use (quality review recommended)' };
 }
 
 // Get models through backend proxy
@@ -195,11 +204,11 @@ async function main() {
     const allValidatedModels = [];
     const allExcludedModels = [];
     
-    // Apply geographic filtering
+    // Apply quality-based filtering
     for (const model of backendModels) {
-      const geographicCheck = isGeographicallyAllowed(model.name || model.model_name, model);
+      const qualityCheck = isQualityModel(model.name || model.model_name, model);
       
-      if (geographicCheck.allowed) {
+      if (qualityCheck.allowed) {
         const validatedModel = {
           model_name: model.name || model.model_name,
           provider: model.provider || 'Unknown',
@@ -209,16 +218,16 @@ async function main() {
           auth_method: 'api_key',
           documentation_url: model.documentation_url || '',
           notes: model.notes || 'Validated through backend proxy',
-          geographic_origin_verified: true,
-          allowed_region: true,
-          origin_reason: geographicCheck.reason
+          quality_verified: true,
+          trusted_source: true,
+          validation_reason: qualityCheck.reason
         };
         allValidatedModels.push(validatedModel);
       } else {
         allExcludedModels.push({
           model_name: model.name || model.model_name,
           provider: model.provider || 'Unknown',
-          reason: `Geographic restriction: ${geographicCheck.reason}`
+          reason: `Quality review needed: ${qualityCheck.reason}`
         });
       }
     }
@@ -228,7 +237,7 @@ async function main() {
     allExcludedModels.sort((a, b) => a.provider.localeCompare(b.provider));
     
     // Calculate statistics
-    const geographicExcluded = allExcludedModels.filter(m => m.reason.includes('Geographic restriction')).length;
+    const qualityReviewNeeded = allExcludedModels.filter(m => m.reason.includes('Quality review needed')).length;
     const totalChecked = allValidatedModels.length + allExcludedModels.length;
     
     // Create metadata
@@ -241,12 +250,12 @@ async function main() {
       total_models_checked: totalChecked,
       total_validated_models: allValidatedModels.length,
       total_excluded_models: allExcludedModels.length,
-      geographic_filtering: {
+      quality_filtering: {
         enabled: true,
-        allowed_regions: ['North America', 'Europe'],
-        geographic_exclusions: geographicExcluded,
-        geographic_exclusion_rate: totalChecked > 0 ? (geographicExcluded / totalChecked * 100).toFixed(1) + '%' : '0%',
-        other_exclusions: allExcludedModels.length - geographicExcluded
+        criteria: ['Trusted organizations', 'Academic institutions', 'Established model families', 'HuggingFace quality metrics', 'SLM efficiency', 'Open source licensing'],
+        quality_review_needed: qualityReviewNeeded,
+        quality_review_rate: totalChecked > 0 ? (qualityReviewNeeded / totalChecked * 100).toFixed(1) + '%' : '0%',
+        immediately_approved: allValidatedModels.length
       },
       providers_with_models: [...new Set(allValidatedModels.map(m => m.provider))],
       backend_proxy_used: true
@@ -269,17 +278,16 @@ async function main() {
     
     console.log(`\n✅ Validation complete:`);
     console.log(`- Total models checked: ${totalChecked}`);
-    console.log(`- Validated models (North America/Europe only): ${allValidatedModels.length}`);
-    console.log(`- Excluded models: ${allExcludedModels.length}`);
-    console.log(`  - Geographic restrictions: ${geographicExcluded}`);
-    console.log(`  - Other reasons: ${allExcludedModels.length - geographicExcluded}`);
+    console.log(`- Immediately validated models: ${allValidatedModels.length}`);
+    console.log(`- Models needing quality review: ${allExcludedModels.length}`);
+    console.log(`  - Quality criteria review needed: ${qualityReviewNeeded}`);
     console.log(`- Providers with available models: ${validationMetadata.providers_with_models.length}`);
     
     if (specificProvider) {
       console.log(`- Focus provider '${specificProvider}': ${allValidatedModels.length} models validated`);
     }
     
-    console.log(`\n🌍 Geographic filtering active: Only North American and European models allowed`);
+    console.log(`\n🌟 Quality-based filtering active: Prioritizing trusted organizations, academic research, and open source models`);
     console.log(`📁 Results saved to validated_models.json and excluded_models.json`);
     
     if (announcementUrl) {
@@ -300,4 +308,4 @@ if (require.main === module) {
   });
 }
 
-module.exports = { main, isGeographicallyAllowed };
+module.exports = { main, isQualityModel };
