@@ -93,10 +93,12 @@ jobs:
       uses: actions/setup-node@v4
       with:
         node-version: '18'
+        cache: 'npm'
+        cache-dependency-path: 'scout-agent/package-lock.json'
         
     - name: Install dependencies
       working-directory: scout-agent
-      run: npm install
+      run: npm ci
       
     - name: Validate backend connectivity
       working-directory: scout-agent
