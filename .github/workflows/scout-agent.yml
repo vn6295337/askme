@@ -105,6 +105,15 @@ jobs:
         BACKEND_URL: ${{ secrets.BACKEND_URL }}
         AGENT_AUTH_TOKEN: ${{ secrets.AGENT_AUTH_TOKEN }}
         
+    - name: Debug backend endpoints
+      working-directory: scout-agent
+      run: |
+        echo "🔍 Debugging backend endpoints first..."
+        node debug-backend.js
+      env:
+        BACKEND_URL: ${{ secrets.BACKEND_URL }}
+        AGENT_AUTH_TOKEN: ${{ secrets.AGENT_AUTH_TOKEN }}
+        
     - name: Run model validation
       working-directory: scout-agent
       run: |
