@@ -6,80 +6,134 @@ const { promisify } = require('util');
 
 const writeFile = promisify(fs.writeFile);
 
-// Model provenance database - models/companies to exclude due to Chinese origin or control
-const CHINA_PROVENANCE_EXCLUSIONS = {
-  // Direct Chinese companies and models
-  companies: [
-    'baidu', 'alibaba', 'tencent', 'bytedance', 'sensetime', 'megvii', 'iflytek',
-    'deepseek', 'zhipu', 'minimax', 'moonshot', '01.ai', 'baichuan', 'chatglm',
-    'qwen', 'ernie', 'spark', 'belle', 'chinese-llama', 'chinese-alpaca',
-    'moss', 'cpm', 'pangu', 'wudao', 'glm', 'chatglm2', 'chatglm3',
-    'internlm', 'skywork', 'yi', 'aquila', 'falcon-chinese', 'phoenix',
-    'tigerbot', 'xuanyuan', 'ziya', 'firefly', 'linly', 'flow-pilot',
-    'chinese-vicuna', 'luotuo', 'guanaco-chinese', 'tulu-chinese'
+// Geographic provenance database - only allow models from US, Canada, and Europe
+const GEOGRAPHIC_ALLOWLIST = {
+  // Allowed countries and regions
+  allowedRegions: {
+    // North America
+    'united states': ['us', 'usa', 'america', 'american', 'openai', 'anthropic', 'google', 'microsoft'],
+    'canada': ['ca', 'canadian', 'cohere'],
+    
+    // Europe
+    'united kingdom': ['uk', 'britain', 'british', 'deepmind', 'stability'],
+    'france': ['fr', 'french', 'mistral', 'huggingface'],
+    'germany': ['de', 'german', 'aleph alpha'],
+    'netherlands': ['nl', 'dutch'],
+    'switzerland': ['ch', 'swiss'],
+    'norway': ['no', 'norwegian'],
+    'sweden': ['se', 'swedish'],
+    'denmark': ['dk', 'danish'],
+    'finland': ['fi', 'finnish'],
+    'ireland': ['ie', 'irish'],
+    'belgium': ['be', 'belgian'],
+    'austria': ['at', 'austrian'],
+    'italy': ['it', 'italian'],
+    'spain': ['es', 'spanish'],
+    'portugal': ['pt', 'portuguese'],
+    'israel': ['il', 'israeli', 'ai21']  // AI21 Labs
+  },
+  
+  // Approved companies with verified origins
+  approvedCompanies: [
+    // US Companies
+    'openai', 'anthropic', 'google', 'microsoft', 'meta', 'tesla', 'nvidia',
+    'together', 'replicate', 'groq', 'ai21', 'scale', 'databricks',
+    
+    // Canadian Companies
+    'cohere',
+    
+    // European Companies
+    'mistral', 'huggingface', 'deepmind', 'stability', 'aleph alpha'
   ],
   
-  // Model name patterns that indicate Chinese origin
-  modelPatterns: [
-    /chinese/i, /china/i, /中文/i, /中国/i, /baidu/i, /alibaba/i, /tencent/i,
-    /qwen/i, /tongyi/i, /ernie/i, /wenxin/i, /spark/i, /讯飞/i, /智谱/i,
-    /chatglm/i, /glm-/i, /belle/i, /moss/i, /cpm/i, /pangu/i, /wudao/i,
-    /internlm/i, /skywork/i, /aquila/i, /phoenix/i, /tigerbot/i, /xuanyuan/i,
-    /ziya/i, /firefly/i, /linly/i, /luotuo/i, /yi-/i, /01-ai/i, /deepseek/i,
-    /minimax/i, /moonshot/i, /baichuan/i, /zhipu/i
+  // Known excluded regions/countries (non-exhaustive, complement to allowlist)
+  excludedRegions: [
+    'china', 'chinese', 'russia', 'russian', 'iran', 'iranian', 'north korea',
+    'belarus', 'myanmar', 'syria', 'venezuela', 'cuba', 'sudan',
+    // Add other regions as needed
+    'india', 'indian', 'japan', 'japanese', 'korea', 'korean', 'singapore',
+    'saudi', 'emirates', 'qatar', 'brazil', 'mexico', 'argentina'
   ],
   
-  // Specific model IDs known to be Chinese
-  specificModels: [
-    'ernie-bot', 'ernie-bot-turbo', 'ernie-bot-4', 'wenxin',
-    'qwen-turbo', 'qwen-plus', 'qwen-max', 'tongyi-qianwen',
-    'chatglm-6b', 'chatglm2-6b', 'chatglm3-6b', 'glm-4',
-    'spark-lite', 'spark-pro', 'spark-max', 'spark-4',
-    'belle-7b', 'belle-13b', 'moss-moon-003-sft',
-    'cpm-bee-1b', 'cpm-bee-2b', 'cpm-bee-5b', 'cpm-bee-10b',
-    'internlm-7b', 'internlm-20b', 'internlm2-7b', 'internlm2-20b',
-    'baichuan-7b', 'baichuan-13b', 'baichuan2-7b', 'baichuan2-13b',
-    'yi-6b', 'yi-34b', 'deepseek-coder', 'deepseek-chat'
+  // Specific models/patterns to exclude (non-Western origin)
+  excludedModels: [
+    // Chinese models
+    'qwen', 'ernie', 'chatglm', 'glm-', 'baidu', 'alibaba', 'tencent',
+    'deepseek', 'yi-', 'internlm', 'baichuan', 'belle', 'moss',
+    
+    // Russian models
+    'yandex', 'sber', 'gigachat',
+    
+    // Other non-Western models
+    'palm2-bison', 'claude-instant-1' // Verify these are actually Western
+  ],
+  
+  // Language indicators for exclusion
+  excludedLanguagePatterns: [
+    /[\u4e00-\u9fff]/, // Chinese characters
+    /[\u0400-\u04ff]/, // Cyrillic (Russian)
+    /[\u0590-\u05ff]/, // Hebrew (except AI21 which is Israeli/approved)
+    /[\u0600-\u06ff]/, // Arabic
+    /[\u3040-\u309f]/, // Hiragana (Japanese)
+    /[\u30a0-\u30ff]/, // Katakana (Japanese)
+    /[\uac00-\ud7af]/  // Hangul (Korean)
   ]
 };
 
-// Function to check if a model has Chinese provenance
-function hasChineseProvenance(modelName, modelData = {}) {
+// Function to check if a model is from allowed geographic regions
+function isGeographicallyAllowed(modelName, modelData = {}) {
   const name = modelName.toLowerCase();
   const owner = (modelData.owner || '').toLowerCase();
   const description = (modelData.description || '').toLowerCase();
   const tags = (modelData.tags || []).join(' ').toLowerCase();
-  const fullText = `${name} ${owner} ${description} ${tags}`;
+  const author = (modelData.model_author || '').toLowerCase();
+  const fullText = `${name} ${owner} ${description} ${tags} ${author}`;
   
-  // Check specific model exclusions
-  if (CHINA_PROVENANCE_EXCLUSIONS.specificModels.some(excluded => 
-    name.includes(excluded.toLowerCase()))) {
-    return { excluded: true, reason: 'Specific Chinese model identified' };
+  // First check if it's an explicitly excluded model
+  if (GEOGRAPHIC_ALLOWLIST.excludedModels.some(excluded => 
+    fullText.includes(excluded.toLowerCase()))) {
+    return { allowed: false, reason: 'Model from excluded list detected' };
   }
   
-  // Check company names
-  if (CHINA_PROVENANCE_EXCLUSIONS.companies.some(company => 
-    fullText.includes(company.toLowerCase()))) {
-    return { excluded: true, reason: 'Chinese company/organization identified' };
-  }
-  
-  // Check model name patterns
-  for (const pattern of CHINA_PROVENANCE_EXCLUSIONS.modelPatterns) {
+  // Check for excluded language patterns
+  for (const pattern of GEOGRAPHIC_ALLOWLIST.excludedLanguagePatterns) {
     if (pattern.test(fullText)) {
-      return { excluded: true, reason: 'Chinese model pattern detected' };
+      return { allowed: false, reason: 'Non-Western language characters detected' };
     }
   }
   
-  // Additional checks for common Chinese indicators
-  if (fullText.match(/[\u4e00-\u9fff]/) || // Chinese characters
-      fullText.includes('chinese') ||
-      fullText.includes('china') ||
-      fullText.includes('中文') ||
-      fullText.includes('中国')) {
-    return { excluded: true, reason: 'Chinese language/location indicators found' };
+  // Check for excluded regions
+  if (GEOGRAPHIC_ALLOWLIST.excludedRegions.some(region => 
+    fullText.includes(region.toLowerCase()))) {
+    return { allowed: false, reason: 'Model from excluded geographic region' };
   }
   
-  return { excluded: false, reason: null };
+  // Check if it's from an approved company (high confidence allowlist)
+  if (GEOGRAPHIC_ALLOWLIST.approvedCompanies.some(company => 
+    fullText.includes(company.toLowerCase()))) {
+    return { allowed: true, reason: 'Approved company identified' };
+  }
+  
+  // Check against allowed regions and their indicators
+  for (const [region, indicators] of Object.entries(GEOGRAPHIC_ALLOWLIST.allowedRegions)) {
+    if (indicators.some(indicator => fullText.includes(indicator.toLowerCase()))) {
+      return { allowed: true, reason: `Model from allowed region: ${region}` };
+    }
+  }
+  
+  // Special handling for common Western model patterns
+  const westernPatterns = [
+    /\bgpt-/i, /\bclaude/i, /\bgemini/i, /\bllama/i, /\bmistral/i, /\balpaca/i,
+    /\bvicuna/i, /\bwizard/i, /\borca/i, /\bflan/i, /\bt5-/i, /\bbert/i,
+    /\brobert/i, /\bbloom/i, /\bopt-/i, /\bgalactica/i, /\bcodex/i
+  ];
+  
+  if (westernPatterns.some(pattern => pattern.test(fullText))) {
+    return { allowed: true, reason: 'Western model pattern detected' };
+  }
+  
+  // If no clear indicators, default to exclusion for safety
+  return { allowed: false, reason: 'Geographic origin unclear - defaulting to exclusion for safety' };
 }
 
 // Provider configurations with API endpoints and validation methods
@@ -328,13 +382,13 @@ async function validateProvider(providerName, config) {
       try {
         const validatedModel = config.validateModel(model);
         
-        // Check for Chinese provenance first
-        const provenanceCheck = hasChineseProvenance(validatedModel.model_name, model);
-        if (provenanceCheck.excluded) {
+        // Check geographic allowlist first
+        const geographicCheck = isGeographicallyAllowed(validatedModel.model_name, model);
+        if (!geographicCheck.allowed) {
           excludedModels.push({
             model_name: validatedModel.model_name,
             provider: providerName,
-            reason: `Chinese provenance: ${provenanceCheck.reason}`
+            reason: `Geographic restriction: ${geographicCheck.reason}`
           });
           continue;
         }
@@ -359,9 +413,10 @@ async function validateProvider(providerName, config) {
           continue;
         }
 
-        // Add provenance information to validated model
-        validatedModel.provenance_verified = true;
-        validatedModel.chinese_origin = false;
+        // Add geographic provenance information to validated model
+        validatedModel.geographic_origin_verified = true;
+        validatedModel.allowed_region = true;
+        validatedModel.origin_reason = geographicCheck.reason;
         
         validatedModels.push(validatedModel);
       } catch (error) {
@@ -430,8 +485,8 @@ async function main() {
   allValidatedModels.sort((a, b) => a.provider.localeCompare(b.provider) || a.model_name.localeCompare(b.model_name));
   allExcludedModels.sort((a, b) => a.provider.localeCompare(b.provider));
 
-  // Calculate provenance statistics for metadata
-  const chineseExcluded = allExcludedModels.filter(m => m.reason.includes('Chinese provenance')).length;
+  // Calculate geographic filtering statistics for metadata
+  const geographicExcluded = allExcludedModels.filter(m => m.reason.includes('Geographic restriction')).length;
   const totalChecked = allValidatedModels.length + allExcludedModels.length;
 
   // Create metadata about this validation run
@@ -445,23 +500,24 @@ async function main() {
     total_models_checked: totalChecked,
     total_validated_models: allValidatedModels.length,
     total_excluded_models: allExcludedModels.length,
-    provenance_filtering: {
+    geographic_filtering: {
       enabled: true,
-      chinese_models_excluded: chineseExcluded,
-      chinese_exclusion_rate: totalChecked > 0 ? (chineseExcluded / totalChecked * 100).toFixed(1) + '%' : '0%',
-      other_exclusions: allExcludedModels.length - chineseExcluded
+      allowed_regions: ['United States', 'Canada', 'Europe'],
+      geographic_exclusions: geographicExcluded,
+      geographic_exclusion_rate: totalChecked > 0 ? (geographicExcluded / totalChecked * 100).toFixed(1) + '%' : '0%',
+      other_exclusions: allExcludedModels.length - geographicExcluded
     },
     providers_with_models: [...new Set(allValidatedModels.map(m => m.provider))],
     validation_summary: Object.keys(PROVIDERS).reduce((summary, provider) => {
       const providerModels = allValidatedModels.filter(m => m.provider === provider);
       const providerExcluded = allExcludedModels.filter(m => m.provider === provider);
-      const providerChineseExcluded = allExcludedModels.filter(m => 
-        m.provider === provider && m.reason.includes('Chinese provenance')).length;
+      const providerGeographicExcluded = allExcludedModels.filter(m => 
+        m.provider === provider && m.reason.includes('Geographic restriction')).length;
       
       summary[provider] = {
         validated: providerModels.length,
         excluded: providerExcluded.length,
-        chinese_excluded: providerChineseExcluded,
+        geographic_excluded: providerGeographicExcluded,
         available: providerModels.length > 0
       };
       return summary;
@@ -483,23 +539,19 @@ async function main() {
   await writeFile('validated_models.json', JSON.stringify(validatedOutput, null, 2));
   await writeFile('excluded_models.json', JSON.stringify(excludedOutput, null, 2));
 
-  // Calculate provenance statistics
-  const chineseExcluded = allExcludedModels.filter(m => m.reason.includes('Chinese provenance')).length;
-  const totalChecked = allValidatedModels.length + allExcludedModels.length;
-  
   console.log(`\n✅ Validation complete:`);
   console.log(`- Total models checked: ${totalChecked}`);
-  console.log(`- Validated models (non-Chinese): ${allValidatedModels.length}`);
+  console.log(`- Validated models (US/Canada/Europe only): ${allValidatedModels.length}`);
   console.log(`- Excluded models: ${allExcludedModels.length}`);
-  console.log(`  - Chinese provenance: ${chineseExcluded}`);
-  console.log(`  - Other reasons: ${allExcludedModels.length - chineseExcluded}`);
+  console.log(`  - Geographic restrictions: ${geographicExcluded}`);
+  console.log(`  - Other reasons: ${allExcludedModels.length - geographicExcluded}`);
   console.log(`- Providers with available models: ${validationMetadata.providers_with_models.length}/${Object.keys(PROVIDERS).length}`);
   
   if (specificProvider) {
     console.log(`- Focus provider '${specificProvider}': ${allValidatedModels.length} models validated`);
   }
   
-  console.log(`\n🌏 Provenance filtering active: Excluding all Chinese-origin models`);
+  console.log(`\n🌍 Geographic filtering active: Only US, Canada, and European models allowed`);
   console.log(`📁 Results saved to validated_models.json and excluded_models.json`);
   
   if (announcementUrl) {
