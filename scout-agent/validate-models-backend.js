@@ -114,7 +114,7 @@ async function getModelsFromBackend() {
     
     const response = await axios({
       method: 'GET',
-      url: `${BACKEND_CONFIG.url}/api/llms`,
+      url: `${BACKEND_CONFIG.url}/api/providers`,
       headers: {
         'Authorization': `Bearer ${BACKEND_CONFIG.authToken}`,
         'Content-Type': 'application/json',
@@ -127,13 +127,24 @@ async function getModelsFromBackend() {
       console.log('Successfully fetched models from backend');
       console.log('Response structure:', JSON.stringify(Object.keys(response.data), null, 2));
       
-      // Handle different response formats
-      if (response.data.models) {
-        return response.data.models;
-      } else if (Array.isArray(response.data)) {
-        return response.data;
-      } else if (response.data.data) {
-        return response.data.data;
+      // Handle providers response format
+      if (response.data.providers && Array.isArray(response.data.providers)) {
+        // Extract all models from all providers
+        const allModels = [];
+        for (const provider of response.data.providers) {
+          if (provider.models && Array.isArray(provider.models)) {
+            for (const modelName of provider.models) {
+              allModels.push({
+                name: modelName,
+                model_name: modelName,
+                provider: provider.name,
+                available: provider.available,
+                status: provider.status
+              });
+            }
+          }
+        }
+        return allModels;
       } else {
         console.log('Full response:', JSON.stringify(response.data, null, 2));
         return [];
