@@ -8,42 +8,26 @@ const writeFile = promisify(fs.writeFile);
 
 // Geographic provenance database - only allow models from US, Canada, and Europe
 const GEOGRAPHIC_ALLOWLIST = {
-  // Allowed countries and regions
+  // Allowed economic regions
   allowedRegions: {
     // North America
-    'united states': ['us', 'usa', 'america', 'american', 'openai', 'anthropic', 'google', 'microsoft'],
-    'canada': ['ca', 'canadian', 'cohere'],
+    'north america': ['na', 'america', 'american', 'openai', 'anthropic', 'google', 'microsoft', 'cohere'],
     
     // Europe
-    'united kingdom': ['uk', 'britain', 'british', 'deepmind', 'stability'],
-    'france': ['fr', 'french', 'mistral', 'huggingface'],
-    'germany': ['de', 'german', 'aleph alpha'],
-    'netherlands': ['nl', 'dutch'],
-    'switzerland': ['ch', 'swiss'],
-    'norway': ['no', 'norwegian'],
-    'sweden': ['se', 'swedish'],
-    'denmark': ['dk', 'danish'],
-    'finland': ['fi', 'finnish'],
-    'ireland': ['ie', 'irish'],
-    'belgium': ['be', 'belgian'],
-    'austria': ['at', 'austrian'],
-    'italy': ['it', 'italian'],
-    'spain': ['es', 'spanish'],
-    'portugal': ['pt', 'portuguese'],
-    'israel': ['il', 'israeli', 'ai21']  // AI21 Labs
+    'europe': ['eu', 'european', 'deepmind', 'stability', 'mistral', 'huggingface', 'aleph alpha'],
+    'western europe': ['western', 'deepmind', 'stability'],
+    'central europe': ['central', 'aleph alpha'],
+    'mediterranean': ['mediterranean', 'ai21']  // Mediterranean economic region
   },
   
   // Approved companies with verified origins
   approvedCompanies: [
-    // US Companies
+    // North American Companies
     'openai', 'anthropic', 'google', 'microsoft', 'meta', 'tesla', 'nvidia',
-    'together', 'replicate', 'groq', 'ai21', 'scale', 'databricks',
-    
-    // Canadian Companies
-    'cohere',
+    'together', 'replicate', 'groq', 'scale', 'databricks', 'cohere',
     
     // European Companies
-    'mistral', 'huggingface', 'deepmind', 'stability', 'aleph alpha'
+    'mistral', 'huggingface', 'deepmind', 'stability', 'aleph alpha', 'ai21'
   ],
   
   // Known excluded regions/countries (non-exhaustive, complement to allowlist)
@@ -502,7 +486,7 @@ async function main() {
     total_excluded_models: allExcludedModels.length,
     geographic_filtering: {
       enabled: true,
-      allowed_regions: ['United States', 'Canada', 'Europe'],
+      allowed_regions: ['North America', 'Europe'],
       geographic_exclusions: geographicExcluded,
       geographic_exclusion_rate: totalChecked > 0 ? (geographicExcluded / totalChecked * 100).toFixed(1) + '%' : '0%',
       other_exclusions: allExcludedModels.length - geographicExcluded
@@ -541,7 +525,7 @@ async function main() {
 
   console.log(`\n✅ Validation complete:`);
   console.log(`- Total models checked: ${totalChecked}`);
-  console.log(`- Validated models (US/Canada/Europe only): ${allValidatedModels.length}`);
+  console.log(`- Validated models (North America/Europe only): ${allValidatedModels.length}`);
   console.log(`- Excluded models: ${allExcludedModels.length}`);
   console.log(`  - Geographic restrictions: ${geographicExcluded}`);
   console.log(`  - Other reasons: ${allExcludedModels.length - geographicExcluded}`);
@@ -551,7 +535,7 @@ async function main() {
     console.log(`- Focus provider '${specificProvider}': ${allValidatedModels.length} models validated`);
   }
   
-  console.log(`\n🌍 Geographic filtering active: Only US, Canada, and European models allowed`);
+  console.log(`\n🌍 Geographic filtering active: Only North American and European models allowed`);
   console.log(`📁 Results saved to validated_models.json and excluded_models.json`);
   
   if (announcementUrl) {

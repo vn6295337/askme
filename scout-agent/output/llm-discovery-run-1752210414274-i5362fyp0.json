@@ -1,0 +1,1079 @@
+{
+  "metadata": {
+    "timestamp": "2025-07-11T05:06:54.273Z",
+    "totalModels": 55,
+    "agentVersion": "1.0.0",
+    "sources": [
+      "Fallback Data",
+      "Hugging Face"
+    ],
+    "runId": "run-1752210414274-i5362fyp0"
+  },
+  "models": [
+    {
+      "name": "Llama 2",
+      "publisher": "Meta",
+      "sourceUrl": "https://github.com/facebookresearch/llama",
+      "releaseDate": "2023-07-18",
+      "accessType": "Open Source",
+      "license": "Custom",
+      "inferenceSupport": "CPU/GPU",
+      "source": "Fallback Data",
+      "country": "US",
+      "modelSize": "Unknown",
+      "capabilities": [
+        "Text Generation"
+      ],
+      "lastUpdated": "2025-07-11T05:06:54.169Z",
+      "discoveryTimestamp": "2025-07-11T05:06:54.270Z",
+      "agentVersion": "1.0.0",
+      "validationStatus": "validated"
+    },
+    {
+      "name": "GPT4All",
+      "publisher": "Nomic AI",
+      "sourceUrl": "https://github.com/nomic-ai/gpt4all",
+      "releaseDate": "2023-03-27",
+      "accessType": "Open Source",
+      "license": "MIT",
+      "inferenceSupport": "CPU",
+      "source": "Fallback Data",
+      "country": "Unknown",
+      "modelSize": "Unknown",
+      "capabilities": [
+        "Text Generation"
+      ],
+      "lastUpdated": "2025-07-11T05:06:54.170Z",
+      "discoveryTimestamp": "2025-07-11T05:06:54.270Z",
+      "agentVersion": "1.0.0",
+      "validationStatus": "validated"
+    },
+    {
+      "name": "Vicuna",
+      "publisher": "LMSYS",
+      "sourceUrl": "https://github.com/lm-sys/FastChat",
+      "releaseDate": "2023-03-30",
+      "accessType": "Open Source",
+      "license": "Apache 2.0",
+      "inferenceSupport": "CPU/GPU",
+      "source": "Fallback Data",
+      "country": "Unknown",
+      "modelSize": "Unknown",
+      "capabilities": [
+        "Text Generation"
+      ],
+      "lastUpdated": "2025-07-11T05:06:54.171Z",
+      "discoveryTimestamp": "2025-07-11T05:06:54.270Z",
+      "agentVersion": "1.0.0",
+      "validationStatus": "validated"
+    },
+    {
+      "name": "Alpaca",
+      "publisher": "Stanford",
+      "sourceUrl": "https://github.com/tatsu-lab/stanford_alpaca",
+      "releaseDate": "2023-03-13",
+      "accessType": "Open Source",
+      "license": "Apache 2.0",
+      "inferenceSupport": "CPU/GPU",
+      "source": "Fallback Data",
+      "country": "Unknown",
+      "modelSize": "Unknown",
+      "capabilities": [
+        "Text Generation"
+      ],
+      "lastUpdated": "2025-07-11T05:06:54.171Z",
+      "discoveryTimestamp": "2025-07-11T05:06:54.270Z",
+      "agentVersion": "1.0.0",
+      "validationStatus": "validated"
+    },
+    {
+      "name": "Code Llama",
+      "publisher": "Meta",
+      "sourceUrl": "https://github.com/facebookresearch/codellama",
+      "releaseDate": "2023-08-24",
+      "accessType": "Open Source",
+      "license": "Custom",
+      "inferenceSupport": "CPU/GPU",
+      "source": "Fallback Data",
+      "country": "US",
+      "modelSize": "Unknown",
+      "capabilities": [
+        "Code Generation"
+      ],
+      "lastUpdated": "2025-07-11T05:06:54.171Z",
+      "discoveryTimestamp": "2025-07-11T05:06:54.270Z",
+      "agentVersion": "1.0.0",
+      "validationStatus": "validated"
+    },
+    {
+      "name": "KarusG/Qwen3-0.6B-Gensyn-Swarm-roaring_soft_leopard",
+      "publisher": "KarusG",
+      "sourceUrl": "https://huggingface.co/KarusG/Qwen3-0.6B-Gensyn-Swarm-roaring_soft_leopard",
+      "releaseDate": "2025-07-11T05:06:32.000Z",
+      "accessType": "Open Source",
+      "license": "Unknown",
+      "inferenceSupport": "API/CPU/GPU",
+      "source": "Hugging Face",
+      "country": "US",
+      "modelSize": "6B",
+      "capabilities": [
+        "Text Generation"
+      ],
+      "lastUpdated": "2025-07-11T05:06:54.171Z",
+      "discoveryTimestamp": "2025-07-11T05:06:54.270Z",
+      "agentVersion": "1.0.0",
+      "validationStatus": "validated"
+    },
+    {
+      "name": "vomqal/Qwen2.5-0.5B-Instruct-Gensyn-Swarm-masked_snappy_caribou",
+      "publisher": "vomqal",
+      "sourceUrl": "https://huggingface.co/vomqal/Qwen2.5-0.5B-Instruct-Gensyn-Swarm-masked_snappy_caribou",
+      "releaseDate": "2025-07-11T05:06:28.000Z",
+      "accessType": "Open Source",
+      "license": "Unknown",
+      "inferenceSupport": "API/CPU/GPU",
+      "source": "Hugging Face",
+      "country": "US",
+      "modelSize": "5B",
+      "capabilities": [
+        "Conversational"
+      ],
+      "lastUpdated": "2025-07-11T05:06:54.171Z",
+      "discoveryTimestamp": "2025-07-11T05:06:54.270Z",
+      "agentVersion": "1.0.0",
+      "validationStatus": "validated"
+    },
+    {
+      "name": "hitmaaaaan/Qwen3-0.6B-Gensyn-Swarm-jagged_restless_nightingale",
+      "publisher": "hitmaaaaan",
+      "sourceUrl": "https://huggingface.co/hitmaaaaan/Qwen3-0.6B-Gensyn-Swarm-jagged_restless_nightingale",
+      "releaseDate": "2025-07-11T05:06:28.000Z",
+      "accessType": "Open Source",
+      "license": "Unknown",
+      "inferenceSupport": "API/CPU/GPU",
+      "source": "Hugging Face",
+      "country": "US",
+      "modelSize": "6B",
+      "capabilities": [
+        "Text Generation"
+      ],
+      "lastUpdated": "2025-07-11T05:06:54.171Z",
+      "discoveryTimestamp": "2025-07-11T05:06:54.270Z",
+      "agentVersion": "1.0.0",
+      "validationStatus": "validated"
+    },
+    {
+      "name": "SaminSkyfall/sft_full_1.7",
+      "publisher": "SaminSkyfall",
+      "sourceUrl": "https://huggingface.co/SaminSkyfall/sft_full_1.7",
+      "releaseDate": "2025-07-11T05:06:24.000Z",
+      "accessType": "Open Source",
+      "license": "Unknown",
+      "inferenceSupport": "API/CPU/GPU",
+      "source": "Hugging Face",
+      "country": "US",
+      "modelSize": "Unknown",
+      "capabilities": [
+        "Text Generation"
+      ],
+      "lastUpdated": "2025-07-11T05:06:54.171Z",
+      "discoveryTimestamp": "2025-07-11T05:06:54.270Z",
+      "agentVersion": "1.0.0",
+      "validationStatus": "validated"
+    },
+    {
+      "name": "panthera-ai/Panthera-X1-8B",
+      "publisher": "panthera-ai",
+      "sourceUrl": "https://huggingface.co/panthera-ai/Panthera-X1-8B",
+      "releaseDate": "2025-07-11T05:06:24.000Z",
+      "accessType": "Open Source",
+      "license": "Unknown",
+      "inferenceSupport": "API/CPU/GPU",
+      "source": "Hugging Face",
+      "country": "US",
+      "modelSize": "8B",
+      "capabilities": [
+        "Text Generation"
+      ],
+      "lastUpdated": "2025-07-11T05:06:54.171Z",
+      "discoveryTimestamp": "2025-07-11T05:06:54.270Z",
+      "agentVersion": "1.0.0",
+      "validationStatus": "validated"
+    },
+    {
+      "name": "anatolijbatalko/Qwen2.5-0.5B-Instruct-Gensyn-Swarm-thriving_ferocious_mink",
+      "publisher": "anatolijbatalko",
+      "sourceUrl": "https://huggingface.co/anatolijbatalko/Qwen2.5-0.5B-Instruct-Gensyn-Swarm-thriving_ferocious_mink",
+      "releaseDate": "2025-07-11T05:06:20.000Z",
+      "accessType": "Open Source",
+      "license": "Unknown",
+      "inferenceSupport": "API/CPU/GPU",
+      "source": "Hugging Face",
+      "country": "US",
+      "modelSize": "5B",
+      "capabilities": [
+        "Conversational"
+      ],
+      "lastUpdated": "2025-07-11T05:06:54.171Z",
+      "discoveryTimestamp": "2025-07-11T05:06:54.270Z",
+      "agentVersion": "1.0.0",
+      "validationStatus": "validated"
+    },
+    {
+      "name": "MaxVell337/Qwen2.5-0.5B-Instruct-Gensyn-Swarm-flapping_foraging_walrus",
+      "publisher": "MaxVell337",
+      "sourceUrl": "https://huggingface.co/MaxVell337/Qwen2.5-0.5B-Instruct-Gensyn-Swarm-flapping_foraging_walrus",
+      "releaseDate": "2025-07-11T05:06:14.000Z",
+      "accessType": "Open Source",
+      "license": "Unknown",
+      "inferenceSupport": "API/CPU/GPU",
+      "source": "Hugging Face",
+      "country": "US",
+      "modelSize": "5B",
+      "capabilities": [
+        "Conversational"
+      ],
+      "lastUpdated": "2025-07-11T05:06:54.172Z",
+      "discoveryTimestamp": "2025-07-11T05:06:54.272Z",
+      "agentVersion": "1.0.0",
+      "validationStatus": "validated"
+    },
+    {
+      "name": "leonmullerrr/Qwen2.5-0.5B-Instruct-Gensyn-Swarm-coiled_wild_mouse",
+      "publisher": "leonmullerrr",
+      "sourceUrl": "https://huggingface.co/leonmullerrr/Qwen2.5-0.5B-Instruct-Gensyn-Swarm-coiled_wild_mouse",
+      "releaseDate": "2025-07-11T05:06:10.000Z",
+      "accessType": "Open Source",
+      "license": "Unknown",
+      "inferenceSupport": "API/CPU/GPU",
+      "source": "Hugging Face",
+      "country": "US",
+      "modelSize": "5B",
+      "capabilities": [
+        "Conversational"
+      ],
+      "lastUpdated": "2025-07-11T05:06:54.172Z",
+      "discoveryTimestamp": "2025-07-11T05:06:54.273Z",
+      "agentVersion": "1.0.0",
+      "validationStatus": "validated"
+    },
+    {
+      "name": "Kita1111/Qwen2.5-0.5B-Instruct-Gensyn-Swarm-dextrous_domestic_cobra",
+      "publisher": "Kita1111",
+      "sourceUrl": "https://huggingface.co/Kita1111/Qwen2.5-0.5B-Instruct-Gensyn-Swarm-dextrous_domestic_cobra",
+      "releaseDate": "2025-07-11T05:05:53.000Z",
+      "accessType": "Open Source",
+      "license": "Unknown",
+      "inferenceSupport": "API/CPU/GPU",
+      "source": "Hugging Face",
+      "country": "US",
+      "modelSize": "5B",
+      "capabilities": [
+        "Conversational"
+      ],
+      "lastUpdated": "2025-07-11T05:06:54.172Z",
+      "discoveryTimestamp": "2025-07-11T05:06:54.273Z",
+      "agentVersion": "1.0.0",
+      "validationStatus": "validated"
+    },
+    {
+      "name": "NTIS/hf_gemma3_4b_3-checkpoint-29000",
+      "publisher": "NTIS",
+      "sourceUrl": "https://huggingface.co/NTIS/hf_gemma3_4b_3-checkpoint-29000",
+      "releaseDate": "2025-07-11T05:05:28.000Z",
+      "accessType": "Open Source",
+      "license": "Unknown",
+      "inferenceSupport": "API/CPU/GPU",
+      "source": "Hugging Face",
+      "country": "US",
+      "modelSize": "Unknown",
+      "capabilities": [
+        "Text Generation"
+      ],
+      "lastUpdated": "2025-07-11T05:06:54.172Z",
+      "discoveryTimestamp": "2025-07-11T05:06:54.273Z",
+      "agentVersion": "1.0.0",
+      "validationStatus": "validated"
+    },
+    {
+      "name": "Leoman777/Qwen3-0.6B-Gensyn-Swarm-striped_armored_gerbil",
+      "publisher": "Leoman777",
+      "sourceUrl": "https://huggingface.co/Leoman777/Qwen3-0.6B-Gensyn-Swarm-striped_armored_gerbil",
+      "releaseDate": "2025-07-11T05:05:06.000Z",
+      "accessType": "Open Source",
+      "license": "Unknown",
+      "inferenceSupport": "API/CPU/GPU",
+      "source": "Hugging Face",
+      "country": "US",
+      "modelSize": "6B",
+      "capabilities": [
+        "Text Generation"
+      ],
+      "lastUpdated": "2025-07-11T05:06:54.172Z",
+      "discoveryTimestamp": "2025-07-11T05:06:54.273Z",
+      "agentVersion": "1.0.0",
+      "validationStatus": "validated"
+    },
+    {
+      "name": "Mioku/Qwen2.5-0.5B-Instruct-Gensyn-Swarm-beaked_wise_fly",
+      "publisher": "Mioku",
+      "sourceUrl": "https://huggingface.co/Mioku/Qwen2.5-0.5B-Instruct-Gensyn-Swarm-beaked_wise_fly",
+      "releaseDate": "2025-07-11T05:04:57.000Z",
+      "accessType": "Open Source",
+      "license": "Unknown",
+      "inferenceSupport": "API/CPU/GPU",
+      "source": "Hugging Face",
+      "country": "US",
+      "modelSize": "5B",
+      "capabilities": [
+        "Conversational"
+      ],
+      "lastUpdated": "2025-07-11T05:06:54.172Z",
+      "discoveryTimestamp": "2025-07-11T05:06:54.273Z",
+      "agentVersion": "1.0.0",
+      "validationStatus": "validated"
+    },
+    {
+      "name": "maki28/Qwen2.5-0.5B-Instruct-Gensyn-Swarm-fleecy_gilded_swan",
+      "publisher": "maki28",
+      "sourceUrl": "https://huggingface.co/maki28/Qwen2.5-0.5B-Instruct-Gensyn-Swarm-fleecy_gilded_swan",
+      "releaseDate": "2025-07-11T05:04:53.000Z",
+      "accessType": "Open Source",
+      "license": "Unknown",
+      "inferenceSupport": "API/CPU/GPU",
+      "source": "Hugging Face",
+      "country": "US",
+      "modelSize": "5B",
+      "capabilities": [
+        "Conversational"
+      ],
+      "lastUpdated": "2025-07-11T05:06:54.172Z",
+      "discoveryTimestamp": "2025-07-11T05:06:54.273Z",
+      "agentVersion": "1.0.0",
+      "validationStatus": "validated"
+    },
+    {
+      "name": "silverbenehi/Qwen2.5-0.5B-Instruct-Gensyn-Swarm-bold_running_kangaroo",
+      "publisher": "silverbenehi",
+      "sourceUrl": "https://huggingface.co/silverbenehi/Qwen2.5-0.5B-Instruct-Gensyn-Swarm-bold_running_kangaroo",
+      "releaseDate": "2025-07-11T05:04:51.000Z",
+      "accessType": "Open Source",
+      "license": "Unknown",
+      "inferenceSupport": "API/CPU/GPU",
+      "source": "Hugging Face",
+      "country": "US",
+      "modelSize": "5B",
+      "capabilities": [
+        "Conversational"
+      ],
+      "lastUpdated": "2025-07-11T05:06:54.172Z",
+      "discoveryTimestamp": "2025-07-11T05:06:54.273Z",
+      "agentVersion": "1.0.0",
+      "validationStatus": "validated"
+    },
+    {
+      "name": "Kapitaka/Qwen3-0.6B-Gensyn-Swarm-tawny_meek_cheetah",
+      "publisher": "Kapitaka",
+      "sourceUrl": "https://huggingface.co/Kapitaka/Qwen3-0.6B-Gensyn-Swarm-tawny_meek_cheetah",
+      "releaseDate": "2025-07-11T05:04:44.000Z",
+      "accessType": "Open Source",
+      "license": "Unknown",
+      "inferenceSupport": "API/CPU/GPU",
+      "source": "Hugging Face",
+      "country": "US",
+      "modelSize": "6B",
+      "capabilities": [
+        "Text Generation"
+      ],
+      "lastUpdated": "2025-07-11T05:06:54.173Z",
+      "discoveryTimestamp": "2025-07-11T05:06:54.273Z",
+      "agentVersion": "1.0.0",
+      "validationStatus": "validated"
+    },
+    {
+      "name": "p2g8gensyn/Qwen2.5-0.5B-Gensyn-Swarm-diving_giant_alpaca",
+      "publisher": "p2g8gensyn",
+      "sourceUrl": "https://huggingface.co/p2g8gensyn/Qwen2.5-0.5B-Gensyn-Swarm-diving_giant_alpaca",
+      "releaseDate": "2025-07-11T05:04:42.000Z",
+      "accessType": "Open Source",
+      "license": "Unknown",
+      "inferenceSupport": "API/CPU/GPU",
+      "source": "Hugging Face",
+      "country": "US",
+      "modelSize": "5B",
+      "capabilities": [
+        "Text Generation"
+      ],
+      "lastUpdated": "2025-07-11T05:06:54.173Z",
+      "discoveryTimestamp": "2025-07-11T05:06:54.273Z",
+      "agentVersion": "1.0.0",
+      "validationStatus": "validated"
+    },
+    {
+      "name": "hazentr/Qwen2.5-0.5B-Instruct-Gensyn-Swarm-quick_timid_frog",
+      "publisher": "hazentr",
+      "sourceUrl": "https://huggingface.co/hazentr/Qwen2.5-0.5B-Instruct-Gensyn-Swarm-quick_timid_frog",
+      "releaseDate": "2025-07-11T05:04:40.000Z",
+      "accessType": "Open Source",
+      "license": "Unknown",
+      "inferenceSupport": "API/CPU/GPU",
+      "source": "Hugging Face",
+      "country": "US",
+      "modelSize": "5B",
+      "capabilities": [
+        "Conversational"
+      ],
+      "lastUpdated": "2025-07-11T05:06:54.173Z",
+      "discoveryTimestamp": "2025-07-11T05:06:54.273Z",
+      "agentVersion": "1.0.0",
+      "validationStatus": "validated"
+    },
+    {
+      "name": "insanesaga/Qwen3-0.6B-Gensyn-Swarm-nocturnal_clawed_bison",
+      "publisher": "insanesaga",
+      "sourceUrl": "https://huggingface.co/insanesaga/Qwen3-0.6B-Gensyn-Swarm-nocturnal_clawed_bison",
+      "releaseDate": "2025-07-11T05:04:40.000Z",
+      "accessType": "Open Source",
+      "license": "Unknown",
+      "inferenceSupport": "API/CPU/GPU",
+      "source": "Hugging Face",
+      "country": "US",
+      "modelSize": "6B",
+      "capabilities": [
+        "Text Generation"
+      ],
+      "lastUpdated": "2025-07-11T05:06:54.173Z",
+      "discoveryTimestamp": "2025-07-11T05:06:54.273Z",
+      "agentVersion": "1.0.0",
+      "validationStatus": "validated"
+    },
+    {
+      "name": "p2g6gensyn/Qwen2.5-0.5B-Gensyn-Swarm-dappled_yapping_clam",
+      "publisher": "p2g6gensyn",
+      "sourceUrl": "https://huggingface.co/p2g6gensyn/Qwen2.5-0.5B-Gensyn-Swarm-dappled_yapping_clam",
+      "releaseDate": "2025-07-11T05:04:30.000Z",
+      "accessType": "Open Source",
+      "license": "Unknown",
+      "inferenceSupport": "API/CPU/GPU",
+      "source": "Hugging Face",
+      "country": "US",
+      "modelSize": "5B",
+      "capabilities": [
+        "Text Generation"
+      ],
+      "lastUpdated": "2025-07-11T05:06:54.173Z",
+      "discoveryTimestamp": "2025-07-11T05:06:54.273Z",
+      "agentVersion": "1.0.0",
+      "validationStatus": "validated"
+    },
+    {
+      "name": "LaidBackReed/Qwen3-0.6B-Gensyn-Swarm-humming_snorting_cobra",
+      "publisher": "LaidBackReed",
+      "sourceUrl": "https://huggingface.co/LaidBackReed/Qwen3-0.6B-Gensyn-Swarm-humming_snorting_cobra",
+      "releaseDate": "2025-07-11T05:04:28.000Z",
+      "accessType": "Open Source",
+      "license": "Unknown",
+      "inferenceSupport": "API/CPU/GPU",
+      "source": "Hugging Face",
+      "country": "US",
+      "modelSize": "6B",
+      "capabilities": [
+        "Text Generation"
+      ],
+      "lastUpdated": "2025-07-11T05:06:54.173Z",
+      "discoveryTimestamp": "2025-07-11T05:06:54.273Z",
+      "agentVersion": "1.0.0",
+      "validationStatus": "validated"
+    },
+    {
+      "name": "Maximuswdmaster/Qwen3-0.6B-Gensyn-Swarm-moist_aquatic_baboon",
+      "publisher": "Maximuswdmaster",
+      "sourceUrl": "https://huggingface.co/Maximuswdmaster/Qwen3-0.6B-Gensyn-Swarm-moist_aquatic_baboon",
+      "releaseDate": "2025-07-11T05:04:28.000Z",
+      "accessType": "Open Source",
+      "license": "Unknown",
+      "inferenceSupport": "API/CPU/GPU",
+      "source": "Hugging Face",
+      "country": "US",
+      "modelSize": "6B",
+      "capabilities": [
+        "Text Generation"
+      ],
+      "lastUpdated": "2025-07-11T05:06:54.173Z",
+      "discoveryTimestamp": "2025-07-11T05:06:54.273Z",
+      "agentVersion": "1.0.0",
+      "validationStatus": "validated"
+    },
+    {
+      "name": "whereisandyk/Qwen2.5-0.5B-Instruct-Gensyn-Swarm-spotted_mimic_panther",
+      "publisher": "whereisandyk",
+      "sourceUrl": "https://huggingface.co/whereisandyk/Qwen2.5-0.5B-Instruct-Gensyn-Swarm-spotted_mimic_panther",
+      "releaseDate": "2025-07-11T05:04:28.000Z",
+      "accessType": "Open Source",
+      "license": "Unknown",
+      "inferenceSupport": "API/CPU/GPU",
+      "source": "Hugging Face",
+      "country": "US",
+      "modelSize": "5B",
+      "capabilities": [
+        "Conversational"
+      ],
+      "lastUpdated": "2025-07-11T05:06:54.173Z",
+      "discoveryTimestamp": "2025-07-11T05:06:54.273Z",
+      "agentVersion": "1.0.0",
+      "validationStatus": "validated"
+    },
+    {
+      "name": "aramzz/Qwen2.5-0.5B-Instruct-Gensyn-Swarm-wild_stalking_lemur",
+      "publisher": "aramzz",
+      "sourceUrl": "https://huggingface.co/aramzz/Qwen2.5-0.5B-Instruct-Gensyn-Swarm-wild_stalking_lemur",
+      "releaseDate": "2025-07-11T05:04:23.000Z",
+      "accessType": "Open Source",
+      "license": "Unknown",
+      "inferenceSupport": "API/CPU/GPU",
+      "source": "Hugging Face",
+      "country": "US",
+      "modelSize": "5B",
+      "capabilities": [
+        "Conversational"
+      ],
+      "lastUpdated": "2025-07-11T05:06:54.173Z",
+      "discoveryTimestamp": "2025-07-11T05:06:54.273Z",
+      "agentVersion": "1.0.0",
+      "validationStatus": "validated"
+    },
+    {
+      "name": "kkokas/Qwen3-0.6B-Gensyn-Swarm-leggy_robust_wolf",
+      "publisher": "kkokas",
+      "sourceUrl": "https://huggingface.co/kkokas/Qwen3-0.6B-Gensyn-Swarm-leggy_robust_wolf",
+      "releaseDate": "2025-07-11T05:04:20.000Z",
+      "accessType": "Open Source",
+      "license": "Unknown",
+      "inferenceSupport": "API/CPU/GPU",
+      "source": "Hugging Face",
+      "country": "US",
+      "modelSize": "6B",
+      "capabilities": [
+        "Text Generation"
+      ],
+      "lastUpdated": "2025-07-11T05:06:54.173Z",
+      "discoveryTimestamp": "2025-07-11T05:06:54.273Z",
+      "agentVersion": "1.0.0",
+      "validationStatus": "validated"
+    },
+    {
+      "name": "shapka187/Qwen2.5-0.5B-Gensyn-Swarm-docile_lanky_gibbon",
+      "publisher": "shapka187",
+      "sourceUrl": "https://huggingface.co/shapka187/Qwen2.5-0.5B-Gensyn-Swarm-docile_lanky_gibbon",
+      "releaseDate": "2025-07-11T05:04:17.000Z",
+      "accessType": "Open Source",
+      "license": "Unknown",
+      "inferenceSupport": "API/CPU/GPU",
+      "source": "Hugging Face",
+      "country": "US",
+      "modelSize": "5B",
+      "capabilities": [
+        "Text Generation"
+      ],
+      "lastUpdated": "2025-07-11T05:06:54.173Z",
+      "discoveryTimestamp": "2025-07-11T05:06:54.273Z",
+      "agentVersion": "1.0.0",
+      "validationStatus": "validated"
+    },
+    {
+      "name": "crepsly/Qwen3-0.6B-Gensyn-Swarm-hibernating_thriving_camel",
+      "publisher": "crepsly",
+      "sourceUrl": "https://huggingface.co/crepsly/Qwen3-0.6B-Gensyn-Swarm-hibernating_thriving_camel",
+      "releaseDate": "2025-07-11T05:04:08.000Z",
+      "accessType": "Open Source",
+      "license": "Unknown",
+      "inferenceSupport": "API/CPU/GPU",
+      "source": "Hugging Face",
+      "country": "US",
+      "modelSize": "6B",
+      "capabilities": [
+        "Text Generation"
+      ],
+      "lastUpdated": "2025-07-11T05:06:54.173Z",
+      "discoveryTimestamp": "2025-07-11T05:06:54.273Z",
+      "agentVersion": "1.0.0",
+      "validationStatus": "validated"
+    },
+    {
+      "name": "ryokuchasan3333333/Qwen3-0.6B-Gensyn-Swarm-placid_timid_dog",
+      "publisher": "ryokuchasan3333333",
+      "sourceUrl": "https://huggingface.co/ryokuchasan3333333/Qwen3-0.6B-Gensyn-Swarm-placid_timid_dog",
+      "releaseDate": "2025-07-11T05:04:08.000Z",
+      "accessType": "Open Source",
+      "license": "Unknown",
+      "inferenceSupport": "API/CPU/GPU",
+      "source": "Hugging Face",
+      "country": "US",
+      "modelSize": "6B",
+      "capabilities": [
+        "Text Generation"
+      ],
+      "lastUpdated": "2025-07-11T05:06:54.174Z",
+      "discoveryTimestamp": "2025-07-11T05:06:54.273Z",
+      "agentVersion": "1.0.0",
+      "validationStatus": "validated"
+    },
+    {
+      "name": "staffpjp/Qwen2.5-0.5B-Instruct-Gensyn-Swarm-diving_grassy_dog",
+      "publisher": "staffpjp",
+      "sourceUrl": "https://huggingface.co/staffpjp/Qwen2.5-0.5B-Instruct-Gensyn-Swarm-diving_grassy_dog",
+      "releaseDate": "2025-07-11T05:04:02.000Z",
+      "accessType": "Open Source",
+      "license": "Unknown",
+      "inferenceSupport": "API/CPU/GPU",
+      "source": "Hugging Face",
+      "country": "US",
+      "modelSize": "5B",
+      "capabilities": [
+        "Conversational"
+      ],
+      "lastUpdated": "2025-07-11T05:06:54.174Z",
+      "discoveryTimestamp": "2025-07-11T05:06:54.273Z",
+      "agentVersion": "1.0.0",
+      "validationStatus": "validated"
+    },
+    {
+      "name": "skyxyz/Qwen2.5-0.5B-Instruct-Gensyn-Swarm-purring_humming_chicken",
+      "publisher": "skyxyz",
+      "sourceUrl": "https://huggingface.co/skyxyz/Qwen2.5-0.5B-Instruct-Gensyn-Swarm-purring_humming_chicken",
+      "releaseDate": "2025-07-11T05:04:02.000Z",
+      "accessType": "Open Source",
+      "license": "Unknown",
+      "inferenceSupport": "API/CPU/GPU",
+      "source": "Hugging Face",
+      "country": "US",
+      "modelSize": "5B",
+      "capabilities": [
+        "Conversational"
+      ],
+      "lastUpdated": "2025-07-11T05:06:54.174Z",
+      "discoveryTimestamp": "2025-07-11T05:06:54.273Z",
+      "agentVersion": "1.0.0",
+      "validationStatus": "validated"
+    },
+    {
+      "name": "Galchonok/Qwen2.5-0.5B-Instruct-Gensyn-Swarm-territorial_alert_nightingale",
+      "publisher": "Galchonok",
+      "sourceUrl": "https://huggingface.co/Galchonok/Qwen2.5-0.5B-Instruct-Gensyn-Swarm-territorial_alert_nightingale",
+      "releaseDate": "2025-07-11T05:04:00.000Z",
+      "accessType": "Open Source",
+      "license": "Unknown",
+      "inferenceSupport": "API/CPU/GPU",
+      "source": "Hugging Face",
+      "country": "US",
+      "modelSize": "5B",
+      "capabilities": [
+        "Conversational"
+      ],
+      "lastUpdated": "2025-07-11T05:06:54.174Z",
+      "discoveryTimestamp": "2025-07-11T05:06:54.273Z",
+      "agentVersion": "1.0.0",
+      "validationStatus": "validated"
+    },
+    {
+      "name": "AlexanderArtT/Qwen3-0.6B-Gensyn-Swarm-tiny_nimble_warthog",
+      "publisher": "AlexanderArtT",
+      "sourceUrl": "https://huggingface.co/AlexanderArtT/Qwen3-0.6B-Gensyn-Swarm-tiny_nimble_warthog",
+      "releaseDate": "2025-07-11T05:03:57.000Z",
+      "accessType": "Open Source",
+      "license": "Unknown",
+      "inferenceSupport": "API/CPU/GPU",
+      "source": "Hugging Face",
+      "country": "US",
+      "modelSize": "6B",
+      "capabilities": [
+        "Text Generation"
+      ],
+      "lastUpdated": "2025-07-11T05:06:54.174Z",
+      "discoveryTimestamp": "2025-07-11T05:06:54.273Z",
+      "agentVersion": "1.0.0",
+      "validationStatus": "validated"
+    },
+    {
+      "name": "p2g4ads5/Qwen2.5-0.5B-Gensyn-Swarm-docile_playful_octopus",
+      "publisher": "p2g4ads5",
+      "sourceUrl": "https://huggingface.co/p2g4ads5/Qwen2.5-0.5B-Gensyn-Swarm-docile_playful_octopus",
+      "releaseDate": "2025-07-11T05:03:55.000Z",
+      "accessType": "Open Source",
+      "license": "Unknown",
+      "inferenceSupport": "API/CPU/GPU",
+      "source": "Hugging Face",
+      "country": "US",
+      "modelSize": "5B",
+      "capabilities": [
+        "Text Generation"
+      ],
+      "lastUpdated": "2025-07-11T05:06:54.174Z",
+      "discoveryTimestamp": "2025-07-11T05:06:54.273Z",
+      "agentVersion": "1.0.0",
+      "validationStatus": "validated"
+    },
+    {
+      "name": "infoipman/Qwen3-0.6B-Gensyn-Swarm-tall_mammalian_caribou",
+      "publisher": "infoipman",
+      "sourceUrl": "https://huggingface.co/infoipman/Qwen3-0.6B-Gensyn-Swarm-tall_mammalian_caribou",
+      "releaseDate": "2025-07-11T05:03:54.000Z",
+      "accessType": "Open Source",
+      "license": "Unknown",
+      "inferenceSupport": "API/CPU/GPU",
+      "source": "Hugging Face",
+      "country": "US",
+      "modelSize": "6B",
+      "capabilities": [
+        "Text Generation"
+      ],
+      "lastUpdated": "2025-07-11T05:06:54.174Z",
+      "discoveryTimestamp": "2025-07-11T05:06:54.273Z",
+      "agentVersion": "1.0.0",
+      "validationStatus": "validated"
+    },
+    {
+      "name": "alsandeer33/Qwen3-0.6B-Gensyn-Swarm-flightless_arctic_kangaroo",
+      "publisher": "alsandeer33",
+      "sourceUrl": "https://huggingface.co/alsandeer33/Qwen3-0.6B-Gensyn-Swarm-flightless_arctic_kangaroo",
+      "releaseDate": "2025-07-11T05:03:50.000Z",
+      "accessType": "Open Source",
+      "license": "Unknown",
+      "inferenceSupport": "API/CPU/GPU",
+      "source": "Hugging Face",
+      "country": "US",
+      "modelSize": "6B",
+      "capabilities": [
+        "Text Generation"
+      ],
+      "lastUpdated": "2025-07-11T05:06:54.174Z",
+      "discoveryTimestamp": "2025-07-11T05:06:54.273Z",
+      "agentVersion": "1.0.0",
+      "validationStatus": "validated"
+    },
+    {
+      "name": "okuzarabasi/Qwen3-0.6B-Gensyn-Swarm-grunting_toothy_elk",
+      "publisher": "okuzarabasi",
+      "sourceUrl": "https://huggingface.co/okuzarabasi/Qwen3-0.6B-Gensyn-Swarm-grunting_toothy_elk",
+      "releaseDate": "2025-07-11T05:03:49.000Z",
+      "accessType": "Open Source",
+      "license": "Unknown",
+      "inferenceSupport": "API/CPU/GPU",
+      "source": "Hugging Face",
+      "country": "US",
+      "modelSize": "6B",
+      "capabilities": [
+        "Text Generation"
+      ],
+      "lastUpdated": "2025-07-11T05:06:54.174Z",
+      "discoveryTimestamp": "2025-07-11T05:06:54.273Z",
+      "agentVersion": "1.0.0",
+      "validationStatus": "validated"
+    },
+    {
+      "name": "kcfabulosa/Qwen2.5-0.5B-Instruct-Gensyn-Swarm-gentle_jumping_termite",
+      "publisher": "kcfabulosa",
+      "sourceUrl": "https://huggingface.co/kcfabulosa/Qwen2.5-0.5B-Instruct-Gensyn-Swarm-gentle_jumping_termite",
+      "releaseDate": "2025-07-11T05:03:46.000Z",
+      "accessType": "Open Source",
+      "license": "Unknown",
+      "inferenceSupport": "API/CPU/GPU",
+      "source": "Hugging Face",
+      "country": "US",
+      "modelSize": "5B",
+      "capabilities": [
+        "Conversational"
+      ],
+      "lastUpdated": "2025-07-11T05:06:54.174Z",
+      "discoveryTimestamp": "2025-07-11T05:06:54.273Z",
+      "agentVersion": "1.0.0",
+      "validationStatus": "validated"
+    },
+    {
+      "name": "andr0m4da/Qwen3-0.6B-Gensyn-Swarm-strong_lively_turkey",
+      "publisher": "andr0m4da",
+      "sourceUrl": "https://huggingface.co/andr0m4da/Qwen3-0.6B-Gensyn-Swarm-strong_lively_turkey",
+      "releaseDate": "2025-07-11T05:03:38.000Z",
+      "accessType": "Open Source",
+      "license": "Unknown",
+      "inferenceSupport": "API/CPU/GPU",
+      "source": "Hugging Face",
+      "country": "US",
+      "modelSize": "6B",
+      "capabilities": [
+        "Text Generation"
+      ],
+      "lastUpdated": "2025-07-11T05:06:54.174Z",
+      "discoveryTimestamp": "2025-07-11T05:06:54.273Z",
+      "agentVersion": "1.0.0",
+      "validationStatus": "validated"
+    },
+    {
+      "name": "Angi54/Qwen3-0.6B-Gensyn-Swarm-lazy_enormous_bobcat",
+      "publisher": "Angi54",
+      "sourceUrl": "https://huggingface.co/Angi54/Qwen3-0.6B-Gensyn-Swarm-lazy_enormous_bobcat",
+      "releaseDate": "2025-07-11T05:03:37.000Z",
+      "accessType": "Open Source",
+      "license": "Unknown",
+      "inferenceSupport": "API/CPU/GPU",
+      "source": "Hugging Face",
+      "country": "US",
+      "modelSize": "6B",
+      "capabilities": [
+        "Text Generation"
+      ],
+      "lastUpdated": "2025-07-11T05:06:54.174Z",
+      "discoveryTimestamp": "2025-07-11T05:06:54.273Z",
+      "agentVersion": "1.0.0",
+      "validationStatus": "validated"
+    },
+    {
+      "name": "starburned/AceInstruct-1.5B-Gensyn-Swarm-scurrying_ravenous_chinchilla",
+      "publisher": "starburned",
+      "sourceUrl": "https://huggingface.co/starburned/AceInstruct-1.5B-Gensyn-Swarm-scurrying_ravenous_chinchilla",
+      "releaseDate": "2025-07-11T05:03:27.000Z",
+      "accessType": "Open Source",
+      "license": "Unknown",
+      "inferenceSupport": "API/CPU/GPU",
+      "source": "Hugging Face",
+      "country": "US",
+      "modelSize": "5B",
+      "capabilities": [
+        "Conversational"
+      ],
+      "lastUpdated": "2025-07-11T05:06:54.174Z",
+      "discoveryTimestamp": "2025-07-11T05:06:54.273Z",
+      "agentVersion": "1.0.0",
+      "validationStatus": "validated"
+    },
+    {
+      "name": "akdevelopers1/Qwen2.5-0.5B-Instruct-Gensyn-Swarm-omnivorous_domestic_trout",
+      "publisher": "akdevelopers1",
+      "sourceUrl": "https://huggingface.co/akdevelopers1/Qwen2.5-0.5B-Instruct-Gensyn-Swarm-omnivorous_domestic_trout",
+      "releaseDate": "2025-07-11T05:03:21.000Z",
+      "accessType": "Open Source",
+      "license": "Unknown",
+      "inferenceSupport": "API/CPU/GPU",
+      "source": "Hugging Face",
+      "country": "US",
+      "modelSize": "5B",
+      "capabilities": [
+        "Conversational"
+      ],
+      "lastUpdated": "2025-07-11T05:06:54.175Z",
+      "discoveryTimestamp": "2025-07-11T05:06:54.273Z",
+      "agentVersion": "1.0.0",
+      "validationStatus": "validated"
+    },
+    {
+      "name": "khangnguyen1287/Qwen3-0.6B-Gensyn-Swarm-mammalian_rugged_caterpillar",
+      "publisher": "khangnguyen1287",
+      "sourceUrl": "https://huggingface.co/khangnguyen1287/Qwen3-0.6B-Gensyn-Swarm-mammalian_rugged_caterpillar",
+      "releaseDate": "2025-07-11T05:03:06.000Z",
+      "accessType": "Open Source",
+      "license": "Unknown",
+      "inferenceSupport": "API/CPU/GPU",
+      "source": "Hugging Face",
+      "country": "US",
+      "modelSize": "6B",
+      "capabilities": [
+        "Text Generation"
+      ],
+      "lastUpdated": "2025-07-11T05:06:54.175Z",
+      "discoveryTimestamp": "2025-07-11T05:06:54.273Z",
+      "agentVersion": "1.0.0",
+      "validationStatus": "validated"
+    },
+    {
+      "name": "pavlodp/Qwen2.5-0.5B-Instruct-Gensyn-Swarm-exotic_pawing_wombat",
+      "publisher": "pavlodp",
+      "sourceUrl": "https://huggingface.co/pavlodp/Qwen2.5-0.5B-Instruct-Gensyn-Swarm-exotic_pawing_wombat",
+      "releaseDate": "2025-07-11T05:02:58.000Z",
+      "accessType": "Open Source",
+      "license": "Unknown",
+      "inferenceSupport": "API/CPU/GPU",
+      "source": "Hugging Face",
+      "country": "US",
+      "modelSize": "5B",
+      "capabilities": [
+        "Conversational"
+      ],
+      "lastUpdated": "2025-07-11T05:06:54.175Z",
+      "discoveryTimestamp": "2025-07-11T05:06:54.273Z",
+      "agentVersion": "1.0.0",
+      "validationStatus": "validated"
+    },
+    {
+      "name": "p2g2ads3/Qwen3-0.6B-Gensyn-Swarm-placid_timid_cheetah",
+      "publisher": "p2g2ads3",
+      "sourceUrl": "https://huggingface.co/p2g2ads3/Qwen3-0.6B-Gensyn-Swarm-placid_timid_cheetah",
+      "releaseDate": "2025-07-11T05:02:55.000Z",
+      "accessType": "Open Source",
+      "license": "Unknown",
+      "inferenceSupport": "API/CPU/GPU",
+      "source": "Hugging Face",
+      "country": "US",
+      "modelSize": "6B",
+      "capabilities": [
+        "Text Generation"
+      ],
+      "lastUpdated": "2025-07-11T05:06:54.175Z",
+      "discoveryTimestamp": "2025-07-11T05:06:54.273Z",
+      "agentVersion": "1.0.0",
+      "validationStatus": "validated"
+    },
+    {
+      "name": "0xtinuviel/AceInstruct-1.5B-Gensyn-Swarm-armored_mighty_quail",
+      "publisher": "0xtinuviel",
+      "sourceUrl": "https://huggingface.co/0xtinuviel/AceInstruct-1.5B-Gensyn-Swarm-armored_mighty_quail",
+      "releaseDate": "2025-07-11T05:02:53.000Z",
+      "accessType": "Open Source",
+      "license": "Unknown",
+      "inferenceSupport": "API/CPU/GPU",
+      "source": "Hugging Face",
+      "country": "US",
+      "modelSize": "5B",
+      "capabilities": [
+        "Conversational"
+      ],
+      "lastUpdated": "2025-07-11T05:06:54.175Z",
+      "discoveryTimestamp": "2025-07-11T05:06:54.273Z",
+      "agentVersion": "1.0.0",
+      "validationStatus": "validated"
+    },
+    {
+      "name": "jerryzh168/Phi-4-mini-instruct-8da4w-awq",
+      "publisher": "jerryzh168",
+      "sourceUrl": "https://huggingface.co/jerryzh168/Phi-4-mini-instruct-8da4w-awq",
+      "releaseDate": "2025-07-11T05:02:51.000Z",
+      "accessType": "Open Source",
+      "license": "Unknown",
+      "inferenceSupport": "API/CPU/GPU",
+      "source": "Hugging Face",
+      "country": "US",
+      "modelSize": "Unknown",
+      "capabilities": [
+        "Conversational"
+      ],
+      "lastUpdated": "2025-07-11T05:06:54.175Z",
+      "discoveryTimestamp": "2025-07-11T05:06:54.273Z",
+      "agentVersion": "1.0.0",
+      "validationStatus": "validated"
+    },
+    {
+      "name": "0xtinuviel/AceInstruct-1.5B-Gensyn-Swarm-toothy_crested_snail",
+      "publisher": "0xtinuviel",
+      "sourceUrl": "https://huggingface.co/0xtinuviel/AceInstruct-1.5B-Gensyn-Swarm-toothy_crested_snail",
+      "releaseDate": "2025-07-11T05:02:50.000Z",
+      "accessType": "Open Source",
+      "license": "Unknown",
+      "inferenceSupport": "API/CPU/GPU",
+      "source": "Hugging Face",
+      "country": "US",
+      "modelSize": "5B",
+      "capabilities": [
+        "Conversational"
+      ],
+      "lastUpdated": "2025-07-11T05:06:54.175Z",
+      "discoveryTimestamp": "2025-07-11T05:06:54.273Z",
+      "agentVersion": "1.0.0",
+      "validationStatus": "validated"
+    },
+    {
+      "name": "RyzenXT/Qwen3-0.6B-Gensyn-Swarm-grassy_patterned_bison",
+      "publisher": "RyzenXT",
+      "sourceUrl": "https://huggingface.co/RyzenXT/Qwen3-0.6B-Gensyn-Swarm-grassy_patterned_bison",
+      "releaseDate": "2025-07-11T05:02:45.000Z",
+      "accessType": "Open Source",
+      "license": "Unknown",
+      "inferenceSupport": "API/CPU/GPU",
+      "source": "Hugging Face",
+      "country": "US",
+      "modelSize": "6B",
+      "capabilities": [
+        "Text Generation"
+      ],
+      "lastUpdated": "2025-07-11T05:06:54.175Z",
+      "discoveryTimestamp": "2025-07-11T05:06:54.273Z",
+      "agentVersion": "1.0.0",
+      "validationStatus": "validated"
+    },
+    {
+      "name": "baryen/Qwen2.5-0.5B-Instruct-Gensyn-Swarm-sizable_woolly_fly",
+      "publisher": "baryen",
+      "sourceUrl": "https://huggingface.co/baryen/Qwen2.5-0.5B-Instruct-Gensyn-Swarm-sizable_woolly_fly",
+      "releaseDate": "2025-07-11T05:02:32.000Z",
+      "accessType": "Open Source",
+      "license": "Unknown",
+      "inferenceSupport": "API/CPU/GPU",
+      "source": "Hugging Face",
+      "country": "US",
+      "modelSize": "5B",
+      "capabilities": [
+        "Conversational"
+      ],
+      "lastUpdated": "2025-07-11T05:06:54.175Z",
+      "discoveryTimestamp": "2025-07-11T05:06:54.273Z",
+      "agentVersion": "1.0.0",
+      "validationStatus": "validated"
+    },
+    {
+      "name": "konstantinp2p/Qwen3-0.6B-Gensyn-Swarm-pouncing_peckish_crane",
+      "publisher": "konstantinp2p",
+      "sourceUrl": "https://huggingface.co/konstantinp2p/Qwen3-0.6B-Gensyn-Swarm-pouncing_peckish_crane",
+      "releaseDate": "2025-07-11T05:02:27.000Z",
+      "accessType": "Open Source",
+      "license": "Unknown",
+      "inferenceSupport": "API/CPU/GPU",
+      "source": "Hugging Face",
+      "country": "US",
+      "modelSize": "6B",
+      "capabilities": [
+        "Text Generation"
+      ],
+      "lastUpdated": "2025-07-11T05:06:54.176Z",
+      "discoveryTimestamp": "2025-07-11T05:06:54.273Z",
+      "agentVersion": "1.0.0",
+      "validationStatus": "validated"
+    },
+    {
+      "name": "p2g5dolph3/Qwen2.5-0.5B-Instruct-Gensyn-Swarm-peckish_ferocious_rhino",
+      "publisher": "p2g5dolph3",
+      "sourceUrl": "https://huggingface.co/p2g5dolph3/Qwen2.5-0.5B-Instruct-Gensyn-Swarm-peckish_ferocious_rhino",
+      "releaseDate": "2025-07-11T05:02:22.000Z",
+      "accessType": "Open Source",
+      "license": "Unknown",
+      "inferenceSupport": "API/CPU/GPU",
+      "source": "Hugging Face",
+      "country": "US",
+      "modelSize": "5B",
+      "capabilities": [
+        "Conversational"
+      ],
+      "lastUpdated": "2025-07-11T05:06:54.176Z",
+      "discoveryTimestamp": "2025-07-11T05:06:54.273Z",
+      "agentVersion": "1.0.0",
+      "validationStatus": "validated"
+    }
+  ],
+  "summary": {
+    "totalModels": 55,
+    "bySource": {
+      "Fallback Data": 5,
+      "Hugging Face": 50
+    },
+    "byAccessType": {
+      "Open Source": 55
+    },
+    "byCountry": {
+      "US": 52,
+      "Unknown": 3
+    },
+    "byModelSize": {
+      "Unknown": 8,
+      "6B": 20,
+      "5B": 26,
+      "8B": 1
+    }
+  }
+}

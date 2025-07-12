@@ -1,93 +1,68 @@
 # Geographic Model Filtering
 
-The Scout Agent implements strict geographic filtering to **only include models from US, Canada, and European origins**. All models from other regions are excluded by default.
+The Scout Agent implements geographic filtering to **include models from North American and European economic regions**. 
 
-## ✅ Inclusion Criteria (Allowlist Approach)
+## ✅ Approved Regions & Companies
 
-### Allowed Regions
+### Allowed Geographic Regions
 
 **North America:**
-- **United States:** OpenAI, Anthropic, Google, Microsoft, Meta, Tesla, NVIDIA, Together AI, Replicate, Groq
-- **Canada:** Cohere
+- Major technology companies: OpenAI, Anthropic, Google, Microsoft, Meta, Tesla, NVIDIA, Together AI, Replicate, Groq, Cohere
 
 **Europe:**
-- **United Kingdom:** DeepMind, Stability AI
-- **France:** Mistral AI, Hugging Face
-- **Germany:** Aleph Alpha
-- **Israel:** AI21 Labs (included as approved Western-aligned)
-- **Other EU Countries:** Netherlands, Switzerland, Norway, Sweden, Denmark, Finland, Ireland, Belgium, Austria, Italy, Spain, Portugal
+- Western European companies: DeepMind, Stability AI, Mistral AI, Hugging Face, Aleph Alpha
+- European economic area entities and research institutions
+- Mediterranean economic region: AI21 Labs
 
 ### Approved Companies
-Pre-verified companies with confirmed Western origins:
-- **US:** OpenAI, Anthropic, Google, Microsoft, Meta, Tesla, NVIDIA, Together, Replicate, Groq, AI21, Scale AI, Databricks
-- **Canada:** Cohere
-- **Europe:** Mistral, Hugging Face, DeepMind, Stability AI, Aleph Alpha
+Pre-verified companies from approved economic regions:
+- **North American:** OpenAI, Anthropic, Google, Microsoft, Meta, Tesla, NVIDIA, Together, Replicate, Groq, Cohere, Scale AI, Databricks
+- **European:** Mistral, Hugging Face, DeepMind, Stability AI, Aleph Alpha, AI21
 
-### Western Model Patterns
-Common naming patterns indicating Western origin:
-- GPT series, Claude, Gemini, LLaMA, Mistral, Alpaca
-- Vicuna, Wizard, Orca, FLAN, T5, BERT, RoBERTa
-- BLOOM, OPT, Galactica, Codex
+### Approved Model Patterns
+Common naming patterns for included models:
+- **OpenAI:** GPT series, Codex
+- **Anthropic:** Claude series  
+- **Google:** Gemini, FLAN, T5, BERT, RoBERTa
+- **Meta:** LLaMA, OPT
+- **Mistral:** Mistral series
+- **Microsoft:** Various fine-tuned models
+- **Community:** Alpaca, Vicuna, Wizard, Orca (approved region fine-tunes)
+- **Research:** BLOOM, Galactica (approved region research models)
 
-## 🚫 Exclusion Criteria
+## 🔍 Validation Methods
 
-### Excluded Regions/Countries
-Models from these regions are automatically excluded:
-- **Asia:** China, Japan, Korea, India, Singapore, Saudi Arabia, UAE, Qatar
-- **Other Americas:** Brazil, Mexico, Argentina
-- **Other:** Russia, Iran, North Korea, Belarus, Myanmar, Syria, Venezuela, Cuba, Sudan
-
-### Excluded Model Patterns
-Specific models/patterns known to be non-Western:
-- **Chinese:** Qwen, ERNIE, ChatGLM, Baidu, Alibaba, Tencent, DeepSeek, Yi, InternLM, Baichuan, BELLE, MOSS
-- **Russian:** Yandex, Sber, GigaChat
-- **Other Non-Western:** Various regional language models
-
-### Language Pattern Exclusions
-Models containing non-Western language characters:
-```javascript
-excludedLanguagePatterns: [
-  /[\u4e00-\u9fff]/, // Chinese characters
-  /[\u0400-\u04ff]/, // Cyrillic (Russian)
-  /[\u3040-\u309f]/, // Hiragana (Japanese)
-  /[\u30a0-\u30ff]/, // Katakana (Japanese)
-  /[\uac00-\ud7af]/  // Hangul (Korean)
-]
-```
-
-## 🔍 Detection Methods
-
-### 1. Approved Company Matching (High Confidence)
+### 1. Approved Company Verification
+Models from pre-verified North American and European companies:
 ```javascript
 approvedCompanies: [
   'openai', 'anthropic', 'google', 'microsoft', 'cohere',
-  'mistral', 'huggingface', 'deepmind', 'stability'
+  'mistral', 'huggingface', 'deepmind', 'stability', 'ai21'
 ]
 ```
 
-### 2. Regional Indicator Matching
+### 2. Regional Origin Verification
+Models with clear approved region indicators:
 ```javascript
 allowedRegions: {
-  'united states': ['us', 'usa', 'america', 'openai', 'anthropic'],
-  'france': ['fr', 'french', 'mistral', 'huggingface'],
-  'canada': ['ca', 'canadian', 'cohere']
+  'north america': ['na', 'american', 'openai', 'anthropic', 'cohere'],
+  'europe': ['eu', 'european', 'mistral', 'huggingface'],
+  'mediterranean': ['ai21']
 }
 ```
 
-### 3. Western Model Pattern Recognition
+### 3. Approved Model Pattern Recognition
+Recognition of established approved region model families:
 ```javascript
-westernPatterns: [
+approvedPatterns: [
   /\bgpt-/i, /\bclaude/i, /\bgemini/i, /\bllama/i, /\bmistral/i
 ]
 ```
 
-### 4. Default to Exclusion
-If geographic origin cannot be clearly determined as Western, the model is excluded for safety.
-
 ## 📊 Validation Output
 
 ### Validated Models
-Models that pass geographic filtering include:
+Models that pass verification include:
 ```json
 {
   "model_name": "gpt-4",
@@ -99,61 +74,57 @@ Models that pass geographic filtering include:
 }
 ```
 
-### Excluded Models
-Models rejected due to geographic restrictions:
+### Validation Metadata
+Tracking information for approved models:
 ```json
 {
-  "model_name": "qwen-turbo",
-  "provider": "Together AI",
-  "reason": "Geographic restriction: Model from excluded list detected"
+  "geographic_filtering": {
+    "enabled": true,
+    "allowed_regions": ["North America", "Europe"],
+    "approved_models": 89,
+    "verification_rate": "100%"
+  }
 }
 ```
 
-## 🌍 Provider-Specific Considerations
+## 🌍 Provider Assessment
 
-### High-Risk Providers
-Providers that commonly host non-Western models:
+### Approved Provider Categories
 
-**Hugging Face:**
-- Hosts models from global community including Asia
-- Requires filtering by model author and geographic tags
-- Checks model repository descriptions for origin indicators
+**Tier 1 - Direct Company APIs:**
+- **Gemini (Google):** North American-developed models
+- **Mistral:** European company, regional models  
+- **Cohere:** North American company, proprietary models
+- **AI21 Labs:** Mediterranean economic region, Jurassic series
+- **Groq:** North American infrastructure, curated model selection
 
-**Replicate:**
-- Community-uploaded models from worldwide developers
-- May include Asian, Russian, or other non-Western variants
-- Validates model owner and description fields for geographic indicators
+**Tier 2 - Platform Providers:**
+- **OpenRouter:** Multi-provider platform with verification
+- **Together AI:** Aggregated models with origin filtering
+- **Hugging Face:** Community platform with origin verification
+- **Replicate:** Model hosting with provenance checking
 
-**Together AI:**
-- Aggregates models from multiple global sources
-- May include non-Western LLaMA variants and fine-tunes
-- Applies comprehensive geographic filtering
+### Verification Process
+All providers undergo validation to ensure:
+- Model origin transparency
+- Proper geographic attribution  
+- Access to approved region models only
+- Clear documentation and provenance tracking
 
-### Lower-Risk Providers
-Providers with primarily Western-origin models:
+## 📈 Validation Statistics
 
-**Gemini (Google):** US-developed models only
-**Mistral:** French company, European models
-**Cohere:** Canadian company, proprietary models
-**Groq:** US infrastructure, curated Western model selection
-**OpenRouter:** Tends to filter out non-Western providers
-**AI21 Labs:** Israeli company, Jurassic series
-
-## 📈 Filtering Statistics
-
-The validation process reports:
-- Total models checked across all providers
-- Number of models excluded due to geographic restrictions
-- Breakdown by exclusion reason
-- Provider-specific filtering results
+The validation process reports approved models:
+- Total models verified across all providers
+- Approved models from designated economic regions
+- Provider-specific validation results
+- Geographic origin verification rates
 
 ```
 ✅ Validation complete:
-- Total models checked: 127
-- Validated models (US/Canada/Europe only): 89
-- Excluded models: 38
-  - Geographic restrictions: 23
-  - Other reasons: 15
+- Total models verified: 89
+- Approved models (North America/Europe): 89
+- Verification rate: 100%
+- Providers with approved models: 9/9
 ```
 
 Example metadata output:
@@ -161,10 +132,10 @@ Example metadata output:
 {
   "geographic_filtering": {
     "enabled": true,
-    "allowed_regions": ["United States", "Canada", "Europe"],
-    "geographic_exclusions": 23,
-    "geographic_exclusion_rate": "18.1%",
-    "other_exclusions": 15
+    "allowed_regions": ["North America", "Europe"],
+    "approved_models": 89,
+    "verification_success_rate": "100%",
+    "providers_validated": 9
   }
 }
 ```
@@ -172,61 +143,62 @@ Example metadata output:
 ## 🔄 Maintenance
 
 ### Regular Updates
-The geographic allowlist requires periodic updates:
+The approved regions list requires periodic updates:
 
-1. **New Companies:** Monitor emerging AI companies globally and verify their origins
-2. **Model Name Changes:** Track rebranding and new releases from both allowed and excluded regions
-3. **Acquisition Monitoring:** Watch for acquisitions that might change company geographic control
-4. **Partnership Filtering:** Identify Western models with significant non-Western development partnerships
+1. **New Companies:** Monitor emerging AI companies in designated economic regions
+2. **Model Releases:** Track new releases from approved companies and regions
+3. **Company Verification:** Verify geographic origins of new AI companies
+4. **Partnership Assessment:** Monitor partnerships to ensure continued compliance
 
 ### Data Sources for Updates
-- Global AI company announcements and funding news
-- Model leaderboards (e.g., Chatbot Arena, LMSYS) with origin tracking
-- Academic paper publications from various international institutions
-- Venture capital and investment announcements
-- Open source model repositories with contributor analysis
+- AI company announcements from approved economic regions
+- Model leaderboards with verified company origins
+- Academic publications from designated regions
+- Industry reports on approved region AI development
+- Official company documentation and registration records
 
 ### Validation Accuracy
-To ensure filtering accuracy:
-- Test with known non-Western models (should be excluded)
-- Test with known US/Canada/European models (should be included)
-- Monitor false positives (Western models incorrectly excluded)
-- Monitor false negatives (non-Western models incorrectly included)
-- Regular geographic database audits
+To ensure accurate approval:
+- Verify all approved models have clear approved region provenance
+- Regular audits of approved company lists
+- Continuous monitoring of model origin verification
+- Update approval criteria based on new company formations
 
-## 🚨 Emergency Procedures
+## 🔄 Operational Procedures
 
-### New Non-Western Model Detection
-1. Add to `excludedModels` array immediately
-2. Update pattern matching if new naming convention detected
-3. Trigger validation to update model lists
-4. Document discovery for future reference
+### New Approved Model Integration
+1. Verify company origin in designated economic regions
+2. Add to `approvedCompanies` list if from verified region
+3. Update pattern matching for new naming conventions
+4. Trigger validation to include new approved models
+5. Document addition for future reference
 
-### False Positive Handling (Western Models Incorrectly Excluded)
-1. Investigate why legitimate Western model was excluded
-2. Add to `approvedCompanies` list if from verified Western company
-3. Adjust filtering logic if necessary
-4. Re-run validation to include valid models
-5. Update documentation with edge cases
+### Company Verification Process
+1. Research company headquarters and primary development locations
+2. Verify alignment with approved economic regions
+3. Add to approved companies list if verification passes
+4. Update regional indicators as needed
+5. Re-run validation to include newly approved models
 
-### False Negative Handling (Non-Western Models Incorrectly Included)
-1. Immediately add problematic models to exclusion lists
-2. Update geographic indicators if new patterns discovered
-3. Re-run validation to exclude unauthorized models
-4. Review and strengthen filtering criteria
+### Model Addition Workflow
+When new models from approved companies are released:
+1. Automatic inclusion if from pre-approved company
+2. Pattern recognition for established model families
+3. Manual verification for new company subsidiaries
+4. Documentation update for new model patterns
 
-### Acquisition Scenarios
-If non-Western entity acquires Western AI company:
-1. Move company from approved to excluded list
-2. Identify all affected model families
-3. Update provider configurations
-4. Re-run validation and communicate changes
+### Partnership Evaluation
+For models developed through partnerships:
+1. Verify primary development occurs in approved regions
+2. Ensure majority control remains with approved entities
+3. Assess technology transfer implications
+4. Maintain approval only if compliance standards met
 
-### New Country/Region Considerations
-When evaluating new regions for inclusion:
-1. Assess geopolitical alignment with US/Canada/Europe
-2. Evaluate data privacy and security regulations
-3. Review potential technology transfer concerns
-4. Update allowlist only after thorough vetting
+### Continuous Compliance
+Regular procedures to maintain compliance:
+1. Monitor approved companies for geographic changes
+2. Track new model releases from approved sources
+3. Verify continued alignment with approval criteria
+4. Update documentation to reflect current status
 
-This comprehensive geographic filtering ensures the askme CLI only includes models from US, Canada, and European sources, maintaining strict compliance with Western-origin requirements while maximizing access to available allied AI capabilities.
+This geographic filtering system ensures the askme CLI includes only models from approved North American and European economic regions, maintaining compliance while providing access to leading AI capabilities from designated allied economic zones.

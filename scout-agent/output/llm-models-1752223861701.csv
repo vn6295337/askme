@@ -1,0 +1,2 @@
+name,shortName,country,modelSize,releaseDate,accessType,license,capabilities,validation_notes
+"Qwen2.5-7B","Qwen2.5-7B","China","7B","2024-09-19","Open Source","Apache-2.0","Conversational","HuggingFace model verified; License confirmed"
