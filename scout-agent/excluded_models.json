@@ -1,0 +1,25 @@
+{
+  "metadata": {
+    "timestamp": "2025-07-12T11:52:33.069Z",
+    "trigger": "push",
+    "reason": "Automated trigger",
+    "specific_provider": null,
+    "announcement_url": null,
+    "total_models_checked": 0,
+    "total_validated_models": 0,
+    "total_excluded_models": 0,
+    "geographic_filtering": {
+      "enabled": true,
+      "allowed_regions": [
+        "North America",
+        "Europe"
+      ],
+      "geographic_exclusions": 0,
+      "geographic_exclusion_rate": "0%",
+      "other_exclusions": 0
+    },
+    "providers_with_models": [],
+    "backend_proxy_used": true
+  },
+  "excluded_models": []
+}
