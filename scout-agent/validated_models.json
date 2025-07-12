@@ -1,25 +1,173 @@
 {
   "metadata": {
-    "timestamp": "2025-07-12T12:17:16.689Z",
-    "trigger": "workflow_dispatch",
-    "reason": "Manual validation request",
+    "timestamp": "2025-07-12T12:13:37.055Z",
+    "trigger": "manual",
+    "reason": "Manual validation",
     "specific_provider": null,
     "announcement_url": null,
-    "total_models_checked": 0,
-    "total_validated_models": 0,
-    "total_excluded_models": 0,
+    "total_models_checked": 13,
+    "total_validated_models": 11,
+    "total_excluded_models": 2,
     "geographic_filtering": {
       "enabled": true,
       "allowed_regions": [
         "North America",
         "Europe"
       ],
-      "geographic_exclusions": 0,
-      "geographic_exclusion_rate": "0%",
+      "geographic_exclusions": 2,
+      "geographic_exclusion_rate": "15.4%",
       "other_exclusions": 0
     },
-    "providers_with_models": [],
+    "providers_with_models": [
+      "google",
+      "llama",
+      "mistral"
+    ],
     "backend_proxy_used": true
   },
-  "models": []
+  "models": [
+    {
+      "model_name": "gemini-1.5-flash",
+      "provider": "google",
+      "api_available": true,
+      "registration_required": true,
+      "free_tier": true,
+      "auth_method": "api_key",
+      "documentation_url": "",
+      "notes": "Validated through backend proxy",
+      "geographic_origin_verified": true,
+      "allowed_region": true,
+      "origin_reason": "Approved region model pattern detected"
+    },
+    {
+      "model_name": "gemini-1.5-flash-8b",
+      "provider": "google",
+      "api_available": true,
+      "registration_required": true,
+      "free_tier": true,
+      "auth_method": "api_key",
+      "documentation_url": "",
+      "notes": "Validated through backend proxy",
+      "geographic_origin_verified": true,
+      "allowed_region": true,
+      "origin_reason": "Approved region model pattern detected"
+    },
+    {
+      "model_name": "gemini-1.5-pro",
+      "provider": "google",
+      "api_available": true,
+      "registration_required": true,
+      "free_tier": true,
+      "auth_method": "api_key",
+      "documentation_url": "",
+      "notes": "Validated through backend proxy",
+      "geographic_origin_verified": true,
+      "allowed_region": true,
+      "origin_reason": "Approved region model pattern detected"
+    },
+    {
+      "model_name": "meta-llama/Llama-2-13b-chat-hf",
+      "provider": "llama",
+      "api_available": true,
+      "registration_required": true,
+      "free_tier": true,
+      "auth_method": "api_key",
+      "documentation_url": "",
+      "notes": "Validated through backend proxy",
+      "geographic_origin_verified": true,
+      "allowed_region": true,
+      "origin_reason": "Approved company identified"
+    },
+    {
+      "model_name": "meta-llama/Llama-2-7b-chat-hf",
+      "provider": "llama",
+      "api_available": true,
+      "registration_required": true,
+      "free_tier": true,
+      "auth_method": "api_key",
+      "documentation_url": "",
+      "notes": "Validated through backend proxy",
+      "geographic_origin_verified": true,
+      "allowed_region": true,
+      "origin_reason": "Approved company identified"
+    },
+    {
+      "model_name": "meta-llama/Llama-3-8b-chat-hf",
+      "provider": "llama",
+      "api_available": true,
+      "registration_required": true,
+      "free_tier": true,
+      "auth_method": "api_key",
+      "documentation_url": "",
+      "notes": "Validated through backend proxy",
+      "geographic_origin_verified": true,
+      "allowed_region": true,
+      "origin_reason": "Approved company identified"
+    },
+    {
+      "model_name": "meta-llama/Llama-3.3-70B-Instruct-Turbo",
+      "provider": "llama",
+      "api_available": true,
+      "registration_required": true,
+      "free_tier": true,
+      "auth_method": "api_key",
+      "documentation_url": "",
+      "notes": "Validated through backend proxy",
+      "geographic_origin_verified": true,
+      "allowed_region": true,
+      "origin_reason": "Approved company identified"
+    },
+    {
+      "model_name": "meta-llama/Meta-Llama-3-8B-Instruct-Turbo",
+      "provider": "llama",
+      "api_available": true,
+      "registration_required": true,
+      "free_tier": true,
+      "auth_method": "api_key",
+      "documentation_url": "",
+      "notes": "Validated through backend proxy",
+      "geographic_origin_verified": true,
+      "allowed_region": true,
+      "origin_reason": "Approved company identified"
+    },
+    {
+      "model_name": "mistral-medium-latest",
+      "provider": "mistral",
+      "api_available": true,
+      "registration_required": true,
+      "free_tier": true,
+      "auth_method": "api_key",
+      "documentation_url": "",
+      "notes": "Validated through backend proxy",
+      "geographic_origin_verified": true,
+      "allowed_region": true,
+      "origin_reason": "Approved company identified"
+    },
+    {
+      "model_name": "mistral-small-latest",
+      "provider": "mistral",
+      "api_available": true,
+      "registration_required": true,
+      "free_tier": true,
+      "auth_method": "api_key",
+      "documentation_url": "",
+      "notes": "Validated through backend proxy",
+      "geographic_origin_verified": true,
+      "allowed_region": true,
+      "origin_reason": "Approved company identified"
+    },
+    {
+      "model_name": "open-mistral-7b",
+      "provider": "mistral",
+      "api_available": true,
+      "registration_required": true,
+      "free_tier": true,
+      "auth_method": "api_key",
+      "documentation_url": "",
+      "notes": "Validated through backend proxy",
+      "geographic_origin_verified": true,
+      "allowed_region": true,
+      "origin_reason": "Approved company identified"
+    }
+  ]
 }

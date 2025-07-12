@@ -1,25 +1,40 @@
 {
   "metadata": {
-    "timestamp": "2025-07-12T12:17:16.689Z",
-    "trigger": "workflow_dispatch",
-    "reason": "Manual validation request",
+    "timestamp": "2025-07-12T12:13:37.055Z",
+    "trigger": "manual",
+    "reason": "Manual validation",
     "specific_provider": null,
     "announcement_url": null,
-    "total_models_checked": 0,
-    "total_validated_models": 0,
-    "total_excluded_models": 0,
+    "total_models_checked": 13,
+    "total_validated_models": 11,
+    "total_excluded_models": 2,
     "geographic_filtering": {
       "enabled": true,
       "allowed_regions": [
         "North America",
         "Europe"
       ],
-      "geographic_exclusions": 0,
-      "geographic_exclusion_rate": "0%",
+      "geographic_exclusions": 2,
+      "geographic_exclusion_rate": "15.4%",
       "other_exclusions": 0
     },
-    "providers_with_models": [],
+    "providers_with_models": [
+      "google",
+      "llama",
+      "mistral"
+    ],
     "backend_proxy_used": true
   },
-  "excluded_models": []
+  "excluded_models": [
+    {
+      "model_name": "open-mixtral-8x7b",
+      "provider": "mistral",
+      "reason": "Geographic restriction: Geographic origin unclear - defaulting to exclusion for safety"
+    },
+    {
+      "model_name": "open-mixtral-8x22b",
+      "provider": "mistral",
+      "reason": "Geographic restriction: Geographic origin unclear - defaulting to exclusion for safety"
+    }
+  ]
 }
