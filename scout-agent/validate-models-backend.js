@@ -114,7 +114,7 @@ async function getModelsFromBackend() {
     
     const response = await axios({
       method: 'GET',
-      url: `${BACKEND_CONFIG.url}/api/models/validate`,
+      url: `${BACKEND_CONFIG.url}/api/llms`,
       headers: {
         'Authorization': `Bearer ${BACKEND_CONFIG.authToken}`,
         'Content-Type': 'application/json',
@@ -125,7 +125,19 @@ async function getModelsFromBackend() {
 
     if (response.status === 200) {
       console.log('Successfully fetched models from backend');
-      return response.data.models || [];
+      console.log('Response structure:', JSON.stringify(Object.keys(response.data), null, 2));
+      
+      // Handle different response formats
+      if (response.data.models) {
+        return response.data.models;
+      } else if (Array.isArray(response.data)) {
+        return response.data;
+      } else if (response.data.data) {
+        return response.data.data;
+      } else {
+        console.log('Full response:', JSON.stringify(response.data, null, 2));
+        return [];
+      }
     } else {
       throw new Error(`Backend returned status ${response.status}`);
     }
@@ -164,6 +176,10 @@ async function main() {
     // Get models from backend
     const backendModels = await getModelsFromBackend();
     console.log(`Received ${backendModels.length} models from backend`);
+    
+    if (backendModels.length > 0) {
+      console.log('Sample model structure:', JSON.stringify(backendModels[0], null, 2));
+    }
     
     const allValidatedModels = [];
     const allExcludedModels = [];
