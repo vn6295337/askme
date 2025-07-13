@@ -431,4 +431,92 @@ The **AskMe CLI 9-Provider Edition** is now:
 
 ---
 
-**🎉 Implementation Complete: AskMe CLI successfully expanded from 3 to 9 providers with full functionality and optimized performance.**
+## 🔄 GitHub Actions Integration
+
+### Scout Agent Workflow Configuration
+
+The 9-provider expansion required updating GitHub Actions workflows to ensure scheduled model validation runs on the correct branch with the new provider implementations.
+
+#### Issue Identified
+- **Problem**: Scheduled workflows (`scout-agent.yml`) were running on `main` branch
+- **Impact**: Model validation used old 3-provider implementation instead of new 9-provider code
+- **Root Cause**: GitHub scheduled workflows always run from default branch (main)
+
+#### Solution Implemented
+
+**1. Main Branch Workflow** (`/.github/workflows/scout-agent.yml`)
+```yaml
+on:
+  schedule:
+    - cron: '0 2 * * 0'  # Every Sunday at 2 AM UTC
+  workflow_dispatch:
+    inputs:
+      branch:
+        description: 'Branch to use'
+        required: false
+        default: 'feature/expand-to-9-providers'  # ✅ Updated
+        type: string
+
+jobs:
+  scout:
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+      with:
+        ref: ${{ inputs.branch || 'feature/expand-to-9-providers' }}  # ✅ Updated
+```
+
+**2. Feature Branch Workflow** (`/scout-agent/.github/workflows/scout-agent.yml`)
+```yaml
+workflow_dispatch:
+  inputs:
+    branch:
+      default: 'feature/expand-to-9-providers'  # ✅ Changed from 'working-flat-structure'
+
+steps:
+- name: Checkout repository
+  uses: actions/checkout@v4
+  with:
+    ref: ${{ inputs.branch || 'feature/expand-to-9-providers' }}  # ✅ Updated
+```
+
+#### Configuration Changes
+- ✅ **Default Branch**: Updated from `working-flat-structure` to `feature/expand-to-9-providers`
+- ✅ **Checkout Reference**: Now uses 9-provider branch for all runs
+- ✅ **Manual Triggers**: Default to feature branch with 9-provider implementation
+- ✅ **Scheduled Runs**: Automatically use 9-provider branch instead of main
+
+#### Verification Process
+**Manual Testing**:
+```bash
+# Trigger workflow manually from GitHub Actions UI:
+# 1. Go to Actions tab → "LLM Scout Agent" 
+# 2. Click "Run workflow"
+# 3. Verify branch shows "feature/expand-to-9-providers"
+# 4. Confirm validation runs against all 9 providers
+```
+
+**Expected Results**:
+- ✅ Scheduled runs (Sunday 2 AM UTC) use 9-provider implementation
+- ✅ Model validation tests all 41 models across 9 providers
+- ✅ Scout agent generates reports for complete provider matrix
+
+#### Provider Validation Matrix
+The updated workflow now validates:
+```yaml
+providers: [
+  'Gemini',           # Google (2 models)
+  'Mistral',          # Mistral (5 models) 
+  'Together AI',      # Llama (1 model)
+  'Cohere',           # Cohere (5 models)      ← NEW
+  'Groq',             # Groq (6 models)       ← NEW
+  'Hugging Face',     # HuggingFace (5 models) ← NEW
+  'OpenRouter',       # OpenRouter (5 models)  ← NEW
+  'AI21 Labs',        # AI21 (4 models)       ← NEW
+  'Replicate'         # Replicate (4 models)  ← NEW
+]
+```
+
+---
+
+**🎉 Implementation Complete: AskMe CLI successfully expanded from 3 to 9 providers with full functionality, optimized performance, and integrated GitHub Actions validation workflow.**
