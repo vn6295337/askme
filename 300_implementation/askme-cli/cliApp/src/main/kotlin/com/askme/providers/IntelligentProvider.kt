@@ -93,6 +93,7 @@ object IntelligentProvider {
             isAnalytical = promptLower.contains(Regex("\\b(analyze|analysis|research|data|statistics|compare|evaluate|study|examine|investigate)\\b")),
             isMath = promptLower.contains(Regex("\\b(calculate|math|equation|formula|solve|number|arithmetic|algebra|geometry|calculus)\\b")),
             isLongForm = prompt.length > 200 || promptLower.contains(Regex("\\b(explain|detailed|comprehensive|essay|report|article)\\b")),
+            isConversational = promptLower.contains(Regex("\\b(chat|talk|conversation|discuss|hello|hi|how are you|what's up|greet|greeting)\\b")),
             complexity = when {
                 prompt.length > 500 -> PromptComplexity.HIGH
                 prompt.length > 100 -> PromptComplexity.MEDIUM
@@ -108,7 +109,7 @@ object IntelligentProvider {
         val scoredProviders = currentStats.map { stats ->
             var score = stats.score
             
-            // Boost score based on query type preferences
+            // Boost score based on query type preferences (9 providers)
             when (stats.name) {
                 "google" -> {
                     if (analysis.isMath) score += 20
@@ -124,6 +125,36 @@ object IntelligentProvider {
                     if (analysis.isCreative) score += 25
                     if (analysis.isLongForm) score += 20
                     if (analysis.complexity == PromptComplexity.LOW) score += 10
+                }
+                "cohere" -> {
+                    if (analysis.isAnalytical) score += 22
+                    if (analysis.isLongForm) score += 18
+                    if (analysis.complexity == PromptComplexity.MEDIUM) score += 12
+                }
+                "groq" -> {
+                    if (analysis.complexity == PromptComplexity.LOW) score += 30 // Groq is very fast
+                    if (analysis.isCodeRelated) score += 15
+                    if (analysis.isMath) score += 12
+                }
+                "huggingface" -> {
+                    if (analysis.isCodeRelated) score += 20
+                    if (analysis.isConversational) score += 18
+                    if (analysis.complexity == PromptComplexity.LOW) score += 8
+                }
+                "openrouter" -> {
+                    if (analysis.complexity == PromptComplexity.HIGH) score += 18
+                    if (analysis.isAnalytical) score += 15
+                    if (analysis.isCodeRelated) score += 12
+                }
+                "ai21" -> {
+                    if (analysis.isAnalytical) score += 16
+                    if (analysis.complexity == PromptComplexity.MEDIUM) score += 14
+                    if (analysis.isLongForm) score += 10
+                }
+                "replicate" -> {
+                    if (analysis.isCodeRelated) score += 22
+                    if (analysis.complexity == PromptComplexity.HIGH) score += 16
+                    if (analysis.isAnalytical) score += 12
                 }
             }
             
@@ -142,6 +173,7 @@ object IntelligentProvider {
         if (analysis.isAnalytical) traits.add("Analytical")
         if (analysis.isMath) traits.add("Math")
         if (analysis.isLongForm) traits.add("Long-form")
+        if (analysis.isConversational) traits.add("Conversational")
         
         val complexityStr = when (analysis.complexity) {
             PromptComplexity.LOW -> "Simple"
@@ -205,15 +237,17 @@ object IntelligentProvider {
                 }
             }
             
-            appendLine("\n🎯 Selection Logic:")
-            appendLine("   • Code queries → Mistral (coding optimized)")
-            appendLine("   • Math queries → Google (computational strength)")  
+            appendLine("\n🎯 Selection Logic (9 Providers):")
+            appendLine("   • Code queries → Mistral, Replicate, HuggingFace (coding optimized)")
+            appendLine("   • Math queries → Google, Groq (computational strength)")  
             appendLine("   • Creative queries → Llama (creative writing)")
-            appendLine("   • Analytical queries → Google/Mistral (reasoning)")
-            appendLine("   • Complex queries → Google Pro models")
-            appendLine("   • Simple queries → Fast models (Flash, Small)")
+            appendLine("   • Analytical queries → Cohere, Google, Mistral (reasoning)")
+            appendLine("   • Fast queries → Groq (ultra-fast LPU inference)")
+            appendLine("   • Complex queries → OpenRouter, Google Pro, AI21")
+            appendLine("   • Conversational → HuggingFace, Cohere")
+            appendLine("   • General purpose → All providers with intelligent fallback")
             
-            appendLine("\n🔄 Fallback Order: Performance + Query Type Match")
+            appendLine("\n🔄 Fallback Order: Performance + Query Type Match + Speed")
         }
     }
 }

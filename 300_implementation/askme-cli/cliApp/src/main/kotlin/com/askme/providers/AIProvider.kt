@@ -100,6 +100,7 @@ abstract class BaseProvider : AIProvider {
             isAnalytical = promptLower.contains(Regex("\\b(analyze|analysis|research|data|statistics|compare|evaluate)\\b")),
             isMath = promptLower.contains(Regex("\\b(calculate|math|equation|formula|solve|number)\\b")),
             isLongForm = prompt.length > 200 || promptLower.contains(Regex("\\b(explain|detailed|comprehensive|essay)\\b")),
+            isConversational = promptLower.contains(Regex("\\b(chat|talk|conversation|discuss|hello|hi|how are you|what's up)\\b")),
             complexity = when {
                 prompt.length > 500 -> PromptComplexity.HIGH
                 prompt.length > 100 -> PromptComplexity.MEDIUM
@@ -115,6 +116,7 @@ data class PromptAnalysis(
     val isAnalytical: Boolean,
     val isMath: Boolean,
     val isLongForm: Boolean,
+    val isConversational: Boolean,
     val complexity: PromptComplexity
 )
 
