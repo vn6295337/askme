@@ -7,6 +7,7 @@ const rateLimit = require('express-rate-limit');
 const axios = require('axios');
 const fs = require('fs-extra');
 const path = require('path');
+const JSZip = require('jszip');
 require('dotenv').config();
 
 const app = express();
@@ -46,6 +47,21 @@ const API_KEYS = {
 // LLM Scout Agent configuration
 const AGENT_AUTH_TOKEN = process.env.AGENT_AUTH_TOKEN || 'scout-agent-default-token';
 const LLMS_FILE_PATH = path.join(__dirname, 'data', 'llms.json');
+
+// GitHub Dashboard configuration
+const GITHUB_TOKEN = process.env.GITHUB_TOKEN;
+const GITHUB_OWNER = 'vn6295337';
+const GITHUB_REPO = 'askme';
+const WORKFLOW_FILE = 'scout-agent.yml';
+const ARTIFACT_NAME = 'model-validation-results';
+
+// Cache for GitHub dashboard data to avoid API limits
+let githubDataCache = {
+  data: null,
+  timestamp: null,
+  previousMetrics: null
+};
+const GITHUB_CACHE_DURATION = 5 * 60 * 1000; // 5 minutes
 
 // Ensure data directory exists
 fs.ensureDirSync(path.dirname(LLMS_FILE_PATH));
@@ -516,6 +532,186 @@ app.post('/api/smart', async (req, res) => {
   }
 });
 
+// GitHub Dashboard endpoints
+app.get('/api/github/llm-data', async (req, res) => {
+  try {
+    console.log('[GitHub] Fetching LLM dashboard data...');
+    
+    // Check cache first
+    const now = Date.now();
+    if (githubDataCache.data && githubDataCache.timestamp && (now - githubDataCache.timestamp < GITHUB_CACHE_DURATION)) {
+      console.log('[GitHub] Returning cached data');
+      return res.json({
+        ...githubDataCache.data,
+        cached: true,
+        cacheAge: Math.round((now - githubDataCache.timestamp) / 1000)
+      });
+    }
+
+    // Verify GitHub token exists
+    if (!GITHUB_TOKEN) {
+      throw new Error('GITHUB_TOKEN environment variable not configured');
+    }
+
+    // GitHub API headers with authentication
+    const headers = {
+      'Accept': 'application/vnd.github+json',
+      'Authorization': `Bearer ${GITHUB_TOKEN}`,
+      'User-Agent': 'AskMe-LLM-Dashboard/1.0',
+      'X-GitHub-Api-Version': '2022-11-28'
+    };
+
+    // Step 1: Fetch workflow runs
+    console.log('[GitHub] Fetching workflow runs...');
+    const runsUrl = `https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/actions/workflows/${WORKFLOW_FILE}/runs?per_page=10`;
+    const runsResponse = await axios.get(runsUrl, { headers });
+    
+    const { workflow_runs } = runsResponse.data;
+    console.log(`[GitHub] Found ${workflow_runs?.length || 0} workflow runs`);
+    
+    if (!workflow_runs || workflow_runs.length === 0) {
+      throw new Error('No workflow runs found');
+    }
+
+    // Step 2: Find successful run
+    const successfulRun = workflow_runs.find(r => r.conclusion === 'success');
+    if (!successfulRun) {
+      throw new Error('No successful workflow runs found');
+    }
+
+    const latestRun = workflow_runs[0];
+    const isOutdated = latestRun.id !== successfulRun.id;
+    console.log(`[GitHub] Using run #${successfulRun.run_number}, outdated: ${isOutdated}`);
+
+    // Step 3: Get artifacts
+    console.log('[GitHub] Fetching artifacts...');
+    const artifactsUrl = `https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/actions/runs/${successfulRun.id}/artifacts`;
+    const artifactsResponse = await axios.get(artifactsUrl, { headers });
+    
+    const { artifacts } = artifactsResponse.data;
+    const targetArtifact = artifacts.find(a => a.name === ARTIFACT_NAME);
+    console.log(`[GitHub] Found ${artifacts.length} artifacts, target found: ${!!targetArtifact}`);
+    
+    if (!targetArtifact) {
+      const availableArtifacts = artifacts.map(a => a.name).join(', ');
+      throw new Error(`Artifact "${ARTIFACT_NAME}" not found. Available: ${availableArtifacts}`);
+    }
+
+    // Step 4: Download and parse artifact
+    console.log('[GitHub] Downloading artifact...');
+    const zipResponse = await axios.get(targetArtifact.archive_download_url, { 
+      headers,
+      responseType: 'arraybuffer'
+    });
+    
+    const zip = await JSZip.loadAsync(zipResponse.data);
+    
+    const jsonFile = Object.keys(zip.files).find(k => 
+      k.endsWith('validated_models.json') || k.endsWith('.json')
+    );
+    
+    if (!jsonFile) {
+      const availableFiles = Object.keys(zip.files).join(', ');
+      throw new Error(`validated_models.json not found. Available files: ${availableFiles}`);
+    }
+    
+    console.log(`[GitHub] Parsing ${jsonFile}...`);
+    const content = await zip.files[jsonFile].async('string');
+    const models = JSON.parse(content);
+    console.log(`[GitHub] Parsed ${models.length} models`);
+
+    // Step 5: Calculate metrics
+    const totalProviders = new Set(models.map(m => m.provider)).size;
+    const totalAvailableModels = models.filter(m => m.api_available).length;
+    const modelsExcluded = models.length - totalAvailableModels;
+
+    // Calculate change from previous metrics
+    let availableModelsChange = 0;
+    if (githubDataCache.previousMetrics?.totalAvailableModels) {
+      availableModelsChange = totalAvailableModels - githubDataCache.previousMetrics.totalAvailableModels;
+    }
+
+    const metrics = {
+      totalProviders,
+      totalAvailableModels,
+      availableModelsChange,
+      modelsExcluded,
+      lastUpdate: new Date(successfulRun.created_at).toISOString(),
+      nextUpdate: new Date(Date.now() + 15 * 60 * 1000).toISOString(),
+      dataSource: isOutdated ? `${targetArtifact.name} (using previous successful run)` : targetArtifact.name
+    };
+
+    const status = {
+      status: successfulRun.conclusion || 'success',
+      lastRun: new Date(successfulRun.created_at).toISOString(),
+      runNumber: successfulRun.run_number
+    };
+
+    const result = {
+      models,
+      metrics,
+      status,
+      isOutdated,
+      fallbackReason: isOutdated ? 'Latest run failed, using previous successful data' : '',
+      cached: false,
+      timestamp: new Date().toISOString()
+    };
+
+    // Update cache
+    githubDataCache = {
+      data: result,
+      timestamp: now,
+      previousMetrics: metrics
+    };
+
+    console.log('[GitHub] Successfully fetched and cached data');
+    res.json(result);
+
+  } catch (error) {
+    console.error('[GitHub] Error:', error);
+    
+    // Return cached data if available during errors
+    if (githubDataCache.data) {
+      console.log('[GitHub] Returning cached data due to error');
+      const cacheAge = githubDataCache.timestamp ? Math.round((Date.now() - githubDataCache.timestamp) / 1000) : null;
+      return res.json({
+        ...githubDataCache.data,
+        cached: true,
+        error: error.message,
+        cacheAge
+      });
+    }
+    
+    // No cached data available
+    res.status(500).json({
+      error: 'Failed to fetch LLM dashboard data',
+      message: error.message,
+      timestamp: new Date().toISOString(),
+      details: 'No cached data available'
+    });
+  }
+});
+
+// GitHub Dashboard health check
+app.get('/api/github/llm-health', (req, res) => {
+  res.json({
+    status: 'OK',
+    service: 'LLM Dashboard GitHub Proxy',
+    timestamp: new Date().toISOString(),
+    hasToken: !!GITHUB_TOKEN,
+    config: {
+      owner: GITHUB_OWNER,
+      repo: GITHUB_REPO,
+      workflow: WORKFLOW_FILE,
+      artifact: ARTIFACT_NAME
+    },
+    cache: {
+      hasData: !!githubDataCache.data,
+      age: githubDataCache.timestamp ? Math.round((Date.now() - githubDataCache.timestamp) / 1000) : null
+    }
+  });
+});
+
 // LLM Scout Agent endpoints
 app.post('/api/llms', authenticateAgent, async (req, res) => {
   try {
@@ -658,6 +854,8 @@ app.listen(PORT, '0.0.0.0', () => {
   console.log(`🤖 Query API: http://localhost:${PORT}/api/query`);
   console.log(`📋 Providers: http://localhost:${PORT}/api/providers`);
   console.log(`🧠 Smart API: http://localhost:${PORT}/api/smart`);
+  console.log(`📊 GitHub Dashboard: http://localhost:${PORT}/api/github/llm-data`);
+  console.log(`🔍 GitHub Health: http://localhost:${PORT}/api/github/llm-health`);
   
   // Verify API keys are loaded
   const loadedKeys = Object.entries(API_KEYS)
