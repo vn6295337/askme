@@ -617,7 +617,20 @@ app.get('/api/github/llm-data', async (req, res) => {
     
     console.log(`[GitHub] Parsing ${jsonFile}...`);
     const content = await zip.files[jsonFile].async('string');
-    const models = JSON.parse(content);
+    const jsonData = JSON.parse(content);
+    
+    // Handle different JSON structures
+    let models;
+    if (Array.isArray(jsonData)) {
+      // Direct array of models
+      models = jsonData;
+    } else if (jsonData.models && Array.isArray(jsonData.models)) {
+      // Object with models property
+      models = jsonData.models;
+    } else {
+      throw new Error('Invalid JSON structure: expected array or object with models property');
+    }
+    
     console.log(`[GitHub] Parsed ${models.length} models`);
 
     // Step 5: Calculate metrics
