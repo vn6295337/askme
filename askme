@@ -44,6 +44,7 @@ if [ ! -f "$CLI_APP" ]; then
     echo "  cd 300_implementation/askme-cli"
     echo "  chmod +x gradlew"
     echo "  ./gradlew cliApp:installDist"
+    echo "  OR ensure binary at: $CLI_APP"
     echo ""
     echo "💡 Or use gradle run for development:"
     echo "  ./gradlew run --args='your question here'"
