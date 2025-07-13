@@ -46,7 +46,7 @@ on:
   # Trigger on code changes
   push:
     branches:
-      - feature/enhanced-filtering-sources
+      - feature/expand-to-9-providers
     paths:
       - 'scout-agent/**'
   
@@ -145,7 +145,7 @@ jobs:
         retention-days: 30
         
     - name: Commit updated model data
-      if: github.ref == 'refs/heads/feature/enhanced-filtering-sources'
+      if: github.ref == 'refs/heads/feature/expand-to-9-providers'
       working-directory: scout-agent
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -175,7 +175,7 @@ jobs:
         
         if ! git diff --staged --quiet; then
           git commit -m "$COMMIT_MSG"
-          git push origin feature/enhanced-filtering-sources
+          git push origin feature/expand-to-9-providers
         else
           echo "No changes to commit"
         fi
