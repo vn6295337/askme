@@ -16,7 +16,7 @@ on:
       branch:
         description: 'Branch to use'
         required: false
-        default: 'working-flat-structure'
+        default: 'feature/expand-to-9-providers'
         type: string
 
 jobs:
@@ -30,7 +30,7 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v4
       with:
-        ref: ${{ inputs.branch || 'working-flat-structure' }}
+        ref: ${{ inputs.branch || 'feature/expand-to-9-providers' }}
       
     - name: Setup Node.js
       uses: actions/setup-node@v4
