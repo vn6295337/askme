@@ -108,9 +108,11 @@ jobs:
         export SPECIFIC_PROVIDER="${{ github.event.inputs.provider }}"
         export ANNOUNCEMENT_URL="${{ github.event.inputs.announcement_url }}"
         
-        # Run comprehensive validation with direct API calls
-        node validate-models.js
+        # Run validation through backend proxy
+        node validate-models-backend.js
       env:
+        BACKEND_URL: ${{ secrets.BACKEND_URL }}
+        AGENT_AUTH_TOKEN: ${{ secrets.AGENT_AUTH_TOKEN }}
         VALIDATION_TRIGGER: ${{ github.event_name }}
         TRIGGER_REASON: ${{ github.event.inputs.trigger_reason || 'Automated trigger' }}
         SPECIFIC_PROVIDER: ${{ github.event.inputs.provider }}
