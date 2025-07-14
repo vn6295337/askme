@@ -1,8 +1,8 @@
 {
   "metadata": {
-    "timestamp": "2025-07-14T11:42:42.877Z",
-    "trigger": "push",
-    "reason": "Automated trigger",
+    "timestamp": "2025-07-14T11:46:41.345Z",
+    "trigger": "workflow_dispatch",
+    "reason": "Manual validation request",
     "specific_provider": null,
     "announcement_url": null,
     "providers_validated": [
