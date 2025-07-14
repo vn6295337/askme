@@ -260,26 +260,6 @@ const PROVIDERS = {
         notes: 'AI21 Studio models including Jurassic series'
       };
     }
-  },
-  'Replicate': {
-    apiKey: process.env.REPLICATE_API_TOKEN,
-    listEndpoint: 'https://api.replicate.com/v1/models?cursor=&limit=50',
-    authHeader: (key) => ({ 'Authorization': `Token ${key}` }),
-    validateModel: (model) => {
-      return {
-        model_name: `${model.owner}/${model.name}`,
-        provider: 'Replicate',
-        api_available: true,
-        registration_required: true,
-        free_tier: true,
-        auth_method: 'api_key',
-        documentation_url: 'https://replicate.com/docs',
-        notes: 'Open source models via Replicate API',
-        model_owner: model.owner || '',
-        model_description: model.description || '',
-        model_visibility: model.visibility || 'public'
-      };
-    }
   }
 };
 
