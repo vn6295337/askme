@@ -1,0 +1,32 @@
+{
+  "name": "askme-scout-agent",
+  "version": "1.0.0",
+  "description": "LLM Model Discovery and Validation Agent for AskMe CLI",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "node src/index.js",
+    "validate": "node validate-models.js",
+    "test": "jest",
+    "test:watch": "jest --watch"
+  },
+  "dependencies": {
+    "axios": "^1.6.0",
+    "cheerio": "^1.0.0-rc.12",
+    "fs-extra": "^11.1.1"
+  },
+  "devDependencies": {
+    "jest": "^29.7.0"
+  },
+  "keywords": [
+    "llm",
+    "model-discovery",
+    "ai",
+    "validation",
+    "scout-agent"
+  ],
+  "author": "AskMe CLI Team",
+  "license": "MIT",
+  "engines": {
+    "node": ">=16.0.0"
+  }
+}
