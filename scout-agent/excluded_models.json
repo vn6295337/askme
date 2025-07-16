@@ -1,125 +1,38 @@
 {
   "metadata": {
-    "timestamp": "2025-07-14T11:46:41.345Z",
+    "timestamp": "2025-07-16T02:30:53.855Z",
     "trigger": "workflow_dispatch",
     "reason": "Manual validation request",
     "specific_provider": null,
     "announcement_url": null,
-    "providers_validated": [
-      "Gemini",
-      "Mistral",
-      "Together AI",
-      "Cohere",
-      "Groq",
-      "Hugging Face",
-      "OpenRouter",
-      "AI21 Labs"
-    ],
-    "total_models_checked": 8,
-    "total_validated_models": 0,
-    "total_excluded_models": 8,
-    "geographic_filtering": {
+    "total_models_checked": 38,
+    "total_validated_models": 38,
+    "total_excluded_models": 0,
+    "quality_filtering": {
       "enabled": true,
-      "allowed_regions": [
-        "North America",
-        "Europe"
+      "criteria": [
+        "Trusted organizations",
+        "Academic institutions",
+        "Established model families",
+        "HuggingFace quality metrics",
+        "SLM efficiency",
+        "Open source licensing"
       ],
-      "geographic_exclusions": 0,
-      "geographic_exclusion_rate": "0.0%",
-      "other_exclusions": 8
+      "quality_review_needed": 0,
+      "quality_review_rate": "0.0%",
+      "immediately_approved": 38
     },
-    "providers_with_models": [],
-    "validation_summary": {
-      "Gemini": {
-        "validated": 0,
-        "excluded": 1,
-        "geographic_excluded": 0,
-        "available": false
-      },
-      "Mistral": {
-        "validated": 0,
-        "excluded": 1,
-        "geographic_excluded": 0,
-        "available": false
-      },
-      "Together AI": {
-        "validated": 0,
-        "excluded": 1,
-        "geographic_excluded": 0,
-        "available": false
-      },
-      "Cohere": {
-        "validated": 0,
-        "excluded": 1,
-        "geographic_excluded": 0,
-        "available": false
-      },
-      "Groq": {
-        "validated": 0,
-        "excluded": 1,
-        "geographic_excluded": 0,
-        "available": false
-      },
-      "Hugging Face": {
-        "validated": 0,
-        "excluded": 1,
-        "geographic_excluded": 0,
-        "available": false
-      },
-      "OpenRouter": {
-        "validated": 0,
-        "excluded": 1,
-        "geographic_excluded": 0,
-        "available": false
-      },
-      "AI21 Labs": {
-        "validated": 0,
-        "excluded": 1,
-        "geographic_excluded": 0,
-        "available": false
-      }
-    }
+    "providers_with_models": [
+      "ai21",
+      "cohere",
+      "google",
+      "groq",
+      "huggingface",
+      "llama",
+      "mistral",
+      "openrouter"
+    ],
+    "backend_proxy_used": true
   },
-  "excluded_models": [
-    {
-      "model_name": "N/A",
-      "provider": "AI21 Labs",
-      "reason": "No API key configured"
-    },
-    {
-      "model_name": "N/A",
-      "provider": "Cohere",
-      "reason": "No API key configured"
-    },
-    {
-      "model_name": "N/A",
-      "provider": "Gemini",
-      "reason": "No API key configured"
-    },
-    {
-      "model_name": "N/A",
-      "provider": "Groq",
-      "reason": "No API key configured"
-    },
-    {
-      "model_name": "N/A",
-      "provider": "Hugging Face",
-      "reason": "No API key configured"
-    },
-    {
-      "model_name": "N/A",
-      "provider": "Mistral",
-      "reason": "No API key configured"
-    },
-    {
-      "model_name": "N/A",
-      "provider": "OpenRouter",
-      "reason": "No API key configured"
-    },
-    {
-      "model_name": "N/A",
-      "provider": "Together AI",
-      "reason": "No API key configured"
-    }
-  ]
+  "excluded_models": []
 }
