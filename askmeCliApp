@@ -1,0 +1,38 @@
+#!/bin/bash
+
+# askmeCliApp - Universal executable wrapper for AskMe CLI
+# This script can be executed from any location and will locate the CLI application
+
+# Get the absolute path of this script, resolving symlinks
+SCRIPT_PATH="$(readlink -f "${BASH_SOURCE[0]}")"
+SCRIPT_DIR="$(dirname "$SCRIPT_PATH")"
+
+# Define the CLI application paths
+CLI_JAR_PATH="$SCRIPT_DIR/300_implementation/askme-cli/cliApp/build/libs/cliApp.jar"
+CLI_LIB_PATH="$SCRIPT_DIR/300_implementation/askme-cli/cliApp/build/install/cliApp/lib"
+CLI_SCRIPT_PATH="$SCRIPT_DIR/300_implementation/askme-cli/cliApp/build/install/cliApp/bin/cliApp"
+
+# Check if the CLI script exists and is executable
+if [ -f "$CLI_SCRIPT_PATH" ] && [ -x "$CLI_SCRIPT_PATH" ]; then
+    # Use the generated Gradle startup script
+    exec "$CLI_SCRIPT_PATH" "$@"
+elif [ -f "$CLI_JAR_PATH" ]; then
+    # Fallback to direct Java execution
+    if [ -n "$JAVA_HOME" ]; then
+        JAVA_CMD="$JAVA_HOME/bin/java"
+    else
+        JAVA_CMD="java"
+    fi
+    
+    # Build classpath from lib directory
+    CLASSPATH="$CLI_LIB_PATH/*"
+    
+    # Execute the CLI application
+    exec "$JAVA_CMD" -cp "$CLASSPATH" com.askme.cli.MainKt "$@"
+else
+    echo "Error: AskMe CLI application not found or not built."
+    echo "Please run the build process first:"
+    echo "  cd $SCRIPT_DIR/300_implementation/askme-cli"
+    echo "  ./gradlew installDist"
+    exit 1
+fi
