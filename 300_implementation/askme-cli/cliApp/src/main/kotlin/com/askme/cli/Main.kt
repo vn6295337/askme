@@ -8,7 +8,7 @@ import java.io.File
 fun main(args: Array<String>) {
     val parser = ArgParser("askme")
     
-    val model by parser.option(ArgType.String, shortName = "m", description = "Provider: auto, google, mistral, llama, cohere, openrouter, groq").default("auto")
+    val model by parser.option(ArgType.String, shortName = "m", description = "Provider: auto, google, mistral, together, cohere, openrouter, groq").default("auto")
     val explicitModel by parser.option(ArgType.String, shortName = "e", description = "Explicit model to use (bypasses smart selection)")
     val promptFile by parser.option(ArgType.String, shortName = "f", description = "File containing prompt text")
     val smartMode by parser.option(ArgType.Boolean, shortName = "s", description = "Smart provider selection").default(false)
@@ -50,7 +50,7 @@ fun getSpecificAIProvider(providerName: String): AIProvider? {
     return when (providerName.lowercase()) {
         "google", "gemini" -> GoogleProvider()
         "mistral" -> MistralProvider()
-        "llama", "together" -> LlamaProvider()
+        "llama", "together" -> TogetherProvider()
         "cohere" -> CohereProvider()
         "openrouter" -> OpenRouterProvider()
         "groq" -> GroqProvider()
@@ -107,7 +107,7 @@ suspend fun runInteractiveMode(provider: String, smartMode: Boolean, explicitMod
                 println("""
                 📚 Available Commands:
                 • Simply type your question and press Enter
-                • switch <provider> - Change provider (auto, google, mistral, llama, cohere, openrouter, groq)
+                • switch <provider> - Change provider (auto, google, mistral, together, cohere, openrouter, groq)
                 • stats - Show provider statistics and performance
                 • help - Show this help message
                 • exit/quit/q - End session
@@ -116,7 +116,7 @@ suspend fun runInteractiveMode(provider: String, smartMode: Boolean, explicitMod
                 • auto - Intelligent provider selection based on query
                 • google - Google Gemini models
                 • mistral - Mistral AI models
-                • llama - Llama models via Together.ai
+                • together - Llama models via Together.ai
                 • cohere - Cohere command models
                 • openrouter - OpenRouter unified API
                 • groq - Ultra-fast Groq inference
@@ -127,16 +127,16 @@ suspend fun runInteractiveMode(provider: String, smartMode: Boolean, explicitMod
             }
             input.lowercase().startsWith("switch ") -> {
                 val newProvider = input.substring(7).trim().lowercase()
-                if (newProvider in listOf("auto", "google", "gemini", "mistral", "llama", "together", "cohere", "openrouter", "groq")) {
+                if (newProvider in listOf("auto", "google", "gemini", "mistral", "together", "cohere", "openrouter", "groq")) {
                     currentProvider = when (newProvider) {
                         "gemini" -> "google"
-                        "together" -> "llama"
+                        "together" -> "together"
                         else -> newProvider
                     }
                     currentSmartMode = (currentProvider == "auto")
                     println("🔄 Switched to provider: $currentProvider")
                 } else {
-                    println("❌ Unknown provider. Available: auto, google, mistral, llama, cohere, openrouter, groq")
+                    println("❌ Unknown provider. Available: auto, google, mistral, together, cohere, openrouter, groq")
                 }
             }
             else -> {
