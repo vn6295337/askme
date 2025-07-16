@@ -35,7 +35,7 @@ app.use('/api/', limiter);
 const API_KEYS = {
   google: process.env.GOOGLE_API_KEY,
   mistral: process.env.MISTRAL_API_KEY,
-  llama: process.env.LLAMA_API_KEY,
+  together: process.env.TOGETHER_API_KEY,
   cohere: process.env.COHERE_API_KEY,
   groq: process.env.GROQ_API_KEY,
   // huggingface: process.env.HUGGINGFACE_API_KEY,
@@ -131,7 +131,7 @@ const PROVIDERS = {
     }
   },
   
-  llama: {
+  together: {
     models: [
       "meta-llama/Meta-Llama-3-8B-Instruct-Turbo",     // Fast, reliable
       "meta-llama/Llama-3-8b-chat-hf",                 // Standard chat
@@ -152,9 +152,9 @@ const PROVIDERS = {
     }),
     extractResponse: (data) => {
       try {
-        return data.choices?.[0]?.message?.content || "No response from Llama";
+        return data.choices?.[0]?.message?.content || "No response from Together AI";
       } catch (e) {
-        return "Error processing Llama response";
+        return "Error processing Together AI response";
       }
     }
   },
@@ -423,7 +423,7 @@ app.post('/api/smart', async (req, res) => {
   if (promptLower.includes('code') || promptLower.includes('programming') || promptLower.includes('function')) {
     selectedProvider = 'mistral';  // Good at code
   } else if (promptLower.includes('creative') || promptLower.includes('story') || promptLower.includes('write')) {
-    selectedProvider = 'llama';    // Creative writing
+    selectedProvider = 'together';    // Creative writing
   } else if (promptLower.includes('analysis') || promptLower.includes('research') || promptLower.includes('explain')) {
     selectedProvider = 'google';   // Analytical tasks
   } else if (promptLower.includes('math') || promptLower.includes('calculate') || promptLower.includes('solve')) {
