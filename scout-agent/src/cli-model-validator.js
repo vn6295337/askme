@@ -21,6 +21,28 @@ class CLIModelValidator {
         'mistral-medium-latest'
       ],
       together: [
+        // DeepSeek Models (Latest and Advanced) - Chinese company, but models are global
+        'deepseek-ai/DeepSeek-R1-Distill-Llama-70B',
+        'deepseek-ai/deepseek-r1-0528',
+        
+        // Meta Llama Models (US - North America)
+        'meta-llama/Llama-3.3-70B-Instruct-Turbo',
+        'meta-llama/Llama-3.1-70B-Instruct',
+        'meta-llama/Llama-3.1-8B-Instruct',
+        'meta-llama/Llama-3.1-405B-Instruct-Turbo',
+        'meta-llama/Llama-3.2-1B-Instruct',
+        'meta-llama/Llama-Vision-Free',
+        
+        // Nvidia Models (US - North America)
+        'nvidia/Llama-3.3-Nemotron-Super-49B-v1',
+        
+        // Mixtral Models (France - Europe)
+        'mistralai/Mixtral-8x7B-Instruct-v0.1',
+        
+        // Specialized Models (US - North America)
+        'Arcee-AI/AFM-4.5B-Preview',
+        
+        // Legacy (for compatibility)
         'meta-llama/Llama-3-8b-chat-hf'
       ],
       cohere: [

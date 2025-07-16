@@ -69,11 +69,55 @@ class TogetherProvider : BaseProvider() {
     override fun getProviderName(): String = "together"
     
     override fun getAvailableModels(): List<String> = listOf(
-        "meta-llama/Llama-3-8b-chat-hf"                 // Chat optimized
+        // DeepSeek Models (Latest and Advanced) - Chinese company, but models are global
+        "deepseek-ai/DeepSeek-R1-Distill-Llama-70B",   // Latest reasoning model
+        "deepseek-ai/deepseek-r1-0528",                 // Original R1 model
+        
+        // Meta Llama Models (US - North America)
+        "meta-llama/Llama-3.3-70B-Instruct-Turbo",     // Latest 3.3 turbo
+        "meta-llama/Llama-3.1-70B-Instruct",           // Powerful 70B model
+        "meta-llama/Llama-3.1-8B-Instruct",            // Efficient 8B model
+        "meta-llama/Llama-3.1-405B-Instruct-Turbo",    // Largest model
+        "meta-llama/Llama-3.2-1B-Instruct",            // Ultra-fast 1B model
+        "meta-llama/Llama-Vision-Free",                 // Vision capabilities
+        
+        // Nvidia Models (US - North America)
+        "nvidia/Llama-3.3-Nemotron-Super-49B-v1",      // Nvidia optimized
+        
+        // Mixtral Models (France - Europe)
+        "mistralai/Mixtral-8x7B-Instruct-v0.1",        // Mixture of experts
+        
+        // Specialized Models (US - North America)
+        "Arcee-AI/AFM-4.5B-Preview",                    // Arcee AI model
+        
+        // Legacy (for compatibility)
+        "meta-llama/Llama-3-8b-chat-hf"                // Original model
     )
     
     override fun selectBestModel(prompt: String): String {
-        return "meta-llama/Llama-3-8b-chat-hf"  // Only working model
+        val analysis = analyzePrompt(prompt)
+        return when {
+            analysis.complexity == PromptComplexity.LOW || prompt.length < 100 ->
+                "meta-llama/Llama-3.2-1B-Instruct"  // Ultra-fast for simple queries
+            
+            analysis.isCodeRelated ->
+                "deepseek-ai/DeepSeek-R1-Distill-Llama-70B"  // Excellent for coding
+            
+            analysis.isMath || analysis.isAnalytical ->
+                "deepseek-ai/deepseek-r1-0528"  // Great for reasoning
+            
+            analysis.isLongForm || analysis.complexity == PromptComplexity.HIGH ->
+                "meta-llama/Llama-3.3-70B-Instruct-Turbo"  // Most powerful
+            
+            analysis.isCreative ->
+                "meta-llama/Llama-3.1-70B-Instruct"  // Excellent for creative tasks
+            
+            prompt.toLowerCase().contains("vision") || prompt.toLowerCase().contains("image") ->
+                "meta-llama/Llama-Vision-Free"  // Vision capabilities
+            
+            else ->
+                "meta-llama/Llama-3.1-8B-Instruct"  // Good balanced default
+        }
     }
     
     override suspend fun chat(prompt: String, model: String?): String {

@@ -12,12 +12,12 @@
   },
   "validationSummary": {
     "totalDiscovered": 195,
-    "cliSupported": 24,
+    "cliSupported": 35,
     "supportRate": "12.3%",
     "supportedProviders": {
       "google": 2,
       "mistral": 5,
-      "together": 1,
+      "together": 12,
       "cohere": 5,
       "groq": 6,
       "openrouter": 5
