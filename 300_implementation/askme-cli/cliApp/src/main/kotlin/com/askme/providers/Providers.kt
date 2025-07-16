@@ -64,9 +64,9 @@ class MistralProvider : BaseProvider() {
     }
 }
 
-class LlamaProvider : BaseProvider() {
+class TogetherProvider : BaseProvider() {
     
-    override fun getProviderName(): String = "llama"
+    override fun getProviderName(): String = "together"
     
     override fun getAvailableModels(): List<String> = listOf(
         "meta-llama/Llama-3-8b-chat-hf"                 // Chat optimized
@@ -78,7 +78,7 @@ class LlamaProvider : BaseProvider() {
     
     override suspend fun chat(prompt: String, model: String?): String {
         val selectedModel = model ?: selectBestModel(prompt)
-        return callBackend(prompt, "llama", selectedModel)
+        return callBackend(prompt, "together", selectedModel)
     }
 }
 

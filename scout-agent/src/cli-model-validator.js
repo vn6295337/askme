@@ -20,7 +20,7 @@ class CLIModelValidator {
         'open-mixtral-8x22b',
         'mistral-medium-latest'
       ],
-      llama: [
+      together: [
         'meta-llama/Llama-3-8b-chat-hf'
       ],
       cohere: [
@@ -66,7 +66,7 @@ class CLIModelValidator {
         accessType: 'API',
         backendSupported: true
       },
-      llama: {
+      together: {
         name: 'Together AI',
         publisher: 'Meta/Together AI',
         country: 'US',

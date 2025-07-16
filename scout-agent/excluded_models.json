@@ -17,7 +17,7 @@
     "supportedProviders": {
       "google": 2,
       "mistral": 5,
-      "llama": 1,
+      "together": 1,
       "cohere": 5,
       "groq": 6,
       "openrouter": 5

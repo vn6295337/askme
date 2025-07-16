@@ -9,7 +9,7 @@ object IntelligentProvider {
     private val providers = listOf(
         GoogleProvider(),
         MistralProvider(),
-        LlamaProvider(),
+        TogetherProvider(),
         CohereProvider(),
         GroqProvider(),
         // HuggingFaceProvider(),

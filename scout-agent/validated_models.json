@@ -1,10 +1,10 @@
 {
   "metadata": {
-    "timestamp": "2025-07-16T08:11:04.826Z",
+    "timestamp": "2025-07-16T08:49:51.013Z",
     "totalModels": 24,
     "agentVersion": "1.0.0",
     "sources": [],
-    "runId": "run-1752653464827-4uymvcf5d"
+    "runId": "run-1752655791013-uerrhqzan"
   },
   "models": [
     {
@@ -18,8 +18,8 @@
       "cliIntegrated": true,
       "validationStatus": "validated",
       "validation_notes": "AskMe CLI provider: google",
-      "lastUpdated": "2025-07-16T08:11:04.786Z",
-      "discoveryTimestamp": "2025-07-16T08:11:04.825Z",
+      "lastUpdated": "2025-07-16T08:49:50.989Z",
+      "discoveryTimestamp": "2025-07-16T08:49:51.012Z",
       "agentVersion": "1.0.0"
     },
     {
@@ -33,8 +33,8 @@
       "cliIntegrated": true,
       "validationStatus": "validated",
       "validation_notes": "AskMe CLI provider: google",
-      "lastUpdated": "2025-07-16T08:11:04.787Z",
-      "discoveryTimestamp": "2025-07-16T08:11:04.826Z",
+      "lastUpdated": "2025-07-16T08:49:50.990Z",
+      "discoveryTimestamp": "2025-07-16T08:49:51.012Z",
       "agentVersion": "1.0.0"
     },
     {
@@ -48,8 +48,8 @@
       "cliIntegrated": true,
       "validationStatus": "validated",
       "validation_notes": "AskMe CLI provider: mistral",
-      "lastUpdated": "2025-07-16T08:11:04.787Z",
-      "discoveryTimestamp": "2025-07-16T08:11:04.826Z",
+      "lastUpdated": "2025-07-16T08:49:50.990Z",
+      "discoveryTimestamp": "2025-07-16T08:49:51.012Z",
       "agentVersion": "1.0.0"
     },
     {
@@ -63,8 +63,8 @@
       "cliIntegrated": true,
       "validationStatus": "validated",
       "validation_notes": "AskMe CLI provider: mistral",
-      "lastUpdated": "2025-07-16T08:11:04.787Z",
-      "discoveryTimestamp": "2025-07-16T08:11:04.826Z",
+      "lastUpdated": "2025-07-16T08:49:50.990Z",
+      "discoveryTimestamp": "2025-07-16T08:49:51.012Z",
       "agentVersion": "1.0.0"
     },
     {
@@ -78,8 +78,8 @@
       "cliIntegrated": true,
       "validationStatus": "validated",
       "validation_notes": "AskMe CLI provider: mistral",
-      "lastUpdated": "2025-07-16T08:11:04.787Z",
-      "discoveryTimestamp": "2025-07-16T08:11:04.826Z",
+      "lastUpdated": "2025-07-16T08:49:50.990Z",
+      "discoveryTimestamp": "2025-07-16T08:49:51.012Z",
       "agentVersion": "1.0.0"
     },
     {
@@ -93,8 +93,8 @@
       "cliIntegrated": true,
       "validationStatus": "validated",
       "validation_notes": "AskMe CLI provider: mistral",
-      "lastUpdated": "2025-07-16T08:11:04.787Z",
-      "discoveryTimestamp": "2025-07-16T08:11:04.826Z",
+      "lastUpdated": "2025-07-16T08:49:50.990Z",
+      "discoveryTimestamp": "2025-07-16T08:49:51.012Z",
       "agentVersion": "1.0.0"
     },
     {
@@ -108,23 +108,23 @@
       "cliIntegrated": true,
       "validationStatus": "validated",
       "validation_notes": "AskMe CLI provider: mistral",
-      "lastUpdated": "2025-07-16T08:11:04.787Z",
-      "discoveryTimestamp": "2025-07-16T08:11:04.826Z",
+      "lastUpdated": "2025-07-16T08:49:50.990Z",
+      "discoveryTimestamp": "2025-07-16T08:49:51.012Z",
       "agentVersion": "1.0.0"
     },
     {
       "name": "meta-llama/Llama-3-8b-chat-hf",
       "shortName": "Llama-3-8b-chat-hf",
-      "provider": "llama",
+      "provider": "together",
       "publisher": "Meta/Together AI",
       "country": "US",
       "accessType": "API",
       "backendSupported": true,
       "cliIntegrated": true,
       "validationStatus": "validated",
-      "validation_notes": "AskMe CLI provider: llama",
-      "lastUpdated": "2025-07-16T08:11:04.787Z",
-      "discoveryTimestamp": "2025-07-16T08:11:04.826Z",
+      "validation_notes": "AskMe CLI provider: together",
+      "lastUpdated": "2025-07-16T08:49:50.990Z",
+      "discoveryTimestamp": "2025-07-16T08:49:51.012Z",
       "agentVersion": "1.0.0"
     },
     {
@@ -138,8 +138,8 @@
       "cliIntegrated": true,
       "validationStatus": "validated",
       "validation_notes": "AskMe CLI provider: cohere",
-      "lastUpdated": "2025-07-16T08:11:04.788Z",
-      "discoveryTimestamp": "2025-07-16T08:11:04.826Z",
+      "lastUpdated": "2025-07-16T08:49:50.990Z",
+      "discoveryTimestamp": "2025-07-16T08:49:51.012Z",
       "agentVersion": "1.0.0"
     },
     {
@@ -153,8 +153,8 @@
       "cliIntegrated": true,
       "validationStatus": "validated",
       "validation_notes": "AskMe CLI provider: cohere",
-      "lastUpdated": "2025-07-16T08:11:04.788Z",
-      "discoveryTimestamp": "2025-07-16T08:11:04.826Z",
+      "lastUpdated": "2025-07-16T08:49:50.990Z",
+      "discoveryTimestamp": "2025-07-16T08:49:51.012Z",
       "agentVersion": "1.0.0"
     },
     {
@@ -168,8 +168,8 @@
       "cliIntegrated": true,
       "validationStatus": "validated",
       "validation_notes": "AskMe CLI provider: cohere",
-      "lastUpdated": "2025-07-16T08:11:04.788Z",
-      "discoveryTimestamp": "2025-07-16T08:11:04.826Z",
+      "lastUpdated": "2025-07-16T08:49:50.990Z",
+      "discoveryTimestamp": "2025-07-16T08:49:51.013Z",
       "agentVersion": "1.0.0"
     },
     {
@@ -183,8 +183,8 @@
       "cliIntegrated": true,
       "validationStatus": "validated",
       "validation_notes": "AskMe CLI provider: cohere",
-      "lastUpdated": "2025-07-16T08:11:04.788Z",
-      "discoveryTimestamp": "2025-07-16T08:11:04.826Z",
+      "lastUpdated": "2025-07-16T08:49:50.990Z",
+      "discoveryTimestamp": "2025-07-16T08:49:51.013Z",
       "agentVersion": "1.0.0"
     },
     {
@@ -198,8 +198,8 @@
       "cliIntegrated": true,
       "validationStatus": "validated",
       "validation_notes": "AskMe CLI provider: cohere",
-      "lastUpdated": "2025-07-16T08:11:04.788Z",
-      "discoveryTimestamp": "2025-07-16T08:11:04.826Z",
+      "lastUpdated": "2025-07-16T08:49:50.990Z",
+      "discoveryTimestamp": "2025-07-16T08:49:51.013Z",
       "agentVersion": "1.0.0"
     },
     {
@@ -213,8 +213,8 @@
       "cliIntegrated": true,
       "validationStatus": "validated",
       "validation_notes": "AskMe CLI provider: groq",
-      "lastUpdated": "2025-07-16T08:11:04.788Z",
-      "discoveryTimestamp": "2025-07-16T08:11:04.826Z",
+      "lastUpdated": "2025-07-16T08:49:50.990Z",
+      "discoveryTimestamp": "2025-07-16T08:49:51.013Z",
       "agentVersion": "1.0.0"
     },
     {
@@ -228,8 +228,8 @@
       "cliIntegrated": true,
       "validationStatus": "validated",
       "validation_notes": "AskMe CLI provider: groq",
-      "lastUpdated": "2025-07-16T08:11:04.788Z",
-      "discoveryTimestamp": "2025-07-16T08:11:04.826Z",
+      "lastUpdated": "2025-07-16T08:49:50.990Z",
+      "discoveryTimestamp": "2025-07-16T08:49:51.013Z",
       "agentVersion": "1.0.0"
     },
     {
@@ -243,8 +243,8 @@
       "cliIntegrated": true,
       "validationStatus": "validated",
       "validation_notes": "AskMe CLI provider: groq",
-      "lastUpdated": "2025-07-16T08:11:04.788Z",
-      "discoveryTimestamp": "2025-07-16T08:11:04.826Z",
+      "lastUpdated": "2025-07-16T08:49:50.990Z",
+      "discoveryTimestamp": "2025-07-16T08:49:51.013Z",
       "agentVersion": "1.0.0"
     },
     {
@@ -258,8 +258,8 @@
       "cliIntegrated": true,
       "validationStatus": "validated",
       "validation_notes": "AskMe CLI provider: groq",
-      "lastUpdated": "2025-07-16T08:11:04.788Z",
-      "discoveryTimestamp": "2025-07-16T08:11:04.826Z",
+      "lastUpdated": "2025-07-16T08:49:50.990Z",
+      "discoveryTimestamp": "2025-07-16T08:49:51.013Z",
       "agentVersion": "1.0.0"
     },
     {
@@ -273,8 +273,8 @@
       "cliIntegrated": true,
       "validationStatus": "validated",
       "validation_notes": "AskMe CLI provider: groq",
-      "lastUpdated": "2025-07-16T08:11:04.788Z",
-      "discoveryTimestamp": "2025-07-16T08:11:04.826Z",
+      "lastUpdated": "2025-07-16T08:49:50.990Z",
+      "discoveryTimestamp": "2025-07-16T08:49:51.013Z",
       "agentVersion": "1.0.0"
     },
     {
@@ -288,8 +288,8 @@
       "cliIntegrated": true,
       "validationStatus": "validated",
       "validation_notes": "AskMe CLI provider: groq",
-      "lastUpdated": "2025-07-16T08:11:04.788Z",
-      "discoveryTimestamp": "2025-07-16T08:11:04.826Z",
+      "lastUpdated": "2025-07-16T08:49:50.990Z",
+      "discoveryTimestamp": "2025-07-16T08:49:51.013Z",
       "agentVersion": "1.0.0"
     },
     {
@@ -303,8 +303,8 @@
       "cliIntegrated": true,
       "validationStatus": "validated",
       "validation_notes": "AskMe CLI provider: openrouter",
-      "lastUpdated": "2025-07-16T08:11:04.788Z",
-      "discoveryTimestamp": "2025-07-16T08:11:04.826Z",
+      "lastUpdated": "2025-07-16T08:49:50.990Z",
+      "discoveryTimestamp": "2025-07-16T08:49:51.013Z",
       "agentVersion": "1.0.0"
     },
     {
@@ -318,8 +318,8 @@
       "cliIntegrated": true,
       "validationStatus": "validated",
       "validation_notes": "AskMe CLI provider: openrouter",
-      "lastUpdated": "2025-07-16T08:11:04.788Z",
-      "discoveryTimestamp": "2025-07-16T08:11:04.826Z",
+      "lastUpdated": "2025-07-16T08:49:50.991Z",
+      "discoveryTimestamp": "2025-07-16T08:49:51.013Z",
       "agentVersion": "1.0.0"
     },
     {
@@ -333,8 +333,8 @@
       "cliIntegrated": true,
       "validationStatus": "validated",
       "validation_notes": "AskMe CLI provider: openrouter",
-      "lastUpdated": "2025-07-16T08:11:04.788Z",
-      "discoveryTimestamp": "2025-07-16T08:11:04.826Z",
+      "lastUpdated": "2025-07-16T08:49:50.991Z",
+      "discoveryTimestamp": "2025-07-16T08:49:51.013Z",
       "agentVersion": "1.0.0"
     },
     {
@@ -348,8 +348,8 @@
       "cliIntegrated": true,
       "validationStatus": "validated",
       "validation_notes": "AskMe CLI provider: openrouter",
-      "lastUpdated": "2025-07-16T08:11:04.788Z",
-      "discoveryTimestamp": "2025-07-16T08:11:04.826Z",
+      "lastUpdated": "2025-07-16T08:49:50.991Z",
+      "discoveryTimestamp": "2025-07-16T08:49:51.013Z",
       "agentVersion": "1.0.0"
     },
     {
@@ -363,8 +363,8 @@
       "cliIntegrated": true,
       "validationStatus": "validated",
       "validation_notes": "AskMe CLI provider: openrouter",
-      "lastUpdated": "2025-07-16T08:11:04.788Z",
-      "discoveryTimestamp": "2025-07-16T08:11:04.826Z",
+      "lastUpdated": "2025-07-16T08:49:50.991Z",
+      "discoveryTimestamp": "2025-07-16T08:49:51.013Z",
       "agentVersion": "1.0.0"
     }
   ],
