@@ -120,7 +120,7 @@ object IntelligentProvider {
                     if (analysis.isAnalytical) score += 20
                     if (analysis.complexity == PromptComplexity.MEDIUM) score += 15
                 }
-                "llama" -> {
+                "together" -> {
                     if (analysis.isCreative) score += 25
                     if (analysis.isLongForm) score += 20
                     if (analysis.complexity == PromptComplexity.LOW) score += 10
