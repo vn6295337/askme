@@ -1,24 +1,52 @@
 const crawler = require('./crawler');
 const reporter = require('./reporter');
 const { validateLLMData } = require('./schemas/llm-model');
+const { createValidator } = require('./cli-model-validator');
 
 async function main() {
   try {
-    console.log('Starting LLM Scout Agent...');
+    console.log('🚀 Starting LLM Scout Agent with CLI validation...');
     
-    const discoveredModels = await crawler.discoverModels();
-    console.log(`Discovered ${discoveredModels.length} models`);
+    // Create CLI validator
+    const cliValidator = createValidator();
     
+    // Option 1: Use only CLI-supported models (no discovery)
+    const useCliModelsOnly = process.env.CLI_MODELS_ONLY === 'true';
+    
+    let discoveredModels;
+    if (useCliModelsOnly) {
+      console.log('📋 Using CLI-supported models only (no external discovery)');
+      discoveredModels = cliValidator.generateCLIModelList();
+    } else {
+      console.log('🔍 Discovering models from external sources...');
+      discoveredModels = await crawler.discoverModels();
+      console.log(`📊 Discovered ${discoveredModels.length} models from external sources`);
+      
+      // Filter to only CLI-supported models
+      const cliFilterResults = cliValidator.filterSupportedModels(discoveredModels);
+      console.log(`✅ ${cliFilterResults.stats.supportedCount} models are CLI-supported`);
+      console.log(`❌ ${cliFilterResults.stats.unsupportedCount} models are not CLI-supported`);
+      
+      discoveredModels = cliFilterResults.supported;
+      
+      // Save CLI validation report
+      await cliValidator.saveValidationReport(
+        require('path').join(__dirname, '..', 'output'),
+        cliFilterResults
+      );
+    }
+    
+    // Apply schema validation to CLI-supported models
     const validatedModels = discoveredModels.filter(model => {
       const validation = validateLLMData(model);
       if (!validation.isValid) {
-        console.warn(`Invalid model data: ${validation.errors.join(', ')}`);
+        console.warn(`⚠️ Schema validation failed for ${model.name}: ${validation.errors.join(', ')}`);
         return false;
       }
       return true;
     });
     
-    console.log(`${validatedModels.length} models passed validation`);
+    console.log(`🎯 ${validatedModels.length} models passed both CLI and schema validation`);
     
     // Always create output files, even if no models found
     await reporter.ensureOutputDir();

@@ -1,13 +1,79 @@
 {
   "metadata": {
-    "timestamp": "2025-07-16T12:05:00.000Z",
-    "excludedCount": 0,
+    "timestamp": "2025-07-16T08:11:04.826Z",
+    "excludedCount": 171,
+    "validationApproach": "CLI-only validation",
     "exclusionReasons": {
-      "deprecated": 0,
-      "invalidRegion": 0,
-      "noFreeAccess": 0,
-      "validationFailed": 0
+      "notCliSupported": 171,
+      "schemaValidationFailed": 0,
+      "duplicateModels": 0,
+      "invalidFormat": 0
     }
   },
-  "excludedModels": []
+  "validationSummary": {
+    "totalDiscovered": 195,
+    "cliSupported": 24,
+    "supportRate": "12.3%",
+    "supportedProviders": {
+      "google": 2,
+      "mistral": 5,
+      "llama": 1,
+      "cohere": 5,
+      "groq": 6,
+      "openrouter": 5
+    }
+  },
+  "excludedModels": [
+    {
+      "name": "Llama 2",
+      "reason": "Model 'Llama 2' is not supported by AskMe CLI",
+      "source": "GitHub repository discovery"
+    },
+    {
+      "name": "GPT4All",
+      "reason": "Model 'GPT4All' is not supported by AskMe CLI",
+      "source": "GitHub repository discovery"
+    },
+    {
+      "name": "Vicuna",
+      "reason": "Model 'Vicuna' is not supported by AskMe CLI",
+      "source": "GitHub repository discovery"
+    },
+    {
+      "name": "Alpaca",
+      "reason": "Model 'Alpaca' is not supported by AskMe CLI",
+      "source": "GitHub repository discovery"
+    },
+    {
+      "name": "ChatGLM",
+      "reason": "Model 'ChatGLM' is not supported by AskMe CLI",
+      "source": "GitHub repository discovery"
+    }
+  ],
+  "cliSupportedModels": [
+    "gemini-1.5-flash",
+    "gemini-1.5-flash-8b",
+    "mistral-small-latest",
+    "open-mistral-7b",
+    "open-mixtral-8x7b",
+    "open-mixtral-8x22b",
+    "mistral-medium-latest",
+    "meta-llama/Llama-3-8b-chat-hf",
+    "command",
+    "command-light",
+    "command-nightly",
+    "command-r",
+    "command-r-plus",
+    "llama-3.3-70b-versatile",
+    "llama-3.1-70b-versatile",
+    "llama-3.1-8b-instant",
+    "mixtral-8x7b-32768",
+    "gemma2-9b-it",
+    "gemma-7b-it",
+    "anthropic/claude-3-haiku",
+    "meta-llama/llama-3.1-8b-instruct",
+    "mistralai/mistral-7b-instruct",
+    "google/gemma-7b-it",
+    "microsoft/wizardlm-2-8x22b"
+  ]
 }
