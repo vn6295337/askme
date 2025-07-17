@@ -69,54 +69,33 @@ class TogetherProvider : BaseProvider() {
     override fun getProviderName(): String = "together"
     
     override fun getAvailableModels(): List<String> = listOf(
-        // DeepSeek Models (Latest and Advanced) - Chinese company, but models are global
-        "deepseek-ai/DeepSeek-R1-Distill-Llama-70B",   // Latest reasoning model
-        "deepseek-ai/deepseek-r1-0528",                 // Original R1 model
-        
-        // Meta Llama Models (US - North America)
-        "meta-llama/Llama-3.3-70B-Instruct-Turbo",     // Latest 3.3 turbo
-        "meta-llama/Llama-3.1-70B-Instruct",           // Powerful 70B model
-        "meta-llama/Llama-3.1-8B-Instruct",            // Efficient 8B model
-        "meta-llama/Llama-3.1-405B-Instruct-Turbo",    // Largest model
-        "meta-llama/Llama-3.2-1B-Instruct",            // Ultra-fast 1B model
-        "meta-llama/Llama-Vision-Free",                 // Vision capabilities
-        
-        // Nvidia Models (US - North America)
-        "nvidia/Llama-3.3-Nemotron-Super-49B-v1",      // Nvidia optimized
-        
-        // Mixtral Models (France - Europe)
-        "mistralai/Mixtral-8x7B-Instruct-v0.1",        // Mixture of experts
-        
-        // Specialized Models (US - North America)
-        "Arcee-AI/AFM-4.5B-Preview",                    // Arcee AI model
-        
-        // Legacy (for compatibility)
-        "meta-llama/Llama-3-8b-chat-hf"                // Original model
+        "meta-llama/Meta-Llama-3-8B-Instruct-Turbo",     // Fast, reliable
+        "meta-llama/Llama-3-8b-chat-hf",                 // Standard chat
+        "meta-llama/Llama-3.3-70B-Instruct-Turbo",       // UPDATED - Replaces deprecated 70B-Turbo
+        "meta-llama/Llama-2-7b-chat-hf",                 // Legacy support
+        "meta-llama/Llama-2-13b-chat-hf"                 // Legacy medium
     )
     
     override fun selectBestModel(prompt: String): String {
         val analysis = analyzePrompt(prompt)
         return when {
             analysis.complexity == PromptComplexity.LOW || prompt.length < 100 ->
-                "meta-llama/Llama-3.2-1B-Instruct"  // Ultra-fast for simple queries
+                "meta-llama/Llama-2-7b-chat-hf"  // Fast for simple queries
             
             analysis.isCodeRelated ->
-                "deepseek-ai/DeepSeek-R1-Distill-Llama-70B"  // Excellent for coding
+                "meta-llama/Meta-Llama-3-8B-Instruct-Turbo"  // Good for coding
             
             analysis.isMath || analysis.isAnalytical ->
-                "deepseek-ai/deepseek-r1-0528"  // Great for reasoning
+                "meta-llama/Llama-3.3-70B-Instruct-Turbo"  // Most powerful for reasoning
             
             analysis.isLongForm || analysis.complexity == PromptComplexity.HIGH ->
                 "meta-llama/Llama-3.3-70B-Instruct-Turbo"  // Most powerful
             
             analysis.isCreative ->
-                "meta-llama/Llama-3.1-70B-Instruct"  // Excellent for creative tasks
-            
-            prompt.toLowerCase().contains("vision") || prompt.toLowerCase().contains("image") ->
-                "meta-llama/Llama-Vision-Free"  // Vision capabilities
+                "meta-llama/Llama-3-8b-chat-hf"  // Good for creative tasks
             
             else ->
-                "meta-llama/Llama-3.1-8B-Instruct"  // Good balanced default
+                "meta-llama/Meta-Llama-3-8B-Instruct-Turbo"  // Good balanced default
         }
     }
     
