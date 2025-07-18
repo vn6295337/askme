@@ -60,9 +60,9 @@ function makeRequest(url, options = {}) {
   });
 }
 
-// Update backend with validated models
-async function updateBackendWithModels() {
-  console.log('🔄 Updating backend with validated models...');
+// Save validated models for backend integration
+async function saveValidationResults() {
+  console.log('💾 Saving validation results for backend integration...');
   
   // Load validated models
   let validatedModels = [];
@@ -70,8 +70,7 @@ async function updateBackendWithModels() {
     const validatedData = JSON.parse(fs.readFileSync('validated_models.json', 'utf8'));
     validatedModels = validatedData.models || [];
   } catch (error) {
-    console.error('❌ Could not load validated models:', error.message);
-    return false;
+    console.warn('⚠️ Could not load validated models:', error.message);
   }
 
   // Load eligible models
@@ -83,48 +82,48 @@ async function updateBackendWithModels() {
     console.warn('⚠️ Could not load eligible models:', error.message);
   }
 
-  console.log(`📊 Updating backend with ${validatedModels.length} validated models and ${eligibleModels.length} eligible models`);
+  console.log(`📊 Processing ${validatedModels.length} validated models and ${eligibleModels.length} eligible models`);
+
+  // Create comprehensive update payload for future backend integration
+  const updatePayload = {
+    timestamp: new Date().toISOString(),
+    scout_agent_version: '1.0',
+    backend_url: BACKEND_URL,
+    validation_summary: {
+      total_models: validatedModels.length,
+      total_eligible: eligibleModels.length,
+      providers: ['google', 'mistral', 'cohere', 'groq', 'openrouter'],
+      active_providers: [...new Set(validatedModels.map(m => m.provider))].length
+    },
+    validated_models: validatedModels,
+    eligible_models: eligibleModels,
+    dashboard_data: {
+      provider_status: validatedModels.map(model => ({
+        provider: model.provider,
+        model_name: model.model_name,
+        status: model.health_status || 'available',
+        response_time: model.response_time || 'N/A',
+        last_validated: model.last_validated || new Date().toISOString()
+      })),
+      performance_metrics: {
+        total_providers: 5,
+        active_providers: validatedModels.length,
+        average_response_time: validatedModels.reduce((sum, m) => sum + (parseInt(m.response_time) || 0), 0) / validatedModels.length || 0,
+        success_rate: validatedModels.filter(m => m.api_available).length / validatedModels.length * 100 || 0
+      }
+    }
+  };
 
   try {
-    // Update backend with model validation results
-    const updatePayload = {
-      validated_models: validatedModels,
-      eligible_models: eligibleModels,
-      metadata: {
-        timestamp: new Date().toISOString(),
-        scout_agent_version: '1.0',
-        total_models: validatedModels.length,
-        total_eligible: eligibleModels.length,
-        providers: ['google', 'mistral', 'cohere', 'groq', 'openrouter'],
-        dashboard_data: {
-          provider_status: validatedModels.map(model => ({
-            provider: model.provider,
-            model_name: model.model_name,
-            status: model.health_status || 'available',
-            response_time: model.response_time || 'N/A',
-            last_validated: model.last_validated || new Date().toISOString()
-          })),
-          performance_metrics: {
-            total_providers: 5,
-            active_providers: validatedModels.length,
-            average_response_time: validatedModels.reduce((sum, m) => sum + (parseInt(m.response_time) || 0), 0) / validatedModels.length || 0,
-            success_rate: validatedModels.filter(m => m.api_available).length / validatedModels.length * 100 || 0
-          }
-        }
-      }
-    };
-
-    const response = await makeRequest(`${BACKEND_URL}/api/github/llm-data`, {
-      method: 'POST',
-      data: updatePayload
-    });
-
-    console.log('✅ Backend updated successfully');
+    // Save comprehensive validation results
+    await writeFile('backend-integration-data.json', JSON.stringify(updatePayload, null, 2));
+    console.log('✅ Validation results saved for backend integration');
+    console.log(`📁 Data saved to backend-integration-data.json`);
     console.log(`📊 Dashboard data included for Lovable integration`);
     
     return true;
   } catch (error) {
-    console.error('❌ Failed to update backend:', error.message);
+    console.error('❌ Failed to save validation results:', error.message);
     return false;
   }
 }
@@ -238,18 +237,19 @@ async function main() {
   // Generate dashboard data
   results.dashboard_data = generateDashboardData(validatedModels, results.health_checks);
 
-  // Update backend with models if requested
+  // Save validation results for backend integration if requested
   if (UPDATE_BACKEND) {
     try {
-      const updateSuccess = await updateBackendWithModels();
+      const saveSuccess = await saveValidationResults();
       results.model_update = {
-        status: updateSuccess ? 'success' : 'failed',
-        timestamp: new Date().toISOString()
+        status: saveSuccess ? 'success' : 'failed',
+        timestamp: new Date().toISOString(),
+        message: saveSuccess ? 'Validation data saved for backend integration' : 'Failed to save validation data'
       };
       
-      if (!updateSuccess) {
+      if (!saveSuccess) {
         results.summary.success = false;
-        results.summary.errors.push('Failed to update backend with models');
+        results.summary.errors.push('Failed to save validation results');
       }
     } catch (error) {
       results.model_update = {
@@ -258,7 +258,7 @@ async function main() {
         timestamp: new Date().toISOString()
       };
       results.summary.success = false;
-      results.summary.errors.push(`Model update error: ${error.message}`);
+      results.summary.errors.push(`Validation save error: ${error.message}`);
     }
   }
 
@@ -283,7 +283,7 @@ async function main() {
   console.log(`- Success rate: ${results.dashboard_data.performance.success_rate.toFixed(1)}%`);
   
   if (results.model_update) {
-    console.log(`- Model update: ${results.model_update.status}`);
+    console.log(`- Validation data save: ${results.model_update.status}`);
   }
   
   console.log(`- Overall status: ${results.summary.success ? '✅ Success' : '❌ Failed'}`);
@@ -310,4 +310,4 @@ if (require.main === module) {
   });
 }
 
-module.exports = { updateBackendWithModels, validateBackendHealth, generateDashboardData };
+module.exports = { saveValidationResults, validateBackendHealth, generateDashboardData };
