@@ -100,6 +100,19 @@ jobs:
             --update-backend=true \
             --backend-url="https://askme-backend-proxy.onrender.com"
 
+      - name: Upload validation artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: model-validation-results
+          path: |
+            scout-agent/validated_models.json
+            scout-agent/api-eligible-models.json
+            scout-agent/excluded_models.json
+            scout-agent/backend-integration-data.json
+            scout-agent/dashboard-data.json
+            scout-agent/api-models-report.md
+          retention-days: 30
+
       - name: Check for changes
         id: check_changes
         run: |
