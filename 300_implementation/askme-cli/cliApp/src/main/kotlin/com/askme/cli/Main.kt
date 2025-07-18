@@ -50,13 +50,9 @@ fun getSpecificAIProvider(providerName: String): AIProvider? {
     return when (providerName.lowercase()) {
         "google", "gemini" -> GoogleProvider()
         "mistral" -> MistralProvider()
-        "llama", "together" -> TogetherProvider()
         "cohere" -> CohereProvider()
-        "groq" -> GroqProvider()
-        "huggingface", "hf" -> HuggingFaceProvider()
+        "groq", "llama" -> GroqProvider() // Groq provides Llama models
         "openrouter", "or" -> OpenRouterProvider()
-        "ai21" -> AI21Provider()
-        "replicate" -> ReplicateProvider()
         else -> null
     }
 }
