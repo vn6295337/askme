@@ -3,7 +3,7 @@ name: Release
 on:
   push:
     tags:
-      - 'v*'  # Triggers on version tags like v1.0.0
+      - 'v*'  # Triggers on version tags like v1.3.0
 
 permissions:
   contents: write  # Required for creating releases and uploading assets
@@ -38,40 +38,111 @@ jobs:
       
     - name: Make scripts executable
       run: |
-        chmod +x 700_scripts/705_build_release.sh
         chmod +x 300_implementation/askme-cli/gradlew
         
-    - name: Build release
+    - name: Build CLI
       run: |
-        700_scripts/705_build_release.sh ${{ steps.get_version.outputs.VERSION }}
+        cd 300_implementation/askme-cli
+        ./gradlew clean cliApp:installDist
+        
+    - name: Create distribution
+      run: |
+        cd 300_implementation/askme-cli/cliApp/build/install
+        
+        # Create distribution directory
+        mkdir -p askme-cli-5-providers-v${{ steps.get_version.outputs.VERSION }}
+        cp -r cliApp/* askme-cli-5-providers-v${{ steps.get_version.outputs.VERSION }}/
+        
+        # Create README for distribution
+        cat > askme-cli-5-providers-v${{ steps.get_version.outputs.VERSION }}/README.md << 'EOF'
+        # AskMe CLI - 5 Provider Edition v${{ steps.get_version.outputs.VERSION }}
+        
+        🤖 **Multi-Provider AI CLI Tool**
+        
+        ## Quick Start
+        
+        ```bash
+        # Ask a question
+        ./bin/cliApp "What is machine learning?"
+        
+        # Interactive mode  
+        ./bin/cliApp
+        
+        # Show provider statistics
+        ./bin/cliApp --stats
+        ```
+        
+        ## ✅ Supported Providers (5)
+        
+        - **Google** - Gemini models
+        - **Mistral** - Code generation
+        - **Cohere** - Conversational AI
+        - **Groq** - Ultra-fast inference
+        - **OpenRouter** - Unified access
+        
+        ## 🔧 Requirements
+        
+        - Java 8+ (for Kotlin runtime)
+        - Internet connection
+        
+        ---
+        *Built with ❤️ using Kotlin + Ktor*
+        EOF
+        
+        # Create archives
+        tar -czf askme-cli-5-providers-v${{ steps.get_version.outputs.VERSION }}.tar.gz askme-cli-5-providers-v${{ steps.get_version.outputs.VERSION }}/
+        zip -r askme-cli-5-providers-v${{ steps.get_version.outputs.VERSION }}.zip askme-cli-5-providers-v${{ steps.get_version.outputs.VERSION }}/
+        
+        # Generate checksums
+        sha256sum askme-cli-5-providers-v${{ steps.get_version.outputs.VERSION }}.tar.gz > askme-cli-5-providers-v${{ steps.get_version.outputs.VERSION }}.tar.gz.sha256
+        sha256sum askme-cli-5-providers-v${{ steps.get_version.outputs.VERSION }}.zip > askme-cli-5-providers-v${{ steps.get_version.outputs.VERSION }}.zip.sha256
         
     - name: Create Release
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: |
+        cd 300_implementation/askme-cli/cliApp/build/install
+        
         gh release create "v${{ steps.get_version.outputs.VERSION }}" \
-          --title "AskMe CLI v${{ steps.get_version.outputs.VERSION }}" \
+          --title "AskMe CLI 5-Provider Edition v${{ steps.get_version.outputs.VERSION }}" \
           --notes "## 🚀 AskMe CLI v${{ steps.get_version.outputs.VERSION }}
         
-        ### Quick Install
+        ### 🎯 5 Provider Support
+        - **Google** - Gemini models (general, math, analysis)
+        - **Mistral** - Code generation, technical queries  
+        - **Cohere** - Conversational AI, reasoning
+        - **Groq** - Ultra-fast inference
+        - **OpenRouter** - Unified model access
+        
+        ### 🚀 Quick Install
         \`\`\`bash
-        curl -fsSL https://raw.githubusercontent.com/${{ github.repository }}/main/install.sh | bash
+        # Download and extract
+        wget https://github.com/${{ github.repository }}/releases/download/v${{ steps.get_version.outputs.VERSION }}/askme-cli-5-providers-v${{ steps.get_version.outputs.VERSION }}.tar.gz
+        tar -xzf askme-cli-5-providers-v${{ steps.get_version.outputs.VERSION }}.tar.gz
+        chmod +x askme-cli-5-providers-v${{ steps.get_version.outputs.VERSION }}/bin/cliApp
         \`\`\`
         
-        ### What's New
-        - Intelligent AI provider selection
-        - Support for Google Gemini, Mistral AI, OpenAI, and Anthropic
-        - Performance tracking and optimization
-        - One-click installation
-        - Privacy-first architecture with zero data collection
+        ### 🎯 Usage
+        \`\`\`bash
+        # Basic usage
+        ./askme-cli-5-providers-v${{ steps.get_version.outputs.VERSION }}/bin/cliApp \"What is AI?\"
         
-        ### Download
-        - **Recommended**: Use the one-click installer above
-        - **Manual**: Download the tar.gz file below
+        # Interactive mode
+        ./askme-cli-5-providers-v${{ steps.get_version.outputs.VERSION }}/bin/cliApp
         
-        ### Documentation
-        - [Installation Guide](https://github.com/${{ github.repository }}/blob/main/500_release/507_development_setup.md)
-        - [User Guide](https://github.com/${{ github.repository }}/blob/main/500_release/505_user_guide.md)
-        - [API Documentation](https://github.com/${{ github.repository }}/blob/main/500_release/506_api_docs.md)" \
-          ./dist/askme-cli-v${{ steps.get_version.outputs.VERSION }}.tar.gz \
-          ./dist/askme-cli-v${{ steps.get_version.outputs.VERSION }}.sha256
+        # Provider statistics
+        ./askme-cli-5-providers-v${{ steps.get_version.outputs.VERSION }}/bin/cliApp --stats
+        \`\`\`
+        
+        ### 🔧 Requirements
+        - Java 8+ (tested with Java 17)
+        - Internet connection
+        
+        ### 📁 Download Options
+        - **TAR.GZ**: Recommended for Linux/macOS
+        - **ZIP**: Alternative format
+        - **Checksums**: SHA256 verification included" \
+          askme-cli-5-providers-v${{ steps.get_version.outputs.VERSION }}.tar.gz \
+          askme-cli-5-providers-v${{ steps.get_version.outputs.VERSION }}.zip \
+          askme-cli-5-providers-v${{ steps.get_version.outputs.VERSION }}.tar.gz.sha256 \
+          askme-cli-5-providers-v${{ steps.get_version.outputs.VERSION }}.zip.sha256
