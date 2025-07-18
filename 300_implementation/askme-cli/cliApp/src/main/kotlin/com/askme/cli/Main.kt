@@ -50,7 +50,7 @@ fun getSpecificAIProvider(providerName: String): AIProvider? {
     return when (providerName.lowercase()) {
         "google", "gemini" -> GoogleProvider()
         "mistral" -> MistralProvider()
-        "llama", "together" -> LlamaProvider()
+        "llama", "together" -> TogetherProvider()
         "cohere" -> CohereProvider()
         "groq" -> GroqProvider()
         "huggingface", "hf" -> HuggingFaceProvider()
@@ -136,7 +136,7 @@ suspend fun runInteractiveMode(provider: String, smartMode: Boolean, explicitMod
                 if (newProvider in listOf("auto", "google", "gemini", "mistral", "llama", "together", "cohere", "groq", "huggingface", "hf", "openrouter", "or", "ai21", "replicate")) {
                     currentProvider = when (newProvider) {
                         "gemini" -> "google"
-                        "together" -> "llama"
+                        "together" -> "together"
                         "hf" -> "huggingface"
                         "or" -> "openrouter"
                         else -> newProvider

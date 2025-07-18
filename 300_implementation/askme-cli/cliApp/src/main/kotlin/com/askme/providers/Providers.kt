@@ -64,24 +64,6 @@ class MistralProvider : BaseProvider() {
     }
 }
 
-class LlamaProvider : BaseProvider() {
-    
-    override fun getProviderName(): String = "llama"
-    
-    override fun getAvailableModels(): List<String> = listOf(
-        "meta-llama/Llama-3-8b-chat-hf"                 // Chat optimized
-    )
-    
-    override fun selectBestModel(prompt: String): String {
-        return "meta-llama/Llama-3-8b-chat-hf"  // Only working model
-    }
-    
-    override suspend fun chat(prompt: String, model: String?): String {
-        val selectedModel = model ?: selectBestModel(prompt)
-        return callBackend(prompt, "llama", selectedModel)
-    }
-}
-
 class CohereProvider : BaseProvider() {
     
     override fun getProviderName(): String = "cohere"
