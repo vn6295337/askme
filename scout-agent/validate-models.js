@@ -143,7 +143,7 @@ function isGeographicallyAllowed(modelName, modelData = {}) {
 }
 
 // Provider configurations with API endpoints and validation methods
-const PROVIDERS = {
+const PROVIDER_CONFIGS = {
   'Gemini': {
     apiKey: process.env.GEMINI_API_KEY,
     listEndpoint: 'https://generativelanguage.googleapis.com/v1beta/models',
@@ -545,7 +545,7 @@ async function main() {
     reason: reason,
     specific_provider: specificProvider || null,
     announcement_url: announcementUrl || null,
-    providers_validated: specificProvider ? [specificProvider] : Object.keys(PROVIDERS),
+    providers_validated: specificProvider ? [specificProvider] : PROVIDERS,
     total_models_checked: totalChecked,
     total_validated_models: allValidatedModels.length,
     total_excluded_models: allExcludedModels.length,
@@ -557,7 +557,7 @@ async function main() {
       other_exclusions: allExcludedModels.length - geographicExcluded
     },
     providers_with_models: [...new Set(allValidatedModels.map(m => m.provider))],
-    validation_summary: Object.keys(PROVIDERS).reduce((summary, provider) => {
+    validation_summary: PROVIDERS.reduce((summary, provider) => {
       const providerModels = allValidatedModels.filter(m => m.provider === provider);
       const providerExcluded = allExcludedModels.filter(m => m.provider === provider);
       const providerGeographicExcluded = allExcludedModels.filter(m => 
@@ -594,7 +594,7 @@ async function main() {
   console.log(`- Excluded models: ${allExcludedModels.length}`);
   console.log(`  - Geographic restrictions: ${geographicExcluded}`);
   console.log(`  - Other reasons: ${allExcludedModels.length - geographicExcluded}`);
-  console.log(`- Providers with available models: ${validationMetadata.providers_with_models.length}/${Object.keys(PROVIDERS).length}`);
+  console.log(`- Providers with available models: ${validationMetadata.providers_with_models.length}/${PROVIDERS.length}`);
   
   if (specificProvider) {
     console.log(`- Focus provider '${specificProvider}': ${allValidatedModels.length} models validated`);
@@ -616,4 +616,4 @@ if (require.main === module) {
   });
 }
 
-module.exports = { validateProvider, PROVIDERS };
+module.exports = { validateProvider };
