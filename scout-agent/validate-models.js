@@ -305,18 +305,19 @@ const PROVIDER_CONFIGS = {
 };
 
 // HTTP request helper
-function makeRequest(url, headers = {}) {
+function makeRequest(url, options = {}) {
   return new Promise((resolve, reject) => {
-    const options = {
-      method: 'GET',
+    const requestOptions = {
+      method: options.method || 'GET',
       headers: {
         'User-Agent': 'askme-scout-agent/1.0',
         'Accept': 'application/json',
-        ...headers
+        'Content-Type': 'application/json',
+        ...options.headers
       }
     };
 
-    const req = https.request(url, options, (res) => {
+    const req = https.request(url, requestOptions, (res) => {
       let data = '';
       res.on('data', chunk => data += chunk);
       res.on('end', () => {
@@ -337,6 +338,11 @@ function makeRequest(url, headers = {}) {
       req.destroy();
       reject(new Error('Request timeout'));
     });
+    
+    if (options.data) {
+      req.write(JSON.stringify(options.data));
+    }
+    
     req.end();
   });
 }
@@ -496,8 +502,15 @@ async function main() {
     console.log(`🔍 Validating provider: ${provider}`);
     
     try {
-      // Test provider through backend
-      const testResponse = await makeRequest(`${BACKEND_URL}/providers/${provider}/test`);
+      // Test provider through backend - use general query endpoint to test provider
+      const testResponse = await makeRequest(`${BACKEND_URL}/api/query`, {
+        method: 'POST',
+        data: {
+          message: 'test',
+          provider: provider,
+          model: 'default'
+        }
+      });
       
       const validatedModel = {
         model_name: testResponse.model || `${provider}-default`,

@@ -61,12 +61,11 @@ async function testBackendConnectivity() {
   
   const tests = [
     { name: 'Health Check', url: `${BACKEND_URL}/health` },
-    { name: 'Provider Status', url: `${BACKEND_URL}/providers` },
-    { name: 'Google Provider', url: `${BACKEND_URL}/providers/google/test` },
-    { name: 'Mistral Provider', url: `${BACKEND_URL}/providers/mistral/test` },
-    { name: 'Cohere Provider', url: `${BACKEND_URL}/providers/cohere/test` },
-    { name: 'Groq Provider', url: `${BACKEND_URL}/providers/groq/test` },
-    { name: 'OpenRouter Provider', url: `${BACKEND_URL}/providers/openrouter/test` }
+    { name: 'Provider Status', url: `${BACKEND_URL}/api/providers` },
+    { name: 'LLM Models', url: `${BACKEND_URL}/api/llms` },
+    { name: 'LLM Health', url: `${BACKEND_URL}/api/llms/health` },
+    { name: 'GitHub LLM Data', url: `${BACKEND_URL}/api/github/llm-data` },
+    { name: 'GitHub LLM Health', url: `${BACKEND_URL}/api/github/llm-health` }
   ];
 
   const results = [];

@@ -114,7 +114,7 @@ async function updateBackendWithModels() {
       }
     };
 
-    const response = await makeRequest(`${BACKEND_URL}/admin/update-models`, {
+    const response = await makeRequest(`${BACKEND_URL}/api/github/llm-data`, {
       method: 'POST',
       data: updatePayload
     });
@@ -135,8 +135,8 @@ async function validateBackendHealth() {
   
   const healthChecks = [
     { name: 'General Health', url: `${BACKEND_URL}/health` },
-    { name: 'Provider Status', url: `${BACKEND_URL}/providers/status` },
-    { name: 'Model Validation', url: `${BACKEND_URL}/admin/validation-status` }
+    { name: 'Provider Status', url: `${BACKEND_URL}/api/providers` },
+    { name: 'Model Validation', url: `${BACKEND_URL}/api/llms/health` }
   ];
 
   const results = [];
