@@ -1,0 +1,16 @@
+{
+  "timestamp": "2025-07-18T13:13:23.349Z",
+  "overview": {
+    "total_providers": 5,
+    "active_providers": 0,
+    "health_status": 100,
+    "last_update": "2025-07-18T13:13:23.349Z"
+  },
+  "providers": [],
+  "performance": {
+    "average_response_time": 0,
+    "success_rate": 0,
+    "uptime": 100
+  },
+  "alerts": []
+}

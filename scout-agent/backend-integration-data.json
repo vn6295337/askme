@@ -1,0 +1,28 @@
+{
+  "timestamp": "2025-07-18T13:13:23.349Z",
+  "scout_agent_version": "1.0",
+  "backend_url": "https://askme-backend-proxy.onrender.com",
+  "validation_summary": {
+    "total_models": 0,
+    "total_eligible": 0,
+    "providers": [
+      "google",
+      "mistral",
+      "cohere",
+      "groq",
+      "openrouter"
+    ],
+    "active_providers": 0
+  },
+  "validated_models": [],
+  "eligible_models": [],
+  "dashboard_data": {
+    "provider_status": [],
+    "performance_metrics": {
+      "total_providers": 5,
+      "active_providers": 0,
+      "average_response_time": 0,
+      "success_rate": 0
+    }
+  }
+}
