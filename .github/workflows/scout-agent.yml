@@ -34,176 +34,176 @@ jobs:
   validate-models:
     runs-on: ubuntu-latest
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v4
-      with:
-        fetch-depth: 0
-        
-    - name: Configure Git
-      run: |
-        git config --global user.name "scout-agent[bot]"
-        git config --global user.email "scout-agent[bot]@users.noreply.github.com"
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
-    - name: Setup Node.js
-      uses: actions/setup-node@v4
-      with:
-        node-version: '18'
+      - name: Configure Git
+        run: |
+          git config --global user.name "scout-agent[bot]"
+          git config --global user.email "scout-agent[bot]@users.noreply.github.com"
 
-    - name: Cache node modules
-      uses: actions/cache@v3
-      with:
-        path: scout-agent/node_modules
-        key: ${{ runner.os }}-node-${{ hashFiles('scout-agent/package-lock.json') }}
-        restore-keys: |
-          ${{ runner.os }}-node-
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
 
-    - name: Install dependencies
-      run: |
-        cd scout-agent
-        npm install
+      - name: Cache node modules
+        uses: actions/cache@v3
+        with:
+          path: scout-agent/node_modules
+          key: ${{ runner.os }}-node-${{ hashFiles('scout-agent/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
 
-    - name: Validate current 5-provider models
-      run: |
-        cd scout-agent
-        node validate-models.js \
-          --providers=google,mistral,cohere,groq,openrouter \
-          --reason="${{ github.event.inputs.reason || 'Scheduled validation' }}" \
-          --specific-provider="${{ github.event.inputs.specific_provider || 'all' }}" \
-          --announcement-url="${{ github.event.inputs.announcement_url || '' }}"
+      - name: Install dependencies
+        run: |
+          cd scout-agent
+          npm install
 
-    - name: Scout for new models
-      run: |
-        cd scout-agent
-        node research-api-models.js \
-          --providers=google,mistral,cohere,groq,openrouter \
-          --check-new-models=true
+      - name: Validate current 5-provider models
+        run: |
+          cd scout-agent
+          node validate-models.js \
+            --providers=google,mistral,cohere,groq,openrouter \
+            --reason="${{ github.event.inputs.reason || 'Scheduled validation' }}" \
+            --specific-provider="${{ github.event.inputs.specific_provider || 'all' }}" \
+            --announcement-url="${{ github.event.inputs.announcement_url || '' }}"
 
-    - name: Analyze model eligibility
-      run: |
-        cd scout-agent
-        node analyze-models.js \
-          --filter-geographic=true \
-          --filter-quality=true \
-          --output=api-eligible-models.json
+      - name: Scout for new models
+        run: |
+          cd scout-agent
+          node research-api-models.js \
+            --providers=google,mistral,cohere,groq,openrouter \
+            --check-new-models=true
 
-    - name: Generate validation report
-      run: |
-        cd scout-agent
-        node debug-backend.js \
-          --generate-report=true \
-          --output=api-models-report.md
+      - name: Analyze model eligibility
+        run: |
+          cd scout-agent
+          node analyze-models.js \
+            --filter-geographic=true \
+            --filter-quality=true \
+            --output=api-eligible-models.json
 
-    - name: Update backend with validated models
-      run: |
-        cd scout-agent
-        node validate-models-backend.js \
-          --update-backend=true \
-          --backend-url="https://askme-backend-proxy.onrender.com"
+      - name: Generate validation report
+        run: |
+          cd scout-agent
+          node debug-backend.js \
+            --generate-report=true \
+            --output=api-models-report.md
 
-    - name: Check for changes
-      id: check_changes
-      run: |
-        cd scout-agent
-        if git diff --quiet HEAD -- validated_models.json api-eligible-models.json excluded_models.json; then
-          echo "changes=false" >> $GITHUB_OUTPUT
-        else
-          echo "changes=true" >> $GITHUB_OUTPUT
-        fi
+      - name: Update backend with validated models
+        run: |
+          cd scout-agent
+          node validate-models-backend.js \
+            --update-backend=true \
+            --backend-url="https://askme-backend-proxy.onrender.com"
 
-    - name: Create pull request for model updates
-      if: steps.check_changes.outputs.changes == 'true'
-      continue-on-error: true
-      uses: peter-evans/create-pull-request@v5
-      with:
-        token: ${{ secrets.GITHUB_TOKEN }}
-        branch: scout-agent/model-updates-${{ github.run_number }}
-        title: 'Scout Agent: Model validation and discovery updates'
-        author: scout-agent[bot] <scout-agent[bot]@users.noreply.github.com>
-        committer: scout-agent[bot] <scout-agent[bot]@users.noreply.github.com>
-        body: |
-          ## 🤖 Scout Agent Model Updates
+      - name: Check for changes
+        id: check_changes
+        run: |
+          cd scout-agent
+          if git diff --quiet HEAD -- validated_models.json api-eligible-models.json excluded_models.json; then
+            echo "changes=false" >> $GITHUB_OUTPUT
+          else
+            echo "changes=true" >> $GITHUB_OUTPUT
+          fi
 
-          **Trigger**: ${{ github.event.inputs.reason || 'Scheduled validation' }}
-          **Provider**: ${{ github.event.inputs.specific_provider || 'all' }}
-          **Timestamp**: ${{ github.run_id }}
+      - name: Create pull request for model updates
+        if: steps.check_changes.outputs.changes == 'true'
+        continue-on-error: true
+        uses: peter-evans/create-pull-request@v5
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          branch: scout-agent/model-updates-${{ github.run_number }}
+          title: 'Scout Agent: Model validation and discovery updates'
+          author: scout-agent[bot] <scout-agent[bot]@users.noreply.github.com>
+          committer: scout-agent[bot] <scout-agent[bot]@users.noreply.github.com>
+          body: |
+            ## 🤖 Scout Agent Model Updates
 
-          ### Changes Made
+            **Trigger**: ${{ github.event.inputs.reason || 'Scheduled validation' }}
+            **Provider**: ${{ github.event.inputs.specific_provider || 'all' }}
+            **Timestamp**: ${{ github.run_id }}
 
-          - ✅ Validated current 5-provider models
-          - 🔍 Scouted for new model releases
-          - 📊 Analyzed model eligibility and quality
-          - 🚀 Updated backend with validated models
+            ### Changes Made
 
-          ### Files Updated
+            - ✅ Validated current 5-provider models
+            - 🔍 Scouted for new model releases
+            - 📊 Analyzed model eligibility and quality
+            - 🚀 Updated backend with validated models
 
-          - `scout-agent/validated_models.json`
-          - `scout-agent/api-eligible-models.json`
-          - `scout-agent/excluded_models.json`
-          - `scout-agent/api-models-report.md`
+            ### Files Updated
 
-          ### Provider Status
+            - `scout-agent/validated_models.json`
+            - `scout-agent/api-eligible-models.json`
+            - `scout-agent/excluded_models.json`
+            - `scout-agent/api-models-report.md`
 
-          - **Google Gemini**: Validated
-          - **Mistral AI**: Validated
-          - **Cohere**: Validated
-          - **Groq**: Validated
-          - **OpenRouter**: Validated
+            ### Provider Status
 
-          ### Review Required
+            - **Google Gemini**: Validated
+            - **Mistral AI**: Validated
+            - **Cohere**: Validated
+            - **Groq**: Validated
+            - **OpenRouter**: Validated
 
-          1. Confirm quality of new models
-          2. Check exclusion/deprecation is appropriate
-          3. Verify backend updates
-          4. Approve changes
+            ### Review Required
 
-          **Auto-generated by Scout Agent** 🤖
-        commit-message: |
-          Update validated models data - ${{ github.event.inputs.reason || 'Scheduled validation' }} [skip ci]
-        delete-branch: true
+            1. Confirm quality of new models
+            2. Check exclusion/deprecation is appropriate
+            3. Verify backend updates
+            4. Approve changes
 
-    - name: Post validation summary
-      if: always()
-      run: |
-        cd scout-agent
-        echo "## Scout Agent Validation Summary" >> $GITHUB_STEP_SUMMARY
-        echo "**Status**: ${{ job.status }}" >> $GITHUB_STEP_SUMMARY
-        echo "**Trigger**: ${{ github.event.inputs.reason || 'Scheduled validation' }}" >> $GITHUB_STEP_SUMMARY
-        echo "**Provider**: ${{ github.event.inputs.specific_provider || 'all' }}" >> $GITHUB_STEP_SUMMARY
-        echo "**Changes**: ${{ steps.check_changes.outputs.changes }}" >> $GITHUB_STEP_SUMMARY
-        if [ -f "api-models-report.md" ]; then
-          echo "## Validation Report" >> $GITHUB_STEP_SUMMARY
-          head -20 api-models-report.md >> $GITHUB_STEP_SUMMARY
-        fi
+            **Auto-generated by Scout Agent** 🤖
+          commit-message: |
+            Update validated models data - ${{ github.event.inputs.reason || 'Scheduled validation' }} [skip ci]
+          delete-branch: true
+
+      - name: Post validation summary
+        if: always()
+        run: |
+          cd scout-agent
+          echo "## Scout Agent Validation Summary" >> $GITHUB_STEP_SUMMARY
+          echo "**Status**: ${{ job.status }}" >> $GITHUB_STEP_SUMMARY
+          echo "**Trigger**: ${{ github.event.inputs.reason || 'Scheduled validation' }}" >> $GITHUB_STEP_SUMMARY
+          echo "**Provider**: ${{ github.event.inputs.specific_provider || 'all' }}" >> $GITHUB_STEP_SUMMARY
+          echo "**Changes**: ${{ steps.check_changes.outputs.changes }}" >> $GITHUB_STEP_SUMMARY
+          if [ -f "api-models-report.md" ]; then
+            echo "## Validation Report" >> $GITHUB_STEP_SUMMARY
+            head -20 api-models-report.md >> $GITHUB_STEP_SUMMARY
+          fi
 
   notify-on-failure:
     needs: validate-models
     runs-on: ubuntu-latest
     if: failure()
     steps:
-    - name: Create failure issue
-      continue-on-error: true
-      uses: actions/github-script@v7
-      with:
-        script: |
-          github.rest.issues.create({
-            owner: context.repo.owner,
-            repo: context.repo.repo,
-            title: '🚨 Scout Agent Validation Failed',
-            body: `## Scout Agent Validation Failure
+      - name: Create failure issue
+        continue-on-error: true
+        uses: actions/github-script@v7
+        with:
+          script: |
+            github.rest.issues.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: '🚨 Scout Agent Validation Failed',
+              body: `## Scout Agent Validation Failure
 
-            **Workflow**: ${{ github.workflow }}
-            **Run ID**: ${{ github.run_id }}
-            **Trigger**: ${{ github.event.inputs.reason || 'Scheduled validation' }}
-            **Provider**: ${{ github.event.inputs.specific_provider || 'all' }}
-            **Timestamp**: ${{ github.event.head_commit.timestamp }}
+              **Workflow**: ${{ github.workflow }}
+              **Run ID**: ${{ github.run_id }}
+              **Trigger**: ${{ github.event.inputs.reason || 'Scheduled validation' }}
+              **Provider**: ${{ github.event.inputs.specific_provider || 'all' }}
+              **Timestamp**: ${{ github.event.head_commit.timestamp }}
 
-            ### Investigation Required
+              ### Investigation Required
 
-            - Check logs for errors
-            - Verify API endpoints
-            - Review scripts and configs
-            - Re-run workflow if fixed
+              - Check logs for errors
+              - Verify API endpoints
+              - Review scripts and configs
+              - Re-run workflow if fixed
 
-            **Auto-generated by Scout Agent** 🤖`,
-            labels: ['bug', 'scout-agent', 'high-priority']
-          });
+              **Auto-generated by Scout Agent** 🤖`,
+              labels: ['bug', 'scout-agent', 'high-priority']
+            });
