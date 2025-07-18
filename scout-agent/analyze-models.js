@@ -1,71 +1,217 @@
+#!/usr/bin/env node
+
 const fs = require('fs');
-const data = JSON.parse(fs.readFileSync('output/latest.json', 'utf8'));
+const { promisify } = require('util');
 
-console.log('Analyzing', data.models.length, 'models...');
+const writeFile = promisify(fs.writeFile);
 
-// Filter criteria
-const excludeCountries = ['CN', 'China'];
-const localOnlyKeywords = ['ollama', 'gguf', 'lm studio', 'local', 'offline', 'desktop', 'llamacpp', 'gpt4all-local'];
-const paymentKeywords = ['paid', 'subscription', 'premium', 'enterprise-only'];
+// CLI argument parsing
+const args = process.argv.slice(2);
+const getArg = (name) => {
+  const arg = args.find(arg => arg.startsWith(`--${name}=`));
+  return arg ? arg.split('=')[1] : null;
+};
 
-// Get unique countries and access types for analysis
-const countries = [...new Set(data.models.map(m => m.country))].sort();
-const accessTypes = [...new Set(data.models.map(m => m.accessType))].sort();
+const FILTER_GEOGRAPHIC = getArg('filter-geographic') === 'true';
+const FILTER_QUALITY = getArg('filter-quality') === 'true';
+const OUTPUT_FILE = getArg('output') || 'api-eligible-models.json';
 
-console.log('\nCountries found:', countries);
-console.log('\nAccess types found:', accessTypes);
+// Quality criteria for model filtering
+const QUALITY_CRITERIA = {
+  trustedOrganizations: [
+    'google', 'mistral', 'cohere', 'groq', 'openrouter',
+    'anthropic', 'openai', 'huggingface', 'meta', 'microsoft'
+  ],
+  academicInstitutions: [
+    'stanford', 'berkeley', 'mit', 'cambridge', 'oxford'
+  ],
+  establishedModelFamilies: [
+    'gemini', 'mistral', 'command', 'claude', 'gpt', 'llama'
+  ],
+  minimumParameters: 1000000, // 1M parameters minimum
+  maximumParameters: 100000000000, // 100B parameters maximum
+  supportedLanguages: ['en', 'english', 'multilingual']
+};
 
-// Detailed filtering
-const eligible = data.models.filter(model => {
-  // Exclude China-based models
-  if (excludeCountries.includes(model.country)) return false;
+// Geographic filtering (North America and Europe only)
+const GEOGRAPHIC_ALLOWLIST = {
+  allowedRegions: ['north america', 'europe', 'western europe'],
+  allowedCountries: ['us', 'usa', 'canada', 'uk', 'france', 'germany', 'netherlands', 'sweden'],
+  approvedCompanies: [
+    'google', 'mistral', 'cohere', 'groq', 'openrouter',
+    'anthropic', 'openai', 'huggingface', 'meta', 'microsoft'
+  ]
+};
+
+// Analyze model eligibility
+function analyzeModelEligibility(model) {
+  const analysis = {
+    eligible: true,
+    reasons: [],
+    warnings: [],
+    score: 0
+  };
+
+  // Geographic filtering
+  if (FILTER_GEOGRAPHIC) {
+    const modelText = `${model.model_name} ${model.provider}`.toLowerCase();
+    const isApprovedCompany = GEOGRAPHIC_ALLOWLIST.approvedCompanies.some(company => 
+      modelText.includes(company.toLowerCase())
+    );
+    
+    if (isApprovedCompany) {
+      analysis.reasons.push('Approved geographic origin');
+      analysis.score += 20;
+    } else {
+      analysis.eligible = false;
+      analysis.reasons.push('Geographic origin not verified');
+    }
+  }
+
+  // Quality filtering
+  if (FILTER_QUALITY) {
+    const modelText = `${model.model_name} ${model.provider}`.toLowerCase();
+    
+    // Check trusted organizations
+    const isTrustedOrg = QUALITY_CRITERIA.trustedOrganizations.some(org => 
+      modelText.includes(org.toLowerCase())
+    );
+    
+    if (isTrustedOrg) {
+      analysis.reasons.push('Trusted organization');
+      analysis.score += 25;
+    }
+    
+    // Check established model families
+    const isEstablishedFamily = QUALITY_CRITERIA.establishedModelFamilies.some(family => 
+      modelText.includes(family.toLowerCase())
+    );
+    
+    if (isEstablishedFamily) {
+      analysis.reasons.push('Established model family');
+      analysis.score += 15;
+    }
+    
+    // Check API availability
+    if (model.api_available) {
+      analysis.reasons.push('API available');
+      analysis.score += 20;
+    }
+    
+    // Check free tier availability
+    if (model.free_tier) {
+      analysis.reasons.push('Free tier available');
+      analysis.score += 10;
+    }
+    
+    // Backend proxy availability
+    if (model.auth_method === 'backend_proxy') {
+      analysis.reasons.push('Backend proxy managed');
+      analysis.score += 30;
+    }
+  }
+
+  return analysis;
+}
+
+// Main analysis function
+async function main() {
+  console.log('🔍 Analyzing models for eligibility...');
+  console.log(`📋 Geographic filtering: ${FILTER_GEOGRAPHIC}`);
+  console.log(`📋 Quality filtering: ${FILTER_QUALITY}`);
   
-  // Exclude local-only models
-  const nameAndDesc = (model.name + ' ' + (model.description || '')).toLowerCase();
-  if (localOnlyKeywords.some(keyword => nameAndDesc.includes(keyword))) return false;
+  // Load validated models
+  let validatedModels = [];
+  try {
+    const validatedData = JSON.parse(fs.readFileSync('validated_models.json', 'utf8'));
+    validatedModels = validatedData.models || [];
+  } catch (error) {
+    console.error('❌ Could not load validated models:', error.message);
+    process.exit(1);
+  }
+
+  console.log(`📊 Analyzing ${validatedModels.length} validated models...`);
+
+  const eligibleModels = [];
+  const ineligibleModels = [];
+  const analysisResults = [];
+
+  for (const model of validatedModels) {
+    const analysis = analyzeModelEligibility(model);
+    
+    const result = {
+      model: model,
+      analysis: analysis,
+      final_score: analysis.score
+    };
+
+    analysisResults.push(result);
+
+    if (analysis.eligible && analysis.score >= 30) {
+      eligibleModels.push({
+        ...model,
+        eligibility_score: analysis.score,
+        eligibility_reasons: analysis.reasons,
+        warnings: analysis.warnings
+      });
+    } else {
+      ineligibleModels.push({
+        ...model,
+        eligibility_score: analysis.score,
+        ineligibility_reasons: analysis.reasons,
+        warnings: analysis.warnings
+      });
+    }
+  }
+
+  // Sort by eligibility score
+  eligibleModels.sort((a, b) => b.eligibility_score - a.eligibility_score);
+
+  // Create output
+  const output = {
+    metadata: {
+      timestamp: new Date().toISOString(),
+      total_models_analyzed: validatedModels.length,
+      eligible_models: eligibleModels.length,
+      ineligible_models: ineligibleModels.length,
+      filtering_criteria: {
+        geographic_filtering: FILTER_GEOGRAPHIC,
+        quality_filtering: FILTER_QUALITY,
+        minimum_score: 30
+      },
+      geographic_allowlist: GEOGRAPHIC_ALLOWLIST,
+      quality_criteria: QUALITY_CRITERIA
+    },
+    eligible_models: eligibleModels,
+    ineligible_models: ineligibleModels,
+    analysis_results: analysisResults
+  };
+
+  // Save results
+  await writeFile(OUTPUT_FILE, JSON.stringify(output, null, 2));
+
+  console.log(`\n✅ Analysis complete:`);
+  console.log(`- Total models analyzed: ${validatedModels.length}`);
+  console.log(`- Eligible models: ${eligibleModels.length}`);
+  console.log(`- Ineligible models: ${ineligibleModels.length}`);
+  console.log(`- Average eligibility score: ${(analysisResults.reduce((sum, r) => sum + r.final_score, 0) / analysisResults.length).toFixed(1)}`);
   
-  // Must be API accessible (check access type)
-  if (model.accessType === 'Local Only' || model.accessType === 'Desktop Only') return false;
-  
-  return true;
-});
+  if (eligibleModels.length > 0) {
+    console.log(`\n🏆 Top eligible models:`);
+    eligibleModels.slice(0, 5).forEach((model, index) => {
+      console.log(`  ${index + 1}. ${model.provider}/${model.model_name} (score: ${model.eligibility_score})`);
+    });
+  }
 
-console.log('\nFiltered results:', eligible.length, 'eligible models out of', data.models.length);
+  console.log(`\n📁 Results saved to ${OUTPUT_FILE}`);
+}
 
-// Group by likely API providers
-const apiProviders = {};
-eligible.forEach(model => {
-  let provider = 'Unknown';
-  
-  if (model.sourceUrl && model.sourceUrl.includes('openai.com')) provider = 'OpenAI';
-  else if (model.sourceUrl && model.sourceUrl.includes('anthropic.com')) provider = 'Anthropic';
-  else if (model.sourceUrl && (model.sourceUrl.includes('google.com') || model.name.toLowerCase().includes('gemini'))) provider = 'Google';
-  else if (model.sourceUrl && (model.sourceUrl.includes('together.ai') || model.sourceUrl.includes('together.xyz'))) provider = 'Together AI';
-  else if (model.sourceUrl && model.sourceUrl.includes('mistral.ai')) provider = 'Mistral';
-  else if (model.sourceUrl && model.sourceUrl.includes('cohere.com')) provider = 'Cohere';
-  else if (model.sourceUrl && (model.sourceUrl.includes('meta.com') || model.name.toLowerCase().includes('llama'))) provider = 'Meta/Together';
-  else if (model.sourceUrl && model.sourceUrl.includes('huggingface.co')) provider = 'HuggingFace';
-  else if (model.sourceUrl && model.sourceUrl.includes('github.com')) provider = 'GitHub/Open Source';
-  
-  if (!apiProviders[provider]) apiProviders[provider] = [];
-  apiProviders[provider].push(model);
-});
+// Run the analysis
+if (require.main === module) {
+  main().catch(error => {
+    console.error('Analysis failed:', error);
+    process.exit(1);
+  });
+}
 
-console.log('\nModels by potential API provider:');
-Object.keys(apiProviders).sort().forEach(provider => {
-  console.log(`${provider}: ${apiProviders[provider].length} models`);
-});
-
-// Save filtered results for further processing
-fs.writeFileSync('filtered-models.json', JSON.stringify({
-  totalOriginal: data.models.length,
-  totalFiltered: eligible.length,
-  filterCriteria: {
-    excludedCountries: excludeCountries,
-    excludedKeywords: localOnlyKeywords
-  },
-  modelsByProvider: apiProviders,
-  models: eligible
-}, null, 2));
-
-console.log('\nFiltered models saved to filtered-models.json');
+module.exports = { analyzeModelEligibility, QUALITY_CRITERIA, GEOGRAPHIC_ALLOWLIST };

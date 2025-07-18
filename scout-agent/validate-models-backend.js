@@ -1,311 +1,313 @@
 #!/usr/bin/env node
 
-const axios = require('axios');
+const https = require('https');
 const fs = require('fs');
 const { promisify } = require('util');
 
 const writeFile = promisify(fs.writeFile);
 
-// Backend configuration
-const BACKEND_CONFIG = {
-  url: process.env.BACKEND_URL || 'https://askme-backend-proxy.onrender.com',
-  authToken: process.env.AGENT_AUTH_TOKEN,
-  timeout: 30000
+// CLI argument parsing
+const args = process.argv.slice(2);
+const getArg = (name) => {
+  const arg = args.find(arg => arg.startsWith(`--${name}=`));
+  return arg ? arg.split('=')[1] : null;
 };
 
-// Quality-based inclusion criteria (positive validation only)
-const QUALITY_INCLUSION_CRITERIA = {
-  // Trusted AI companies and organizations
-  trustedOrganizations: [
-    'openai', 'anthropic', 'google', 'microsoft', 'meta', 'apple', 'nvidia',
-    'together', 'replicate', 'groq', 'scale', 'databricks', 'cohere',
-    'mistral', 'huggingface', 'deepmind', 'stability', 'aleph alpha', 'ai21',
-    'amazon', 'salesforce', 'adobe', 'ibm', 'intel', 'qualcomm'
-  ],
-  
-  // Academic and research institutions (global)
-  academicInstitutions: [
-    // North America
-    'stanford', 'berkeley', 'mit', 'harvard', 'cmu', 'carnegie', 'caltech',
-    'princeton', 'yale', 'columbia', 'cornell', 'chicago', 'nyu', 'usc',
-    'toronto', 'montreal', 'mcgill', 'ubc', 'waterloo',
-    // Europe
-    'oxford', 'cambridge', 'imperial', 'ucl', 'edinburgh', 'eth', 'epfl',
-    'karolinska', 'sorbonne', 'max-planck', 'inria', 'cnrs', 'dtu', 'kth',
-    // Global Research Labs
-    'allen', 'fair', 'deepmind', 'openai', 'anthropic', 'partnership-ai'
-  ],
-  
-  // Well-known model families and architectures
-  establishedModelFamilies: [
-    'gpt', 'claude', 'gemini', 'llama', 'mistral', 'alpaca', 'vicuna',
-    'bert', 'roberta', 'gpt2', 'gpt3', 'gpt4', 't5', 'flan', 'bloom',
-    'opt', 'palm', 'chinchilla', 'galactica', 'codex', 'whisper',
-    'stable-diffusion', 'dalle', 'midjourney', 'controlnet'
-  ],
-  
-  // Quality indicators for HuggingFace models
-  qualityThresholds: {
-    minDownloads: 1000,        // Minimum download count
-    minStars: 5,               // Minimum star rating
-    hasModelCard: true,        // Must have documentation
-    hasLicense: true           // Must specify license
-  }
-};
+const UPDATE_BACKEND = getArg('update-backend') === 'true';
+const BACKEND_URL = getArg('backend-url') || 'https://askme-backend-proxy.onrender.com';
 
-function isQualityModel(modelName, modelData = {}) {
-  const name = modelName.toLowerCase();
-  const provider = (modelData.provider || '').toLowerCase();
-  const owner = (modelData.owner || '').toLowerCase();
-  const description = (modelData.description || '').toLowerCase();
-  const tags = (modelData.tags || []).join(' ').toLowerCase();
-  const author = (modelData.model_author || '').toLowerCase();
-  const fullText = `${name} ${provider} ${owner} ${description} ${tags} ${author}`;
-  
-  // 1. Check trusted organizations (companies and research labs)
-  if (QUALITY_INCLUSION_CRITERIA.trustedOrganizations.some(org => 
-    fullText.includes(org.toLowerCase()))) {
-    return { allowed: true, reason: 'Trusted organization identified' };
-  }
-  
-  // 2. Check if provider itself is trusted (for cross-provider routing)
-  if (QUALITY_INCLUSION_CRITERIA.trustedOrganizations.includes(provider)) {
-    return { allowed: true, reason: `Trusted provider: ${provider}` };
-  }
-  
-  // 3. Check academic institutions (global research)
-  if (QUALITY_INCLUSION_CRITERIA.academicInstitutions.some(institution => 
-    fullText.includes(institution.toLowerCase()))) {
-    return { allowed: true, reason: 'Academic/research institution identified' };
-  }
-  
-  // 4. Check established model families (well-known architectures)
-  if (QUALITY_INCLUSION_CRITERIA.establishedModelFamilies.some(family => 
-    name.includes(family.toLowerCase()))) {
-    return { allowed: true, reason: 'Established model family detected' };
-  }
-  
-  // 5. HuggingFace quality metrics (if available)
-  if (provider === 'huggingface' && modelData.downloads && modelData.stars) {
-    const downloads = parseInt(modelData.downloads) || 0;
-    const stars = parseInt(modelData.stars) || 0;
-    
-    if (downloads >= QUALITY_INCLUSION_CRITERIA.qualityThresholds.minDownloads && 
-        stars >= QUALITY_INCLUSION_CRITERIA.qualityThresholds.minStars) {
-      return { allowed: true, reason: `High-quality model: ${downloads} downloads, ${stars} stars` };
-    }
-  }
-  
-  // 6. Small Language Models (SLMs) - special consideration for efficiency
-  const slmIndicators = ['small', 'mini', 'tiny', 'lite', 'efficient', 'mobile', 'edge'];
-  if (slmIndicators.some(indicator => fullText.includes(indicator))) {
-    return { allowed: true, reason: 'Small/efficient language model identified' };
-  }
-  
-  // 7. Open source indicators (positive signals for transparency)
-  const openSourceIndicators = ['open', 'community', 'apache', 'mit', 'cc-by', 'creative-commons'];
-  if (openSourceIndicators.some(indicator => fullText.includes(indicator))) {
-    return { allowed: true, reason: 'Open source model with transparent licensing' };
-  }
-  
-  // Default: Allow with quality review needed
-  return { allowed: true, reason: 'Model approved for general use (quality review recommended)' };
-}
-
-// Get models through backend proxy
-async function getModelsFromBackend() {
-  if (!BACKEND_CONFIG.authToken) {
-    throw new Error('AGENT_AUTH_TOKEN is required but not provided');
-  }
-
-  try {
-    console.log('Fetching models through backend proxy...');
-    
-    const response = await axios({
-      method: 'GET',
-      url: `${BACKEND_CONFIG.url}/api/providers`,
+// HTTP request helper
+function makeRequest(url, options = {}) {
+  return new Promise((resolve, reject) => {
+    const requestOptions = {
+      method: options.method || 'GET',
       headers: {
-        'Authorization': `Bearer ${BACKEND_CONFIG.authToken}`,
+        'User-Agent': 'askme-scout-agent/1.0',
+        'Accept': 'application/json',
         'Content-Type': 'application/json',
-        'User-Agent': 'askme-scout-agent/1.0.0'
+        ...options.headers
       },
-      timeout: BACKEND_CONFIG.timeout
+      ...options
+    };
+
+    const req = https.request(url, requestOptions, (res) => {
+      let data = '';
+      res.on('data', chunk => data += chunk);
+      res.on('end', () => {
+        try {
+          if (res.statusCode >= 200 && res.statusCode < 300) {
+            resolve(JSON.parse(data));
+          } else {
+            reject(new Error(`HTTP ${res.statusCode}: ${data}`));
+          }
+        } catch (error) {
+          reject(new Error(`Failed to parse JSON: ${error.message}`));
+        }
+      });
     });
 
-    if (response.status === 200) {
-      console.log('Successfully fetched models from backend');
-      console.log('Response structure:', JSON.stringify(Object.keys(response.data), null, 2));
-      
-      // Handle providers response format
-      if (response.data.providers && Array.isArray(response.data.providers)) {
-        // Extract all models from all providers
-        const allModels = [];
-        for (const provider of response.data.providers) {
-          if (provider.models && Array.isArray(provider.models)) {
-            for (const modelName of provider.models) {
-              allModels.push({
-                name: modelName,
-                model_name: modelName,
-                provider: provider.name,
-                available: provider.available,
-                status: provider.status
-              });
-            }
+    req.on('error', reject);
+    req.setTimeout(30000, () => {
+      req.destroy();
+      reject(new Error('Request timeout'));
+    });
+    
+    if (options.data) {
+      req.write(JSON.stringify(options.data));
+    }
+    
+    req.end();
+  });
+}
+
+// Update backend with validated models
+async function updateBackendWithModels() {
+  console.log('🔄 Updating backend with validated models...');
+  
+  // Load validated models
+  let validatedModels = [];
+  try {
+    const validatedData = JSON.parse(fs.readFileSync('validated_models.json', 'utf8'));
+    validatedModels = validatedData.models || [];
+  } catch (error) {
+    console.error('❌ Could not load validated models:', error.message);
+    return false;
+  }
+
+  // Load eligible models
+  let eligibleModels = [];
+  try {
+    const eligibleData = JSON.parse(fs.readFileSync('api-eligible-models.json', 'utf8'));
+    eligibleModels = eligibleData.eligible_models || [];
+  } catch (error) {
+    console.warn('⚠️ Could not load eligible models:', error.message);
+  }
+
+  console.log(`📊 Updating backend with ${validatedModels.length} validated models and ${eligibleModels.length} eligible models`);
+
+  try {
+    // Update backend with model validation results
+    const updatePayload = {
+      validated_models: validatedModels,
+      eligible_models: eligibleModels,
+      metadata: {
+        timestamp: new Date().toISOString(),
+        scout_agent_version: '1.0',
+        total_models: validatedModels.length,
+        total_eligible: eligibleModels.length,
+        providers: ['google', 'mistral', 'cohere', 'groq', 'openrouter'],
+        dashboard_data: {
+          provider_status: validatedModels.map(model => ({
+            provider: model.provider,
+            model_name: model.model_name,
+            status: model.health_status || 'available',
+            response_time: model.response_time || 'N/A',
+            last_validated: model.last_validated || new Date().toISOString()
+          })),
+          performance_metrics: {
+            total_providers: 5,
+            active_providers: validatedModels.length,
+            average_response_time: validatedModels.reduce((sum, m) => sum + (parseInt(m.response_time) || 0), 0) / validatedModels.length || 0,
+            success_rate: validatedModels.filter(m => m.api_available).length / validatedModels.length * 100 || 0
           }
         }
-        return allModels;
-      } else {
-        console.log('Full response:', JSON.stringify(response.data, null, 2));
-        return [];
       }
-    } else {
-      throw new Error(`Backend returned status ${response.status}`);
-    }
+    };
+
+    const response = await makeRequest(`${BACKEND_URL}/admin/update-models`, {
+      method: 'POST',
+      data: updatePayload
+    });
+
+    console.log('✅ Backend updated successfully');
+    console.log(`📊 Dashboard data included for Lovable integration`);
+    
+    return true;
   } catch (error) {
-    if (error.response) {
-      console.error('Backend error:', error.response.status, error.response.data);
-    } else if (error.request) {
-      console.error('Network error:', error.message);
-    } else {
-      console.error('Request setup error:', error.message);
-    }
-    throw error;
+    console.error('❌ Failed to update backend:', error.message);
+    return false;
   }
 }
 
-// Main validation function
-async function main() {
-  const trigger = process.env.VALIDATION_TRIGGER || 'manual';
-  const reason = process.env.TRIGGER_REASON || 'Manual validation';
-  const specificProvider = process.env.SPECIFIC_PROVIDER;
-  const announcementUrl = process.env.ANNOUNCEMENT_URL;
+// Validate backend health
+async function validateBackendHealth() {
+  console.log('🔍 Validating backend health...');
   
-  console.log('🚀 Starting model validation through backend proxy...');
-  console.log(`📋 Trigger: ${trigger}`);
-  console.log(`📋 Reason: ${reason}`);
-  
-  if (specificProvider) {
-    console.log(`🎯 Focusing on provider: ${specificProvider}`);
-  }
-  
-  if (announcementUrl) {
-    console.log(`📢 Announcement URL: ${announcementUrl}`);
-  }
-  
-  try {
-    // Get models from backend
-    const backendModels = await getModelsFromBackend();
-    console.log(`Received ${backendModels.length} models from backend`);
-    
-    if (backendModels.length > 0) {
-      console.log('Sample model structure:', JSON.stringify(backendModels[0], null, 2));
-    }
-    
-    const allValidatedModels = [];
-    const allExcludedModels = [];
-    
-    // Apply quality-based filtering
-    for (const model of backendModels) {
-      const qualityCheck = isQualityModel(model.name || model.model_name, model);
+  const healthChecks = [
+    { name: 'General Health', url: `${BACKEND_URL}/health` },
+    { name: 'Provider Status', url: `${BACKEND_URL}/providers/status` },
+    { name: 'Model Validation', url: `${BACKEND_URL}/admin/validation-status` }
+  ];
+
+  const results = [];
+
+  for (const check of healthChecks) {
+    try {
+      console.log(`  Checking ${check.name}...`);
+      const response = await makeRequest(check.url);
       
-      if (qualityCheck.allowed) {
-        const validatedModel = {
-          model_name: model.name || model.model_name,
-          provider: model.provider || 'Unknown',
-          api_available: true,
-          registration_required: true,
-          free_tier: model.free_tier !== false,
-          auth_method: 'api_key',
-          documentation_url: model.documentation_url || '',
-          notes: model.notes || 'Validated through backend proxy',
-          quality_verified: true,
-          trusted_source: true,
-          validation_reason: qualityCheck.reason
-        };
-        allValidatedModels.push(validatedModel);
-      } else {
-        allExcludedModels.push({
-          model_name: model.name || model.model_name,
-          provider: model.provider || 'Unknown',
-          reason: `Quality review needed: ${qualityCheck.reason}`
-        });
-      }
+      results.push({
+        check: check.name,
+        status: 'healthy',
+        response: response
+      });
+      
+      console.log(`    ✅ ${check.name}: OK`);
+    } catch (error) {
+      results.push({
+        check: check.name,
+        status: 'unhealthy',
+        error: error.message
+      });
+      
+      console.log(`    ❌ ${check.name}: ${error.message}`);
     }
-    
-    // Sort results
-    allValidatedModels.sort((a, b) => a.provider.localeCompare(b.provider) || a.model_name.localeCompare(b.model_name));
-    allExcludedModels.sort((a, b) => a.provider.localeCompare(b.provider));
-    
-    // Calculate statistics
-    const qualityReviewNeeded = allExcludedModels.filter(m => m.reason.includes('Quality review needed')).length;
-    const totalChecked = allValidatedModels.length + allExcludedModels.length;
-    
-    // Create metadata
-    const validationMetadata = {
-      timestamp: new Date().toISOString(),
-      trigger: trigger,
-      reason: reason,
-      specific_provider: specificProvider || null,
-      announcement_url: announcementUrl || null,
-      total_models_checked: totalChecked,
-      total_validated_models: allValidatedModels.length,
-      total_excluded_models: allExcludedModels.length,
-      quality_filtering: {
-        enabled: true,
-        criteria: ['Trusted organizations', 'Academic institutions', 'Established model families', 'HuggingFace quality metrics', 'SLM efficiency', 'Open source licensing'],
-        quality_review_needed: qualityReviewNeeded,
-        quality_review_rate: totalChecked > 0 ? (qualityReviewNeeded / totalChecked * 100).toFixed(1) + '%' : '0%',
-        immediately_approved: allValidatedModels.length
-      },
-      providers_with_models: [...new Set(allValidatedModels.map(m => m.provider))],
-      backend_proxy_used: true
-    };
-    
-    // Create output
-    const validatedOutput = {
-      metadata: validationMetadata,
-      models: allValidatedModels
-    };
-    
-    const excludedOutput = {
-      metadata: validationMetadata,
-      excluded_models: allExcludedModels
-    };
-    
-    // Write results
-    await writeFile('validated_models.json', JSON.stringify(validatedOutput, null, 2));
-    await writeFile('excluded_models.json', JSON.stringify(excludedOutput, null, 2));
-    
-    console.log(`\n✅ Validation complete:`);
-    console.log(`- Total models checked: ${totalChecked}`);
-    console.log(`- Immediately validated models: ${allValidatedModels.length}`);
-    console.log(`- Models needing quality review: ${allExcludedModels.length}`);
-    console.log(`  - Quality criteria review needed: ${qualityReviewNeeded}`);
-    console.log(`- Providers with available models: ${validationMetadata.providers_with_models.length}`);
-    
-    if (specificProvider) {
-      console.log(`- Focus provider '${specificProvider}': ${allValidatedModels.length} models validated`);
-    }
-    
-    console.log(`\n🌟 Quality-based filtering active: Prioritizing trusted organizations, academic research, and open source models`);
-    console.log(`📁 Results saved to validated_models.json and excluded_models.json`);
-    
-    if (announcementUrl) {
-      console.log(`📢 Related to announcement: ${announcementUrl}`);
-    }
-    
-  } catch (error) {
-    console.error('Validation failed:', error);
-    process.exit(1);
   }
+
+  return results;
 }
 
-// Run validation
+// Generate dashboard-compatible data
+function generateDashboardData(validatedModels, healthChecks) {
+  const dashboardData = {
+    timestamp: new Date().toISOString(),
+    overview: {
+      total_providers: 5,
+      active_providers: validatedModels.filter(m => m.api_available).length,
+      health_status: healthChecks.filter(c => c.status === 'healthy').length / healthChecks.length * 100,
+      last_update: new Date().toISOString()
+    },
+    providers: validatedModels.map(model => ({
+      name: model.provider,
+      model: model.model_name,
+      status: model.health_status || 'available',
+      response_time: model.response_time || 'N/A',
+      auth_method: model.auth_method || 'backend_proxy',
+      free_tier: model.free_tier || true,
+      last_validated: model.last_validated || new Date().toISOString()
+    })),
+    performance: {
+      average_response_time: validatedModels.reduce((sum, m) => {
+        const time = parseInt(m.response_time) || 0;
+        return sum + time;
+      }, 0) / validatedModels.length || 0,
+      success_rate: validatedModels.filter(m => m.api_available).length / validatedModels.length * 100 || 0,
+      uptime: healthChecks.filter(c => c.status === 'healthy').length / healthChecks.length * 100 || 0
+    },
+    alerts: healthChecks.filter(c => c.status === 'unhealthy').map(check => ({
+      type: 'error',
+      message: `${check.check}: ${check.error}`,
+      timestamp: new Date().toISOString()
+    }))
+  };
+
+  return dashboardData;
+}
+
+// Main function
+async function main() {
+  console.log('🚀 Starting backend validation and dashboard data generation...');
+  console.log(`📋 Backend URL: ${BACKEND_URL}`);
+  console.log(`📋 Update backend: ${UPDATE_BACKEND}`);
+  console.log(`📊 Generating dashboard data for Lovable integration`);
+  
+  const results = {
+    timestamp: new Date().toISOString(),
+    backend_url: BACKEND_URL,
+    health_checks: [],
+    model_update: null,
+    dashboard_data: null,
+    summary: {
+      success: true,
+      errors: []
+    }
+  };
+
+  // Load validated models for dashboard
+  let validatedModels = [];
+  try {
+    const validatedData = JSON.parse(fs.readFileSync('validated_models.json', 'utf8'));
+    validatedModels = validatedData.models || [];
+  } catch (error) {
+    console.warn('⚠️ Could not load validated models:', error.message);
+  }
+
+  // Validate backend health
+  results.health_checks = await validateBackendHealth();
+  
+  // Generate dashboard data
+  results.dashboard_data = generateDashboardData(validatedModels, results.health_checks);
+
+  // Update backend with models if requested
+  if (UPDATE_BACKEND) {
+    try {
+      const updateSuccess = await updateBackendWithModels();
+      results.model_update = {
+        status: updateSuccess ? 'success' : 'failed',
+        timestamp: new Date().toISOString()
+      };
+      
+      if (!updateSuccess) {
+        results.summary.success = false;
+        results.summary.errors.push('Failed to update backend with models');
+      }
+    } catch (error) {
+      results.model_update = {
+        status: 'error',
+        error: error.message,
+        timestamp: new Date().toISOString()
+      };
+      results.summary.success = false;
+      results.summary.errors.push(`Model update error: ${error.message}`);
+    }
+  }
+
+  // Check for unhealthy services
+  const unhealthyChecks = results.health_checks.filter(c => c.status === 'unhealthy');
+  if (unhealthyChecks.length > 0) {
+    results.summary.success = false;
+    results.summary.errors.push(`${unhealthyChecks.length} health checks failed`);
+  }
+
+  // Save results
+  await writeFile('backend-validation-results.json', JSON.stringify(results, null, 2));
+  
+  // Save dashboard data separately for Lovable integration
+  await writeFile('dashboard-data.json', JSON.stringify(results.dashboard_data, null, 2));
+
+  // Print summary
+  console.log(`\n📊 Backend Validation Summary:`);
+  console.log(`- Health checks: ${results.health_checks.filter(c => c.status === 'healthy').length}/${results.health_checks.length} passed`);
+  console.log(`- Active providers: ${results.dashboard_data.overview.active_providers}/${results.dashboard_data.overview.total_providers}`);
+  console.log(`- Average response time: ${results.dashboard_data.performance.average_response_time.toFixed(0)}ms`);
+  console.log(`- Success rate: ${results.dashboard_data.performance.success_rate.toFixed(1)}%`);
+  
+  if (results.model_update) {
+    console.log(`- Model update: ${results.model_update.status}`);
+  }
+  
+  console.log(`- Overall status: ${results.summary.success ? '✅ Success' : '❌ Failed'}`);
+  
+  if (results.summary.errors.length > 0) {
+    console.log(`\n❌ Errors encountered:`);
+    results.summary.errors.forEach(error => {
+      console.log(`  - ${error}`);
+    });
+  }
+
+  console.log(`\n📁 Results saved to backend-validation-results.json`);
+  console.log(`📊 Dashboard data saved to dashboard-data.json for Lovable integration`);
+  
+  // Exit with appropriate code
+  process.exit(results.summary.success ? 0 : 1);
+}
+
+// Run the validation
 if (require.main === module) {
   main().catch(error => {
-    console.error('Validation failed:', error);
+    console.error('Backend validation failed:', error);
     process.exit(1);
   });
 }
 
-module.exports = { main, isQualityModel };
+module.exports = { updateBackendWithModels, validateBackendHealth, generateDashboardData };
