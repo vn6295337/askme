@@ -1,0 +1,1 @@
+- Memory #9: Fixed issue without further details

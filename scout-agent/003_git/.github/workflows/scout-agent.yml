@@ -13,14 +13,24 @@ on:
         required: false
         default: 'false'
         type: boolean
+      branch:
+        description: 'Branch to use'
+        required: false
+        default: 'feature/expand-to-9-providers'
+        type: string
 
 jobs:
   scout:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      issues: write
     
     steps:
     - name: Checkout repository
       uses: actions/checkout@v4
+      with:
+        ref: ${{ inputs.branch || 'feature/expand-to-9-providers' }}
       
     - name: Setup Node.js
       uses: actions/setup-node@v4
@@ -40,6 +50,7 @@ jobs:
         cat > 002_env/.env << EOF
         BACKEND_URL=${{ secrets.BACKEND_URL }}
         AGENT_AUTH_TOKEN=${{ secrets.AGENT_AUTH_TOKEN }}
+        HUGGINGFACE_TOKEN=${{ secrets.HUGGINGFACE_TOKEN }}
         EOF
     
     - name: Run LLM discovery
@@ -49,6 +60,7 @@ jobs:
       env:
         BACKEND_URL: ${{ secrets.BACKEND_URL }}
         AGENT_AUTH_TOKEN: ${{ secrets.AGENT_AUTH_TOKEN }}
+        HUGGINGFACE_TOKEN: ${{ secrets.HUGGINGFACE_TOKEN }}
     
     - name: Upload discovery results
       if: always()

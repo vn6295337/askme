@@ -1,26 +1,61 @@
-name: LLM Scout Agent
+name: Scout Agent - Model Validation
+
+permissions:
+  contents: write
+  actions: read
 
 on:
-  schedule:
-    # Run every Sunday at 2 AM UTC
-    - cron: '0 2 * * 0'
-  
   workflow_dispatch:
-    # Allow manual triggering
     inputs:
-      debug:
-        description: 'Enable debug mode'
+      trigger_reason:
+        description: 'Reason for manual trigger'
+        required: true
+        default: 'Manual validation request'
+        type: choice
+        options:
+          - 'Manual validation request'
+          - 'New model announcement'
+          - 'Model deprecation notice'
+          - 'API changes/updates'
+          - 'Provider service changes'
+          - 'Emergency validation'
+      provider:
+        description: 'Specific provider to validate (optional, leave empty for all)'
         required: false
-        default: 'false'
-        type: boolean
-      branch:
-        description: 'Branch to use'
+        type: choice
+        options:
+          - ''
+          - 'Gemini'
+          - 'Mistral'
+          - 'Together AI'
+          - 'Cohere'
+          - 'Groq'
+          - 'Hugging Face'
+          - 'OpenRouter'
+          - 'AI21 Labs'
+          - 'Replicate'
+      announcement_url:
+        description: 'URL to announcement/changelog (optional)'
         required: false
-        default: 'feature/expand-to-9-providers'
         type: string
+  
+  # Trigger on repository announcements via issues
+  issues:
+    types: [opened, edited]
+  
+  # Trigger on code changes
+  push:
+    branches:
+      - feature/expand-to-9-providers
+    paths:
+      - 'scout-agent/**'
+  
+  # Webhook endpoint for external triggers
+  repository_dispatch:
+    types: [model-announcement, provider-update, api-deprecation]
 
 jobs:
-  scout:
+  validate-models:
     runs-on: ubuntu-latest
     
     steps:
@@ -29,51 +64,120 @@ jobs:
       with:
         ref: ${{ inputs.branch || 'feature/expand-to-9-providers' }}
       
+    - name: Check trigger context
+      run: |
+        echo "🔍 Validation Trigger Context:"
+        echo "Event: ${{ github.event_name }}"
+        
+        if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+          echo "Reason: ${{ github.event.inputs.trigger_reason }}"
+          echo "Provider: ${{ github.event.inputs.provider || 'All providers' }}"
+          echo "Announcement URL: ${{ github.event.inputs.announcement_url || 'Not provided' }}"
+        elif [ "${{ github.event_name }}" = "issues" ]; then
+          echo "Issue trigger detected - checking for model announcement keywords"
+          issue_title="${{ github.event.issue.title }}"
+          if echo "$issue_title" | grep -i -E "(model|deprecat|updat|new|announc|api)" > /dev/null; then
+            echo "✅ Model-related issue detected: $issue_title"
+            echo "Issue URL: ${{ github.event.issue.html_url }}"
+          else
+            echo "❌ Issue not related to model announcements, skipping validation"
+            exit 0
+          fi
+        elif [ "${{ github.event_name }}" = "repository_dispatch" ]; then
+          echo "External webhook trigger: ${{ github.event.action }}"
+          echo "Payload: ${{ toJson(github.event.client_payload) }}"
+        fi
+        
+        echo "Triggered by: ${{ github.actor }}"
+        echo "Timestamp: $(date -u)"
+      
     - name: Setup Node.js
       uses: actions/setup-node@v4
       with:
         node-version: '18'
-        cache: 'npm'
-        cache-dependency-path: 'scout-agent/001_config/package-lock.json'
-    
+        
     - name: Install dependencies
-      run: |
-        cd scout-agent/001_config
-        npm install
-    
-    - name: Create environment file
-      run: |
-        cd scout-agent
-        cat > 002_env/.env << EOF
-        BACKEND_URL=${{ secrets.BACKEND_URL }}
-        AGENT_AUTH_TOKEN=${{ secrets.AGENT_AUTH_TOKEN }}
-        EOF
-    
-    - name: Run LLM discovery
-      run: |
-        cd scout-agent
-        npm --prefix 001_config run start
+      working-directory: scout-agent
+      run: npm install
+      
+    - name: Validate backend connectivity
+      working-directory: scout-agent
+      run: node validate-secrets.js
       env:
         BACKEND_URL: ${{ secrets.BACKEND_URL }}
         AGENT_AUTH_TOKEN: ${{ secrets.AGENT_AUTH_TOKEN }}
-    
-    - name: Upload discovery results
-      if: always()
+        
+    - name: Debug backend endpoints
+      working-directory: scout-agent
+      run: |
+        echo "🔍 Debugging backend endpoints first..."
+        node debug-backend.js
+      env:
+        BACKEND_URL: ${{ secrets.BACKEND_URL }}
+        AGENT_AUTH_TOKEN: ${{ secrets.AGENT_AUTH_TOKEN }}
+        
+    - name: Run model validation
+      working-directory: scout-agent
+      run: |
+        echo "🚀 Starting model validation..."
+        
+        # Set validation context
+        export VALIDATION_TRIGGER="${{ github.event_name }}"
+        export TRIGGER_REASON="${{ github.event.inputs.trigger_reason || 'Automated trigger' }}"
+        export SPECIFIC_PROVIDER="${{ github.event.inputs.provider }}"
+        export ANNOUNCEMENT_URL="${{ github.event.inputs.announcement_url }}"
+        
+        # Run validation with context through backend proxy
+        node validate-models-backend.js
+      env:
+        BACKEND_URL: ${{ secrets.BACKEND_URL }}
+        AGENT_AUTH_TOKEN: ${{ secrets.AGENT_AUTH_TOKEN }}
+        VALIDATION_TRIGGER: ${{ github.event_name }}
+        TRIGGER_REASON: ${{ github.event.inputs.trigger_reason || 'Automated trigger' }}
+        SPECIFIC_PROVIDER: ${{ github.event.inputs.provider }}
+        ANNOUNCEMENT_URL: ${{ github.event.inputs.announcement_url }}
+        
+    - name: Upload validation results
       uses: actions/upload-artifact@v4
       with:
-        name: discovery-results-${{ github.run_number }}
-        path: scout-agent/400_data/
+        name: model-validation-results
+        path: |
+          scout-agent/validated_models.json
+          scout-agent/excluded_models.json
         retention-days: 30
-        if-no-files-found: ignore
-    
-    - name: Log workflow status
-      if: always()
+        
+    - name: Commit updated model data
+      if: github.ref == 'refs/heads/feature/expand-to-9-providers'
+      working-directory: scout-agent
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: |
-        if [ "${{ job.status }}" == "success" ]; then
-          echo "✅ LLM Scout Agent completed successfully"
-        else
-          echo "❌ LLM Scout Agent failed - check logs above"
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action"
+        git add validated_models.json excluded_models.json
+        
+        # Create context-aware commit message
+        COMMIT_MSG="Update validated models data"
+        
+        if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+          COMMIT_MSG="$COMMIT_MSG - ${{ github.event.inputs.trigger_reason }}"
+          if [ -n "${{ github.event.inputs.provider }}" ]; then
+            COMMIT_MSG="$COMMIT_MSG (${{ github.event.inputs.provider }})"
+          fi
+          if [ -n "${{ github.event.inputs.announcement_url }}" ]; then
+            COMMIT_MSG="$COMMIT_MSG - ${{ github.event.inputs.announcement_url }}"
+          fi
+        elif [ "${{ github.event_name }}" = "repository_dispatch" ]; then
+          COMMIT_MSG="$COMMIT_MSG - External trigger: ${{ github.event.action }}"
+        elif [ "${{ github.event_name }}" = "issues" ]; then
+          COMMIT_MSG="$COMMIT_MSG - Issue: ${{ github.event.issue.title }}"
         fi
-        echo "Run ID: ${{ github.run_id }}"
-        echo "Timestamp: $(date -u)"
-    
+        
+        COMMIT_MSG="$COMMIT_MSG [skip ci]"
+        
+        if ! git diff --staged --quiet; then
+          git commit -m "$COMMIT_MSG"
+          git push origin feature/expand-to-9-providers
+        else
+          echo "No changes to commit"
+        fi

@@ -8,7 +8,7 @@ import java.io.File
 fun main(args: Array<String>) {
     val parser = ArgParser("askme")
     
-    val model by parser.option(ArgType.String, shortName = "m", description = "Provider: auto, google, mistral, llama").default("auto")
+    val model by parser.option(ArgType.String, shortName = "m", description = "Provider: auto, google, mistral, llama, cohere, groq, huggingface, openrouter, ai21, replicate").default("auto")
     val explicitModel by parser.option(ArgType.String, shortName = "e", description = "Explicit model to use (bypasses smart selection)")
     val promptFile by parser.option(ArgType.String, shortName = "f", description = "File containing prompt text")
     val smartMode by parser.option(ArgType.Boolean, shortName = "s", description = "Smart provider selection").default(false)
@@ -50,7 +50,13 @@ fun getSpecificAIProvider(providerName: String): AIProvider? {
     return when (providerName.lowercase()) {
         "google", "gemini" -> GoogleProvider()
         "mistral" -> MistralProvider()
-        "llama", "together" -> LlamaProvider()
+        "llama", "together" -> TogetherProvider()
+        "cohere" -> CohereProvider()
+        "groq" -> GroqProvider()
+        "huggingface", "hf" -> HuggingFaceProvider()
+        "openrouter", "or" -> OpenRouterProvider()
+        "ai21" -> AI21Provider()
+        "replicate" -> ReplicateProvider()
         else -> null
     }
 }
@@ -104,16 +110,22 @@ suspend fun runInteractiveMode(provider: String, smartMode: Boolean, explicitMod
                 println("""
                 📚 Available Commands:
                 • Simply type your question and press Enter
-                • switch <provider> - Change provider (auto, google, mistral, llama)
+                • switch <provider> - Change provider (auto, google, mistral, llama, cohere, groq, huggingface, openrouter, ai21, replicate)
                 • stats - Show provider statistics and performance
                 • help - Show this help message
                 • exit/quit/q - End session
                 
-                🤖 Available Providers:
+                🤖 Available Providers (9 total):
                 • auto - Intelligent provider selection based on query
-                • google - Google Gemini models
-                • mistral - Mistral AI models
-                • llama - Llama models via Together.ai
+                • google - Google Gemini models (gemini-1.5-flash, gemini-1.5-flash-8b)
+                • mistral - Mistral AI models (mistral-small-latest, open-mistral-7b, open-mixtral-8x7b, etc.)
+                • llama - Llama models via Together.ai (meta-llama/Llama-3-8b-chat-hf)
+                • cohere - Cohere models (command, command-light, command-r, command-r-plus)
+                • groq - Groq LPU models (llama-3.3-70b-versatile, mixtral-8x7b-32768, gemma2-9b-it)
+                • huggingface - Hugging Face models (DialoGPT, CodeBERT, flan-t5-large)
+                • openrouter - OpenRouter aggregated models (claude-3-haiku, llama-3.1-8b-instruct)
+                • ai21 - AI21 Labs models (j2-light, j2-mid, j2-ultra, jamba-instruct)
+                • replicate - Replicate hosted models (llama-2-70b-chat, codellama-34b-instruct)
                 """.trimIndent())
             }
             input.lowercase() == "stats" -> {
@@ -121,16 +133,18 @@ suspend fun runInteractiveMode(provider: String, smartMode: Boolean, explicitMod
             }
             input.lowercase().startsWith("switch ") -> {
                 val newProvider = input.substring(7).trim().lowercase()
-                if (newProvider in listOf("auto", "google", "gemini", "mistral", "llama", "together")) {
+                if (newProvider in listOf("auto", "google", "gemini", "mistral", "llama", "together", "cohere", "groq", "huggingface", "hf", "openrouter", "or", "ai21", "replicate")) {
                     currentProvider = when (newProvider) {
                         "gemini" -> "google"
-                        "together" -> "llama"
+                        "together" -> "together"
+                        "hf" -> "huggingface"
+                        "or" -> "openrouter"
                         else -> newProvider
                     }
                     currentSmartMode = (currentProvider == "auto")
                     println("🔄 Switched to provider: $currentProvider")
                 } else {
-                    println("❌ Unknown provider. Available: auto, google, mistral, llama")
+                    println("❌ Unknown provider. Available: auto, google, mistral, llama, cohere, groq, huggingface, openrouter, ai21, replicate")
                 }
             }
             else -> {

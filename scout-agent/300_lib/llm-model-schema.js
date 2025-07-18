@@ -3,19 +3,22 @@ const path = require('path');
 
 class LLMSchema {
   constructor() {
-    this.requiredFields = ['name', 'publisher', 'country'];
+    this.requiredFields = ['name', 'shortName', 'country'];
     this.optionalFields = [
       'accessType', 'license', 'modelSize', 'releaseDate', 
-      'sourceUrl', 'inferenceSupport', 'deprecationDate'
+      'sourceUrl', 'inferenceSupport', 'deprecationDate', 'capabilities', 'validation_notes'
     ];
     this.validAccessTypes = [
-      'Open Source', 'Proprietary - Free Tier', 'Research Paper', 'Blog Post'
+      'Open Source', 'Proprietary - Free Tier', 'Research Paper', 'Blog Post',
+      'Free API', 'Community', 'Public', 'Free Tier', 'Beta', 'Unknown',
+      'API', 'freemium', 'Freemium', 'News Reference', 'Leaderboard Entry'
     ];
     this.validCountries = [
       'US', 'UK', 'Germany', 'France', 'Italy', 'Spain', 'Netherlands',
       'Belgium', 'Switzerland', 'Austria', 'Sweden', 'Norway', 'Denmark',
       'Finland', 'Poland', 'Portugal', 'Ireland', 'Czech Republic',
-      'Hungary', 'Greece', 'Europe', 'Unknown'
+      'Hungary', 'Greece', 'Europe', 'China', 'Japan', 'South Korea',
+      'Singapore', 'UAE', 'Canada', 'Australia', 'Israel', 'Unknown'
     ];
   }
 
@@ -62,6 +65,18 @@ class LLMSchema {
   }
 
   isValidDate(dateString) {
+    if (!dateString || dateString === 'Unknown') {
+      return true;
+    }
+    
+    // Handle Unix timestamps
+    if (typeof dateString === 'number' || /^\d{10}$/.test(dateString)) {
+      const timestamp = parseInt(dateString);
+      const date = new Date(timestamp * 1000);
+      return !isNaN(date.getTime()) && date.getFullYear() > 2010;
+    }
+    
+    // Handle ISO date strings
     const date = new Date(dateString);
     return !isNaN(date.getTime()) && date.getFullYear() > 2010;
   }
@@ -76,8 +91,10 @@ class LLMSchema {
   }
 
   isValidModelSize(size) {
-    const sizePattern = /^(\d+(\.\d+)?)(B|M|K|billion|million|thousand)$/i;
-    return sizePattern.test(size) || size === 'Unknown';
+    // Support multi-size entries like "7B,13B,70B"
+    const multiSizePattern = /^\d+\.?\d*[BMK](?:,\d+\.?\d*[BMK])*$/i;
+    const singleSizePattern = /^(\d+(\.\d+)?)(B|M|K|billion|million|thousand)$/i;
+    return multiSizePattern.test(size) || singleSizePattern.test(size) || size === 'Unknown';
   }
 
   normalizeModel(model) {
@@ -199,6 +216,11 @@ class LLMSchema {
           type: 'string',
           description: 'Additional notes or comments',
           maxLength: 500
+        },
+        validation_notes: {
+          type: 'string',
+          description: 'Data validation and quality notes',
+          maxLength: 1000
         }
       }
     };

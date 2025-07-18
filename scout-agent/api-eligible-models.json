@@ -1,0 +1,2425 @@
+{
+  "totalApiModels": 91,
+  "discoveredApiModels": 83,
+  "additionalApiModels": 8,
+  "providers": [
+    "Cohere",
+    "Together AI",
+    "HuggingFace",
+    "Groq",
+    "OpenRouter",
+    "AI21",
+    "Replicate"
+  ],
+  "models": [
+    {
+      "modelName": "Llama 2",
+      "provider": "Together AI",
+      "apiAvailable": true,
+      "registrationRequired": true,
+      "freeTier": true,
+      "authMethod": "API Key",
+      "documentationUrl": "https://docs.together.ai/",
+      "notes": "$1-25 free credits, 60 requests/minute",
+      "originalModel": {
+        "name": "Llama 2",
+        "shortName": "Llama-2",
+        "country": "US",
+        "modelSize": "7B",
+        "sourceUrl": "https://github.com/facebookresearch/llama",
+        "releaseDate": "2023-07-18",
+        "accessType": "Open Source",
+        "license": "Custom",
+        "capabilities": [
+          "RAG"
+        ],
+        "validation_notes": "GitHub repository verified",
+        "lastUpdated": "2025-07-12T05:11:52.632Z",
+        "discoveryTimestamp": "2025-07-12T05:11:52.906Z",
+        "agentVersion": "1.0.0",
+        "validationStatus": "validated"
+      }
+    },
+    {
+      "modelName": "GPT4All",
+      "provider": "HuggingFace",
+      "apiAvailable": true,
+      "registrationRequired": true,
+      "freeTier": true,
+      "authMethod": "Bearer Token",
+      "documentationUrl": "https://huggingface.co/docs/api-inference/",
+      "notes": "Monthly credits for serverless inference API",
+      "originalModel": {
+        "name": "GPT4All",
+        "shortName": "GPT4All",
+        "country": "US",
+        "modelSize": "7B",
+        "sourceUrl": "https://github.com/nomic-ai/gpt4all",
+        "releaseDate": "2023-03-27",
+        "accessType": "Open Source",
+        "license": "MIT",
+        "capabilities": [
+          "Text Generation"
+        ],
+        "validation_notes": "GitHub repository verified; License confirmed",
+        "lastUpdated": "2025-07-12T05:11:52.644Z",
+        "discoveryTimestamp": "2025-07-12T05:11:52.906Z",
+        "agentVersion": "1.0.0",
+        "validationStatus": "validated"
+      }
+    },
+    {
+      "modelName": "Code Llama",
+      "provider": "Together AI",
+      "apiAvailable": true,
+      "registrationRequired": true,
+      "freeTier": true,
+      "authMethod": "API Key",
+      "documentationUrl": "https://docs.together.ai/",
+      "notes": "$1-25 free credits, 60 requests/minute",
+      "originalModel": {
+        "name": "Code Llama",
+        "shortName": "Code-Llama",
+        "country": "US",
+        "modelSize": "7B",
+        "sourceUrl": "https://github.com/facebookresearch/codellama",
+        "releaseDate": "2023-08-24",
+        "accessType": "Open Source",
+        "license": "Custom",
+        "capabilities": [
+          "Code Generation",
+          "RAG"
+        ],
+        "validation_notes": "GitHub repository verified",
+        "lastUpdated": "2025-07-12T05:11:52.650Z",
+        "discoveryTimestamp": "2025-07-12T05:11:52.906Z",
+        "agentVersion": "1.0.0",
+        "validationStatus": "validated"
+      }
+    },
+    {
+      "modelName": "chatgpt-prompt-splitter",
+      "provider": "HuggingFace",
+      "apiAvailable": true,
+      "registrationRequired": true,
+      "freeTier": true,
+      "authMethod": "Bearer Token",
+      "documentationUrl": "https://huggingface.co/docs/api-inference/",
+      "notes": "Monthly credits for serverless inference API",
+      "originalModel": {
+        "name": "chatgpt-prompt-splitter",
+        "shortName": "chatgpt-prompt-splitter",
+        "country": "US",
+        "modelSize": "Unknown",
+        "sourceUrl": "https://github.com/jupediaz/chatgpt-prompt-splitter",
+        "releaseDate": "2023-03-16",
+        "accessType": "Open Source",
+        "license": "MIT License",
+        "capabilities": [
+          "Conversational"
+        ],
+        "validation_notes": "Model size not specified; GitHub repository verified",
+        "lastUpdated": "2025-07-12T05:11:52.662Z",
+        "discoveryTimestamp": "2025-07-12T05:11:52.906Z",
+        "agentVersion": "1.0.0",
+        "validationStatus": "validated"
+      }
+    },
+    {
+      "modelName": "ChatGPT-Mobile",
+      "provider": "HuggingFace",
+      "apiAvailable": true,
+      "registrationRequired": true,
+      "freeTier": true,
+      "authMethod": "Bearer Token",
+      "documentationUrl": "https://huggingface.co/docs/api-inference/",
+      "notes": "Monthly credits for serverless inference API",
+      "originalModel": {
+        "name": "ChatGPT-Mobile",
+        "shortName": "ChatGPT-Mobile",
+        "country": "US",
+        "modelSize": "Unknown",
+        "sourceUrl": "https://github.com/slxmmy999/ChatGPT-Mobile",
+        "releaseDate": "2023-05-17",
+        "accessType": "Open Source",
+        "license": "Unknown",
+        "capabilities": [
+          "Conversational"
+        ],
+        "validation_notes": "License unverified; Model size not specified; GitHub repository verified",
+        "lastUpdated": "2025-07-12T05:11:52.662Z",
+        "discoveryTimestamp": "2025-07-12T05:11:52.906Z",
+        "agentVersion": "1.0.0",
+        "validationStatus": "validated"
+      }
+    },
+    {
+      "modelName": "LLaMa-Language-Model-Repository",
+      "provider": "Together AI",
+      "apiAvailable": true,
+      "registrationRequired": true,
+      "freeTier": true,
+      "authMethod": "API Key",
+      "documentationUrl": "https://docs.together.ai/",
+      "notes": "$1-25 free credits, 60 requests/minute",
+      "originalModel": {
+        "name": "LLaMa-Language-Model-Repository",
+        "shortName": "LLaMa-Language-Repository",
+        "country": "US",
+        "modelSize": "Unknown",
+        "sourceUrl": "https://github.com/ariankharazmi/LLaMa-Language-Model-Repository",
+        "releaseDate": "2023-03-15",
+        "accessType": "Open Source",
+        "license": "Unknown",
+        "capabilities": [
+          "Text Generation"
+        ],
+        "validation_notes": "License unverified; Model size not specified; GitHub repository verified",
+        "lastUpdated": "2025-07-12T05:11:52.662Z",
+        "discoveryTimestamp": "2025-07-12T05:11:52.906Z",
+        "agentVersion": "1.0.0",
+        "validationStatus": "validated"
+      }
+    },
+    {
+      "modelName": "MisDrifter/model3b_bon_v3",
+      "provider": "HuggingFace",
+      "apiAvailable": true,
+      "registrationRequired": true,
+      "freeTier": true,
+      "authMethod": "Bearer Token",
+      "documentationUrl": "https://huggingface.co/docs/api-inference/",
+      "notes": "Monthly credits for serverless inference API",
+      "originalModel": {
+        "name": "MisDrifter/model3b_bon_v3",
+        "shortName": "model3b-bon",
+        "country": "US",
+        "modelSize": "3B",
+        "sourceUrl": "https://huggingface.co/MisDrifter/model3b_bon_v3",
+        "releaseDate": "2025-07-12",
+        "accessType": "Open Source",
+        "license": "Unknown",
+        "capabilities": [
+          "Text Generation"
+        ],
+        "validation_notes": "License unverified; Country of origin unclear; HuggingFace model verified",
+        "lastUpdated": "2025-07-12T05:11:52.664Z",
+        "discoveryTimestamp": "2025-07-12T05:11:52.906Z",
+        "agentVersion": "1.0.0",
+        "validationStatus": "validated"
+      }
+    },
+    {
+      "modelName": "0xtinuviel/AceInstruct-1.5B-Gensyn-Swarm-armored_mighty_quail",
+      "provider": "HuggingFace",
+      "apiAvailable": true,
+      "registrationRequired": true,
+      "freeTier": true,
+      "authMethod": "Bearer Token",
+      "documentationUrl": "https://huggingface.co/docs/api-inference/",
+      "notes": "Monthly credits for serverless inference API",
+      "originalModel": {
+        "name": "0xtinuviel/AceInstruct-1.5B-Gensyn-Swarm-armored_mighty_quail",
+        "shortName": "AceInstruct-1.5B-Gensyn",
+        "country": "US",
+        "modelSize": "1.5B",
+        "sourceUrl": "https://huggingface.co/0xtinuviel/AceInstruct-1.5B-Gensyn-Swarm-armored_mighty_quail",
+        "releaseDate": "2025-07-12",
+        "accessType": "Open Source",
+        "license": "Unknown",
+        "capabilities": [
+          "Conversational"
+        ],
+        "validation_notes": "License unverified; HuggingFace model verified; Derived/fine-tuned model",
+        "lastUpdated": "2025-07-12T05:11:52.674Z",
+        "discoveryTimestamp": "2025-07-12T05:11:52.907Z",
+        "agentVersion": "1.0.0",
+        "validationStatus": "validated"
+      }
+    },
+    {
+      "modelName": "Mistral: Devstral Medium",
+      "provider": "Together AI / OpenRouter",
+      "apiAvailable": true,
+      "registrationRequired": true,
+      "freeTier": true,
+      "authMethod": "API Key",
+      "documentationUrl": "https://docs.together.ai/",
+      "notes": "$1-25 free credits, 60 requests/minute",
+      "originalModel": {
+        "name": "Mistral: Devstral Medium",
+        "shortName": "Mistral:-Devstral-Medium",
+        "country": "France",
+        "modelSize": "Unknown",
+        "releaseDate": "2025-07-10",
+        "sourceUrl": "https://openrouter.ai/docs",
+        "license": "Unknown",
+        "accessType": "freemium",
+        "capabilities": [
+          "Text Generation"
+        ],
+        "validation_notes": "License unverified; Model size not specified",
+        "lastUpdated": "2025-07-12T05:11:52.675Z",
+        "discoveryTimestamp": "2025-07-12T05:11:52.907Z",
+        "agentVersion": "1.0.0",
+        "validationStatus": "validated"
+      }
+    },
+    {
+      "modelName": "Mistral: Devstral Small 1.1",
+      "provider": "Together AI / OpenRouter",
+      "apiAvailable": true,
+      "registrationRequired": true,
+      "freeTier": true,
+      "authMethod": "API Key",
+      "documentationUrl": "https://docs.together.ai/",
+      "notes": "$1-25 free credits, 60 requests/minute",
+      "originalModel": {
+        "name": "Mistral: Devstral Small 1.1",
+        "shortName": "Mistral:-Devstral-Small",
+        "country": "France",
+        "modelSize": "Unknown",
+        "releaseDate": "2025-07-10",
+        "sourceUrl": "https://openrouter.ai/docs",
+        "license": "Unknown",
+        "accessType": "freemium",
+        "capabilities": [
+          "Text Generation"
+        ],
+        "validation_notes": "License unverified; Model size not specified",
+        "lastUpdated": "2025-07-12T05:11:52.676Z",
+        "discoveryTimestamp": "2025-07-12T05:11:52.907Z",
+        "agentVersion": "1.0.0",
+        "validationStatus": "validated"
+      }
+    },
+    {
+      "modelName": "Mistral: Mistral Small 3.2 24B (free)",
+      "provider": "Together AI / OpenRouter",
+      "apiAvailable": true,
+      "registrationRequired": true,
+      "freeTier": true,
+      "authMethod": "API Key",
+      "documentationUrl": "https://docs.together.ai/",
+      "notes": "$1-25 free credits, 60 requests/minute",
+      "originalModel": {
+        "name": "Mistral: Mistral Small 3.2 24B (free)",
+        "shortName": "Mistral:-Mistral-Small",
+        "country": "France",
+        "modelSize": "24B",
+        "releaseDate": "2025-06-20",
+        "sourceUrl": "https://openrouter.ai/docs",
+        "license": "Unknown",
+        "accessType": "freemium",
+        "capabilities": [
+          "Text Generation"
+        ],
+        "validation_notes": "License unverified",
+        "lastUpdated": "2025-07-12T05:11:52.676Z",
+        "discoveryTimestamp": "2025-07-12T05:11:52.907Z",
+        "agentVersion": "1.0.0",
+        "validationStatus": "validated"
+      }
+    },
+    {
+      "modelName": "Mistral: Mistral Small 3.2 24B",
+      "provider": "Together AI / OpenRouter",
+      "apiAvailable": true,
+      "registrationRequired": true,
+      "freeTier": true,
+      "authMethod": "API Key",
+      "documentationUrl": "https://docs.together.ai/",
+      "notes": "$1-25 free credits, 60 requests/minute",
+      "originalModel": {
+        "name": "Mistral: Mistral Small 3.2 24B",
+        "shortName": "Mistral:-Mistral-Small",
+        "country": "France",
+        "modelSize": "24B",
+        "releaseDate": "2025-06-20",
+        "sourceUrl": "https://openrouter.ai/docs",
+        "license": "Unknown",
+        "accessType": "freemium",
+        "capabilities": [
+          "Text Generation"
+        ],
+        "validation_notes": "License unverified",
+        "lastUpdated": "2025-07-12T05:11:52.676Z",
+        "discoveryTimestamp": "2025-07-12T05:11:52.907Z",
+        "agentVersion": "1.0.0",
+        "validationStatus": "validated"
+      }
+    },
+    {
+      "modelName": "Mistral: Magistral Small 2506",
+      "provider": "Together AI / OpenRouter",
+      "apiAvailable": true,
+      "registrationRequired": true,
+      "freeTier": true,
+      "authMethod": "API Key",
+      "documentationUrl": "https://docs.together.ai/",
+      "notes": "$1-25 free credits, 60 requests/minute",
+      "originalModel": {
+        "name": "Mistral: Magistral Small 2506",
+        "shortName": "Mistral:-Magistral-Small",
+        "country": "France",
+        "modelSize": "Unknown",
+        "releaseDate": "2025-06-10",
+        "sourceUrl": "https://openrouter.ai/docs",
+        "license": "Unknown",
+        "accessType": "freemium",
+        "capabilities": [
+          "Text Generation"
+        ],
+        "validation_notes": "License unverified; Model size not specified",
+        "lastUpdated": "2025-07-12T05:11:52.676Z",
+        "discoveryTimestamp": "2025-07-12T05:11:52.907Z",
+        "agentVersion": "1.0.0",
+        "validationStatus": "validated"
+      }
+    },
+    {
+      "modelName": "Mistral: Magistral Medium 2506",
+      "provider": "Together AI / OpenRouter",
+      "apiAvailable": true,
+      "registrationRequired": true,
+      "freeTier": true,
+      "authMethod": "API Key",
+      "documentationUrl": "https://docs.together.ai/",
+      "notes": "$1-25 free credits, 60 requests/minute",
+      "originalModel": {
+        "name": "Mistral: Magistral Medium 2506",
+        "shortName": "Mistral:-Magistral-Medium",
+        "country": "France",
+        "modelSize": "Unknown",
+        "releaseDate": "2025-06-08",
+        "sourceUrl": "https://openrouter.ai/docs",
+        "license": "Unknown",
+        "accessType": "freemium",
+        "capabilities": [
+          "Text Generation"
+        ],
+        "validation_notes": "License unverified; Model size not specified",
+        "lastUpdated": "2025-07-12T05:11:52.677Z",
+        "discoveryTimestamp": "2025-07-12T05:11:52.907Z",
+        "agentVersion": "1.0.0",
+        "validationStatus": "validated"
+      }
+    },
+    {
+      "modelName": "Mistral: Magistral Medium 2506 (thinking)",
+      "provider": "Together AI / OpenRouter",
+      "apiAvailable": true,
+      "registrationRequired": true,
+      "freeTier": true,
+      "authMethod": "API Key",
+      "documentationUrl": "https://docs.together.ai/",
+      "notes": "$1-25 free credits, 60 requests/minute",
+      "originalModel": {
+        "name": "Mistral: Magistral Medium 2506 (thinking)",
+        "shortName": "Mistral:-Magistral-Medium",
+        "country": "France",
+        "modelSize": "Unknown",
+        "releaseDate": "2025-06-08",
+        "sourceUrl": "https://openrouter.ai/docs",
+        "license": "Unknown",
+        "accessType": "freemium",
+        "capabilities": [
+          "Text Generation"
+        ],
+        "validation_notes": "License unverified; Model size not specified",
+        "lastUpdated": "2025-07-12T05:11:52.677Z",
+        "discoveryTimestamp": "2025-07-12T05:11:52.907Z",
+        "agentVersion": "1.0.0",
+        "validationStatus": "validated"
+      }
+    },
+    {
+      "modelName": "Mistral: Devstral Small 2505 (free)",
+      "provider": "Together AI / OpenRouter",
+      "apiAvailable": true,
+      "registrationRequired": true,
+      "freeTier": true,
+      "authMethod": "API Key",
+      "documentationUrl": "https://docs.together.ai/",
+      "notes": "$1-25 free credits, 60 requests/minute",
+      "originalModel": {
+        "name": "Mistral: Devstral Small 2505 (free)",
+        "shortName": "Mistral:-Devstral-Small",
+        "country": "France",
+        "modelSize": "Unknown",
+        "releaseDate": "2025-05-21",
+        "sourceUrl": "https://openrouter.ai/docs",
+        "license": "Unknown",
+        "accessType": "freemium",
+        "capabilities": [
+          "Text Generation"
+        ],
+        "validation_notes": "License unverified; Model size not specified",
+        "lastUpdated": "2025-07-12T05:11:52.677Z",
+        "discoveryTimestamp": "2025-07-12T05:11:52.908Z",
+        "agentVersion": "1.0.0",
+        "validationStatus": "validated"
+      }
+    },
+    {
+      "modelName": "Mistral: Devstral Small 2505",
+      "provider": "Together AI / OpenRouter",
+      "apiAvailable": true,
+      "registrationRequired": true,
+      "freeTier": true,
+      "authMethod": "API Key",
+      "documentationUrl": "https://docs.together.ai/",
+      "notes": "$1-25 free credits, 60 requests/minute",
+      "originalModel": {
+        "name": "Mistral: Devstral Small 2505",
+        "shortName": "Mistral:-Devstral-Small",
+        "country": "France",
+        "modelSize": "Unknown",
+        "releaseDate": "2025-05-21",
+        "sourceUrl": "https://openrouter.ai/docs",
+        "license": "Unknown",
+        "accessType": "freemium",
+        "capabilities": [
+          "Text Generation"
+        ],
+        "validation_notes": "License unverified; Model size not specified",
+        "lastUpdated": "2025-07-12T05:11:52.677Z",
+        "discoveryTimestamp": "2025-07-12T05:11:52.908Z",
+        "agentVersion": "1.0.0",
+        "validationStatus": "validated"
+      }
+    },
+    {
+      "modelName": "Mistral: Mistral Medium 3",
+      "provider": "Together AI / OpenRouter",
+      "apiAvailable": true,
+      "registrationRequired": true,
+      "freeTier": true,
+      "authMethod": "API Key",
+      "documentationUrl": "https://docs.together.ai/",
+      "notes": "$1-25 free credits, 60 requests/minute",
+      "originalModel": {
+        "name": "Mistral: Mistral Medium 3",
+        "shortName": "Mistral:-Mistral-Medium",
+        "country": "France",
+        "modelSize": "Unknown",
+        "releaseDate": "2025-05-07",
+        "sourceUrl": "https://openrouter.ai/docs",
+        "license": "Unknown",
+        "accessType": "freemium",
+        "capabilities": [
+          "Text Generation"
+        ],
+        "validation_notes": "License unverified; Model size not specified",
+        "lastUpdated": "2025-07-12T05:11:52.678Z",
+        "discoveryTimestamp": "2025-07-12T05:11:52.908Z",
+        "agentVersion": "1.0.0",
+        "validationStatus": "validated"
+      }
+    },
+    {
+      "modelName": "Meta: Llama Guard 4 12B",
+      "provider": "Together AI",
+      "apiAvailable": true,
+      "registrationRequired": true,
+      "freeTier": true,
+      "authMethod": "API Key",
+      "documentationUrl": "https://docs.together.ai/",
+      "notes": "$1-25 free credits, 60 requests/minute",
+      "originalModel": {
+        "name": "Meta: Llama Guard 4 12B",
+        "shortName": "Meta:-Llama-Guard",
+        "country": "US",
+        "modelSize": "12B",
+        "releaseDate": "2025-04-30",
+        "sourceUrl": "https://openrouter.ai/docs",
+        "license": "Unknown",
+        "accessType": "freemium",
+        "capabilities": [
+          "Text Generation"
+        ],
+        "validation_notes": "License unverified",
+        "lastUpdated": "2025-07-12T05:11:52.678Z",
+        "discoveryTimestamp": "2025-07-12T05:11:52.908Z",
+        "agentVersion": "1.0.0",
+        "validationStatus": "validated"
+      }
+    },
+    {
+      "modelName": "Shisa AI: Shisa V2 Llama 3.3 70B  (free)",
+      "provider": "Together AI",
+      "apiAvailable": true,
+      "registrationRequired": true,
+      "freeTier": true,
+      "authMethod": "API Key",
+      "documentationUrl": "https://docs.together.ai/",
+      "notes": "$1-25 free credits, 60 requests/minute",
+      "originalModel": {
+        "name": "Shisa AI: Shisa V2 Llama 3.3 70B  (free)",
+        "shortName": "Shisa-AI:-Shisa",
+        "country": "US",
+        "modelSize": "70B",
+        "releaseDate": "2025-04-15",
+        "sourceUrl": "https://openrouter.ai/docs",
+        "license": "Unknown",
+        "accessType": "freemium",
+        "capabilities": [
+          "Text Generation"
+        ],
+        "validation_notes": "License unverified",
+        "lastUpdated": "2025-07-12T05:11:52.678Z",
+        "discoveryTimestamp": "2025-07-12T05:11:52.908Z",
+        "agentVersion": "1.0.0",
+        "validationStatus": "validated"
+      }
+    },
+    {
+      "modelName": "AlfredPros: CodeLLaMa 7B Instruct Solidity",
+      "provider": "Together AI",
+      "apiAvailable": true,
+      "registrationRequired": true,
+      "freeTier": true,
+      "authMethod": "API Key",
+      "documentationUrl": "https://docs.together.ai/",
+      "notes": "$1-25 free credits, 60 requests/minute",
+      "originalModel": {
+        "name": "AlfredPros: CodeLLaMa 7B Instruct Solidity",
+        "shortName": "AlfredPros:-CodeLLaMa-Solidity",
+        "country": "US",
+        "modelSize": "7B",
+        "releaseDate": "2025-04-14",
+        "sourceUrl": "https://openrouter.ai/docs",
+        "license": "Unknown",
+        "accessType": "freemium",
+        "capabilities": [
+          "Conversational",
+          "Code Generation"
+        ],
+        "validation_notes": "License unverified",
+        "lastUpdated": "2025-07-12T05:11:52.678Z",
+        "discoveryTimestamp": "2025-07-12T05:11:52.908Z",
+        "agentVersion": "1.0.0",
+        "validationStatus": "validated"
+      }
+    },
+    {
+      "modelName": "NVIDIA: Llama 3.3 Nemotron Super 49B v1 (free)",
+      "provider": "Together AI",
+      "apiAvailable": true,
+      "registrationRequired": true,
+      "freeTier": true,
+      "authMethod": "API Key",
+      "documentationUrl": "https://docs.together.ai/",
+      "notes": "$1-25 free credits, 60 requests/minute",
+      "originalModel": {
+        "name": "NVIDIA: Llama 3.3 Nemotron Super 49B v1 (free)",
+        "shortName": "NVIDIA:-Llama-3.3",
+        "country": "US",
+        "modelSize": "49B",
+        "releaseDate": "2025-04-08",
+        "sourceUrl": "https://openrouter.ai/docs",
+        "license": "Unknown",
+        "accessType": "freemium",
+        "capabilities": [
+          "Text Generation"
+        ],
+        "validation_notes": "License unverified",
+        "lastUpdated": "2025-07-12T05:11:52.678Z",
+        "discoveryTimestamp": "2025-07-12T05:11:52.908Z",
+        "agentVersion": "1.0.0",
+        "validationStatus": "validated"
+      }
+    },
+    {
+      "modelName": "NVIDIA: Llama 3.3 Nemotron Super 49B v1",
+      "provider": "Together AI",
+      "apiAvailable": true,
+      "registrationRequired": true,
+      "freeTier": true,
+      "authMethod": "API Key",
+      "documentationUrl": "https://docs.together.ai/",
+      "notes": "$1-25 free credits, 60 requests/minute",
+      "originalModel": {
+        "name": "NVIDIA: Llama 3.3 Nemotron Super 49B v1",
+        "shortName": "NVIDIA:-Llama-3.3",
+        "country": "US",
+        "modelSize": "49B",
+        "releaseDate": "2025-04-08",
+        "sourceUrl": "https://openrouter.ai/docs",
+        "license": "Unknown",
+        "accessType": "freemium",
+        "capabilities": [
+          "Text Generation"
+        ],
+        "validation_notes": "License unverified",
+        "lastUpdated": "2025-07-12T05:11:52.679Z",
+        "discoveryTimestamp": "2025-07-12T05:11:52.908Z",
+        "agentVersion": "1.0.0",
+        "validationStatus": "validated"
+      }
+    },
+    {
+      "modelName": "NVIDIA: Llama 3.1 Nemotron Ultra 253B v1 (free)",
+      "provider": "Together AI",
+      "apiAvailable": true,
+      "registrationRequired": true,
+      "freeTier": true,
+      "authMethod": "API Key",
+      "documentationUrl": "https://docs.together.ai/",
+      "notes": "$1-25 free credits, 60 requests/minute",
+      "originalModel": {
+        "name": "NVIDIA: Llama 3.1 Nemotron Ultra 253B v1 (free)",
+        "shortName": "NVIDIA:-Llama-3.1",
+        "country": "US",
+        "modelSize": "253B",
+        "releaseDate": "2025-04-08",
+        "sourceUrl": "https://openrouter.ai/docs",
+        "license": "Unknown",
+        "accessType": "freemium",
+        "capabilities": [
+          "Text Generation"
+        ],
+        "validation_notes": "License unverified",
+        "lastUpdated": "2025-07-12T05:11:52.679Z",
+        "discoveryTimestamp": "2025-07-12T05:11:52.908Z",
+        "agentVersion": "1.0.0",
+        "validationStatus": "validated"
+      }
+    },
+    {
+      "modelName": "NVIDIA: Llama 3.1 Nemotron Ultra 253B v1",
+      "provider": "Together AI",
+      "apiAvailable": true,
+      "registrationRequired": true,
+      "freeTier": true,
+      "authMethod": "API Key",
+      "documentationUrl": "https://docs.together.ai/",
+      "notes": "$1-25 free credits, 60 requests/minute",
+      "originalModel": {
+        "name": "NVIDIA: Llama 3.1 Nemotron Ultra 253B v1",
+        "shortName": "NVIDIA:-Llama-3.1",
+        "country": "US",
+        "modelSize": "253B",
+        "releaseDate": "2025-04-08",
+        "sourceUrl": "https://openrouter.ai/docs",
+        "license": "Unknown",
+        "accessType": "freemium",
+        "capabilities": [
+          "Text Generation"
+        ],
+        "validation_notes": "License unverified",
+        "lastUpdated": "2025-07-12T05:11:52.679Z",
+        "discoveryTimestamp": "2025-07-12T05:11:52.908Z",
+        "agentVersion": "1.0.0",
+        "validationStatus": "validated"
+      }
+    },
+    {
+      "modelName": "Meta: Llama 4 Maverick (free)",
+      "provider": "Together AI",
+      "apiAvailable": true,
+      "registrationRequired": true,
+      "freeTier": true,
+      "authMethod": "API Key",
+      "documentationUrl": "https://docs.together.ai/",
+      "notes": "$1-25 free credits, 60 requests/minute",
+      "originalModel": {
+        "name": "Meta: Llama 4 Maverick (free)",
+        "shortName": "Meta:-Llama-Maverick",
+        "country": "US",
+        "modelSize": "Unknown",
+        "releaseDate": "2025-04-05",
+        "sourceUrl": "https://openrouter.ai/docs",
+        "license": "Unknown",
+        "accessType": "freemium",
+        "capabilities": [
+          "Text Generation"
+        ],
+        "validation_notes": "License unverified; Model size not specified",
+        "lastUpdated": "2025-07-12T05:11:52.679Z",
+        "discoveryTimestamp": "2025-07-12T05:11:52.908Z",
+        "agentVersion": "1.0.0",
+        "validationStatus": "validated"
+      }
+    },
+    {
+      "modelName": "Meta: Llama 4 Maverick",
+      "provider": "Together AI",
+      "apiAvailable": true,
+      "registrationRequired": true,
+      "freeTier": true,
+      "authMethod": "API Key",
+      "documentationUrl": "https://docs.together.ai/",
+      "notes": "$1-25 free credits, 60 requests/minute",
+      "originalModel": {
+        "name": "Meta: Llama 4 Maverick",
+        "shortName": "Meta:-Llama-Maverick",
+        "country": "US",
+        "modelSize": "Unknown",
+        "releaseDate": "2025-04-05",
+        "sourceUrl": "https://openrouter.ai/docs",
+        "license": "Unknown",
+        "accessType": "freemium",
+        "capabilities": [
+          "Text Generation"
+        ],
+        "validation_notes": "License unverified; Model size not specified",
+        "lastUpdated": "2025-07-12T05:11:52.679Z",
+        "discoveryTimestamp": "2025-07-12T05:11:52.908Z",
+        "agentVersion": "1.0.0",
+        "validationStatus": "validated"
+      }
+    },
+    {
+      "modelName": "Meta: Llama 4 Scout (free)",
+      "provider": "Together AI",
+      "apiAvailable": true,
+      "registrationRequired": true,
+      "freeTier": true,
+      "authMethod": "API Key",
+      "documentationUrl": "https://docs.together.ai/",
+      "notes": "$1-25 free credits, 60 requests/minute",
+      "originalModel": {
+        "name": "Meta: Llama 4 Scout (free)",
+        "shortName": "Meta:-Llama-Scout",
+        "country": "US",
+        "modelSize": "Unknown",
+        "releaseDate": "2025-04-05",
+        "sourceUrl": "https://openrouter.ai/docs",
+        "license": "Unknown",
+        "accessType": "freemium",
+        "capabilities": [
+          "Text Generation"
+        ],
+        "validation_notes": "License unverified; Model size not specified",
+        "lastUpdated": "2025-07-12T05:11:52.679Z",
+        "discoveryTimestamp": "2025-07-12T05:11:52.908Z",
+        "agentVersion": "1.0.0",
+        "validationStatus": "validated"
+      }
+    },
+    {
+      "modelName": "Meta: Llama 4 Scout",
+      "provider": "Together AI",
+      "apiAvailable": true,
+      "registrationRequired": true,
+      "freeTier": true,
+      "authMethod": "API Key",
+      "documentationUrl": "https://docs.together.ai/",
+      "notes": "$1-25 free credits, 60 requests/minute",
+      "originalModel": {
+        "name": "Meta: Llama 4 Scout",
+        "shortName": "Meta:-Llama-Scout",
+        "country": "US",
+        "modelSize": "Unknown",
+        "releaseDate": "2025-04-05",
+        "sourceUrl": "https://openrouter.ai/docs",
+        "license": "Unknown",
+        "accessType": "freemium",
+        "capabilities": [
+          "Text Generation"
+        ],
+        "validation_notes": "License unverified; Model size not specified",
+        "lastUpdated": "2025-07-12T05:11:52.679Z",
+        "discoveryTimestamp": "2025-07-12T05:11:52.908Z",
+        "agentVersion": "1.0.0",
+        "validationStatus": "validated"
+      }
+    },
+    {
+      "modelName": "Mistral: Mistral Small 3.1 24B (free)",
+      "provider": "Together AI / OpenRouter",
+      "apiAvailable": true,
+      "registrationRequired": true,
+      "freeTier": true,
+      "authMethod": "API Key",
+      "documentationUrl": "https://docs.together.ai/",
+      "notes": "$1-25 free credits, 60 requests/minute",
+      "originalModel": {
+        "name": "Mistral: Mistral Small 3.1 24B (free)",
+        "shortName": "Mistral:-Mistral-Small",
+        "country": "France",
+        "modelSize": "24B",
+        "releaseDate": "2025-03-17",
+        "sourceUrl": "https://openrouter.ai/docs",
+        "license": "Unknown",
+        "accessType": "freemium",
+        "capabilities": [
+          "Text Generation"
+        ],
+        "validation_notes": "License unverified",
+        "lastUpdated": "2025-07-12T05:11:52.680Z",
+        "discoveryTimestamp": "2025-07-12T05:11:52.908Z",
+        "agentVersion": "1.0.0",
+        "validationStatus": "validated"
+      }
+    },
+    {
+      "modelName": "Mistral: Mistral Small 3.1 24B",
+      "provider": "Together AI / OpenRouter",
+      "apiAvailable": true,
+      "registrationRequired": true,
+      "freeTier": true,
+      "authMethod": "API Key",
+      "documentationUrl": "https://docs.together.ai/",
+      "notes": "$1-25 free credits, 60 requests/minute",
+      "originalModel": {
+        "name": "Mistral: Mistral Small 3.1 24B",
+        "shortName": "Mistral:-Mistral-Small",
+        "country": "France",
+        "modelSize": "24B",
+        "releaseDate": "2025-03-17",
+        "sourceUrl": "https://openrouter.ai/docs",
+        "license": "Unknown",
+        "accessType": "freemium",
+        "capabilities": [
+          "Text Generation"
+        ],
+        "validation_notes": "License unverified",
+        "lastUpdated": "2025-07-12T05:11:52.680Z",
+        "discoveryTimestamp": "2025-07-12T05:11:52.908Z",
+        "agentVersion": "1.0.0",
+        "validationStatus": "validated"
+      }
+    },
+    {
+      "modelName": "Nous: DeepHermes 3 Llama 3 8B Preview (free)",
+      "provider": "Together AI",
+      "apiAvailable": true,
+      "registrationRequired": true,
+      "freeTier": true,
+      "authMethod": "API Key",
+      "documentationUrl": "https://docs.together.ai/",
+      "notes": "$1-25 free credits, 60 requests/minute",
+      "originalModel": {
+        "name": "Nous: DeepHermes 3 Llama 3 8B Preview (free)",
+        "shortName": "Nous:-DeepHermes-Llama",
+        "country": "US",
+        "modelSize": "8B",
+        "releaseDate": "2025-02-28",
+        "sourceUrl": "https://openrouter.ai/docs",
+        "license": "Unknown",
+        "accessType": "freemium",
+        "capabilities": [
+          "Text Generation"
+        ],
+        "validation_notes": "License unverified",
+        "lastUpdated": "2025-07-12T05:11:52.680Z",
+        "discoveryTimestamp": "2025-07-12T05:11:52.908Z",
+        "agentVersion": "1.0.0",
+        "validationStatus": "validated"
+      }
+    },
+    {
+      "modelName": "Mistral: Saba",
+      "provider": "Together AI / OpenRouter",
+      "apiAvailable": true,
+      "registrationRequired": true,
+      "freeTier": true,
+      "authMethod": "API Key",
+      "documentationUrl": "https://docs.together.ai/",
+      "notes": "$1-25 free credits, 60 requests/minute",
+      "originalModel": {
+        "name": "Mistral: Saba",
+        "shortName": "Mistral:-Saba",
+        "country": "France",
+        "modelSize": "Unknown",
+        "releaseDate": "2025-02-17",
+        "sourceUrl": "https://openrouter.ai/docs",
+        "license": "Unknown",
+        "accessType": "freemium",
+        "capabilities": [
+          "Text Generation"
+        ],
+        "validation_notes": "License unverified; Model size not specified",
+        "lastUpdated": "2025-07-12T05:11:52.681Z",
+        "discoveryTimestamp": "2025-07-12T05:11:52.908Z",
+        "agentVersion": "1.0.0",
+        "validationStatus": "validated"
+      }
+    },
+    {
+      "modelName": "Dolphin3.0 R1 Mistral 24B (free)",
+      "provider": "Together AI / OpenRouter",
+      "apiAvailable": true,
+      "registrationRequired": true,
+      "freeTier": true,
+      "authMethod": "API Key",
+      "documentationUrl": "https://docs.together.ai/",
+      "notes": "$1-25 free credits, 60 requests/minute",
+      "originalModel": {
+        "name": "Dolphin3.0 R1 Mistral 24B (free)",
+        "shortName": "Dolphin3.0-Mistral-24B",
+        "country": "US",
+        "modelSize": "24B",
+        "releaseDate": "2025-02-13",
+        "sourceUrl": "https://openrouter.ai/docs",
+        "license": "Unknown",
+        "accessType": "freemium",
+        "capabilities": [
+          "Text Generation"
+        ],
+        "validation_notes": "License unverified",
+        "lastUpdated": "2025-07-12T05:11:52.681Z",
+        "discoveryTimestamp": "2025-07-12T05:11:52.908Z",
+        "agentVersion": "1.0.0",
+        "validationStatus": "validated"
+      }
+    },
+    {
+      "modelName": "Dolphin3.0 Mistral 24B (free)",
+      "provider": "Together AI / OpenRouter",
+      "apiAvailable": true,
+      "registrationRequired": true,
+      "freeTier": true,
+      "authMethod": "API Key",
+      "documentationUrl": "https://docs.together.ai/",
+      "notes": "$1-25 free credits, 60 requests/minute",
+      "originalModel": {
+        "name": "Dolphin3.0 Mistral 24B (free)",
+        "shortName": "Dolphin3.0-Mistral-24B",
+        "country": "US",
+        "modelSize": "24B",
+        "releaseDate": "2025-02-13",
+        "sourceUrl": "https://openrouter.ai/docs",
+        "license": "Unknown",
+        "accessType": "freemium",
+        "capabilities": [
+          "Text Generation"
+        ],
+        "validation_notes": "License unverified",
+        "lastUpdated": "2025-07-12T05:11:52.681Z",
+        "discoveryTimestamp": "2025-07-12T05:11:52.908Z",
+        "agentVersion": "1.0.0",
+        "validationStatus": "validated"
+      }
+    },
+    {
+      "modelName": "Llama Guard 3 8B",
+      "provider": "Together AI",
+      "apiAvailable": true,
+      "registrationRequired": true,
+      "freeTier": true,
+      "authMethod": "API Key",
+      "documentationUrl": "https://docs.together.ai/",
+      "notes": "$1-25 free credits, 60 requests/minute",
+      "originalModel": {
+        "name": "Llama Guard 3 8B",
+        "shortName": "Llama-Guard",
+        "country": "US",
+        "modelSize": "8B",
+        "releaseDate": "2025-02-12",
+        "sourceUrl": "https://openrouter.ai/docs",
+        "license": "Unknown",
+        "accessType": "freemium",
+        "capabilities": [
+          "Text Generation"
+        ],
+        "validation_notes": "License unverified",
+        "lastUpdated": "2025-07-12T05:11:52.681Z",
+        "discoveryTimestamp": "2025-07-12T05:11:52.908Z",
+        "agentVersion": "1.0.0",
+        "validationStatus": "validated"
+      }
+    },
+    {
+      "modelName": "Mistral: Mistral Small 3 (free)",
+      "provider": "Together AI / OpenRouter",
+      "apiAvailable": true,
+      "registrationRequired": true,
+      "freeTier": true,
+      "authMethod": "API Key",
+      "documentationUrl": "https://docs.together.ai/",
+      "notes": "$1-25 free credits, 60 requests/minute",
+      "originalModel": {
+        "name": "Mistral: Mistral Small 3 (free)",
+        "shortName": "Mistral:-Mistral-Small",
+        "country": "France",
+        "modelSize": "Unknown",
+        "releaseDate": "2025-01-30",
+        "sourceUrl": "https://openrouter.ai/docs",
+        "license": "Unknown",
+        "accessType": "freemium",
+        "capabilities": [
+          "Text Generation"
+        ],
+        "validation_notes": "License unverified; Model size not specified",
+        "lastUpdated": "2025-07-12T05:11:52.682Z",
+        "discoveryTimestamp": "2025-07-12T05:11:52.908Z",
+        "agentVersion": "1.0.0",
+        "validationStatus": "validated"
+      }
+    },
+    {
+      "modelName": "Mistral: Mistral Small 3",
+      "provider": "Together AI / OpenRouter",
+      "apiAvailable": true,
+      "registrationRequired": true,
+      "freeTier": true,
+      "authMethod": "API Key",
+      "documentationUrl": "https://docs.together.ai/",
+      "notes": "$1-25 free credits, 60 requests/minute",
+      "originalModel": {
+        "name": "Mistral: Mistral Small 3",
+        "shortName": "Mistral:-Mistral-Small",
+        "country": "France",
+        "modelSize": "Unknown",
+        "releaseDate": "2025-01-30",
+        "sourceUrl": "https://openrouter.ai/docs",
+        "license": "Unknown",
+        "accessType": "freemium",
+        "capabilities": [
+          "Text Generation"
+        ],
+        "validation_notes": "License unverified; Model size not specified",
+        "lastUpdated": "2025-07-12T05:11:52.682Z",
+        "discoveryTimestamp": "2025-07-12T05:11:52.908Z",
+        "agentVersion": "1.0.0",
+        "validationStatus": "validated"
+      }
+    },
+    {
+      "modelName": "Mistral: Codestral 2501",
+      "provider": "Together AI / OpenRouter",
+      "apiAvailable": true,
+      "registrationRequired": true,
+      "freeTier": true,
+      "authMethod": "API Key",
+      "documentationUrl": "https://docs.together.ai/",
+      "notes": "$1-25 free credits, 60 requests/minute",
+      "originalModel": {
+        "name": "Mistral: Codestral 2501",
+        "shortName": "Mistral:-Codestral-2501",
+        "country": "France",
+        "modelSize": "Unknown",
+        "releaseDate": "2025-01-14",
+        "sourceUrl": "https://openrouter.ai/docs",
+        "license": "Unknown",
+        "accessType": "freemium",
+        "capabilities": [
+          "Code Generation"
+        ],
+        "validation_notes": "License unverified; Model size not specified",
+        "lastUpdated": "2025-07-12T05:11:52.683Z",
+        "discoveryTimestamp": "2025-07-12T05:11:52.908Z",
+        "agentVersion": "1.0.0",
+        "validationStatus": "validated"
+      }
+    },
+    {
+      "modelName": "Sao10K: Llama 3.3 Euryale 70B",
+      "provider": "Together AI",
+      "apiAvailable": true,
+      "registrationRequired": true,
+      "freeTier": true,
+      "authMethod": "API Key",
+      "documentationUrl": "https://docs.together.ai/",
+      "notes": "$1-25 free credits, 60 requests/minute",
+      "originalModel": {
+        "name": "Sao10K: Llama 3.3 Euryale 70B",
+        "shortName": "Sao10K:-Llama-3.3",
+        "country": "US",
+        "modelSize": "70B",
+        "releaseDate": "2024-12-18",
+        "sourceUrl": "https://openrouter.ai/docs",
+        "license": "Unknown",
+        "accessType": "freemium",
+        "capabilities": [
+          "Text Generation"
+        ],
+        "validation_notes": "License unverified",
+        "lastUpdated": "2025-07-12T05:11:52.683Z",
+        "discoveryTimestamp": "2025-07-12T05:11:52.908Z",
+        "agentVersion": "1.0.0",
+        "validationStatus": "validated"
+      }
+    },
+    {
+      "modelName": "EVA Llama 3.33 70B",
+      "provider": "Together AI",
+      "apiAvailable": true,
+      "registrationRequired": true,
+      "freeTier": true,
+      "authMethod": "API Key",
+      "documentationUrl": "https://docs.together.ai/",
+      "notes": "$1-25 free credits, 60 requests/minute",
+      "originalModel": {
+        "name": "EVA Llama 3.33 70B",
+        "shortName": "EVA-Llama-3.33",
+        "country": "US",
+        "modelSize": "70B",
+        "releaseDate": "2024-12-16",
+        "sourceUrl": "https://openrouter.ai/docs",
+        "license": "Unknown",
+        "accessType": "freemium",
+        "capabilities": [
+          "Text Generation"
+        ],
+        "validation_notes": "License unverified",
+        "lastUpdated": "2025-07-12T05:11:52.685Z",
+        "discoveryTimestamp": "2025-07-12T05:11:52.908Z",
+        "agentVersion": "1.0.0",
+        "validationStatus": "validated"
+      }
+    },
+    {
+      "modelName": "Meta: Llama 3.3 70B Instruct (free)",
+      "provider": "Together AI",
+      "apiAvailable": true,
+      "registrationRequired": true,
+      "freeTier": true,
+      "authMethod": "API Key",
+      "documentationUrl": "https://docs.together.ai/",
+      "notes": "$1-25 free credits, 60 requests/minute",
+      "originalModel": {
+        "name": "Meta: Llama 3.3 70B Instruct (free)",
+        "shortName": "Meta:-Llama-3.3",
+        "country": "US",
+        "modelSize": "70B",
+        "releaseDate": "2024-12-06",
+        "sourceUrl": "https://openrouter.ai/docs",
+        "license": "Unknown",
+        "accessType": "freemium",
+        "capabilities": [
+          "Conversational"
+        ],
+        "validation_notes": "License unverified",
+        "lastUpdated": "2025-07-12T05:11:52.685Z",
+        "discoveryTimestamp": "2025-07-12T05:11:52.908Z",
+        "agentVersion": "1.0.0",
+        "validationStatus": "validated"
+      }
+    },
+    {
+      "modelName": "Meta: Llama 3.3 70B Instruct",
+      "provider": "Together AI",
+      "apiAvailable": true,
+      "registrationRequired": true,
+      "freeTier": true,
+      "authMethod": "API Key",
+      "documentationUrl": "https://docs.together.ai/",
+      "notes": "$1-25 free credits, 60 requests/minute",
+      "originalModel": {
+        "name": "Meta: Llama 3.3 70B Instruct",
+        "shortName": "Meta:-Llama-3.3",
+        "country": "US",
+        "modelSize": "70B",
+        "releaseDate": "2024-12-06",
+        "sourceUrl": "https://openrouter.ai/docs",
+        "license": "Unknown",
+        "accessType": "freemium",
+        "capabilities": [
+          "Conversational"
+        ],
+        "validation_notes": "License unverified",
+        "lastUpdated": "2025-07-12T05:11:52.685Z",
+        "discoveryTimestamp": "2025-07-12T05:11:52.908Z",
+        "agentVersion": "1.0.0",
+        "validationStatus": "validated"
+      }
+    },
+    {
+      "modelName": "Mistral Large 2411",
+      "provider": "Together AI / OpenRouter",
+      "apiAvailable": true,
+      "registrationRequired": true,
+      "freeTier": true,
+      "authMethod": "API Key",
+      "documentationUrl": "https://docs.together.ai/",
+      "notes": "$1-25 free credits, 60 requests/minute",
+      "originalModel": {
+        "name": "Mistral Large 2411",
+        "shortName": "Mistral-Large-2411",
+        "country": "France",
+        "modelSize": "Unknown",
+        "releaseDate": "2024-11-19",
+        "sourceUrl": "https://openrouter.ai/docs",
+        "license": "Unknown",
+        "accessType": "freemium",
+        "capabilities": [
+          "Text Generation"
+        ],
+        "validation_notes": "License unverified; Model size not specified",
+        "lastUpdated": "2025-07-12T05:11:52.685Z",
+        "discoveryTimestamp": "2025-07-12T05:11:52.908Z",
+        "agentVersion": "1.0.0",
+        "validationStatus": "validated"
+      }
+    },
+    {
+      "modelName": "Mistral Large 2407",
+      "provider": "Together AI / OpenRouter",
+      "apiAvailable": true,
+      "registrationRequired": true,
+      "freeTier": true,
+      "authMethod": "API Key",
+      "documentationUrl": "https://docs.together.ai/",
+      "notes": "$1-25 free credits, 60 requests/minute",
+      "originalModel": {
+        "name": "Mistral Large 2407",
+        "shortName": "Mistral-Large-2407",
+        "country": "France",
+        "modelSize": "Unknown",
+        "releaseDate": "2024-11-19",
+        "sourceUrl": "https://openrouter.ai/docs",
+        "license": "Unknown",
+        "accessType": "freemium",
+        "capabilities": [
+          "Text Generation"
+        ],
+        "validation_notes": "License unverified; Model size not specified",
+        "lastUpdated": "2025-07-12T05:11:52.686Z",
+        "discoveryTimestamp": "2025-07-12T05:11:52.908Z",
+        "agentVersion": "1.0.0",
+        "validationStatus": "validated"
+      }
+    },
+    {
+      "modelName": "Mistral: Pixtral Large 2411",
+      "provider": "Together AI / OpenRouter",
+      "apiAvailable": true,
+      "registrationRequired": true,
+      "freeTier": true,
+      "authMethod": "API Key",
+      "documentationUrl": "https://docs.together.ai/",
+      "notes": "$1-25 free credits, 60 requests/minute",
+      "originalModel": {
+        "name": "Mistral: Pixtral Large 2411",
+        "shortName": "Mistral:-Pixtral-Large",
+        "country": "France",
+        "modelSize": "Unknown",
+        "releaseDate": "2024-11-19",
+        "sourceUrl": "https://openrouter.ai/docs",
+        "license": "Unknown",
+        "accessType": "freemium",
+        "capabilities": [
+          "Text Generation"
+        ],
+        "validation_notes": "License unverified; Model size not specified",
+        "lastUpdated": "2025-07-12T05:11:52.686Z",
+        "discoveryTimestamp": "2025-07-12T05:11:52.908Z",
+        "agentVersion": "1.0.0",
+        "validationStatus": "validated"
+      }
+    },
+    {
+      "modelName": "Infermatic: Mistral Nemo Inferor 12B",
+      "provider": "Together AI / OpenRouter",
+      "apiAvailable": true,
+      "registrationRequired": true,
+      "freeTier": true,
+      "authMethod": "API Key",
+      "documentationUrl": "https://docs.together.ai/",
+      "notes": "$1-25 free credits, 60 requests/minute",
+      "originalModel": {
+        "name": "Infermatic: Mistral Nemo Inferor 12B",
+        "shortName": "Infermatic:-Mistral-Nemo",
+        "country": "France",
+        "modelSize": "12B",
+        "releaseDate": "2024-11-13",
+        "sourceUrl": "https://openrouter.ai/docs",
+        "license": "Unknown",
+        "accessType": "freemium",
+        "capabilities": [
+          "Text Generation"
+        ],
+        "validation_notes": "License unverified",
+        "lastUpdated": "2025-07-12T05:11:52.686Z",
+        "discoveryTimestamp": "2025-07-12T05:11:52.908Z",
+        "agentVersion": "1.0.0",
+        "validationStatus": "validated"
+      }
+    },
+    {
+      "modelName": "Mistral: Ministral 8B",
+      "provider": "Together AI / OpenRouter",
+      "apiAvailable": true,
+      "registrationRequired": true,
+      "freeTier": true,
+      "authMethod": "API Key",
+      "documentationUrl": "https://docs.together.ai/",
+      "notes": "$1-25 free credits, 60 requests/minute",
+      "originalModel": {
+        "name": "Mistral: Ministral 8B",
+        "shortName": "Mistral:-Ministral",
+        "country": "France",
+        "modelSize": "8B",
+        "releaseDate": "2024-10-17",
+        "sourceUrl": "https://openrouter.ai/docs",
+        "license": "Unknown",
+        "accessType": "freemium",
+        "capabilities": [
+          "Text Generation"
+        ],
+        "validation_notes": "License unverified",
+        "lastUpdated": "2025-07-12T05:11:52.687Z",
+        "discoveryTimestamp": "2025-07-12T05:11:52.908Z",
+        "agentVersion": "1.0.0",
+        "validationStatus": "validated"
+      }
+    },
+    {
+      "modelName": "Mistral: Ministral 3B",
+      "provider": "Together AI / OpenRouter",
+      "apiAvailable": true,
+      "registrationRequired": true,
+      "freeTier": true,
+      "authMethod": "API Key",
+      "documentationUrl": "https://docs.together.ai/",
+      "notes": "$1-25 free credits, 60 requests/minute",
+      "originalModel": {
+        "name": "Mistral: Ministral 3B",
+        "shortName": "Mistral:-Ministral",
+        "country": "France",
+        "modelSize": "3B",
+        "releaseDate": "2024-10-17",
+        "sourceUrl": "https://openrouter.ai/docs",
+        "license": "Unknown",
+        "accessType": "freemium",
+        "capabilities": [
+          "Text Generation"
+        ],
+        "validation_notes": "License unverified",
+        "lastUpdated": "2025-07-12T05:11:52.687Z",
+        "discoveryTimestamp": "2025-07-12T05:11:52.908Z",
+        "agentVersion": "1.0.0",
+        "validationStatus": "validated"
+      }
+    },
+    {
+      "modelName": "NVIDIA: Llama 3.1 Nemotron 70B Instruct",
+      "provider": "Together AI",
+      "apiAvailable": true,
+      "registrationRequired": true,
+      "freeTier": true,
+      "authMethod": "API Key",
+      "documentationUrl": "https://docs.together.ai/",
+      "notes": "$1-25 free credits, 60 requests/minute",
+      "originalModel": {
+        "name": "NVIDIA: Llama 3.1 Nemotron 70B Instruct",
+        "shortName": "NVIDIA:-Llama-3.1",
+        "country": "US",
+        "modelSize": "70B",
+        "releaseDate": "2024-10-15",
+        "sourceUrl": "https://openrouter.ai/docs",
+        "license": "Unknown",
+        "accessType": "freemium",
+        "capabilities": [
+          "Conversational"
+        ],
+        "validation_notes": "License unverified",
+        "lastUpdated": "2025-07-12T05:11:52.687Z",
+        "discoveryTimestamp": "2025-07-12T05:11:52.908Z",
+        "agentVersion": "1.0.0",
+        "validationStatus": "validated"
+      }
+    },
+    {
+      "modelName": "Meta: Llama 3.2 3B Instruct (free)",
+      "provider": "Together AI",
+      "apiAvailable": true,
+      "registrationRequired": true,
+      "freeTier": true,
+      "authMethod": "API Key",
+      "documentationUrl": "https://docs.together.ai/",
+      "notes": "$1-25 free credits, 60 requests/minute",
+      "originalModel": {
+        "name": "Meta: Llama 3.2 3B Instruct (free)",
+        "shortName": "Meta:-Llama-3.2",
+        "country": "US",
+        "modelSize": "3B",
+        "releaseDate": "2024-09-25",
+        "sourceUrl": "https://openrouter.ai/docs",
+        "license": "Unknown",
+        "accessType": "freemium",
+        "capabilities": [
+          "Conversational"
+        ],
+        "validation_notes": "License unverified",
+        "lastUpdated": "2025-07-12T05:11:52.687Z",
+        "discoveryTimestamp": "2025-07-12T05:11:52.908Z",
+        "agentVersion": "1.0.0",
+        "validationStatus": "validated"
+      }
+    },
+    {
+      "modelName": "Meta: Llama 3.2 3B Instruct",
+      "provider": "Together AI",
+      "apiAvailable": true,
+      "registrationRequired": true,
+      "freeTier": true,
+      "authMethod": "API Key",
+      "documentationUrl": "https://docs.together.ai/",
+      "notes": "$1-25 free credits, 60 requests/minute",
+      "originalModel": {
+        "name": "Meta: Llama 3.2 3B Instruct",
+        "shortName": "Meta:-Llama-3.2",
+        "country": "US",
+        "modelSize": "3B",
+        "releaseDate": "2024-09-25",
+        "sourceUrl": "https://openrouter.ai/docs",
+        "license": "Unknown",
+        "accessType": "freemium",
+        "capabilities": [
+          "Conversational"
+        ],
+        "validation_notes": "License unverified",
+        "lastUpdated": "2025-07-12T05:11:52.687Z",
+        "discoveryTimestamp": "2025-07-12T05:11:52.908Z",
+        "agentVersion": "1.0.0",
+        "validationStatus": "validated"
+      }
+    },
+    {
+      "modelName": "Meta: Llama 3.2 1B Instruct",
+      "provider": "Together AI",
+      "apiAvailable": true,
+      "registrationRequired": true,
+      "freeTier": true,
+      "authMethod": "API Key",
+      "documentationUrl": "https://docs.together.ai/",
+      "notes": "$1-25 free credits, 60 requests/minute",
+      "originalModel": {
+        "name": "Meta: Llama 3.2 1B Instruct",
+        "shortName": "Meta:-Llama-3.2",
+        "country": "US",
+        "modelSize": "1B",
+        "releaseDate": "2024-09-25",
+        "sourceUrl": "https://openrouter.ai/docs",
+        "license": "Unknown",
+        "accessType": "freemium",
+        "capabilities": [
+          "Conversational"
+        ],
+        "validation_notes": "License unverified",
+        "lastUpdated": "2025-07-12T05:11:52.688Z",
+        "discoveryTimestamp": "2025-07-12T05:11:52.908Z",
+        "agentVersion": "1.0.0",
+        "validationStatus": "validated"
+      }
+    },
+    {
+      "modelName": "Meta: Llama 3.2 90B Vision Instruct",
+      "provider": "Together AI",
+      "apiAvailable": true,
+      "registrationRequired": true,
+      "freeTier": true,
+      "authMethod": "API Key",
+      "documentationUrl": "https://docs.together.ai/",
+      "notes": "$1-25 free credits, 60 requests/minute",
+      "originalModel": {
+        "name": "Meta: Llama 3.2 90B Vision Instruct",
+        "shortName": "Meta:-Llama-3.2",
+        "country": "US",
+        "modelSize": "90B",
+        "releaseDate": "2024-09-25",
+        "sourceUrl": "https://openrouter.ai/docs",
+        "license": "Unknown",
+        "accessType": "freemium",
+        "capabilities": [
+          "Conversational",
+          "Vision"
+        ],
+        "validation_notes": "License unverified",
+        "lastUpdated": "2025-07-12T05:11:52.688Z",
+        "discoveryTimestamp": "2025-07-12T05:11:52.908Z",
+        "agentVersion": "1.0.0",
+        "validationStatus": "validated"
+      }
+    },
+    {
+      "modelName": "Meta: Llama 3.2 11B Vision Instruct (free)",
+      "provider": "Together AI",
+      "apiAvailable": true,
+      "registrationRequired": true,
+      "freeTier": true,
+      "authMethod": "API Key",
+      "documentationUrl": "https://docs.together.ai/",
+      "notes": "$1-25 free credits, 60 requests/minute",
+      "originalModel": {
+        "name": "Meta: Llama 3.2 11B Vision Instruct (free)",
+        "shortName": "Meta:-Llama-3.2",
+        "country": "US",
+        "modelSize": "11B",
+        "releaseDate": "2024-09-25",
+        "sourceUrl": "https://openrouter.ai/docs",
+        "license": "Unknown",
+        "accessType": "freemium",
+        "capabilities": [
+          "Conversational",
+          "Vision"
+        ],
+        "validation_notes": "License unverified",
+        "lastUpdated": "2025-07-12T05:11:52.688Z",
+        "discoveryTimestamp": "2025-07-12T05:11:52.908Z",
+        "agentVersion": "1.0.0",
+        "validationStatus": "validated"
+      }
+    },
+    {
+      "modelName": "Meta: Llama 3.2 11B Vision Instruct",
+      "provider": "Together AI",
+      "apiAvailable": true,
+      "registrationRequired": true,
+      "freeTier": true,
+      "authMethod": "API Key",
+      "documentationUrl": "https://docs.together.ai/",
+      "notes": "$1-25 free credits, 60 requests/minute",
+      "originalModel": {
+        "name": "Meta: Llama 3.2 11B Vision Instruct",
+        "shortName": "Meta:-Llama-3.2",
+        "country": "US",
+        "modelSize": "11B",
+        "releaseDate": "2024-09-25",
+        "sourceUrl": "https://openrouter.ai/docs",
+        "license": "Unknown",
+        "accessType": "freemium",
+        "capabilities": [
+          "Conversational",
+          "Vision"
+        ],
+        "validation_notes": "License unverified",
+        "lastUpdated": "2025-07-12T05:11:52.688Z",
+        "discoveryTimestamp": "2025-07-12T05:11:52.908Z",
+        "agentVersion": "1.0.0",
+        "validationStatus": "validated"
+      }
+    },
+    {
+      "modelName": "Mistral: Pixtral 12B",
+      "provider": "Together AI / OpenRouter",
+      "apiAvailable": true,
+      "registrationRequired": true,
+      "freeTier": true,
+      "authMethod": "API Key",
+      "documentationUrl": "https://docs.together.ai/",
+      "notes": "$1-25 free credits, 60 requests/minute",
+      "originalModel": {
+        "name": "Mistral: Pixtral 12B",
+        "shortName": "Mistral:-Pixtral-12B",
+        "country": "France",
+        "modelSize": "12B",
+        "releaseDate": "2024-09-10",
+        "sourceUrl": "https://openrouter.ai/docs",
+        "license": "Unknown",
+        "accessType": "freemium",
+        "capabilities": [
+          "Text Generation"
+        ],
+        "validation_notes": "License unverified",
+        "lastUpdated": "2025-07-12T05:11:52.688Z",
+        "discoveryTimestamp": "2025-07-12T05:11:52.908Z",
+        "agentVersion": "1.0.0",
+        "validationStatus": "validated"
+      }
+    },
+    {
+      "modelName": "Sao10K: Llama 3.1 Euryale 70B v2.2",
+      "provider": "Together AI",
+      "apiAvailable": true,
+      "registrationRequired": true,
+      "freeTier": true,
+      "authMethod": "API Key",
+      "documentationUrl": "https://docs.together.ai/",
+      "notes": "$1-25 free credits, 60 requests/minute",
+      "originalModel": {
+        "name": "Sao10K: Llama 3.1 Euryale 70B v2.2",
+        "shortName": "Sao10K:-Llama-3.1",
+        "country": "US",
+        "modelSize": "70B",
+        "releaseDate": "2024-08-28",
+        "sourceUrl": "https://openrouter.ai/docs",
+        "license": "Unknown",
+        "accessType": "freemium",
+        "capabilities": [
+          "Text Generation"
+        ],
+        "validation_notes": "License unverified",
+        "lastUpdated": "2025-07-12T05:11:52.688Z",
+        "discoveryTimestamp": "2025-07-12T05:11:52.908Z",
+        "agentVersion": "1.0.0",
+        "validationStatus": "validated"
+      }
+    },
+    {
+      "modelName": "Sao10K: Llama 3 8B Lunaris",
+      "provider": "Together AI",
+      "apiAvailable": true,
+      "registrationRequired": true,
+      "freeTier": true,
+      "authMethod": "API Key",
+      "documentationUrl": "https://docs.together.ai/",
+      "notes": "$1-25 free credits, 60 requests/minute",
+      "originalModel": {
+        "name": "Sao10K: Llama 3 8B Lunaris",
+        "shortName": "Sao10K:-Llama-Lunaris",
+        "country": "US",
+        "modelSize": "8B",
+        "releaseDate": "2024-08-13",
+        "sourceUrl": "https://openrouter.ai/docs",
+        "license": "Unknown",
+        "accessType": "freemium",
+        "capabilities": [
+          "Text Generation"
+        ],
+        "validation_notes": "License unverified",
+        "lastUpdated": "2025-07-12T05:11:52.689Z",
+        "discoveryTimestamp": "2025-07-12T05:11:52.908Z",
+        "agentVersion": "1.0.0",
+        "validationStatus": "validated"
+      }
+    },
+    {
+      "modelName": "Meta: Llama 3.1 405B (base)",
+      "provider": "Together AI",
+      "apiAvailable": true,
+      "registrationRequired": true,
+      "freeTier": true,
+      "authMethod": "API Key",
+      "documentationUrl": "https://docs.together.ai/",
+      "notes": "$1-25 free credits, 60 requests/minute",
+      "originalModel": {
+        "name": "Meta: Llama 3.1 405B (base)",
+        "shortName": "Meta:-Llama-3.1",
+        "country": "US",
+        "modelSize": "405B",
+        "releaseDate": "2024-08-02",
+        "sourceUrl": "https://openrouter.ai/docs",
+        "license": "Unknown",
+        "accessType": "freemium",
+        "capabilities": [
+          "Text Generation"
+        ],
+        "validation_notes": "License unverified",
+        "lastUpdated": "2025-07-12T05:11:52.689Z",
+        "discoveryTimestamp": "2025-07-12T05:11:52.908Z",
+        "agentVersion": "1.0.0",
+        "validationStatus": "validated"
+      }
+    },
+    {
+      "modelName": "Mistral Nemo 12B Celeste",
+      "provider": "Together AI / OpenRouter",
+      "apiAvailable": true,
+      "registrationRequired": true,
+      "freeTier": true,
+      "authMethod": "API Key",
+      "documentationUrl": "https://docs.together.ai/",
+      "notes": "$1-25 free credits, 60 requests/minute",
+      "originalModel": {
+        "name": "Mistral Nemo 12B Celeste",
+        "shortName": "Mistral-Nemo-12B",
+        "country": "France",
+        "modelSize": "12B",
+        "releaseDate": "2024-08-02",
+        "sourceUrl": "https://openrouter.ai/docs",
+        "license": "Unknown",
+        "accessType": "freemium",
+        "capabilities": [
+          "Text Generation"
+        ],
+        "validation_notes": "License unverified",
+        "lastUpdated": "2025-07-12T05:11:52.689Z",
+        "discoveryTimestamp": "2025-07-12T05:11:52.908Z",
+        "agentVersion": "1.0.0",
+        "validationStatus": "validated"
+      }
+    },
+    {
+      "modelName": "Meta: Llama 3.1 8B Instruct",
+      "provider": "Together AI",
+      "apiAvailable": true,
+      "registrationRequired": true,
+      "freeTier": true,
+      "authMethod": "API Key",
+      "documentationUrl": "https://docs.together.ai/",
+      "notes": "$1-25 free credits, 60 requests/minute",
+      "originalModel": {
+        "name": "Meta: Llama 3.1 8B Instruct",
+        "shortName": "Meta:-Llama-3.1",
+        "country": "US",
+        "modelSize": "8B",
+        "releaseDate": "2024-07-23",
+        "sourceUrl": "https://openrouter.ai/docs",
+        "license": "Unknown",
+        "accessType": "freemium",
+        "capabilities": [
+          "Conversational"
+        ],
+        "validation_notes": "License unverified",
+        "lastUpdated": "2025-07-12T05:11:52.689Z",
+        "discoveryTimestamp": "2025-07-12T05:11:52.908Z",
+        "agentVersion": "1.0.0",
+        "validationStatus": "validated"
+      }
+    },
+    {
+      "modelName": "Meta: Llama 3.1 405B Instruct (free)",
+      "provider": "Together AI",
+      "apiAvailable": true,
+      "registrationRequired": true,
+      "freeTier": true,
+      "authMethod": "API Key",
+      "documentationUrl": "https://docs.together.ai/",
+      "notes": "$1-25 free credits, 60 requests/minute",
+      "originalModel": {
+        "name": "Meta: Llama 3.1 405B Instruct (free)",
+        "shortName": "Meta:-Llama-3.1",
+        "country": "US",
+        "modelSize": "405B",
+        "releaseDate": "2024-07-23",
+        "sourceUrl": "https://openrouter.ai/docs",
+        "license": "Unknown",
+        "accessType": "freemium",
+        "capabilities": [
+          "Conversational"
+        ],
+        "validation_notes": "License unverified",
+        "lastUpdated": "2025-07-12T05:11:52.690Z",
+        "discoveryTimestamp": "2025-07-12T05:11:52.908Z",
+        "agentVersion": "1.0.0",
+        "validationStatus": "validated"
+      }
+    },
+    {
+      "modelName": "Meta: Llama 3.1 405B Instruct",
+      "provider": "Together AI",
+      "apiAvailable": true,
+      "registrationRequired": true,
+      "freeTier": true,
+      "authMethod": "API Key",
+      "documentationUrl": "https://docs.together.ai/",
+      "notes": "$1-25 free credits, 60 requests/minute",
+      "originalModel": {
+        "name": "Meta: Llama 3.1 405B Instruct",
+        "shortName": "Meta:-Llama-3.1",
+        "country": "US",
+        "modelSize": "405B",
+        "releaseDate": "2024-07-23",
+        "sourceUrl": "https://openrouter.ai/docs",
+        "license": "Unknown",
+        "accessType": "freemium",
+        "capabilities": [
+          "Conversational"
+        ],
+        "validation_notes": "License unverified",
+        "lastUpdated": "2025-07-12T05:11:52.690Z",
+        "discoveryTimestamp": "2025-07-12T05:11:52.909Z",
+        "agentVersion": "1.0.0",
+        "validationStatus": "validated"
+      }
+    },
+    {
+      "modelName": "Meta: Llama 3.1 70B Instruct",
+      "provider": "Together AI",
+      "apiAvailable": true,
+      "registrationRequired": true,
+      "freeTier": true,
+      "authMethod": "API Key",
+      "documentationUrl": "https://docs.together.ai/",
+      "notes": "$1-25 free credits, 60 requests/minute",
+      "originalModel": {
+        "name": "Meta: Llama 3.1 70B Instruct",
+        "shortName": "Meta:-Llama-3.1",
+        "country": "US",
+        "modelSize": "70B",
+        "releaseDate": "2024-07-23",
+        "sourceUrl": "https://openrouter.ai/docs",
+        "license": "Unknown",
+        "accessType": "freemium",
+        "capabilities": [
+          "Conversational"
+        ],
+        "validation_notes": "License unverified",
+        "lastUpdated": "2025-07-12T05:11:52.690Z",
+        "discoveryTimestamp": "2025-07-12T05:11:52.909Z",
+        "agentVersion": "1.0.0",
+        "validationStatus": "validated"
+      }
+    },
+    {
+      "modelName": "Mistral: Mistral Nemo (free)",
+      "provider": "Together AI / OpenRouter",
+      "apiAvailable": true,
+      "registrationRequired": true,
+      "freeTier": true,
+      "authMethod": "API Key",
+      "documentationUrl": "https://docs.together.ai/",
+      "notes": "$1-25 free credits, 60 requests/minute",
+      "originalModel": {
+        "name": "Mistral: Mistral Nemo (free)",
+        "shortName": "Mistral:-Mistral-Nemo",
+        "country": "France",
+        "modelSize": "Unknown",
+        "releaseDate": "2024-07-19",
+        "sourceUrl": "https://openrouter.ai/docs",
+        "license": "Unknown",
+        "accessType": "freemium",
+        "capabilities": [
+          "Text Generation"
+        ],
+        "validation_notes": "License unverified; Model size not specified",
+        "lastUpdated": "2025-07-12T05:11:52.690Z",
+        "discoveryTimestamp": "2025-07-12T05:11:52.909Z",
+        "agentVersion": "1.0.0",
+        "validationStatus": "validated"
+      }
+    },
+    {
+      "modelName": "Mistral: Mistral Nemo",
+      "provider": "Together AI / OpenRouter",
+      "apiAvailable": true,
+      "registrationRequired": true,
+      "freeTier": true,
+      "authMethod": "API Key",
+      "documentationUrl": "https://docs.together.ai/",
+      "notes": "$1-25 free credits, 60 requests/minute",
+      "originalModel": {
+        "name": "Mistral: Mistral Nemo",
+        "shortName": "Mistral:-Mistral-Nemo",
+        "country": "France",
+        "modelSize": "Unknown",
+        "releaseDate": "2024-07-19",
+        "sourceUrl": "https://openrouter.ai/docs",
+        "license": "Unknown",
+        "accessType": "freemium",
+        "capabilities": [
+          "Text Generation"
+        ],
+        "validation_notes": "License unverified; Model size not specified",
+        "lastUpdated": "2025-07-12T05:11:52.691Z",
+        "discoveryTimestamp": "2025-07-12T05:11:52.909Z",
+        "agentVersion": "1.0.0",
+        "validationStatus": "validated"
+      }
+    },
+    {
+      "modelName": "Sao10k: Llama 3 Euryale 70B v2.1",
+      "provider": "Together AI",
+      "apiAvailable": true,
+      "registrationRequired": true,
+      "freeTier": true,
+      "authMethod": "API Key",
+      "documentationUrl": "https://docs.together.ai/",
+      "notes": "$1-25 free credits, 60 requests/minute",
+      "originalModel": {
+        "name": "Sao10k: Llama 3 Euryale 70B v2.1",
+        "shortName": "Sao10k:-Llama-Euryale",
+        "country": "US",
+        "modelSize": "70B",
+        "releaseDate": "2024-06-18",
+        "sourceUrl": "https://openrouter.ai/docs",
+        "license": "Unknown",
+        "accessType": "freemium",
+        "capabilities": [
+          "Text Generation"
+        ],
+        "validation_notes": "License unverified",
+        "lastUpdated": "2025-07-12T05:11:52.692Z",
+        "discoveryTimestamp": "2025-07-12T05:11:52.909Z",
+        "agentVersion": "1.0.0",
+        "validationStatus": "validated"
+      }
+    },
+    {
+      "modelName": "Mistral: Mistral 7B Instruct (free)",
+      "provider": "Together AI / OpenRouter",
+      "apiAvailable": true,
+      "registrationRequired": true,
+      "freeTier": true,
+      "authMethod": "API Key",
+      "documentationUrl": "https://docs.together.ai/",
+      "notes": "$1-25 free credits, 60 requests/minute",
+      "originalModel": {
+        "name": "Mistral: Mistral 7B Instruct (free)",
+        "shortName": "Mistral:-Mistral-(free)",
+        "country": "France",
+        "modelSize": "7B",
+        "releaseDate": "2024-05-27",
+        "sourceUrl": "https://openrouter.ai/docs",
+        "license": "Unknown",
+        "accessType": "freemium",
+        "capabilities": [
+          "Conversational"
+        ],
+        "validation_notes": "License unverified",
+        "lastUpdated": "2025-07-12T05:11:52.692Z",
+        "discoveryTimestamp": "2025-07-12T05:11:52.909Z",
+        "agentVersion": "1.0.0",
+        "validationStatus": "validated"
+      }
+    },
+    {
+      "modelName": "Mistral: Mistral 7B Instruct",
+      "provider": "Together AI / OpenRouter",
+      "apiAvailable": true,
+      "registrationRequired": true,
+      "freeTier": true,
+      "authMethod": "API Key",
+      "documentationUrl": "https://docs.together.ai/",
+      "notes": "$1-25 free credits, 60 requests/minute",
+      "originalModel": {
+        "name": "Mistral: Mistral 7B Instruct",
+        "shortName": "Mistral:-Mistral",
+        "country": "France",
+        "modelSize": "7B",
+        "releaseDate": "2024-05-27",
+        "sourceUrl": "https://openrouter.ai/docs",
+        "license": "Unknown",
+        "accessType": "freemium",
+        "capabilities": [
+          "Conversational"
+        ],
+        "validation_notes": "License unverified",
+        "lastUpdated": "2025-07-12T05:11:52.692Z",
+        "discoveryTimestamp": "2025-07-12T05:11:52.909Z",
+        "agentVersion": "1.0.0",
+        "validationStatus": "validated"
+      }
+    },
+    {
+      "modelName": "NousResearch: Hermes 2 Pro - Llama-3 8B",
+      "provider": "Together AI",
+      "apiAvailable": true,
+      "registrationRequired": true,
+      "freeTier": true,
+      "authMethod": "API Key",
+      "documentationUrl": "https://docs.together.ai/",
+      "notes": "$1-25 free credits, 60 requests/minute",
+      "originalModel": {
+        "name": "NousResearch: Hermes 2 Pro - Llama-3 8B",
+        "shortName": "NousResearch:-Hermes-Pro",
+        "country": "US",
+        "modelSize": "8B",
+        "releaseDate": "2024-05-27",
+        "sourceUrl": "https://openrouter.ai/docs",
+        "license": "Unknown",
+        "accessType": "freemium",
+        "capabilities": [
+          "RAG"
+        ],
+        "validation_notes": "License unverified",
+        "lastUpdated": "2025-07-12T05:11:52.692Z",
+        "discoveryTimestamp": "2025-07-12T05:11:52.909Z",
+        "agentVersion": "1.0.0",
+        "validationStatus": "validated"
+      }
+    },
+    {
+      "modelName": "Mistral: Mistral 7B Instruct v0.3",
+      "provider": "Together AI / OpenRouter",
+      "apiAvailable": true,
+      "registrationRequired": true,
+      "freeTier": true,
+      "authMethod": "API Key",
+      "documentationUrl": "https://docs.together.ai/",
+      "notes": "$1-25 free credits, 60 requests/minute",
+      "originalModel": {
+        "name": "Mistral: Mistral 7B Instruct v0.3",
+        "shortName": "Mistral:-Mistral-v0.3",
+        "country": "France",
+        "modelSize": "7B",
+        "releaseDate": "2024-05-27",
+        "sourceUrl": "https://openrouter.ai/docs",
+        "license": "Unknown",
+        "accessType": "freemium",
+        "capabilities": [
+          "Conversational"
+        ],
+        "validation_notes": "License unverified",
+        "lastUpdated": "2025-07-12T05:11:52.692Z",
+        "discoveryTimestamp": "2025-07-12T05:11:52.909Z",
+        "agentVersion": "1.0.0",
+        "validationStatus": "validated"
+      }
+    },
+    {
+      "modelName": "NeverSleep: Llama 3 Lumimaid 70B",
+      "provider": "Together AI",
+      "apiAvailable": true,
+      "registrationRequired": true,
+      "freeTier": true,
+      "authMethod": "API Key",
+      "documentationUrl": "https://docs.together.ai/",
+      "notes": "$1-25 free credits, 60 requests/minute",
+      "originalModel": {
+        "name": "NeverSleep: Llama 3 Lumimaid 70B",
+        "shortName": "NeverSleep:-Llama-Lumimaid",
+        "country": "US",
+        "modelSize": "70B",
+        "releaseDate": "2024-05-16",
+        "sourceUrl": "https://openrouter.ai/docs",
+        "license": "Unknown",
+        "accessType": "freemium",
+        "capabilities": [
+          "Text Generation"
+        ],
+        "validation_notes": "License unverified",
+        "lastUpdated": "2025-07-12T05:11:52.692Z",
+        "discoveryTimestamp": "2025-07-12T05:11:52.909Z",
+        "agentVersion": "1.0.0",
+        "validationStatus": "validated"
+      }
+    },
+    {
+      "modelName": "Meta: LlamaGuard 2 8B",
+      "provider": "Together AI",
+      "apiAvailable": true,
+      "registrationRequired": true,
+      "freeTier": true,
+      "authMethod": "API Key",
+      "documentationUrl": "https://docs.together.ai/",
+      "notes": "$1-25 free credits, 60 requests/minute",
+      "originalModel": {
+        "name": "Meta: LlamaGuard 2 8B",
+        "shortName": "Meta:-LlamaGuard",
+        "country": "US",
+        "modelSize": "8B",
+        "releaseDate": "2024-05-13",
+        "sourceUrl": "https://openrouter.ai/docs",
+        "license": "Unknown",
+        "accessType": "freemium",
+        "capabilities": [
+          "Text Generation"
+        ],
+        "validation_notes": "License unverified",
+        "lastUpdated": "2025-07-12T05:11:52.693Z",
+        "discoveryTimestamp": "2025-07-12T05:11:52.909Z",
+        "agentVersion": "1.0.0",
+        "validationStatus": "validated"
+      }
+    },
+    {
+      "modelName": "Meta: Llama 3 8B Instruct",
+      "provider": "Together AI",
+      "apiAvailable": true,
+      "registrationRequired": true,
+      "freeTier": true,
+      "authMethod": "API Key",
+      "documentationUrl": "https://docs.together.ai/",
+      "notes": "$1-25 free credits, 60 requests/minute",
+      "originalModel": {
+        "name": "Meta: Llama 3 8B Instruct",
+        "shortName": "Meta:-Llama",
+        "country": "US",
+        "modelSize": "8B",
+        "releaseDate": "2024-04-18",
+        "sourceUrl": "https://openrouter.ai/docs",
+        "license": "Unknown",
+        "accessType": "freemium",
+        "capabilities": [
+          "Conversational"
+        ],
+        "validation_notes": "License unverified",
+        "lastUpdated": "2025-07-12T05:11:52.693Z",
+        "discoveryTimestamp": "2025-07-12T05:11:52.909Z",
+        "agentVersion": "1.0.0",
+        "validationStatus": "validated"
+      }
+    },
+    {
+      "modelName": "Meta: Llama 3 70B Instruct",
+      "provider": "Together AI",
+      "apiAvailable": true,
+      "registrationRequired": true,
+      "freeTier": true,
+      "authMethod": "API Key",
+      "documentationUrl": "https://docs.together.ai/",
+      "notes": "$1-25 free credits, 60 requests/minute",
+      "originalModel": {
+        "name": "Meta: Llama 3 70B Instruct",
+        "shortName": "Meta:-Llama-70B",
+        "country": "US",
+        "modelSize": "70B",
+        "releaseDate": "2024-04-18",
+        "sourceUrl": "https://openrouter.ai/docs",
+        "license": "Unknown",
+        "accessType": "freemium",
+        "capabilities": [
+          "Conversational"
+        ],
+        "validation_notes": "License unverified",
+        "lastUpdated": "2025-07-12T05:11:52.693Z",
+        "discoveryTimestamp": "2025-07-12T05:11:52.909Z",
+        "agentVersion": "1.0.0",
+        "validationStatus": "validated"
+      }
+    },
+    {
+      "modelName": "Mistral: Mixtral 8x22B Instruct",
+      "provider": "Together AI / OpenRouter",
+      "apiAvailable": true,
+      "registrationRequired": true,
+      "freeTier": true,
+      "authMethod": "API Key",
+      "documentationUrl": "https://docs.together.ai/",
+      "notes": "$1-25 free credits, 60 requests/minute",
+      "originalModel": {
+        "name": "Mistral: Mixtral 8x22B Instruct",
+        "shortName": "Mistral:-Mixtral-8x22B",
+        "country": "France",
+        "modelSize": "22B",
+        "releaseDate": "2024-04-17",
+        "sourceUrl": "https://openrouter.ai/docs",
+        "license": "Unknown",
+        "accessType": "freemium",
+        "capabilities": [
+          "Conversational"
+        ],
+        "validation_notes": "License unverified",
+        "lastUpdated": "2025-07-12T05:11:52.693Z",
+        "discoveryTimestamp": "2025-07-12T05:11:52.909Z",
+        "agentVersion": "1.0.0",
+        "validationStatus": "validated"
+      }
+    },
+    {
+      "modelName": "Mistral Large",
+      "provider": "Together AI / OpenRouter",
+      "apiAvailable": true,
+      "registrationRequired": true,
+      "freeTier": true,
+      "authMethod": "API Key",
+      "documentationUrl": "https://docs.together.ai/",
+      "notes": "$1-25 free credits, 60 requests/minute",
+      "originalModel": {
+        "name": "Mistral Large",
+        "shortName": "Mistral-Large",
+        "country": "France",
+        "modelSize": "Unknown",
+        "releaseDate": "2024-02-26",
+        "sourceUrl": "https://openrouter.ai/docs",
+        "license": "Unknown",
+        "accessType": "freemium",
+        "capabilities": [
+          "Text Generation"
+        ],
+        "validation_notes": "License unverified; Model size not specified",
+        "lastUpdated": "2025-07-12T05:11:52.694Z",
+        "discoveryTimestamp": "2025-07-12T05:11:52.909Z",
+        "agentVersion": "1.0.0",
+        "validationStatus": "validated"
+      }
+    },
+    {
+      "modelName": "Mistral Small",
+      "provider": "Together AI / OpenRouter",
+      "apiAvailable": true,
+      "registrationRequired": true,
+      "freeTier": true,
+      "authMethod": "API Key",
+      "documentationUrl": "https://docs.together.ai/",
+      "notes": "$1-25 free credits, 60 requests/minute",
+      "originalModel": {
+        "name": "Mistral Small",
+        "shortName": "Mistral-Small",
+        "country": "France",
+        "modelSize": "Unknown",
+        "releaseDate": "2024-01-10",
+        "sourceUrl": "https://openrouter.ai/docs",
+        "license": "Unknown",
+        "accessType": "freemium",
+        "capabilities": [
+          "Text Generation"
+        ],
+        "validation_notes": "License unverified; Model size not specified",
+        "lastUpdated": "2025-07-12T05:11:52.695Z",
+        "discoveryTimestamp": "2025-07-12T05:11:52.909Z",
+        "agentVersion": "1.0.0",
+        "validationStatus": "validated"
+      }
+    },
+    {
+      "modelName": "Mistral Tiny",
+      "provider": "Together AI / OpenRouter",
+      "apiAvailable": true,
+      "registrationRequired": true,
+      "freeTier": true,
+      "authMethod": "API Key",
+      "documentationUrl": "https://docs.together.ai/",
+      "notes": "$1-25 free credits, 60 requests/minute",
+      "originalModel": {
+        "name": "Mistral Tiny",
+        "shortName": "Mistral-Tiny",
+        "country": "France",
+        "modelSize": "Unknown",
+        "releaseDate": "2024-01-10",
+        "sourceUrl": "https://openrouter.ai/docs",
+        "license": "Unknown",
+        "accessType": "freemium",
+        "capabilities": [
+          "Text Generation"
+        ],
+        "validation_notes": "License unverified; Model size not specified",
+        "lastUpdated": "2025-07-12T05:11:52.695Z",
+        "discoveryTimestamp": "2025-07-12T05:11:52.909Z",
+        "agentVersion": "1.0.0",
+        "validationStatus": "validated"
+      }
+    },
+    {
+      "modelName": "Mistral: Mistral 7B Instruct v0.2",
+      "provider": "Together AI / OpenRouter",
+      "apiAvailable": true,
+      "registrationRequired": true,
+      "freeTier": true,
+      "authMethod": "API Key",
+      "documentationUrl": "https://docs.together.ai/",
+      "notes": "$1-25 free credits, 60 requests/minute",
+      "originalModel": {
+        "name": "Mistral: Mistral 7B Instruct v0.2",
+        "shortName": "Mistral:-Mistral-v0.2",
+        "country": "France",
+        "modelSize": "7B",
+        "releaseDate": "2023-12-28",
+        "sourceUrl": "https://openrouter.ai/docs",
+        "license": "Unknown",
+        "accessType": "freemium",
+        "capabilities": [
+          "Conversational"
+        ],
+        "validation_notes": "License unverified",
+        "lastUpdated": "2025-07-12T05:11:52.695Z",
+        "discoveryTimestamp": "2025-07-12T05:11:52.909Z",
+        "agentVersion": "1.0.0",
+        "validationStatus": "validated"
+      }
+    },
+    {
+      "modelName": "Mistral: Mixtral 8x7B Instruct",
+      "provider": "Together AI / OpenRouter",
+      "apiAvailable": true,
+      "registrationRequired": true,
+      "freeTier": true,
+      "authMethod": "API Key",
+      "documentationUrl": "https://docs.together.ai/",
+      "notes": "$1-25 free credits, 60 requests/minute",
+      "originalModel": {
+        "name": "Mistral: Mixtral 8x7B Instruct",
+        "shortName": "Mistral:-Mixtral-8x7B",
+        "country": "France",
+        "modelSize": "7B",
+        "releaseDate": "2023-12-10",
+        "sourceUrl": "https://openrouter.ai/docs",
+        "license": "Unknown",
+        "accessType": "freemium",
+        "capabilities": [
+          "Conversational"
+        ],
+        "validation_notes": "License unverified",
+        "lastUpdated": "2025-07-12T05:11:52.695Z",
+        "discoveryTimestamp": "2025-07-12T05:11:52.909Z",
+        "agentVersion": "1.0.0",
+        "validationStatus": "validated"
+      }
+    },
+    {
+      "modelName": "Mistral: Mistral 7B Instruct v0.1",
+      "provider": "Together AI / OpenRouter",
+      "apiAvailable": true,
+      "registrationRequired": true,
+      "freeTier": true,
+      "authMethod": "API Key",
+      "documentationUrl": "https://docs.together.ai/",
+      "notes": "$1-25 free credits, 60 requests/minute",
+      "originalModel": {
+        "name": "Mistral: Mistral 7B Instruct v0.1",
+        "shortName": "Mistral:-Mistral-v0.1",
+        "country": "France",
+        "modelSize": "7B",
+        "releaseDate": "2023-09-28",
+        "sourceUrl": "https://openrouter.ai/docs",
+        "license": "Unknown",
+        "accessType": "freemium",
+        "capabilities": [
+          "Conversational"
+        ],
+        "validation_notes": "License unverified",
+        "lastUpdated": "2025-07-12T05:11:52.696Z",
+        "discoveryTimestamp": "2025-07-12T05:11:52.909Z",
+        "agentVersion": "1.0.0",
+        "validationStatus": "validated"
+      }
+    },
+    {
+      "modelName": "Command",
+      "provider": "Cohere",
+      "apiAvailable": true,
+      "registrationRequired": true,
+      "freeTier": true,
+      "authMethod": "API Key",
+      "documentationUrl": "https://docs.cohere.com/",
+      "notes": "Trial API key, rate-limited access to all endpoints"
+    },
+    {
+      "modelName": "Command Light",
+      "provider": "Cohere",
+      "apiAvailable": true,
+      "registrationRequired": true,
+      "freeTier": true,
+      "authMethod": "API Key",
+      "documentationUrl": "https://docs.cohere.com/",
+      "notes": "Faster, smaller version of Command model"
+    },
+    {
+      "modelName": "Llama-2-7B-Chat",
+      "provider": "Together AI",
+      "apiAvailable": true,
+      "registrationRequired": true,
+      "freeTier": true,
+      "authMethod": "API Key",
+      "documentationUrl": "https://docs.together.ai/",
+      "notes": "Popular open-source model, $1-25 free credits"
+    },
+    {
+      "modelName": "Mixtral-8x7B-Instruct",
+      "provider": "Together AI",
+      "apiAvailable": true,
+      "registrationRequired": true,
+      "freeTier": true,
+      "authMethod": "API Key",
+      "documentationUrl": "https://docs.together.ai/",
+      "notes": "High-performance mixture of experts model"
+    },
+    {
+      "modelName": "Llama-2-70B-Chat",
+      "provider": "Groq",
+      "apiAvailable": true,
+      "registrationRequired": true,
+      "freeTier": true,
+      "authMethod": "API Key (OpenAI compatible)",
+      "documentationUrl": "https://console.groq.com/docs/",
+      "notes": "Extremely fast inference speed, rate limits apply"
+    },
+    {
+      "modelName": "Gemma-7B-IT",
+      "provider": "Groq",
+      "apiAvailable": true,
+      "registrationRequired": true,
+      "freeTier": true,
+      "authMethod": "API Key (OpenAI compatible)",
+      "documentationUrl": "https://console.groq.com/docs/",
+      "notes": "Google Gemma model optimized for instruction following"
+    },
+    {
+      "modelName": "GPT-3.5-Turbo (via proxy)",
+      "provider": "OpenRouter",
+      "apiAvailable": true,
+      "registrationRequired": true,
+      "freeTier": true,
+      "authMethod": "API Key",
+      "documentationUrl": "https://openrouter.ai/docs/",
+      "notes": "50 requests/day free, access to multiple model providers"
+    },
+    {
+      "modelName": "Jurassic-2-Light",
+      "provider": "AI21",
+      "apiAvailable": true,
+      "registrationRequired": true,
+      "freeTier": true,
+      "authMethod": "API Key",
+      "documentationUrl": "https://docs.ai21.com/",
+      "notes": "$10 credit for 3 months, optimized for speed"
+    }
+  ]
+}
