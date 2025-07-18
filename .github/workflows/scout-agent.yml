@@ -43,13 +43,19 @@ jobs:
       uses: actions/setup-node@v4
       with:
         node-version: '18'
-        cache: 'npm'
-        cache-dependency-path: scout-agent/package.json
+        
+    - name: Cache node modules
+      uses: actions/cache@v3
+      with:
+        path: scout-agent/node_modules
+        key: ${{ runner.os }}-node-${{ hashFiles('scout-agent/package-lock.json') }}
+        restore-keys: |
+          ${{ runner.os }}-node-
         
     - name: Install dependencies
       run: |
         cd scout-agent
-        npm ci
+        npm install
         
     - name: Validate current 5-provider models
       run: |
