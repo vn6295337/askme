@@ -1,34 +1,36 @@
-# 401_test_strategy_overview.md
+# AskMe CLI Test Strategy Overview
 
-**LEVEL 1: STRATEGIC - CLI-First Testing Approach**  
+**LEVEL 1: STRATEGIC - Production CLI Testing Approach**  
 **Document Links**: → [402_test_plan_detailed.md](402_test_plan_detailed.md) | → [407_test_summary_reports.md](407_test_summary_reports.md)
 
 ## 1. Overall Testing Strategy
 
-### 1.1 CLI-First Testing Philosophy
-**Primary Focus**: Command-line interface with live AI integration  
-**Testing Scope**: Production-ready CLI MVP validation
+### 1.1 Production CLI Testing Philosophy
+**Primary Focus**: Command-line interface with 5-provider AI integration  
+**Testing Scope**: Production-ready CLI v1.3.0 validation
 
-### 1.2 Multi-Provider Testing Strategy
+### 1.2 5-Provider Testing Strategy
 **Provider Coverage**:
-- ✅ Google Gemini (Target: Live integration)
-- ✅ Mistral AI (Target: Live integration)  
-- ✅ Llama (Target: Live integration)
+- ✅ Google Gemini (General queries, math, analysis)
+- ✅ Mistral AI (Code generation, technical queries)  
+- ✅ Cohere (Conversational AI, reasoning)
+- ✅ Groq (Ultra-fast inference)
+- ✅ OpenRouter (Unified model access)
 
 **Testing Approach**: Comprehensive provider failover testing with intelligent provider management
 
 ### 1.3 Security-First Principles
 **Privacy Architecture**: Zero data collection policy with comprehensive security validation  
-**Encryption Standards**: AES-256 encryption for all sensitive configuration  
+**Encryption Standards**: HTTPS-only communication with secure backend proxy  
 **Security Testing Coverage**:
 - Input validation and injection prevention
 - Network security and certificate validation
-- Configuration protection and secure storage
+- Server-side key management verification
 - Data protection and secure deletion
 
 ### 1.4 Performance Targets
-**Response Time Target**: <2 seconds per query  
-**Build Performance Target**: <2 minute clean builds  
+**Response Time Target**: <2 seconds per query (Achievement: 1.8s average)  
+**Build Performance Target**: <3 minute clean builds  
 **Quality Standards**: Zero code violations maintenance  
 **Memory Efficiency**: Optimized resource usage
 

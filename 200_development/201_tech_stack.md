@@ -1,10 +1,11 @@
-# Complete Tech Stack & Architecture Components
+# AskMe CLI Tech Stack & Architecture Components
 
-**Document Version:** 1.2  
-**Last Updated:** June 18, 2025  
-**Status:** ✅ Current
+**Document Version:** 2.0  
+**Last Updated:** July 18, 2025  
+**Status:** ✅ Current - Production Release
 
 ## Version History
+- **v2.0** (July 18, 2025) - Updated for 5-provider production release
 - **v1.2** (June 18, 2025) - Formatted for enhanced readability and GitHub compatibility
 - **v1.1** (Previous) - Updated dependency versions and module descriptions  
 - **v1.0** (Initial) - Base tech stack documentation
@@ -20,34 +21,38 @@
 
 ## 1. Core Technologies
 
-The following technologies form the foundation of the ask me CliApp project:
+The following technologies form the foundation of the AskMe CLI project:
 
-1.1. **Kotlin Multiplatform** - Shared business logic for Android and CLI  
-1.2. **Jetpack Compose** - Modern Android UI (versioned via Compose BOM) *[Note: For planned Android app, currently deferred]*
-1.3. **Ktor** - Networking (API calls, multiplatform)
-1.4. **gRPC** - Local model server communication *[Note: Planned for future local model integration, not currently used in CLI MVP]*
-1.5. **Koin** - Dependency injection
-1.6. **SQLDelight** - Local database *[Note: For planned Android app, currently deferred]*  
-1.7. **AndroidX** - Core Android libraries  
-1.8. **JUnit, MockK, Kotest, Turbine** - Testing framework suite  
-1.9. **Detekt, ktlint** - Code quality and style enforcement  
-1.10. **Dokka** - Documentation generation
+1.1. **Kotlin** - Primary programming language for CLI application  
+1.2. **Ktor Client** - HTTP networking for AI provider communication  
+1.3. **Kotlin Coroutines** - Asynchronous programming and concurrency  
+1.4. **Kotlinx Serialization** - JSON handling for API responses  
+1.5. **Kotlinx CLI** - Command-line interface framework  
+1.6. **JVM Runtime** - Java Virtual Machine for cross-platform execution  
+1.7. **Gradle** - Build system with Kotlin DSL  
+1.8. **Detekt** - Static code analysis and quality enforcement  
+1.9. **JUnit** - Unit testing framework  
+1.10. **SLF4J** - Logging framework
 
 ## 2. Module Architecture
 
 ### 2.1. Core Modules
 
-The application is structured into three primary modules:
+The application is structured into a single focused module for optimal performance:
 
-2.1.1. **Core Module**  
-   - ✅ Shared business logic implementation
-   - ✅ Query processing engine
+2.1.1. **CLI Application Module**  
+   - ✅ Main application entry point
+   - ✅ Command-line argument parsing
+   - ✅ Interactive mode implementation
    - ✅ Provider management system
-   - ✅ Settings and configuration
-   - **Purpose:** Central intelligence and privacy features
+   - **Purpose:** Complete CLI functionality in a single module
 
-2.1.2. **AndroidApp Module**  
-   - ✅ Modern Jetpack Compose UI implementation
+2.1.2. **Provider System**  
+   - ✅ BaseProvider abstract class
+   - ✅ 5 provider implementations (Google, Mistral, Cohere, Groq, OpenRouter)
+   - ✅ Intelligent provider selection
+   - ✅ Fallback system for reliability
+   - **Purpose:** AI provider abstraction and management
    - ✅ Android device optimization
    - ✅ Core module integration
    - **Purpose:** User-friendly mobile interface

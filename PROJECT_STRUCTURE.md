@@ -1,182 +1,210 @@
-# askme Project Directory Structure
+# Project Structure
 
-## Root Level Organization
+## Overview
+
+AskMe CLI is a multi-provider AI command-line interface that provides access to 5 different AI providers through a unified interface. This document outlines the project structure and organization.
+
+## 🏗️ Repository Structure
+
 ```
 askme/
-├── README.md                   # Main project overview
-├── PROJECT_STRUCTURE.md        # Project organization (this file)
-├── .github/workflows/          # GitHub Actions workflows
-│   └── RELEASE_WORKFLOW.yaml  # Release automation workflow
-├── 100_planning/               # Project Planning & Management
-├── 200_development/            # Technical Development Documentation
-├── 300_implementation/         # Source Code & Applications
-├── 400_testing/               # Quality Assurance & Testing
-├── 500_release/               # Release Management & Deployment
-├── 700_scripts/               # Development Tools & Scripts
-├── 800_misc_docs/             # Miscellaneous Documentation & Assets
-└── 900_archive/               # Archives & Distributions
+├── 📁 .github/                    # GitHub workflows and templates
+│   ├── workflows/                 # CI/CD workflows
+│   │   ├── ci.yml                # Basic CI/CD pipeline
+│   │   ├── issue-labeler.yml     # Issue labeling automation
+│   │   └── release.yaml          # Release automation
+│   └── ISSUE_TEMPLATE/           # Issue templates
+├── 📁 300_implementation/         # Core implementation
+│   └── askme-cli/                # Main CLI project
+│       ├── cliApp/               # CLI application module
+│       │   ├── src/main/kotlin/  # Source code
+│       │   │   └── com/askme/    
+│       │   │       ├── cli/      # CLI interface
+│       │   │       │   └── Main.kt
+│       │   │       └── providers/ # Provider implementations
+│       │   │           └── Providers.kt
+│       │   └── build.gradle.kts  # Application build config
+│       ├── gradle/               # Gradle wrapper
+│       ├── gradlew              # Gradle wrapper script
+│       └── build.gradle.kts     # Root build config
+├── 📁 releases/                  # Release assets
+│   ├── v1.3.0/                  # Version 1.3.0 release
+│   │   ├── askme-cli-5-providers-v1.3.0-complete.zip
+│   │   ├── askme-cli-5-providers-v1.3.0.tar.gz
+│   │   ├── install.sh           # Installation script
+│   │   ├── CHECKSUMS.txt        # SHA256 checksums
+│   │   └── RELEASE_NOTES.md     # Release notes
+│   └── DISTRIBUTION_GUIDE.md    # Distribution guide
+├── 📁 deployment-test/          # Test distributions
+│   └── askme-cli-5-providers-v1.3.0/
+├── 📁 dist/                     # Distribution files
+├── 📁 docs/                     # Documentation index
+├── 📁 100_planning/             # Project planning (archived)
+├── 📁 200_development/          # Development docs (archived)
+├── 📁 400_testing/              # Testing docs (archived)
+├── 📁 500_release/              # Release docs (archived)
+├── 📁 700_scripts/              # Build and deployment scripts
+├── 📁 800_misc_docs/            # Miscellaneous documentation
+├── 📁 900_archive/              # Archived files
+├── 📁 scout-agent/              # Model validation agent
+├── 📄 README.md                 # Main project documentation
+├── 📄 INSTALL.md                # Installation guide
+├── 📄 USER_GUIDE.md             # User manual
+├── 📄 CONTRIBUTING.md           # Development guide
+├── 📄 CHANGELOG.md              # Version history
+├── 📄 Dockerfile               # Docker container
+└── 📄 .dockerignore            # Docker ignore rules
 ```
 
-## 100_planning/ - Project Planning & Management
+## 🎯 Core Components
+
+### CLI Application (`300_implementation/askme-cli/`)
+- **Main.kt**: Entry point, argument parsing, interactive mode
+- **Providers.kt**: Provider implementations and intelligent selection
+- **Build System**: Gradle with Kotlin DSL
+- **Dependencies**: Kotlin, Ktor, Kotlinx libraries
+
+### Provider System
+- **5 Active Providers**: Google, Mistral, Cohere, Groq, OpenRouter
+- **Intelligent Selection**: Query analysis and provider optimization
+- **Fallback System**: Automatic provider switching on failures
+- **Performance Tracking**: Success rates and response times
+
+### Distribution System
+- **Release Assets**: Complete distributions with all dependencies
+- **Installation Script**: One-line installer for easy setup
+- **Docker Support**: Containerized deployment option
+- **Checksums**: SHA256 verification for security
+
+## 📊 Provider Architecture
+
 ```
-├── 101_project_charter.md          # Project charter and scope
-├── 102_master_checklist.md         # Master execution checklist
-├── 103_project_plan.md             # Detailed project roadmap
-├── 104_risk_management.md          # Risk assessment and mitigation
-├── 105_resource_planning.md        # Resource allocation planning
-├── 106_mvp_requirements.md         # MVP definition and boundaries
-├── 107_roadmap.md                  # Project roadmap
-└── 108_project_completion.md       # Project completion documentation
+BaseProvider (Abstract)
+├── GoogleProvider     (Gemini models)
+├── MistralProvider    (Code generation)
+├── CohereProvider     (Conversational AI)
+├── GroqProvider       (Ultra-fast inference)
+└── OpenRouterProvider (Unified access)
 ```
 
-## 200_development/ - Technical Development Documentation
-```
-├── 201_tech_stack.md               # Technology stack documentation
-├── 202_setup_guide.md              # Development environment setup
-├── 203_implementation_log.md       # Implementation history and decisions
-├── 206_system_architecture.md      # System architecture overview
-├── 207_tool_checklist.md           # Tool installation and verification procedures
-├── 208_cli_wireframes.txt          # CLI interface wireframes
-├── 209_wireframe_notes.md          # Wireframe design notes and documentation
-├── 210_implementation_summary.md   # Implementation summary
-└── 211_implementation_status.md    # Implementation status tracking
+### Provider Features
+- **Model Selection**: Automatic best model selection per query
+- **Query Analysis**: Content-based provider optimization
+- **Error Handling**: Graceful failure handling and fallbacks
+- **Performance Metrics**: Response time and success tracking
+
+## 🔧 Build System
+
+### Gradle Configuration
+- **Multi-module**: Root project with cliApp module
+- **Kotlin DSL**: Modern Gradle configuration
+- **Dependencies**: Managed through version catalogs
+- **Distribution**: Automated JAR packaging with dependencies
+
+### Build Targets
+```bash
+./gradlew clean                    # Clean build artifacts
+./gradlew build                    # Build project
+./gradlew test                     # Run tests
+./gradlew cliApp:installDist      # Create distribution
+./gradlew cliApp:run --args="..."  # Run CLI directly
 ```
 
-## 300_implementation/ - Source Code & Applications
+## 🚀 Deployment Pipeline
+
+### CI/CD Workflow
+1. **Code Push** → Trigger CI pipeline
+2. **Build & Test** → Gradle build and unit tests
+3. **CLI Testing** → Functional testing of CLI commands
+4. **Artifact Upload** → Build artifacts stored
+
+### Release Process
+1. **Tag Creation** → `v1.3.0` tag triggers release
+2. **Distribution Build** → Create ZIP/TAR.GZ with all dependencies
+3. **Checksum Generation** → SHA256 verification files
+4. **GitHub Release** → Automated release with assets
+
+## 📁 Directory Purposes
+
+### Active Directories
+- **`.github/`**: GitHub workflows and templates
+- **`300_implementation/`**: Core CLI implementation
+- **`releases/`**: Release assets and distribution files
+- **`deployment-test/`**: Test distributions for validation
+- **`docs/`**: Documentation index and navigation
+
+### Archived Directories
+- **`100_planning/`**: Initial project planning (historical)
+- **`200_development/`**: Development documentation (historical)
+- **`400_testing/`**: Testing documentation (historical)
+- **`500_release/`**: Release documentation (historical)
+- **`700_scripts/`**: Build and deployment scripts
+- **`800_misc_docs/`**: Miscellaneous documentation
+- **`900_archive/`**: Archived files and old distributions
+
+## 🔐 Security & Configuration
+
+### Security Features
+- **No Local API Keys**: All keys managed server-side
+- **Input Validation**: Prevents injection attacks
+- **HTTPS Only**: Encrypted connections to backend
+- **Checksum Verification**: Ensures download integrity
+
+### Configuration
+- **Zero Config**: No local configuration required
+- **Backend Proxy**: `https://askme-backend-proxy.onrender.com`
+- **Provider Management**: Server-side provider configuration
+- **Performance Tuning**: Automatic optimization based on usage
+
+## 🔄 Data Flow
+
 ```
-├── askme-backend/                  # Backend API service
-│   ├── package.json                # Node.js dependencies
-│   └── server.js                   # Express server implementation
-└── askme-cli/                      # CLI Application (Kotlin Multiplatform)
-    ├── build.gradle.kts            # Root build configuration
-    ├── settings.gradle.kts         # Gradle project settings
-    ├── gradle.properties           # Gradle configuration properties
-    ├── gradlew                     # Gradle wrapper script (Unix)
-    ├── gradlew.bat                 # Gradle wrapper script (Windows)
-    ├── gradle/                     # Gradle wrapper files
-    │   ├── libs.versions.toml      # Version catalog
-    │   └── wrapper/                # Gradle wrapper binaries
-    ├── cliApp/                     # CLI application module
-    │   ├── build.gradle.kts        # CLI module build config with buffer fix
-    │   └── src/                    # CLI source code
-    │       └── main/kotlin/com/askme/
-    │           ├── cli/Main.kt     # CLI entry point
-    │           └── providers/       # AI provider implementations
-    │               ├── AIProvider.kt       # Provider interface
-    │               ├── IntelligentProvider.kt  # Smart provider selection
-    │               └── Providers.kt        # Provider implementations
-    ├── buildSrc_disabled/          # Disabled integrity plugin
-    │   ├── build.gradle.kts        # Plugin build config
-    │   └── src/main/kotlin/        # Plugin source code
-    │       └── IntegrityPlugin.kt  # Script validation plugin
-    ├── config/detekt/              # Code quality configuration
-    │   └── detekt.yml              # Detekt configuration
-    ├── docs/                       # CLI-specific documentation
-    │   ├── FINAL_SUCCESS.md        # Project completion status
-    │   ├── ProjectCompletion.md    # Completion documentation
-    │   └── screenshots/            # CLI demonstration images
-    │       └── cli_screenshot.png  # CLI interface screenshot
-    └── src/                        # Shared source code
-        └── commonTest/kotlin/com/askme/security/ # Security test suites
-            ├── ConnectionValidationUnitTest.kt
-            ├── DataDeletionValidationUnitTest.kt
-            ├── FileAccessValidationUnitTest.kt
-            └── InputValidationUnitTest.kt
+User Input → CLI Parser → Provider Selection → Backend Proxy → AI Provider → Response
+     ↑                                                                            ↓
+     └─────────────────────── Formatted Output ←──────────────────────────────────┘
 ```
 
-## 400_testing/ - Quality Assurance & Testing
+### Processing Steps
+1. **Input Processing**: Parse command-line arguments or interactive input
+2. **Provider Selection**: Choose optimal provider based on query analysis
+3. **Backend Communication**: Send request through proxy with provider routing
+4. **Response Processing**: Format and display AI provider response
+5. **Performance Tracking**: Update provider statistics and metrics
+
+## 🧪 Testing Strategy
+
+### Test Categories
+- **Unit Tests**: Provider logic and utility functions
+- **Integration Tests**: CLI functionality and backend communication
+- **Performance Tests**: Response time and throughput testing
+- **Security Tests**: Input validation and injection prevention
+
+### Test Structure
 ```
-├── 401_test_strategy.md            # Overall testing strategy
-├── 402_test_plan.md                # Detailed test planning procedures
-├── 403_test_scenarios.md           # Test scenario definitions
-├── 404_test_cases.md               # Specific test case documentation
-├── 405_test_checklist.md           # Testing execution checklist
-├── 406_bug_tracking.md             # Bug tracking and resolution procedures
-├── 407_test_summary.md             # Test execution summary and results
-├── 409_prevention_implementation_complete.md # Buffer size prevention strategy
-└── reports/                        # Test execution reports
-    └── end_to_end_test_report.md   # Comprehensive E2E test results
+src/commonTest/kotlin/com/askme/
+├── security/                    # Security validation tests
+├── providers/                   # Provider logic tests
+└── cli/                        # CLI interface tests
 ```
 
-## 500_release/ - Release Management & Deployment
-```
-├── 501_license                     # License information
-├── 502_changelog.md                # Version change log
-├── 503_release_notes.md            # Release notes and updates
-├── 504_user_guide.md               # Complete CLI user guide
-├── 505_user_guide_simplified.md    # Simplified user guide for executives
-├── 506_api_docs.md                 # Technical API documentation
-├── 507_development_setup.md        # Development environment setup
-├── 508_contributing.md             # Contribution guidelines
-├── 509_known_issues.md             # Known issues and limitations
-├── 510_install.sh                  # Installation script
-└── 511_docs/                       # Release documentation assets
-    └── index.html                  # Documentation index
-```
+## 📈 Version History
 
-## 700_scripts/ - Development Tools & Automation
-```
-├── 701_sync_script.sh              # Cloud storage synchronization
-├── 702_env_check.sh                # Environment validation script
-├── 703_cli_automation.sh           # CLI automation utilities
-├── 704_cli_performance_test.sh     # Performance testing script
-├── 705_build_release.sh            # Enhanced release build automation
-├── 706_create_backup_distributions.sh # Distribution backup creation
-├── 707_setup_fallback_system.sh    # Fallback system setup
-├── 708_release_health_monitor.sh   # Release health monitoring
-└── 709_continuous_validation.sh    # Continuous validation automation
-```
+- **v1.3.0**: 5-provider distribution with complete release assets
+- **v1.2.1**: Fixed distribution with updated wrapper scripts
+- **v1.2.0**: Multi-provider support with intelligent selection
+- **v1.1.0**: Enhanced multi-provider implementation
+- **v1.0.0**: Initial release with basic functionality
 
-## 800_misc_docs/ - Miscellaneous Documentation & Assets
-```
-├── 801_api_model_update_plan.md        # API model update strategy
-└── 802_api_provider_status_table.md    # Provider status documentation
-```
+## 🎯 Future Considerations
 
-## 900_archive/ - Archives & Distributions
-```
-├── distributions/                  # Distribution archives
-│   ├── askme-cli-v1.2.1.tar.gz   # Production release archive
-│   └── askme-distribution-final/   # Final distribution package
-│       ├── app/                   # Application files
-│       │   ├── bin/              # Executable scripts
-│       │   │   ├── cliApp        # Unix executable
-│       │   │   └── cliApp.bat    # Windows batch file
-│       │   └── lib/              # Runtime libraries (25+ JARs)
-│       ├── install.sh            # Installation script
-│       ├── LICENSE               # License file
-│       └── USER_GUIDE.md         # User documentation
-└── monitoring/                    # Historical monitoring data
-    └── v1.2.1/                   # Version-specific health reports
-        └── health-report-v1.2.1.md
-```
+### Scalability
+- **Provider Expansion**: Framework supports additional providers
+- **Performance Optimization**: Continuous performance monitoring
+- **Feature Enhancement**: User-requested functionality additions
+- **Platform Support**: Windows native support consideration
 
-## GitHub Actions Workflow
-```
-.github/workflows/
-└── RELEASE_WORKFLOW.yaml          # Automated release pipeline
-    ├── Build verification         # Gradle build with compact scripts
-    ├── Distribution packaging     # Archive creation
-    ├── Release asset upload       # GitHub release management
-    └── Checksum validation       # Security verification
-```
-
-## File Statistics Summary
-```
-Total Directories: 47
-Total Files: 122
-Archive Files: 52
-Active Project Files: 70
-```
-
-## Project Organization Features
-
-### ✅ Numbered Directory Structure (000-900)
-- **100-199**: Planning and project management
-- **200-299**: Development documentation
-- **300-399**: Implementation and source code
-- **400-499**: Testing and quality assurance
-- **500-599**: Release and deployment
-- **700-799**: Scripts and automation
-- **800-899**: Miscellaneous documentation and assets
-- **900-999**: Archives and distributions
+### Maintenance
+- **Documentation Updates**: Keep docs current with releases
+- **Dependency Management**: Regular security updates
+- **Backend Monitoring**: Ensure high availability
+- **User Feedback**: Continuous improvement based on usage

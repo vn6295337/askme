@@ -1,13 +1,14 @@
-# System Architecture Overview
+# AskMe CLI System Architecture Overview
 
-**Document Title:** askme AI Assistant System Architecture  
-**Project:** askme CLI Application  
+**Document Title:** AskMe CLI System Architecture  
+**Project:** AskMe CLI - 5-Provider AI Interface  
 **Document Type:** Technical Architecture Specification  
 
 ## Version History
 
 | Version | Date | Changes | Author |
 |---------|------|---------|--------|
+| v3.0 | 2025-07-18 | Updated for 5-provider production release | Architecture Team |
 | v2.1 | 2025-06-18 | Reformatted structure, added hierarchical numbering | Project Coordinator |
 | v2.0 | 2025-06-15 | Updated with production CLI metrics and Android status | Architecture Team |
 | v1.5 | 2025-06-10 | Added security architecture and performance benchmarks | Architecture Team |
@@ -27,26 +28,23 @@
 
 ---
 
-> **Traceability:** Each component maps to atomic checklist items in [102_master_checklist.md](102_master_checklist.md) and [103_project_plan.md](103_project_plan.md)
-
----
-
 ## 1. High-Level Architecture
 
 ```
 ┌─────────────────────────────────────────────────────────────────────┐
-│                    🚀 AskMe AI Assistant                            │
+│                    🚀 AskMe CLI v1.3.0                             │
 ├─────────────────────────────────────────────────────────────────────┤
 │                                                                     │
 │  ┌─────────────────┐      ┌──────────────────┐      ┌──────────────┐ │
-│  │  📱 UI Layer    │      │  🧠 Core Logic   │      │  🤖 LLM      │ │
+│  │  💻 CLI Layer   │      │  🧠 Core Logic   │      │  🤖 AI       │ │
 │  │                 │◄────►│                  │◄────►│  Providers   │ │
-│  │  • Android App  │      │  • Query Engine  │      │              │ │
-│  │  • CLI Tool     │      │  • Provider Mgmt │      │  • Google    │ │
-│  │  • Shared UI    │      │  • Settings      │      │  • Mistral   │ │
-│  └─────────────────┘      │  • Security      │      │  • OpenAI    │ │
-│                           └──────────────────┘      │  • Anthropic │ │
-│                                                     └──────────────┘ │
+│  │  • CLI Tool     │      │  • Query Engine  │      │              │ │
+│  │  • Interactive  │      │  • Provider Mgmt │      │  • Google    │ │
+│  │  • Args Parser  │      │  • Settings      │      │  • Mistral   │ │
+│  │  • Stats Display│      │  • Security      │      │  • Cohere    │ │
+│  └─────────────────┘      │  • Intelligent   │      │  • Groq      │ │
+│                           │    Selection     │      │  • OpenRouter│ │
+│                           └──────────────────┘      └──────────────┘ │
 └─────────────────────────────────────────────────────────────────────┘
 ```
 
