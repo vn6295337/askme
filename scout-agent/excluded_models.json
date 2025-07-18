@@ -1,39 +1,89 @@
 {
   "metadata": {
-    "timestamp": "2025-07-13T04:49:41.578Z",
+    "timestamp": "2025-07-18T13:44:13.435Z",
     "trigger": "workflow_dispatch",
     "reason": "Manual validation request",
     "specific_provider": null,
     "announcement_url": null,
-    "total_models_checked": 42,
-    "total_validated_models": 42,
-    "total_excluded_models": 0,
-    "quality_filtering": {
-      "enabled": true,
-      "criteria": [
-        "Trusted organizations",
-        "Academic institutions",
-        "Established model families",
-        "HuggingFace quality metrics",
-        "SLM efficiency",
-        "Open source licensing"
-      ],
-      "quality_review_needed": 0,
-      "quality_review_rate": "0.0%",
-      "immediately_approved": 42
-    },
-    "providers_with_models": [
-      "ai21",
-      "cohere",
+    "providers_validated": [
       "google",
-      "groq",
-      "huggingface",
-      "llama",
       "mistral",
-      "openrouter",
-      "replicate"
+      "cohere",
+      "groq",
+      "openrouter"
     ],
-    "backend_proxy_used": true
+    "total_models_checked": 5,
+    "total_validated_models": 0,
+    "total_excluded_models": 5,
+    "geographic_filtering": {
+      "enabled": true,
+      "allowed_regions": [
+        "North America",
+        "Europe"
+      ],
+      "geographic_exclusions": 0,
+      "geographic_exclusion_rate": "0.0%",
+      "other_exclusions": 5
+    },
+    "providers_with_models": [],
+    "validation_summary": {
+      "google": {
+        "validated": 0,
+        "excluded": 1,
+        "geographic_excluded": 0,
+        "available": false
+      },
+      "mistral": {
+        "validated": 0,
+        "excluded": 1,
+        "geographic_excluded": 0,
+        "available": false
+      },
+      "cohere": {
+        "validated": 0,
+        "excluded": 1,
+        "geographic_excluded": 0,
+        "available": false
+      },
+      "groq": {
+        "validated": 0,
+        "excluded": 1,
+        "geographic_excluded": 0,
+        "available": false
+      },
+      "openrouter": {
+        "validated": 0,
+        "excluded": 1,
+        "geographic_excluded": 0,
+        "available": false
+      }
+    }
   },
-  "excluded_models": []
+  "excluded_models": [
+    {
+      "model_name": "cohere-default",
+      "provider": "cohere",
+      "reason": "Backend validation failed: HTTP 400: {\"error\":\"Prompt is required\"}"
+    },
+    {
+      "model_name": "google-default",
+      "provider": "google",
+      "reason": "Backend validation failed: HTTP 400: {\"error\":\"Prompt is required\"}"
+    },
+    {
+      "model_name": "groq-default",
+      "provider": "groq",
+      "reason": "Backend validation failed: HTTP 400: {\"error\":\"Prompt is required\"}"
+    },
+    {
+      "model_name": "mistral-default",
+      "provider": "mistral",
+      "reason": "Backend validation failed: HTTP 400: {\"error\":\"Prompt is required\"}"
+    },
+    {
+      "model_name": "openrouter-default",
+      "provider": "openrouter",
+      "reason": "Backend validation failed: HTTP 400: {\"error\":\"Prompt is required\"}"
+    }
+  ]
 }

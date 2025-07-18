@@ -1,0 +1,187 @@
+{
+  "timestamp": "2025-07-18T13:44:17.113Z",
+  "backend_url": "https://askme-backend-proxy.onrender.com",
+  "health_checks": [
+    {
+      "check": "General Health",
+      "status": "healthy",
+      "response": {
+        "status": "healthy",
+        "timestamp": "2025-07-18T13:44:17.321Z",
+        "version": "1.1.0",
+        "providers": [
+          "google",
+          "mistral",
+          "llama",
+          "cohere",
+          "groq",
+          "huggingface",
+          "openrouter",
+          "ai21",
+          "replicate"
+        ]
+      }
+    },
+    {
+      "check": "Provider Status",
+      "status": "healthy",
+      "response": {
+        "providers": [
+          {
+            "name": "google",
+            "available": true,
+            "status": "active",
+            "models": [
+              "gemini-1.5-flash",
+              "gemini-1.5-flash-8b",
+              "gemini-1.5-pro"
+            ],
+            "modelCount": 3
+          },
+          {
+            "name": "mistral",
+            "available": true,
+            "status": "active",
+            "models": [
+              "mistral-small-latest",
+              "open-mistral-7b",
+              "open-mixtral-8x7b",
+              "open-mixtral-8x22b",
+              "mistral-medium-latest"
+            ],
+            "modelCount": 5
+          },
+          {
+            "name": "llama",
+            "available": false,
+            "status": "unavailable",
+            "models": [
+              "meta-llama/Meta-Llama-3-8B-Instruct-Turbo",
+              "meta-llama/Llama-3-8b-chat-hf",
+              "meta-llama/Llama-3.3-70B-Instruct-Turbo",
+              "meta-llama/Llama-2-7b-chat-hf",
+              "meta-llama/Llama-2-13b-chat-hf"
+            ],
+            "modelCount": 5
+          },
+          {
+            "name": "cohere",
+            "available": true,
+            "status": "active",
+            "models": [
+              "command",
+              "command-light",
+              "command-nightly",
+              "command-r",
+              "command-r-plus"
+            ],
+            "modelCount": 5
+          },
+          {
+            "name": "groq",
+            "available": true,
+            "status": "active",
+            "models": [
+              "llama-3.3-70b-versatile",
+              "llama-3.1-70b-versatile",
+              "llama-3.1-8b-instant",
+              "mixtral-8x7b-32768",
+              "gemma2-9b-it",
+              "gemma-7b-it"
+            ],
+            "modelCount": 6
+          },
+          {
+            "name": "huggingface",
+            "available": true,
+            "status": "active",
+            "models": [
+              "microsoft/DialoGPT-large",
+              "microsoft/DialoGPT-medium",
+              "facebook/blenderbot-400M-distill",
+              "google/flan-t5-large",
+              "microsoft/CodeBERT-base"
+            ],
+            "modelCount": 5
+          },
+          {
+            "name": "openrouter",
+            "available": true,
+            "status": "active",
+            "models": [
+              "anthropic/claude-3-haiku",
+              "meta-llama/llama-3.1-8b-instruct",
+              "mistralai/mistral-7b-instruct",
+              "google/gemma-7b-it",
+              "microsoft/wizardlm-2-8x22b"
+            ],
+            "modelCount": 5
+          },
+          {
+            "name": "ai21",
+            "available": true,
+            "status": "active",
+            "models": [
+              "j2-light",
+              "j2-mid",
+              "j2-ultra",
+              "jamba-instruct"
+            ],
+            "modelCount": 4
+          },
+          {
+            "name": "replicate",
+            "available": true,
+            "status": "active",
+            "models": [
+              "meta/llama-2-70b-chat",
+              "meta/llama-2-13b-chat",
+              "mistralai/mixtral-8x7b-instruct-v0.1",
+              "meta/codellama-34b-instruct"
+            ],
+            "modelCount": 4
+          }
+        ],
+        "timestamp": "2025-07-18T13:44:17.482Z",
+        "totalProviders": 9,
+        "activeProviders": 8
+      }
+    },
+    {
+      "check": "Model Validation",
+      "status": "healthy",
+      "response": {
+        "status": "healthy",
+        "dataFile": "missing",
+        "lastCheck": "2025-07-18T13:44:17.698Z",
+        "agentEndpoint": "/api/llms",
+        "clientEndpoint": "/api/llms"
+      }
+    }
+  ],
+  "model_update": {
+    "status": "success",
+    "timestamp": "2025-07-18T13:44:17.735Z",
+    "message": "Validation data saved for backend integration"
+  },
+  "dashboard_data": {
+    "timestamp": "2025-07-18T13:44:17.733Z",
+    "overview": {
+      "total_providers": 5,
+      "active_providers": 0,
+      "health_status": 100,
+      "last_update": "2025-07-18T13:44:17.733Z"
+    },
+    "providers": [],
+    "performance": {
+      "average_response_time": 0,
+      "success_rate": 0,
+      "uptime": 100
+    },
+    "alerts": []
+  },
+  "summary": {
+    "success": true,
+    "errors": []
+  }
+}
