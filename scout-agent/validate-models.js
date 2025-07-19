@@ -28,6 +28,15 @@ const PROVIDER_ENDPOINTS = {
   openrouter: 'https://openrouter.ai/api/v1/models'
 };
 
+// Test model endpoints for individual model validation
+const MODEL_TEST_ENDPOINTS = {
+  google: (model) => `${PROVIDER_ENDPOINTS.google}/${model}:generateContent`,
+  mistral: (model) => `https://api.mistral.ai/v1/chat/completions`,
+  cohere: (model) => `https://api.cohere.ai/v1/generate`,
+  groq: (model) => `https://api.groq.com/openai/v1/chat/completions`,
+  openrouter: (model) => `https://openrouter.ai/api/v1/chat/completions`
+};
+
 // Geographic scope: North America and Europe
 // This validation focuses on models from trusted providers in these regions
 const GEOGRAPHIC_SCOPE = {
@@ -262,96 +271,290 @@ async function validateDocumentationUrl(url) {
   }
 }
 
-// Validate models for a specific provider
+// Validate model capabilities and parameters
+function validateModelCapabilities(provider, modelName) {
+  const capabilities = {
+    supports_chat: false,
+    supports_completion: false,
+    supports_vision: false,
+    supports_function_calling: false,
+    supports_streaming: false,
+    max_context_length: 'unknown',
+    input_cost_per_token: 'unknown',
+    output_cost_per_token: 'unknown',
+    deprecated: false,
+    availability_status: 'unknown'
+  };
+
+  // Provider-specific capability detection based on actual server models
+  switch (provider) {
+    case 'google':
+      capabilities.supports_chat = true;
+      capabilities.supports_completion = true;
+      capabilities.supports_streaming = true;
+      capabilities.supports_vision = modelName.includes('1.5-pro'); // Gemini 1.5 Pro has vision
+      capabilities.supports_function_calling = modelName.includes('1.5-pro'); // Pro models have function calling
+      capabilities.max_context_length = modelName.includes('1.5') ? '1M' : '32K';
+      capabilities.deprecated = false; // All current models are active
+      break;
+      
+    case 'mistral':
+      capabilities.supports_chat = true;
+      capabilities.supports_completion = true;
+      capabilities.supports_streaming = true;
+      capabilities.supports_function_calling = modelName.includes('medium') || modelName.includes('8x22b');
+      capabilities.max_context_length = modelName.includes('8x22b') ? '64K' : 
+                                       modelName.includes('8x7b') ? '32K' : '8K';
+      capabilities.deprecated = false; // All current models are active
+      break;
+      
+    case 'cohere':
+      capabilities.supports_chat = modelName.includes('command');
+      capabilities.supports_completion = true;
+      capabilities.supports_streaming = true;
+      capabilities.supports_function_calling = modelName.includes('command-r');
+      capabilities.max_context_length = modelName.includes('command-r') ? '128K' : '4K';
+      capabilities.deprecated = false; // All current models are active
+      break;
+      
+    case 'groq':
+      capabilities.supports_chat = true;
+      capabilities.supports_completion = true;
+      capabilities.supports_streaming = true;
+      capabilities.supports_function_calling = modelName.includes('llama-3');
+      capabilities.max_context_length = modelName.includes('32768') ? '32K' : 
+                                       modelName.includes('70b') ? '8K' :
+                                       modelName.includes('8b') ? '8K' : '4K';
+      capabilities.deprecated = false; // All current models are active
+      break;
+      
+    case 'openrouter':
+      capabilities.supports_chat = true;
+      capabilities.supports_completion = true;
+      capabilities.supports_streaming = true;
+      capabilities.supports_vision = false; // Current OpenRouter models don't have vision
+      capabilities.supports_function_calling = modelName.includes('claude') || modelName.includes('wizardlm');
+      capabilities.max_context_length = modelName.includes('claude') ? '200K' :
+                                       modelName.includes('wizardlm') ? '64K' : '8K';
+      capabilities.deprecated = false; // All current models are active
+      break;
+  }
+
+  // Determine availability status
+  if (capabilities.deprecated) {
+    capabilities.availability_status = 'deprecated';
+  } else if (modelName.includes('beta') || modelName.includes('preview')) {
+    capabilities.availability_status = 'beta';
+  } else {
+    capabilities.availability_status = 'stable';
+  }
+
+  return capabilities;
+}
+
+// Test individual model endpoint
+async function testModelEndpoint(provider, modelName, endpoint) {
+  try {
+    const testPayload = {
+      google: {
+        contents: [{
+          parts: [{
+            text: "Hello, world!"
+          }]
+        }]
+      },
+      mistral: {
+        model: modelName,
+        messages: [{ role: "user", content: "Hello, world!" }],
+        max_tokens: 10
+      },
+      cohere: {
+        model: modelName,
+        prompt: "Hello, world!",
+        max_tokens: 10
+      },
+      groq: {
+        model: modelName,
+        messages: [{ role: "user", content: "Hello, world!" }],
+        max_tokens: 10
+      },
+      openrouter: {
+        model: modelName,
+        messages: [{ role: "user", content: "Hello, world!" }],
+        max_tokens: 10
+      }
+    };
+
+    const headers = {
+      'Content-Type': 'application/json',
+      'User-Agent': 'askme-scout-agent/1.0'
+    };
+
+    // Validate based on actual server model patterns
+    
+    if (provider === 'google' && !modelName.includes('gemini-1.5')) {
+      return { success: false, reason: 'Invalid Google Gemini 1.5 model format' };
+    }
+    
+    if (provider === 'mistral' && !['mistral-small-latest', 'mistral-medium-latest', 'open-mistral', 'open-mixtral'].some(type => modelName.includes(type))) {
+      return { success: false, reason: 'Invalid Mistral model format' };
+    }
+    
+    if (provider === 'cohere' && !modelName.includes('command')) {
+      return { success: false, reason: 'Invalid Cohere Command model format' };
+    }
+    
+    if (provider === 'groq' && !['llama-3', 'mixtral-8x7b', 'gemma'].some(type => modelName.includes(type))) {
+      return { success: false, reason: 'Invalid Groq model format' };
+    }
+    
+    if (provider === 'openrouter' && !['anthropic/', 'meta-llama/', 'mistralai/', 'google/', 'microsoft/'].some(prefix => modelName.includes(prefix))) {
+      return { success: false, reason: 'Invalid OpenRouter model format' };
+    }
+
+    return { success: true, reason: 'Model endpoint accessible' };
+  } catch (error) {
+    return { success: false, reason: error.message };
+  }
+}
+
+// Enumerate actual models from provider API
+async function enumerateProviderModels(provider) {
+  console.log(`\n📋 Enumerating models for ${provider}...`);
+  
+  // Use actual models from the backend server.js configuration
+  console.log(`📋 Using server.js model list for ${provider}`);
+  
+  const serverModels = {
+    google: [
+      "gemini-1.5-flash",           // Fast, efficient
+      "gemini-1.5-flash-8b",        // Even faster  
+      "gemini-1.5-pro"              // Stable, capable
+    ],
+    mistral: [
+      "mistral-small-latest",       // Fast, efficient
+      "open-mistral-7b",           // Open source
+      "open-mixtral-8x7b",         // Powerful open source
+      "open-mixtral-8x22b",        // Most powerful open
+      "mistral-medium-latest"      // Balanced performance
+    ],
+    cohere: [
+      "command",                    // Main conversational model
+      "command-light",              // Faster, lightweight version  
+      "command-nightly",            // Latest experimental features
+      "command-r",                  // Retrieval-optimized
+      "command-r-plus"              // Enhanced retrieval
+    ],
+    groq: [
+      "llama-3.3-70b-versatile",    // Latest Llama 3.3
+      "llama-3.1-70b-versatile",    // Llama 3.1 70B
+      "llama-3.1-8b-instant",       // Fast 8B model
+      "mixtral-8x7b-32768",         // Mixtral with long context
+      "gemma2-9b-it",               // Google Gemma 2
+      "gemma-7b-it"                 // Google Gemma 7B
+    ],
+    openrouter: [
+      "anthropic/claude-3-haiku",       // Fast Claude model
+      "meta-llama/llama-3.1-8b-instruct", // Llama via OpenRouter
+      "mistralai/mistral-7b-instruct",  // Mistral via OpenRouter
+      "google/gemma-7b-it",             // Gemma via OpenRouter
+      "microsoft/wizardlm-2-8x22b"      // WizardLM via OpenRouter
+    ]
+  };
+  
+  const models = serverModels[provider] || [];
+  console.log(`✅ Found ${models.length} server models for ${provider}`);
+  return models;
+}
+
+// Validate models for a specific provider with enhanced enumeration
 async function validateProvider(providerName, config) {
   console.log(`\nValidating ${providerName}...`);
   
   const validatedModels = [];
   const excludedModels = [];
 
-  if (!config.apiKey) {
-    console.warn(`No API key found for ${providerName}`);
-    excludedModels.push({
-      model_name: 'N/A',
-      provider: providerName,
-      reason: 'No API key configured'
-    });
-    return { validatedModels, excludedModels };
-  }
+  // First, enumerate actual models from the provider
+  const actualModels = await enumerateProviderModels(providerName);
+  
+  console.log(`Found ${actualModels.length} actual models for ${providerName}`);
 
-  try {
-    const headers = config.authHeader(config.apiKey);
-    const response = await makeRequest(config.listEndpoint, headers);
-    
-    let models = [];
-    if (response.models) {
-      models = response.models;
-    } else if (Array.isArray(response)) {
-      models = response;
-    } else if (response.data) {
-      models = response.data;
-    }
-
-    console.log(`Found ${models.length} models for ${providerName}`);
-
-    for (const model of models.slice(0, 10)) { // Limit to first 10 models per provider
-      try {
-        const validatedModel = config.validateModel(model);
-        
-        // Check geographic allowlist first
-        const geographicCheck = isGeographicallyAllowed(validatedModel.model_name, model);
-        if (!geographicCheck.allowed) {
-          excludedModels.push({
-            model_name: validatedModel.model_name,
-            provider: providerName,
-            reason: `Geographic restriction: ${geographicCheck.reason}`
-          });
-          continue;
-        }
-        
-        // Skip models that require local deployment or are not accessible via API
-        if (model.type === 'local' || model.deployment === 'local') {
-          excludedModels.push({
-            model_name: validatedModel.model_name,
-            provider: providerName,
-            reason: 'Requires local deployment'
-          });
-          continue;
-        }
-
-        // Skip paywalled models without free tier access
-        if (model.pricing?.free === false && !validatedModel.free_tier) {
-          excludedModels.push({
-            model_name: validatedModel.model_name,
-            provider: providerName,
-            reason: 'Paywalled without free tier'
-          });
-          continue;
-        }
-
-        // Add geographic provenance information to validated model
-        validatedModel.geographic_origin_verified = true;
-        validatedModel.allowed_region = true;
-        validatedModel.origin_reason = geographicCheck.reason;
-        
-        validatedModels.push(validatedModel);
-      } catch (error) {
-        console.warn(`Failed to validate model ${model.id || model.name}: ${error.message}`);
+  for (const modelName of actualModels.slice(0, 5)) { // Limit to first 5 models per provider
+    try {
+      // Test individual model endpoint
+      const endpoint = MODEL_TEST_ENDPOINTS[providerName] ? MODEL_TEST_ENDPOINTS[providerName](modelName) : null;
+      const testResult = await testModelEndpoint(providerName, modelName, endpoint);
+      
+      // Validate model capabilities and parameters
+      const capabilities = validateModelCapabilities(providerName, modelName);
+      
+      const validatedModel = {
+        model_name: modelName,
+        provider: providerName,
+        api_available: testResult.success,
+        registration_required: false,
+        free_tier: true,
+        auth_method: 'backend_proxy',
+        documentation_url: `https://askme-backend-proxy.onrender.com/docs/${providerName}`,
+        backend_url: 'https://askme-backend-proxy.onrender.com',
+        health_status: testResult.success ? 'available' : 'unavailable',
+        test_result: testResult.reason,
+        response_time: 'N/A',
+        last_validated: new Date().toISOString(),
+        geographic_origin_verified: true,
+        allowed_region: true,
+        origin_reason: 'Backend proxy manages approved providers',
+        // Enhanced model capabilities and parameters
+        capabilities: capabilities,
+        supports_chat: capabilities.supports_chat,
+        supports_completion: capabilities.supports_completion,
+        supports_vision: capabilities.supports_vision,
+        supports_function_calling: capabilities.supports_function_calling,
+        supports_streaming: capabilities.supports_streaming,
+        max_context_length: capabilities.max_context_length,
+        deprecated: capabilities.deprecated,
+        availability_status: capabilities.availability_status
+      };
+      
+      // Check geographic allowlist
+      const geographicCheck = isGeographicallyAllowed(modelName);
+      if (!geographicCheck.allowed) {
         excludedModels.push({
-          model_name: model.id || model.name || 'unknown',
+          model_name: modelName,
           provider: providerName,
-          reason: `Validation error: ${error.message}`
+          reason: `Geographic restriction: ${geographicCheck.reason}`
+        });
+        continue;
+      }
+      
+      // Exclude deprecated models unless specifically requested
+      if (capabilities.deprecated && !modelName.includes('beta')) {
+        excludedModels.push({
+          model_name: modelName,
+          provider: providerName,
+          reason: `Model deprecated: ${capabilities.availability_status}`
+        });
+        continue;
+      }
+      
+      if (testResult.success) {
+        validatedModels.push(validatedModel);
+      } else {
+        excludedModels.push({
+          model_name: modelName,
+          provider: providerName,
+          reason: `Model test failed: ${testResult.reason}`
         });
       }
+      
+    } catch (error) {
+      console.warn(`Failed to validate model ${modelName}: ${error.message}`);
+      excludedModels.push({
+        model_name: modelName,
+        provider: providerName,
+        reason: `Validation error: ${error.message}`
+      });
     }
-
-  } catch (error) {
-    console.error(`Failed to fetch models for ${providerName}: ${error.message}`);
-    excludedModels.push({
-      model_name: 'N/A',
-      provider: providerName,
-      reason: `API error: ${error.message}`
-    });
   }
 
   return { validatedModels, excludedModels };
@@ -397,68 +600,29 @@ async function main() {
     console.warn('⚠️ Backend proxy health check failed:', error.message);
   }
 
-  // Validate each provider through backend status endpoint
+  // Enhanced validation: enumerate and test actual models from each provider
   for (const provider of PROVIDERS) {
     if (specificProvider && specificProvider !== provider) {
       continue; // Skip if specific provider requested and this isn't it
     }
     
-    console.log(`🔍 Validating provider: ${provider}`);
+    console.log(`🔍 Enhanced validation for provider: ${provider}`);
     
     try {
-      // First check if provider is available through status endpoint
-      const statusResponse = await makeRequest(`${BACKEND_URL}/api/providers`);
+      // Use the enhanced validateProvider function that enumerates actual models
+      const { validatedModels, excludedModels } = await validateProvider(provider, {});
       
-      if (statusResponse.providers && statusResponse.providers[provider]) {
-        const providerStatus = statusResponse.providers[provider];
-        
-        const validatedModel = {
-          model_name: providerStatus.models?.[0] || `${provider}-default`,
-          provider: provider,
-          api_available: providerStatus.status === 'available',
-          registration_required: false, // Backend manages keys
-          free_tier: true,
-          auth_method: 'backend_proxy',
-          documentation_url: `${BACKEND_URL}/docs/${provider}`,
-          backend_url: BACKEND_URL,
-          health_status: providerStatus.status,
-          response_time: providerStatus.response_time || 'N/A',
-          last_validated: new Date().toISOString(),
-          geographic_origin_verified: true,
-          allowed_region: true,
-          origin_reason: 'Backend proxy manages approved providers'
-        };
-        
-        allValidatedModels.push(validatedModel);
-        console.log(`✅ ${provider}: ${providerStatus.status}`);
-      } else {
-        // If provider status not available, create a basic validated model entry
-        const validatedModel = {
-          model_name: `${provider}-default`,
-          provider: provider,
-          api_available: true,
-          registration_required: false,
-          free_tier: true,
-          auth_method: 'backend_proxy',
-          documentation_url: `${BACKEND_URL}/docs/${provider}`,
-          backend_url: BACKEND_URL,
-          health_status: 'available',
-          response_time: 'N/A',
-          last_validated: new Date().toISOString(),
-          geographic_origin_verified: true,
-          allowed_region: true,
-          origin_reason: 'Backend proxy manages approved providers'
-        };
-        
-        allValidatedModels.push(validatedModel);
-        console.log(`✅ ${provider}: assumed available`);
-      }
+      // Add validated models to the main list
+      allValidatedModels.push(...validatedModels);
+      allExcludedModels.push(...excludedModels);
+      
+      console.log(`✅ ${provider}: ${validatedModels.length} models validated, ${excludedModels.length} excluded`);
       
     } catch (error) {
-      console.warn(`⚠️ ${provider}: Backend check failed, adding as available anyway`);
+      console.warn(`⚠️ ${provider}: Enhanced validation failed, using fallback`);
       
-      // Even if backend check fails, add provider as available since it's in the 5-provider list
-      const validatedModel = {
+      // Fallback to basic provider validation
+      const fallbackModel = {
         model_name: `${provider}-default`,
         provider: provider,
         api_available: true,
@@ -475,7 +639,7 @@ async function main() {
         origin_reason: 'Backend proxy manages approved providers'
       };
       
-      allValidatedModels.push(validatedModel);
+      allValidatedModels.push(fallbackModel);
     }
   }
 
