@@ -1,0 +1,62 @@
+{
+  "timestamp": "2025-07-19T02:15:22.613Z",
+  "overview": {
+    "total_providers": 5,
+    "active_providers": 5,
+    "health_status": 100,
+    "last_update": "2025-07-19T02:15:22.613Z"
+  },
+  "providers": [
+    {
+      "name": "cohere",
+      "model": "cohere-default",
+      "status": "available",
+      "response_time": "N/A",
+      "auth_method": "backend_proxy",
+      "free_tier": true,
+      "last_validated": "2025-07-19T02:15:21.416Z"
+    },
+    {
+      "name": "google",
+      "model": "google-default",
+      "status": "available",
+      "response_time": "N/A",
+      "auth_method": "backend_proxy",
+      "free_tier": true,
+      "last_validated": "2025-07-19T02:15:21.090Z"
+    },
+    {
+      "name": "groq",
+      "model": "groq-default",
+      "status": "available",
+      "response_time": "N/A",
+      "auth_method": "backend_proxy",
+      "free_tier": true,
+      "last_validated": "2025-07-19T02:15:21.686Z"
+    },
+    {
+      "name": "mistral",
+      "model": "mistral-default",
+      "status": "available",
+      "response_time": "N/A",
+      "auth_method": "backend_proxy",
+      "free_tier": true,
+      "last_validated": "2025-07-19T02:15:21.203Z"
+    },
+    {
+      "name": "openrouter",
+      "model": "openrouter-default",
+      "status": "available",
+      "response_time": "N/A",
+      "auth_method": "backend_proxy",
+      "free_tier": true,
+      "last_validated": "2025-07-19T02:15:21.927Z"
+    }
+  ],
+  "performance": {
+    "average_response_time": 0,
+    "success_rate": 100,
+    "uptime": 100
+  },
+  "alerts": []
+}

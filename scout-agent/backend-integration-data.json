@@ -1,71 +1,20 @@
 {
-  "metadata": {
-    "timestamp": "2025-07-19T02:15:21.934Z",
-    "trigger": "workflow_dispatch",
-    "reason": "Manual validation request",
-    "specific_provider": null,
-    "announcement_url": null,
-    "providers_validated": [
+  "timestamp": "2025-07-19T02:15:22.614Z",
+  "scout_agent_version": "1.0",
+  "backend_url": "https://askme-backend-proxy.onrender.com",
+  "validation_summary": {
+    "total_models": 5,
+    "total_eligible": 0,
+    "providers": [
       "google",
       "mistral",
       "cohere",
       "groq",
       "openrouter"
     ],
-    "total_models_checked": 5,
-    "total_validated_models": 5,
-    "total_excluded_models": 0,
-    "geographic_filtering": {
-      "enabled": true,
-      "allowed_regions": [
-        "North America",
-        "Europe"
-      ],
-      "geographic_exclusions": 0,
-      "geographic_exclusion_rate": "0.0%",
-      "other_exclusions": 0
-    },
-    "providers_with_models": [
-      "cohere",
-      "google",
-      "groq",
-      "mistral",
-      "openrouter"
-    ],
-    "validation_summary": {
-      "google": {
-        "validated": 1,
-        "excluded": 0,
-        "geographic_excluded": 0,
-        "available": true
-      },
-      "mistral": {
-        "validated": 1,
-        "excluded": 0,
-        "geographic_excluded": 0,
-        "available": true
-      },
-      "cohere": {
-        "validated": 1,
-        "excluded": 0,
-        "geographic_excluded": 0,
-        "available": true
-      },
-      "groq": {
-        "validated": 1,
-        "excluded": 0,
-        "geographic_excluded": 0,
-        "available": true
-      },
-      "openrouter": {
-        "validated": 1,
-        "excluded": 0,
-        "geographic_excluded": 0,
-        "available": true
-      }
-    }
+    "active_providers": 5
   },
-  "models": [
+  "validated_models": [
     {
       "model_name": "cohere-default",
       "provider": "cohere",
@@ -146,5 +95,51 @@
       "allowed_region": true,
       "origin_reason": "Backend proxy manages approved providers"
     }
-  ]
+  ],
+  "eligible_models": [],
+  "dashboard_data": {
+    "provider_status": [
+      {
+        "provider": "cohere",
+        "model_name": "cohere-default",
+        "status": "available",
+        "response_time": "N/A",
+        "last_validated": "2025-07-19T02:15:21.416Z"
+      },
+      {
+        "provider": "google",
+        "model_name": "google-default",
+        "status": "available",
+        "response_time": "N/A",
+        "last_validated": "2025-07-19T02:15:21.090Z"
+      },
+      {
+        "provider": "groq",
+        "model_name": "groq-default",
+        "status": "available",
+        "response_time": "N/A",
+        "last_validated": "2025-07-19T02:15:21.686Z"
+      },
+      {
+        "provider": "mistral",
+        "model_name": "mistral-default",
+        "status": "available",
+        "response_time": "N/A",
+        "last_validated": "2025-07-19T02:15:21.203Z"
+      },
+      {
+        "provider": "openrouter",
+        "model_name": "openrouter-default",
+        "status": "available",
+        "response_time": "N/A",
+        "last_validated": "2025-07-19T02:15:21.927Z"
+      }
+    ],
+    "performance_metrics": {
+      "total_providers": 5,
+      "active_providers": 5,
+      "average_response_time": 0,
+      "success_rate": 100
+    }
+  }
 }
