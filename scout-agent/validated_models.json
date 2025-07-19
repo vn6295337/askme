@@ -1,8 +1,8 @@
 {
   "metadata": {
-    "timestamp": "2025-07-19T02:22:36.266Z",
+    "timestamp": "2025-07-19T06:01:09.726Z",
     "trigger": "workflow_dispatch",
-    "reason": "Manual validation request",
+    "reason": "Clean validation after cleanup",
     "specific_provider": null,
     "announcement_url": null,
     "providers_validated": [
@@ -17,10 +17,12 @@
     "total_excluded_models": 0,
     "geographic_filtering": {
       "enabled": true,
+      "scope": "North America and Europe focus",
       "allowed_regions": [
         "North America",
         "Europe"
       ],
+      "backend_managed": true,
       "geographic_exclusions": 0,
       "geographic_exclusion_rate": "0.0%",
       "other_exclusions": 0
@@ -77,7 +79,7 @@
       "backend_url": "https://askme-backend-proxy.onrender.com",
       "health_status": "available",
       "response_time": "N/A",
-      "last_validated": "2025-07-19T02:22:36.001Z",
+      "last_validated": "2025-07-19T06:01:08.994Z",
       "geographic_origin_verified": true,
       "allowed_region": true,
       "origin_reason": "Backend proxy manages approved providers"
@@ -93,7 +95,7 @@
       "backend_url": "https://askme-backend-proxy.onrender.com",
       "health_status": "available",
       "response_time": "N/A",
-      "last_validated": "2025-07-19T02:22:35.719Z",
+      "last_validated": "2025-07-19T06:01:08.426Z",
       "geographic_origin_verified": true,
       "allowed_region": true,
       "origin_reason": "Backend proxy manages approved providers"
@@ -109,7 +111,7 @@
       "backend_url": "https://askme-backend-proxy.onrender.com",
       "health_status": "available",
       "response_time": "N/A",
-      "last_validated": "2025-07-19T02:22:36.156Z",
+      "last_validated": "2025-07-19T06:01:09.344Z",
       "geographic_origin_verified": true,
       "allowed_region": true,
       "origin_reason": "Backend proxy manages approved providers"
@@ -125,7 +127,7 @@
       "backend_url": "https://askme-backend-proxy.onrender.com",
       "health_status": "available",
       "response_time": "N/A",
-      "last_validated": "2025-07-19T02:22:35.877Z",
+      "last_validated": "2025-07-19T06:01:08.702Z",
       "geographic_origin_verified": true,
       "allowed_region": true,
       "origin_reason": "Backend proxy manages approved providers"
@@ -141,7 +143,7 @@
       "backend_url": "https://askme-backend-proxy.onrender.com",
       "health_status": "available",
       "response_time": "N/A",
-      "last_validated": "2025-07-19T02:22:36.258Z",
+      "last_validated": "2025-07-19T06:01:09.646Z",
       "geographic_origin_verified": true,
       "allowed_region": true,
       "origin_reason": "Backend proxy manages approved providers"

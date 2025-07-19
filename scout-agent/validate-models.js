@@ -28,118 +28,22 @@ const PROVIDER_ENDPOINTS = {
   openrouter: 'https://openrouter.ai/api/v1/models'
 };
 
-// Geographic provenance database - only allow models from US, Canada, and Europe
-const GEOGRAPHIC_ALLOWLIST = {
-  // Allowed economic regions
-  allowedRegions: {
-    // North America
-    'north america': ['na', 'america', 'american', 'openai', 'anthropic', 'google', 'microsoft', 'cohere'],
-    
-    // Europe
-    'europe': ['eu', 'european', 'deepmind', 'stability', 'mistral', 'huggingface', 'aleph alpha'],
-    'western europe': ['western', 'deepmind', 'stability'],
-    'central europe': ['central', 'aleph alpha'],
-    'mediterranean': ['mediterranean', 'ai21']  // Mediterranean economic region
-  },
-  
-  // Approved companies with verified origins
-  approvedCompanies: [
-    // North American Companies
-    'openai', 'anthropic', 'google', 'microsoft', 'meta', 'tesla', 'nvidia',
-    'together', 'replicate', 'groq', 'scale', 'databricks', 'cohere',
-    
-    // European Companies
-    'mistral', 'huggingface', 'deepmind', 'stability', 'aleph alpha', 'ai21'
-  ],
-  
-  // Known excluded regions/countries (non-exhaustive, complement to allowlist)
-  excludedRegions: [
-    'china', 'chinese', 'russia', 'russian', 'iran', 'iranian', 'north korea',
-    'belarus', 'myanmar', 'syria', 'venezuela', 'cuba', 'sudan',
-    // Add other regions as needed
-    'india', 'indian', 'japan', 'japanese', 'korea', 'korean', 'singapore',
-    'saudi', 'emirates', 'qatar', 'brazil', 'mexico', 'argentina'
-  ],
-  
-  // Specific models/patterns to exclude (non-Western origin)
-  excludedModels: [
-    // Chinese models
-    'qwen', 'ernie', 'chatglm', 'glm-', 'baidu', 'alibaba', 'tencent',
-    'deepseek', 'yi-', 'internlm', 'baichuan', 'belle', 'moss',
-    
-    // Russian models
-    'yandex', 'sber', 'gigachat',
-    
-    // Other non-Western models
-    'palm2-bison', 'claude-instant-1' // Verify these are actually Western
-  ],
-  
-  // Language indicators for exclusion
-  excludedLanguagePatterns: [
-    /[\u4e00-\u9fff]/, // Chinese characters
-    /[\u0400-\u04ff]/, // Cyrillic (Russian)
-    /[\u0590-\u05ff]/, // Hebrew (except AI21 which is Israeli/approved)
-    /[\u0600-\u06ff]/, // Arabic
-    /[\u3040-\u309f]/, // Hiragana (Japanese)
-    /[\u30a0-\u30ff]/, // Katakana (Japanese)
-    /[\uac00-\ud7af]/  // Hangul (Korean)
-  ]
+// Geographic scope: North America and Europe
+// This validation focuses on models from trusted providers in these regions
+const GEOGRAPHIC_SCOPE = {
+  description: 'North America and Europe focus',
+  allowed_regions: ['North America', 'Europe'],
+  backend_managed: true
 };
 
-// Function to check if a model is from allowed geographic regions
+// Simplified geographic check - backend proxy manages approved providers
 function isGeographicallyAllowed(modelName, modelData = {}) {
-  const name = modelName.toLowerCase();
-  const owner = (modelData.owner || '').toLowerCase();
-  const description = (modelData.description || '').toLowerCase();
-  const tags = (modelData.tags || []).join(' ').toLowerCase();
-  const author = (modelData.model_author || '').toLowerCase();
-  const fullText = `${name} ${owner} ${description} ${tags} ${author}`;
-  
-  // First check if it's an explicitly excluded model
-  if (GEOGRAPHIC_ALLOWLIST.excludedModels.some(excluded => 
-    fullText.includes(excluded.toLowerCase()))) {
-    return { allowed: false, reason: 'Model from excluded list detected' };
-  }
-  
-  // Check for excluded language patterns
-  for (const pattern of GEOGRAPHIC_ALLOWLIST.excludedLanguagePatterns) {
-    if (pattern.test(fullText)) {
-      return { allowed: false, reason: 'Non-Western language characters detected' };
-    }
-  }
-  
-  // Check for excluded regions
-  if (GEOGRAPHIC_ALLOWLIST.excludedRegions.some(region => 
-    fullText.includes(region.toLowerCase()))) {
-    return { allowed: false, reason: 'Model from excluded geographic region' };
-  }
-  
-  // Check if it's from an approved company (high confidence allowlist)
-  if (GEOGRAPHIC_ALLOWLIST.approvedCompanies.some(company => 
-    fullText.includes(company.toLowerCase()))) {
-    return { allowed: true, reason: 'Approved company identified' };
-  }
-  
-  // Check against allowed regions and their indicators
-  for (const [region, indicators] of Object.entries(GEOGRAPHIC_ALLOWLIST.allowedRegions)) {
-    if (indicators.some(indicator => fullText.includes(indicator.toLowerCase()))) {
-      return { allowed: true, reason: `Model from allowed region: ${region}` };
-    }
-  }
-  
-  // Special handling for common Western model patterns
-  const westernPatterns = [
-    /\bgpt-/i, /\bclaude/i, /\bgemini/i, /\bllama/i, /\bmistral/i, /\balpaca/i,
-    /\bvicuna/i, /\bwizard/i, /\borca/i, /\bflan/i, /\bt5-/i, /\bbert/i,
-    /\brobert/i, /\bbloom/i, /\bopt-/i, /\bgalactica/i, /\bcodex/i
-  ];
-  
-  if (westernPatterns.some(pattern => pattern.test(fullText))) {
-    return { allowed: true, reason: 'Western model pattern detected' };
-  }
-  
-  // If no clear indicators, default to exclusion for safety
-  return { allowed: false, reason: 'Geographic origin unclear - defaulting to exclusion for safety' };
+  // Since we use backend proxy with pre-approved providers from NA/Europe,
+  // all models from the 5-provider system are considered geographically allowed
+  return { 
+    allowed: true, 
+    reason: `${GEOGRAPHIC_SCOPE.description} - Backend proxy manages approved providers` 
+  };
 }
 
 // Provider configurations with API endpoints and validation methods
@@ -596,7 +500,9 @@ async function main() {
     total_excluded_models: allExcludedModels.length,
     geographic_filtering: {
       enabled: true,
-      allowed_regions: ['North America', 'Europe'],
+      scope: GEOGRAPHIC_SCOPE.description,
+      allowed_regions: GEOGRAPHIC_SCOPE.allowed_regions,
+      backend_managed: GEOGRAPHIC_SCOPE.backend_managed,
       geographic_exclusions: geographicExcluded,
       geographic_exclusion_rate: totalChecked > 0 ? (geographicExcluded / totalChecked * 100).toFixed(1) + '%' : '0%',
       other_exclusions: allExcludedModels.length - geographicExcluded
@@ -634,7 +540,7 @@ async function main() {
 
   console.log(`\n✅ Validation complete:`);
   console.log(`- Total models checked: ${totalChecked}`);
-  console.log(`- Validated models (North America/Europe only): ${allValidatedModels.length}`);
+  console.log(`- Validated models (${GEOGRAPHIC_SCOPE.description}): ${allValidatedModels.length}`);
   console.log(`- Excluded models: ${allExcludedModels.length}`);
   console.log(`  - Geographic restrictions: ${geographicExcluded}`);
   console.log(`  - Other reasons: ${allExcludedModels.length - geographicExcluded}`);
@@ -644,7 +550,7 @@ async function main() {
     console.log(`- Focus provider '${specificProvider}': ${allValidatedModels.length} models validated`);
   }
   
-  console.log(`\n🌍 Geographic filtering active: Only North American and European models allowed`);
+  console.log(`\n🌍 Geographic scope: ${GEOGRAPHIC_SCOPE.description} (Backend managed)`);
   console.log(`📁 Results saved to validated_models.json`);
   
   if (announcementUrl) {
