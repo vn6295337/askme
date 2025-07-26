@@ -16,9 +16,90 @@ const PORT = process.env.PORT || 3000;
 // Trust proxy for Railway deployment
 app.set('trust proxy', 1);
 
+// Enhanced CORS Configuration for Production Security
+const corsOptions = {
+    origin: function (origin, callback) {
+        // Allow requests with no origin (mobile apps, Postman, CLI tools)
+        if (!origin) return callback(null, true);
+        
+        // Allowed origins for your application
+        const allowedOrigins = [
+            // Production domains
+            'https://askme-frontend.vercel.app',
+            'https://askme-app.netlify.app', 
+            'https://yourdomain.com',
+            'https://www.yourdomain.com',
+            
+            // Development domains (remove in production)
+            'http://localhost:3000',
+            'http://localhost:3001',
+            'http://localhost:8080',
+            'http://localhost:5173', // Vite default
+            'http://127.0.0.1:3000',
+            'http://127.0.0.1:5173',
+            
+            // Allow Render preview deployments
+            /https:\/\/.*\.onrender\.com$/,
+            
+            // Allow Vercel preview deployments
+            /https:\/\/.*\.vercel\.app$/,
+            
+            // Allow Netlify preview deployments  
+            /https:\/\/.*\.netlify\.app$/
+        ];
+        
+        // Check if origin is allowed
+        const isAllowed = allowedOrigins.some(allowedOrigin => {
+            if (typeof allowedOrigin === 'string') {
+                return origin === allowedOrigin;
+            } else if (allowedOrigin instanceof RegExp) {
+                return allowedOrigin.test(origin);
+            }
+            return false;
+        });
+        
+        if (isAllowed) {
+            callback(null, true);
+        } else {
+            console.warn(`🚨 CORS: Blocked request from unauthorized origin: ${origin}`);
+            callback(new Error(`CORS policy violation: Origin ${origin} not allowed`));
+        }
+    },
+    
+    // Allow credentials (cookies, authorization headers)
+    credentials: true,
+    
+    // Allowed HTTP methods
+    methods: ['GET', 'POST', 'OPTIONS'],
+    
+    // Allowed headers
+    allowedHeaders: [
+        'Content-Type',
+        'Authorization', 
+        'X-Requested-With',
+        'Accept',
+        'Origin',
+        'Cache-Control',
+        'X-API-Key'
+    ],
+    
+    // Exposed headers (what browser can access)
+    exposedHeaders: [
+        'X-Total-Count',
+        'X-Rate-Limit-Remaining',
+        'X-Rate-Limit-Reset'
+    ],
+    
+    // Preflight cache duration (24 hours)
+    maxAge: 86400,
+    
+    // Handle preflight for all routes
+    optionsSuccessStatus: 200
+};
+
 // Middleware
 app.use(express.json({ limit: '10mb' }));
-app.use(cors());
+app.use(cors(corsOptions));
 
 // Rate limiting - 100 requests per 15 minutes per IP
 const limiter = rateLimit({
@@ -653,13 +734,38 @@ app.get('/api/security-status', (req, res) => {
     security: {
       rateLimitingActive: true,
       corsConfigured: true,
+      corsRestrictive: true,
       secureKeyManagement: true,
       inputValidation: true,
       xssProtection: true,
       sqlInjectionProtection: true,
       commandInjectionProtection: true,
-      contentSecurityHeaders: true
+      contentSecurityHeaders: true,
+      credentialsEnabled: corsOptions.credentials,
+      allowedMethods: corsOptions.methods,
+      maxAge: corsOptions.maxAge
     }
+  });
+});
+
+// CORS debugging endpoint (helps troubleshoot CORS issues)
+app.get('/api/cors-info', (req, res) => {
+  const origin = req.headers.origin || 'No origin header';
+  res.json({
+    requestOrigin: origin,
+    corsConfig: {
+      credentialsEnabled: corsOptions.credentials,
+      allowedMethods: corsOptions.methods,
+      allowedHeaders: corsOptions.allowedHeaders,
+      exposedHeaders: corsOptions.exposedHeaders,
+      maxAge: corsOptions.maxAge
+    },
+    headers: {
+      origin: req.headers.origin,
+      referer: req.headers.referer,
+      userAgent: req.headers['user-agent']
+    },
+    timestamp: new Date().toISOString()
   });
 });
 
