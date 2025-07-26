@@ -31,17 +31,286 @@ const limiter = rateLimit({
 });
 app.use('/api/', limiter);
 
-// API Keys (stored securely on server)
-const API_KEYS = {
-  google: process.env.GOOGLE_API_KEY,
-  mistral: process.env.MISTRAL_API_KEY,
-  llama: process.env.LLAMA_API_KEY,
-  cohere: process.env.COHERE_API_KEY,
-  groq: process.env.GROQ_API_KEY,
-  huggingface: process.env.HUGGINGFACE_API_KEY,
-  openrouter: process.env.OPENROUTER_API_KEY,
-  ai21: process.env.AI21_API_KEY,
-  replicate: process.env.REPLICATE_API_KEY
+// Security Middleware - Input Validation & Attack Prevention
+const validateInput = (req, res, next) => {
+    const { prompt, provider, model } = req.body;
+    const clientIP = req.ip || req.headers['x-forwarded-for'] || req.connection.remoteAddress;
+    
+    // Log security events
+    const logSecurityEvent = (event, details = {}) => {
+        console.warn(`🚨 SECURITY: ${event} from ${clientIP}`, details);
+    };
+    
+    // 1. Required field validation
+    if (!prompt || typeof prompt !== 'string') {
+        logSecurityEvent('INVALID_INPUT', { error: 'Missing or invalid prompt' });
+        return res.status(400).json({ 
+            error: 'Valid prompt is required',
+            code: 'INVALID_PROMPT'
+        });
+    }
+    
+    // 2. Length validation
+    if (prompt.length > 10000) {
+        logSecurityEvent('PAYLOAD_TOO_LARGE', { length: prompt.length });
+        return res.status(400).json({ 
+            error: 'Prompt too long (max 10,000 characters)',
+            code: 'PROMPT_TOO_LONG'
+        });
+    }
+    
+    if (prompt.length < 1) {
+        logSecurityEvent('EMPTY_PROMPT', {});
+        return res.status(400).json({ 
+            error: 'Prompt cannot be empty',
+            code: 'EMPTY_PROMPT'
+        });
+    }
+    
+    // 3. XSS Prevention - Multiple patterns
+    const xssPatterns = [
+        /<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi,
+        /<iframe\b[^<]*(?:(?!<\/iframe>)<[^<]*)*<\/iframe>/gi,
+        /<object\b[^<]*(?:(?!<\/object>)<[^<]*)*<\/object>/gi,
+        /<embed\b[^<]*>/gi,
+        /javascript:/gi,
+        /data:text\/html/gi,
+        /vbscript:/gi,
+        /on\w+\s*=/gi,  // event handlers like onclick=
+        /<img[^>]+src[\s]*=[\s]*["|']javascript:/gi
+    ];
+    
+    for (let pattern of xssPatterns) {
+        if (pattern.test(prompt)) {
+            logSecurityEvent('XSS_ATTEMPT', { pattern: pattern.toString() });
+            return res.status(400).json({ 
+                error: 'Invalid input detected - potential security risk',
+                code: 'XSS_BLOCKED'
+            });
+        }
+    }
+    
+    // 4. SQL Injection Prevention
+    const sqlPatterns = [
+        /(\b(select|insert|update|delete|drop|create|alter|exec|execute|union|join)\b)/gi,
+        /(where|having|group\s+by|order\s+by)/gi,
+        /('|"|;|--|\*|\/\*|\*\/|@@|char\(|nchar\(|varchar\(|nvarchar\(|alter\(|begin\(|cast\(|create\(|cursor\(|declare\(|delete\(|drop\(|end\(|exec\(|execute\(|fetch\(|insert\(|kill\(|open\(|select\(|sys\(|table\(|update\()/gi,
+        /(union.*select|select.*union)/gi,
+        /\b(or|and)\b.*[=<>]/gi
+    ];
+    
+    for (let pattern of sqlPatterns) {
+        if (pattern.test(prompt)) {
+            logSecurityEvent('SQL_INJECTION_ATTEMPT', { pattern: pattern.toString() });
+            return res.status(400).json({ 
+                error: 'Invalid input detected - potential security risk',
+                code: 'SQL_INJECTION_BLOCKED'
+            });
+        }
+    }
+    
+    // 5. Command Injection Prevention
+    const commandPatterns = [
+        /[;&|`$(){}[\]\\]/g,
+        /\.\.\//g,  // Path traversal
+        /\/etc\/passwd/gi,
+        /\/proc\//gi,
+        /cmd\.exe/gi,
+        /powershell/gi,
+        /bash/gi,
+        /\/bin\//gi
+    ];
+    
+    for (let pattern of commandPatterns) {
+        if (pattern.test(prompt)) {
+            logSecurityEvent('COMMAND_INJECTION_ATTEMPT', { pattern: pattern.toString() });
+            return res.status(400).json({ 
+                error: 'Invalid input detected - potential security risk',
+                code: 'COMMAND_INJECTION_BLOCKED'
+            });
+        }
+    }
+    
+    // 6. Provider validation
+    if (provider && !/^[a-zA-Z0-9_-]+$/.test(provider)) {
+        logSecurityEvent('INVALID_PROVIDER', { provider });
+        return res.status(400).json({ 
+            error: 'Invalid provider name format',
+            code: 'INVALID_PROVIDER'
+        });
+    }
+    
+    // 7. Model validation
+    if (model && !/^[a-zA-Z0-9._/-]+$/.test(model)) {
+        logSecurityEvent('INVALID_MODEL', { model });
+        return res.status(400).json({ 
+            error: 'Invalid model name format',
+            code: 'INVALID_MODEL'
+        });
+    }
+    
+    // 8. Content type validation
+    const contentType = req.headers['content-type'];
+    if (!contentType || !contentType.includes('application/json')) {
+        logSecurityEvent('INVALID_CONTENT_TYPE', { contentType });
+        return res.status(400).json({ 
+            error: 'Content-Type must be application/json',
+            code: 'INVALID_CONTENT_TYPE'
+        });
+    }
+    
+    // 9. Basic sanitization (remove null bytes and control characters)
+    req.body.prompt = prompt.replace(/\0/g, '').replace(/[\x00-\x08\x0B\x0C\x0E-\x1F\x7F]/g, '');
+    
+    // 10. Suspicious pattern detection (log but don't block)
+    const suspiciousPatterns = [
+        /crypto/gi,
+        /wallet/gi,
+        /password/gi,
+        /credit.?card/gi,
+        /ssn|social.?security/gi
+    ];
+    
+    for (let pattern of suspiciousPatterns) {
+        if (pattern.test(prompt)) {
+            logSecurityEvent('SUSPICIOUS_CONTENT', { pattern: pattern.toString() });
+        }
+    }
+    
+    // Success - log clean request
+    console.log(`✅ Input validated for ${provider || 'unknown'} - ${prompt.length} chars from ${clientIP}`);
+    next();
+};
+
+// Content Security Middleware
+const contentSecurity = (req, res, next) => {
+    // Security headers
+    res.setHeader('X-Content-Type-Options', 'nosniff');
+    res.setHeader('X-Frame-Options', 'DENY');
+    res.setHeader('X-XSS-Protection', '1; mode=block');
+    res.setHeader('Referrer-Policy', 'strict-origin-when-cross-origin');
+    res.setHeader('Permissions-Policy', 'geolocation=(), microphone=(), camera=()');
+    
+    // Remove server information
+    res.removeHeader('X-Powered-By');
+    
+    next();
+};
+
+// Apply security middleware to all routes
+app.use(contentSecurity);
+
+// Apply input validation to API endpoints that need it
+app.use('/api/query', validateInput);
+app.use('/api/smart', validateInput);
+
+// Secure Key Manager - Enhanced security for Render deployment
+const crypto = require('crypto');
+
+class SecureKeyManager {
+    constructor() {
+        this.keys = new Map();
+        this.loadedCount = 0;
+        this.initializeKeys();
+    }
+    
+    initializeKeys() {
+        const providers = ['google', 'mistral', 'llama', 'cohere', 'groq', 'huggingface', 'openrouter', 'ai21', 'replicate'];
+        
+        console.log('🔐 Initializing secure key management...');
+        
+        providers.forEach(provider => {
+            const envKey = `${provider.toUpperCase()}_API_KEY`;
+            const key = process.env[envKey];
+            
+            if (key && key.trim() !== '') {
+                // Create secure hash for logging (first 8 chars of SHA256)
+                const keyHash = crypto.createHash('sha256').update(key).digest('hex').substring(0, 8);
+                
+                // Store key with metadata
+                this.keys.set(provider, {
+                    key: key.trim(),
+                    hash: keyHash,
+                    lastUsed: null,
+                    useCount: 0,
+                    loaded: new Date().toISOString()
+                });
+                
+                // Clear from process.env for security
+                delete process.env[envKey];
+                
+                console.log(`✅ Loaded ${provider} key (${keyHash}...)`);
+                this.loadedCount++;
+            } else {
+                console.warn(`⚠️  Missing or empty API key for ${provider}`);
+            }
+        });
+        
+        console.log(`🔑 Secure key manager initialized: ${this.loadedCount}/${providers.length} keys loaded`);
+    }
+    
+    getKey(provider) {
+        const keyData = this.keys.get(provider);
+        if (!keyData) {
+            throw new Error(`API key not configured for provider: ${provider}`);
+        }
+        
+        // Update usage tracking
+        keyData.lastUsed = new Date().toISOString();
+        keyData.useCount++;
+        
+        return keyData.key;
+    }
+    
+    hasKey(provider) {
+        return this.keys.has(provider);
+    }
+    
+    getStats() {
+        const stats = {};
+        this.keys.forEach((data, provider) => {
+            stats[provider] = {
+                hash: data.hash,
+                lastUsed: data.lastUsed,
+                useCount: data.useCount,
+                loaded: data.loaded,
+                status: 'active'
+            };
+        });
+        return {
+            totalKeys: this.keys.size,
+            providers: stats,
+            securityStatus: 'enabled'
+        };
+    }
+    
+    // Get sanitized key info for API responses
+    getProviderStatus() {
+        const status = [];
+        this.keys.forEach((data, provider) => {
+            status.push({
+                name: provider,
+                available: true,
+                status: 'active',
+                hash: data.hash,
+                useCount: data.useCount
+            });
+        });
+        return status;
+    }
+}
+
+// Initialize secure key manager
+const keyManager = new SecureKeyManager();
+
+// Secure key retrieval function
+const getAPIKey = (provider) => {
+    try {
+        return keyManager.getKey(provider);
+    } catch (error) {
+        console.error(`🚨 Key retrieval failed for ${provider}:`, error.message);
+        throw error;
+    }
 };
 
 // LLM Scout Agent configuration
@@ -353,11 +622,44 @@ const PROVIDERS = {
 
 // Health check endpoint
 app.get('/health', (req, res) => {
+  const keyStats = keyManager.getStats();
   res.json({ 
     status: 'healthy', 
     timestamp: new Date().toISOString(),
-    version: '1.1.0',
-    providers: Object.keys(PROVIDERS)
+    version: '1.2.0',
+    providers: Object.keys(PROVIDERS),
+    security: {
+      keyManagerActive: true,
+      totalKeys: keyStats.totalKeys,
+      securityStatus: keyStats.securityStatus,
+      inputValidation: true,
+      attackPrevention: true
+    },
+    uptime: process.uptime()
+  });
+});
+
+// Security status endpoint (basic monitoring)
+app.get('/api/security-status', (req, res) => {
+  const keyStats = keyManager.getStats();
+  res.json({
+    timestamp: new Date().toISOString(),
+    keyManager: keyStats,
+    environment: {
+      nodeEnv: process.env.NODE_ENV || 'development',
+      port: PORT,
+      uptime: process.uptime()
+    },
+    security: {
+      rateLimitingActive: true,
+      corsConfigured: true,
+      secureKeyManagement: true,
+      inputValidation: true,
+      xssProtection: true,
+      sqlInjectionProtection: true,
+      commandInjectionProtection: true,
+      contentSecurityHeaders: true
+    }
   });
 });
 
@@ -378,8 +680,10 @@ app.post("/api/query", async (req, res) => {
       });
     }
     
-    const apiKey = API_KEYS[provider];
-    if (!apiKey) {
+    let apiKey;
+    try {
+      apiKey = getAPIKey(provider);
+    } catch (error) {
       return res.status(500).json({ 
         error: `API key not configured for ${provider}`,
         provider: provider
@@ -436,8 +740,8 @@ app.post("/api/query", async (req, res) => {
 app.get('/api/providers', (req, res) => {
   const providerStatus = Object.keys(PROVIDERS).map(provider => ({
     name: provider,
-    available: !!API_KEYS[provider],
-    status: API_KEYS[provider] ? 'active' : 'unavailable',
+    available: keyManager.hasKey(provider),
+    status: keyManager.hasKey(provider) ? 'active' : 'unavailable',
     models: PROVIDERS[provider].models,
     modelCount: PROVIDERS[provider].models.length
   }));
@@ -487,8 +791,10 @@ app.post('/api/smart', async (req, res) => {
       });
     }
     
-    const apiKey = API_KEYS[selectedProvider];
-    if (!apiKey) {
+    let apiKey;
+    try {
+      apiKey = getAPIKey(selectedProvider);
+    } catch (error) {
       return res.status(500).json({ 
         error: `API key not configured for ${selectedProvider}`,
         provider: selectedProvider
@@ -870,13 +1176,13 @@ app.listen(PORT, '0.0.0.0', () => {
   console.log(`📊 GitHub Dashboard: http://localhost:${PORT}/api/github/llm-data`);
   console.log(`🔍 GitHub Health: http://localhost:${PORT}/api/github/llm-health`);
   
-  // Verify API keys are loaded
-  const loadedKeys = Object.entries(API_KEYS)
-    .filter(([_, key]) => key)
-    .map(([provider, _]) => provider);
-  console.log(`🔑 Loaded API keys for: ${loadedKeys.join(', ')}`);
+  // Display key manager status
+  const keyStats = keyManager.getStats();
+  const loadedProviders = Object.keys(keyStats.providers);
+  console.log(`🔑 Secure key manager status: ${keyStats.totalKeys} keys loaded`);
+  console.log(`📊 Providers: ${loadedProviders.join(', ')}`);
   
-  if (loadedKeys.length === 0) {
+  if (keyStats.totalKeys === 0) {
     console.warn('⚠️  No API keys loaded. Check your environment variables.');
   }
 });
