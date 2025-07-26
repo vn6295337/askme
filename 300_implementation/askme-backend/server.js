@@ -101,16 +101,116 @@ const corsOptions = {
 app.use(express.json({ limit: '10mb' }));
 app.use(cors(corsOptions));
 
-// Rate limiting - 100 requests per 15 minutes per IP
-const limiter = rateLimit({
-  windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 100,
-  message: {
-    error: 'Too many requests, please try again later.',
-    retryAfter: '15 minutes'
-  }
-});
-app.use('/api/', limiter);
+// Enhanced Rate Limiting with Behavioral Analysis
+const ipBehaviorMap = new Map();
+const suspiciousIPs = new Set();
+
+// Behavioral analysis for rate limiting
+const analyzeRequestBehavior = (req) => {
+    const clientIP = req.ip || req.headers['x-forwarded-for'] || req.connection.remoteAddress;
+    const now = Date.now();
+    const userAgent = req.headers['user-agent'] || 'unknown';
+    
+    if (!ipBehaviorMap.has(clientIP)) {
+        ipBehaviorMap.set(clientIP, {
+            requests: [],
+            userAgents: new Set(),
+            suspicious: false,
+            firstSeen: now
+        });
+    }
+    
+    const behavior = ipBehaviorMap.get(clientIP);
+    
+    // Clean old requests (keep last hour)
+    behavior.requests = behavior.requests.filter(req => now - req.timestamp < 3600000);
+    
+    // Add current request
+    behavior.requests.push({
+        timestamp: now,
+        path: req.path,
+        userAgent: userAgent,
+        promptLength: req.body?.prompt?.length || 0
+    });
+    
+    behavior.userAgents.add(userAgent);
+    
+    // Behavioral analysis
+    const recentRequests = behavior.requests.filter(req => now - req.timestamp < 300000); // 5 minutes
+    const rapidRequests = recentRequests.length;
+    const userAgentCount = behavior.userAgents.size;
+    const avgPromptLength = recentRequests.reduce((sum, req) => sum + req.promptLength, 0) / recentRequests.length || 0;
+    
+    // Suspicious behavior detection
+    const suspiciousIndicators = {
+        rapidFire: rapidRequests > 30, // More than 30 requests in 5 minutes
+        multipleUserAgents: userAgentCount > 3, // More than 3 different user agents
+        shortPrompts: avgPromptLength < 10 && recentRequests.length > 5, // Very short prompts repeatedly
+        noUserAgent: userAgent === 'unknown' && recentRequests.length > 2,
+        automatedPattern: recentRequests.length > 10 && new Set(recentRequests.map(r => r.promptLength)).size < 3
+    };
+    
+    const suspiciousCount = Object.values(suspiciousIndicators).filter(Boolean).length;
+    
+    if (suspiciousCount >= 2) {
+        behavior.suspicious = true;
+        suspiciousIPs.add(clientIP);
+        console.warn(`🚨 BEHAVIORAL: Suspicious activity detected from ${clientIP}:`, suspiciousIndicators);
+    }
+    
+    return {
+        clientIP,
+        rapidRequests,
+        suspicious: behavior.suspicious,
+        indicators: suspiciousIndicators
+    };
+};
+
+// Create enhanced rate limiters
+const createEnhancedRateLimiter = (windowMs, max, maxSuspicious) => {
+    return rateLimit({
+        windowMs,
+        max: (req) => {
+            const behavior = analyzeRequestBehavior(req);
+            return behavior.suspicious ? maxSuspicious : max;
+        },
+        keyGenerator: (req) => {
+            return req.ip || req.headers['x-forwarded-for'] || req.connection.remoteAddress;
+        },
+        skip: (req) => {
+            // Skip rate limiting for health checks
+            return req.path === '/health' || req.path === '/api/security-status';
+        },
+        message: (req) => {
+            const behavior = analyzeRequestBehavior(req);
+            if (behavior.suspicious) {
+                return {
+                    error: 'Request temporarily blocked due to suspicious activity',
+                    retryAfter: Math.ceil(windowMs / 1000)
+                };
+            }
+            return {
+                error: 'Too many requests, please try again later',
+                retryAfter: Math.ceil(windowMs / 1000)
+            };
+        },
+        standardHeaders: true,
+        legacyHeaders: false,
+        onLimitReached: (req) => {
+            const behavior = analyzeRequestBehavior(req);
+            console.warn(`🚨 RATE LIMIT: IP ${behavior.clientIP} hit limit, suspicious: ${behavior.suspicious}`);
+        }
+    });
+};
+
+// Apply different rate limits based on endpoint sensitivity
+const generalLimiter = createEnhancedRateLimiter(15 * 60 * 1000, 100, 20); // 100/15min normal, 20/15min suspicious
+const apiLimiter = createEnhancedRateLimiter(5 * 60 * 1000, 50, 10);       // 50/5min normal, 10/5min suspicious
+const strictLimiter = createEnhancedRateLimiter(1 * 60 * 1000, 10, 3);     // 10/1min normal, 3/1min suspicious
+
+app.use('/api/', generalLimiter);
+app.use('/api/query', apiLimiter);
+app.use('/api/smart', strictLimiter);
 
 // Security Middleware - Input Validation & Attack Prevention
 const validateInput = (req, res, next) => {
@@ -243,13 +343,88 @@ const validateInput = (req, res, next) => {
     // 9. Basic sanitization (remove null bytes and control characters)
     req.body.prompt = prompt.replace(/\0/g, '').replace(/[\x00-\x08\x0B\x0C\x0E-\x1F\x7F]/g, '');
     
-    // 10. Suspicious pattern detection (log but don't block)
+    // 10. Advanced Prompt Injection Detection (AI-specific)
+    const promptInjectionPatterns = [
+        // Role manipulation
+        /\b(ignore|forget|disregard).{0,20}(previous|prior|above|earlier).{0,20}(instruction|prompt|rule|system)/gi,
+        /\b(you.?are.?now|pretend.?to.?be|act.?as|roleplay.?as|imagine.?you.?are).{0,30}(different|new|another)/gi,
+        /\b(system.?prompt|initial.?prompt|base.?prompt|original.?instruction)/gi,
+        
+        // Jailbreaking attempts
+        /\b(jailbreak|uncensored|unrestricted|without.?limitation|break.?free)/gi,
+        /\b(developer.?mode|admin.?mode|god.?mode|debug.?mode)/gi,
+        /\b(override|bypass|circumvent|disable).{0,20}(safety|filter|restriction|limitation)/gi,
+        
+        // Context manipulation
+        /\b(end.?of.?prompt|start.?new.?conversation|reset.?context|clear.?history)/gi,
+        /\b(simulate|emulate|mimic).{0,20}(different|another|evil|malicious)/gi,
+        /\b(hypothetical|theoretical|fictional).{0,20}scenario.{0,20}(where|in.?which)/gi,
+        
+        // Information extraction attempts  
+        /\b(tell.?me|show.?me|reveal|disclose).{0,30}(password|secret|key|token|config)/gi,
+        /\b(what.?is|display|print|output).{0,20}(system|server|database|admin)/gi,
+        /\b(training.?data|model.?weights|source.?code|internal.?prompt)/gi,
+        
+        // Multi-language bypass attempts
+        /\b(base64|hex|ascii|unicode|encode|decode)/gi,
+        /\b(translate|convert|transform).{0,20}(to|into).{0,20}(code|cipher|binary)/gi,
+        
+        // Instruction confusion
+        /\b(but.?actually|however.?really|in.?reality|the.?truth.?is)/gi,
+        /\b(contrary.?to|opposite.?of|instead.?of).{0,20}(above|previous)/gi,
+        
+        // Prompt chaining
+        /\b(after.?this|then|next).{0,20}(ignore|forget|disregard)/gi,
+        /\b(if.*then|when.*do|should.*always)/gi
+    ];
+    
+    for (let pattern of promptInjectionPatterns) {
+        if (pattern.test(prompt)) {
+            logSecurityEvent('PROMPT_INJECTION_ATTEMPT', { pattern: pattern.toString() });
+            return res.status(400).json({ 
+                error: 'Invalid input detected - potential security risk',
+                code: 'PROMPT_INJECTION_BLOCKED'
+            });
+        }
+    }
+    
+    // 11. Encoding bypass detection
+    const encodedPatterns = [
+        // Base64 encoded suspicious content
+        /[A-Za-z0-9+\/]{20,}={0,2}/g,
+        // URL encoded suspicious patterns
+        /%[0-9A-Fa-f]{2}/g,
+        // Unicode escape sequences
+        /\\u[0-9A-Fa-f]{4}/g,
+        // HTML entities
+        /&[a-zA-Z]+;|&#[0-9]+;/g
+    ];
+    
+    for (let pattern of encodedPatterns) {
+        const matches = prompt.match(pattern);
+        if (matches && matches.length > 3) {
+            logSecurityEvent('ENCODED_PAYLOAD_DETECTED', { 
+                pattern: pattern.toString(),
+                matches: matches.length 
+            });
+            return res.status(400).json({ 
+                error: 'Invalid input detected - encoded content not allowed',
+                code: 'ENCODED_PAYLOAD_BLOCKED'
+            });
+        }
+    }
+    
+    // 12. Suspicious pattern detection (log but don't block)
     const suspiciousPatterns = [
         /crypto/gi,
         /wallet/gi,
         /password/gi,
         /credit.?card/gi,
-        /ssn|social.?security/gi
+        /ssn|social.?security/gi,
+        // AI-specific suspicious patterns
+        /model.?architecture/gi,
+        /neural.?network/gi,
+        /machine.?learning/gi
     ];
     
     for (let pattern of suspiciousPatterns) {
@@ -280,6 +455,151 @@ const contentSecurity = (req, res, next) => {
 
 // Apply security middleware to all routes
 app.use(contentSecurity);
+
+// AI Response Sanitization & Safety Middleware
+const sanitizeAIResponse = (response, provider) => {
+    if (!response || typeof response !== 'string') return response;
+    
+    let sanitizedResponse = response;
+    
+    // 1. PII Detection and Removal
+    const piiPatterns = [
+        // Email addresses
+        /\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b/g,
+        // Phone numbers (various formats)
+        /\b\d{3}[-.]?\d{3}[-.]?\d{4}\b/g,
+        /\(\d{3}\)\s*\d{3}[-.]?\d{4}/g,
+        // SSN patterns
+        /\b\d{3}-\d{2}-\d{4}\b/g,
+        // Credit card patterns (basic)
+        /\b\d{4}[-\s]?\d{4}[-\s]?\d{4}[-\s]?\d{4}\b/g,
+        // API keys and tokens
+        /\b[A-Za-z0-9]{32,}\b/g,
+        // IP addresses
+        /\b\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\b/g
+    ];
+    
+    piiPatterns.forEach(pattern => {
+        sanitizedResponse = sanitizedResponse.replace(pattern, '[REDACTED]');
+    });
+    
+    // 2. Dangerous Content Detection
+    const dangerousPatterns = [
+        // Script injections
+        /<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi,
+        // Harmful instructions
+        /\b(suicide|self.?harm|kill.?yourself)\b/gi,
+        // Illegal activity instructions
+        /\b(how.?to.?(hack|crack|break.?into|steal))\b/gi,
+        // System commands
+        /\b(rm\s+-rf|del\s+\/|format\s+c:)\b/gi,
+        // Password/credential harvesting
+        /\b(password|username|login|credential).{0,20}[:=]\s*\w+/gi
+    ];
+    
+    dangerousPatterns.forEach(pattern => {
+        if (pattern.test(sanitizedResponse)) {
+            console.warn(`🚨 AI SAFETY: Dangerous content detected from ${provider}:`, pattern.toString());
+            sanitizedResponse = sanitizedResponse.replace(pattern, '[CONTENT_FILTERED]');
+        }
+    });
+    
+    // 3. Information Leakage Prevention
+    const infoLeakagePatterns = [
+        // Server information
+        /\b(server|database|admin|root|config|environment)\b.{0,50}\b(password|key|token|secret)\b/gi,
+        // Internal paths
+        /\b[A-Za-z]:\\[\w\\]+/g,
+        /\/[a-z]+\/[a-z]+\/[a-z]+/g,
+        // Database queries
+        /\b(SELECT|INSERT|UPDATE|DELETE|FROM|WHERE|JOIN)\b/gi,
+        // System information
+        /\b(localhost|127\.0\.0\.1|0\.0\.0\.0)\b/gi
+    ];
+    
+    infoLeakagePatterns.forEach(pattern => {
+        if (pattern.test(sanitizedResponse)) {
+            console.warn(`🚨 AI SAFETY: Information leakage detected from ${provider}:`, pattern.toString());
+            sanitizedResponse = sanitizedResponse.replace(pattern, '[INFO_FILTERED]');
+        }
+    });
+    
+    // 4. Content Safety Classification
+    const harmfulContentIndicators = [
+        /\b(violence|weapon|bomb|explosive|attack)\b/gi,
+        /\b(drug|cocaine|heroin|meth|illegal.?substance)\b/gi,
+        /\b(fraud|scam|money.?laundering|identity.?theft)\b/gi
+    ];
+    
+    let riskScore = 0;
+    harmfulContentIndicators.forEach(pattern => {
+        if (pattern.test(sanitizedResponse)) {
+            riskScore++;
+        }
+    });
+    
+    // Log high-risk responses
+    if (riskScore >= 2) {
+        console.error(`🚨 AI SAFETY: High-risk content detected from ${provider}, risk score: ${riskScore}`);
+    }
+    
+    // 5. Length and format validation
+    if (sanitizedResponse.length > 50000) {
+        console.warn(`⚠️ AI SAFETY: Unusually long response from ${provider}: ${sanitizedResponse.length} chars`);
+        sanitizedResponse = sanitizedResponse.substring(0, 50000) + '\n[RESPONSE_TRUNCATED]';
+    }
+    
+    return sanitizedResponse;
+};
+
+// Generic Error Response Generator (prevent security fingerprinting)
+const createGenericError = (isProduction = process.env.NODE_ENV === 'production') => {
+    if (isProduction) {
+        // Generic error for production - no security details exposed
+        return {
+            error: 'Request could not be processed',
+            code: 'REQUEST_REJECTED',
+            timestamp: new Date().toISOString()
+        };
+    } else {
+        // Keep detailed errors for development
+        return null; // Will use original error
+    }
+};
+
+// Security-aware error middleware
+const securityErrorHandler = (req, res, next) => {
+    const originalSend = res.json;
+    
+    res.json = function(data) {
+        // Intercept error responses that might leak security information
+        if (data && data.error && data.code) {
+            const securityCodes = [
+                'XSS_BLOCKED', 
+                'SQL_INJECTION_BLOCKED', 
+                'COMMAND_INJECTION_BLOCKED',
+                'PROMPT_INJECTION_BLOCKED',
+                'ENCODED_PAYLOAD_BLOCKED'
+            ];
+            
+            if (securityCodes.includes(data.code)) {
+                const genericError = createGenericError();
+                if (genericError) {
+                    // Log the actual security event server-side
+                    console.warn(`🔒 SECURITY: ${data.code} from ${req.ip} - Generic error returned to client`);
+                    return originalSend.call(this, genericError);
+                }
+            }
+        }
+        
+        return originalSend.call(this, data);
+    };
+    
+    next();
+};
+
+// Apply security error handler to API routes
+app.use('/api/', securityErrorHandler);
 
 // Apply input validation to API endpoints that need it
 app.use('/api/query', validateInput);
@@ -707,14 +1027,18 @@ app.get('/health', (req, res) => {
   res.json({ 
     status: 'healthy', 
     timestamp: new Date().toISOString(),
-    version: '1.2.0',
+    version: '1.3.0',
     providers: Object.keys(PROVIDERS),
     security: {
       keyManagerActive: true,
       totalKeys: keyStats.totalKeys,
       securityStatus: keyStats.securityStatus,
       inputValidation: true,
-      attackPrevention: true
+      attackPrevention: true,
+      aiSecurity: true,
+      promptInjectionProtection: true,
+      responseFiltering: true,
+      behavioralAnalysis: true
     },
     uptime: process.uptime()
   });
@@ -733,6 +1057,7 @@ app.get('/api/security-status', (req, res) => {
     },
     security: {
       rateLimitingActive: true,
+      behavioralAnalysis: true,
       corsConfigured: true,
       corsRestrictive: true,
       secureKeyManagement: true,
@@ -740,10 +1065,36 @@ app.get('/api/security-status', (req, res) => {
       xssProtection: true,
       sqlInjectionProtection: true,
       commandInjectionProtection: true,
+      promptInjectionProtection: true,
+      aiResponseSanitization: true,
+      encodingBypassDetection: true,
+      genericErrorMessages: process.env.NODE_ENV === 'production',
       contentSecurityHeaders: true,
       credentialsEnabled: corsOptions.credentials,
       allowedMethods: corsOptions.methods,
-      maxAge: corsOptions.maxAge
+      maxAge: corsOptions.maxAge,
+      piiDetection: true,
+      dangerousContentFiltering: true,
+      informationLeakagePrevention: true
+    },
+    aiSecurity: {
+      promptInjectionPatterns: 19,
+      responseFilters: 4,
+      piiPatterns: 7,
+      dangerousContentPatterns: 5,
+      infoLeakagePatterns: 5,
+      encodingDetectionPatterns: 4,
+      maxResponseLength: 50000,
+      contentSafetyClassification: true
+    },
+    behavioralSecurity: {
+      ipBehaviorTracking: true,
+      suspiciousActivityDetection: true,
+      adaptiveRateLimiting: true,
+      userAgentAnalysis: true,
+      automatedPatternDetection: true,
+      currentSuspiciousIPs: suspiciousIPs.size,
+      totalTrackedIPs: ipBehaviorMap.size
     }
   });
 });
@@ -811,10 +1162,18 @@ app.post("/api/query", async (req, res) => {
     console.log(`📡 ${provider} request: ${model || 'default'} model`);
     
     const response = await axios.post(url, requestBody, { headers });
-    const result = providerConfig.extractResponse(response.data);
+    const rawResult = providerConfig.extractResponse(response.data);
+    
+    // Apply AI response sanitization
+    const sanitizedResult = sanitizeAIResponse(rawResult, provider);
+    
+    // Log response metrics for monitoring
+    if (rawResult !== sanitizedResult) {
+      console.warn(`🧹 AI RESPONSE: Content sanitized for ${provider}, length: ${rawResult?.length || 0} -> ${sanitizedResult?.length || 0}`);
+    }
     
     res.json({ 
-      response: result, 
+      response: sanitizedResult, 
       provider, 
       model: model || providerConfig.models[0],
       timestamp: new Date().toISOString()
@@ -914,10 +1273,18 @@ app.post('/api/smart', async (req, res) => {
     console.log(`📡 ${selectedProvider} request: default model`);
     
     const response = await axios.post(url, requestBody, { headers });
-    const result = providerConfig.extractResponse(response.data);
+    const rawResult = providerConfig.extractResponse(response.data);
+    
+    // Apply AI response sanitization for smart endpoint
+    const sanitizedResult = sanitizeAIResponse(rawResult, selectedProvider);
+    
+    // Log response metrics for monitoring
+    if (rawResult !== sanitizedResult) {
+      console.warn(`🧹 AI RESPONSE: Smart endpoint content sanitized for ${selectedProvider}, length: ${rawResult?.length || 0} -> ${sanitizedResult?.length || 0}`);
+    }
     
     res.json({ 
-      response: result, 
+      response: sanitizedResult, 
       provider: selectedProvider, 
       model: providerConfig.models[0],
       timestamp: new Date().toISOString()
