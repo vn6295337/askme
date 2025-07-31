@@ -1,4 +1,4 @@
-name: Scout Agent - Free LLMs Discovery & Catalog
+name: Scout Agent - Multi-Modal AI Discovery & Catalog
 
 on:
   schedule:
@@ -7,17 +7,17 @@ on:
   workflow_dispatch:
     inputs:
       discovery_mode:
-        description: 'Free LLMs discovery mode'
+        description: 'AI model discovery mode'
         required: true
-        default: 'all_free_models'
+        default: 'comprehensive'
         type: choice
         options:
-          - 'all_free_models'
-          - 'huggingface_only'
-          - 'local_models_only'
-          - 'api_models_only'
+          - 'comprehensive'
+          - 'text_models_only'
+          - 'multimodal_only'
+          - 'specific_provider'
       target_provider:
-        description: 'Focus on specific free provider'
+        description: 'Focus on specific provider'
         required: false
         type: choice
         options:
@@ -26,14 +26,17 @@ on:
           - 'google'
           - 'groq'
           - 'openrouter'
-          - 'ollama'
+          - 'cohere'
           - 'together'
+          - 'mistral'
+          - 'ai21'
+          - 'artificialanalysis'
       reason:
         description: 'Reason for manual discovery'
         required: false
-        default: 'Update free LLMs catalog'
-      include_setup_guides:
-        description: 'Include setup guides in output'
+        default: 'Update AI models catalog'
+      enable_key_rotation:
+        description: 'Enable API key rotation'
         required: false
         default: true
         type: boolean
@@ -50,6 +53,20 @@ env:
   NODE_ENV: production
   LOG_LEVEL: info
   DISCOVERY_MODE: ${{ github.event.inputs.discovery_mode || 'comprehensive' }}
+  ENABLE_KEY_ROTATION: ${{ github.event.inputs.enable_key_rotation || 'true' }}
+  # API key rotation settings
+  MAX_USAGE_PER_KEY: 50
+  ROTATION_INTERVAL_MS: 300000
+  MAX_ERRORS_PER_KEY: 3
+  # API Keys (configured in render.com secrets)
+  AI21_API_KEY: ${{ secrets.AI21_API_KEY }}
+  ARTIFICIALANALYSIS_API_KEY: ${{ secrets.ARTIFICIALANALYSIS_API_KEY }}
+  COHERE_API_KEY: ${{ secrets.COHERE_API_KEY }}
+  GOOGLE_API_KEY: ${{ secrets.GOOGLE_API_KEY }}
+  GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
+  HUGGINGFACE_API_KEY: ${{ secrets.HUGGINGFACE_API_KEY }}
+  MISTRAL_API_KEY: ${{ secrets.MISTRAL_API_KEY }}
+  TOGETHER_API_KEY: ${{ secrets.TOGETHER_API_KEY }}
   
 jobs:
   scout-agent-discovery:
@@ -132,64 +149,61 @@ jobs:
       - name: 🔍 Initialize discovery system
         run: |
           cd intelligent-discovery
-          echo "🔄 Initializing Intelligent Model Discovery System..."
+          echo "🔄 Initializing Live Endpoint Discovery System..."
           echo "Mode: ${{ env.DISCOVERY_MODE }}"
           echo "Target Provider: ${{ github.event.inputs.target_provider || 'all' }}"
-          echo "AI Compass: ${{ github.event.inputs.enable_ai_compass || 'true' }}"
+          echo "Live Checking: Enabled"
 
-      - name: 🎯 Execute comprehensive model discovery
+      - name: 🎯 Execute enhanced multi-modal discovery
         id: discovery
         run: |
           cd intelligent-discovery
           
-          # Set discovery parameters
-          DISCOVERY_ARGS=""
+          echo "🚀 Starting Enhanced Multi-Modal AI Discovery..."
+          echo "📊 Mode: ${{ env.DISCOVERY_MODE }}"
+          echo "🎯 Target: ${{ github.event.inputs.target_provider || 'all' }}"
+          echo "🔄 Key Rotation: ${{ env.ENABLE_KEY_ROTATION }}"
           
-          case "${{ env.DISCOVERY_MODE }}" in
-            "comprehensive")
-              DISCOVERY_ARGS="--full-scan --all-providers --validate --benchmark"
-              ;;
-            "incremental")
-              DISCOVERY_ARGS="--incremental --detect-changes --validate-new"
-              ;;
-            "validation_only")
-              DISCOVERY_ARGS="--validate-existing --no-discovery --quality-check"
-              ;;
-            "specific_provider")
-              DISCOVERY_ARGS="--provider=${{ github.event.inputs.target_provider }} --full-scan --validate"
-              ;;
-          esac
+          # Display API key status
+          echo "🔑 API Keys Status:"
+          [ -n "$AI21_API_KEY" ] && echo "  ✅ AI21: Available" || echo "  ❌ AI21: Missing"
+          [ -n "$ARTIFICIALANALYSIS_API_KEY" ] && echo "  ✅ ArtificialAnalysis: Available" || echo "  ❌ ArtificialAnalysis: Missing"
+          [ -n "$COHERE_API_KEY" ] && echo "  ✅ Cohere: Available" || echo "  ❌ Cohere: Missing"
+          [ -n "$GOOGLE_API_KEY" ] && echo "  ✅ Google: Available" || echo "  ❌ Google: Missing"
+          [ -n "$GROQ_API_KEY" ] && echo "  ✅ Groq: Available" || echo "  ❌ Groq: Missing"
+          [ -n "$HUGGINGFACE_API_KEY" ] && echo "  ✅ HuggingFace: Available" || echo "  ❌ HuggingFace: Missing"
+          [ -n "$MISTRAL_API_KEY" ] && echo "  ✅ Mistral: Available" || echo "  ❌ Mistral: Missing"
+          [ -n "$TOGETHER_API_KEY" ] && echo "  ✅ Together: Available" || echo "  ❌ Together: Missing"
           
-          # Add AI Compass classification if enabled
-          if [ "${{ github.event.inputs.enable_ai_compass }}" = "true" ]; then
-            DISCOVERY_ARGS="$DISCOVERY_ARGS --ai-compass"
-          fi
-          
-          echo "discovery_args=$DISCOVERY_ARGS" >> $GITHUB_OUTPUT
-          
-          # Execute discovery (when dependencies are available)
-          echo "🚀 Would execute: node src/main.js discover $DISCOVERY_ARGS"
-          echo "📊 Simulating discovery process..."
-          
-          # Generate free LLMs outputs
-          if [ -f "free_llms_generator.js" ]; then
-            echo "🚀 Generating free LLMs database..."
-            node free_llms_generator.js || {
-              echo "⚠️ Generator failed, creating basic free LLMs list..."
-              mkdir -p generated_outputs
-              echo '{"timestamp":"'$(date -u +"%Y-%m-%dT%H:%M:%SZ")'","free_models":47,"categories":["Text","Code","Chat","Local"],"status":"fallback"}' > generated_outputs/free_llms_basic.json
-              echo '"Model Name","Provider","Cost","Best For"' > generated_outputs/free_llms_basic.csv
-              echo '"Llama 3.1 8B","Meta/HuggingFace","Free","General use"' >> generated_outputs/free_llms_basic.csv
-              echo '"Code Llama 7B","Meta/HuggingFace","Free","Programming"' >> generated_outputs/free_llms_basic.csv
-              echo '"Gemini 1.5 Flash","Google","Free (limits)","Fast multimodal"' >> generated_outputs/free_llms_basic.csv
+          # Run enhanced live endpoint discovery with API key rotation
+          if [ -f "live_endpoint_checker.js" ]; then
+            echo "🔍 Running enhanced live endpoint discovery with rotation..."
+            node live_endpoint_checker.js || {
+              echo "⚠️ Live checker failed, checking logs..."
+              if [ -f "generated_outputs/live_endpoint_discovery.json" ]; then
+                echo "✅ Partial results available in outputs"
+              else
+                echo "❌ No results generated, creating fallback..."
+                mkdir -p generated_outputs
+                echo '{"timestamp":"'$(date -u +"%Y-%m-%dT%H:%M:%SZ")'","error":"discovery_failed","providers_attempted":9}' > generated_outputs/discovery_error.json
+              fi
             }
           else
-            echo "⚠️ Free LLMs generator not found, creating basic list..."
-            mkdir -p generated_outputs
-            echo '{"timestamp":"'$(date -u +"%Y-%m-%dT%H:%M:%SZ")'","free_models":47,"status":"basic"}' > generated_outputs/free_llms_basic.json
+            echo "❌ Enhanced live checker not found"
+            exit 1
           fi
           
-          echo "✅ Discovery completed successfully"
+          # Validate discovery results
+          if [ -f "generated_outputs/live_endpoint_discovery.json" ]; then
+            MODELS_DISCOVERED=$(cat generated_outputs/live_endpoint_discovery.json | grep -o '"total_models_discovered":[0-9]*' | cut -d':' -f2 || echo "0")
+            PROVIDERS_CHECKED=$(cat generated_outputs/live_endpoint_discovery.json | grep -o '"total_endpoints_checked":[0-9]*' | cut -d':' -f2 || echo "0")
+            echo "✅ Discovery Results:"
+            echo "  📊 Models Discovered: $MODELS_DISCOVERED"
+            echo "  🔍 Providers Checked: $PROVIDERS_CHECKED"
+            echo "  🎯 Multi-modal: Text, Image, Speech, Video supported"
+          fi
+          
+          echo "✅ Enhanced discovery completed successfully"
           echo "completed=true" >> $GITHUB_OUTPUT
 
       - name: 📊 Generate comprehensive outputs
@@ -284,7 +298,7 @@ jobs:
             echo "📋 No model updates detected"
           fi
 
-      - name: 💾 Commit discovered models and outputs
+      - name: 💾 Commit enhanced discovery results
         if: steps.check_changes.outputs.changes == 'true'
         run: |
           cd intelligent-discovery
@@ -294,7 +308,16 @@ jobs:
           git add -A
           
           # Create comprehensive commit message
-          git commit -m "🤖 Scout Agent: ${{ env.DISCOVERY_MODE }} discovery
+          # Get discovery statistics for commit message
+          MODELS_COUNT="unknown"
+          PROVIDERS_COUNT="unknown" 
+          if [ -f "generated_outputs/live_endpoint_discovery.json" ]; then
+            MODELS_COUNT=$(cat generated_outputs/live_endpoint_discovery.json | grep -o '"total_models_discovered":[0-9]*' | cut -d':' -f2 || echo "unknown")
+            PROVIDERS_COUNT=$(cat generated_outputs/live_endpoint_discovery.json | grep -o '"total_endpoints_checked":[0-9]*' | cut -d':' -f2 || echo "unknown")
+          fi
+          
+          # Create comprehensive commit message
+          git commit -m "🤖 Scout Agent: Enhanced Multi-Modal Discovery Results
           
           🎯 **Discovery Summary**
           - **Mode**: ${{ env.DISCOVERY_MODE }}
@@ -330,14 +353,14 @@ jobs:
         run: |
           cd intelligent-discovery
           
-          echo "# 🤖 Scout Agent Discovery Summary" >> $GITHUB_STEP_SUMMARY
+          echo "# 🤖 Enhanced Multi-Modal AI Discovery Summary" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
           echo "## 🎯 Discovery Configuration" >> $GITHUB_STEP_SUMMARY
           echo "- **Mode**: ${{ env.DISCOVERY_MODE }}" >> $GITHUB_STEP_SUMMARY
           echo "- **Provider**: ${{ github.event.inputs.target_provider || 'all' }}" >> $GITHUB_STEP_SUMMARY
-          echo "- **Reason**: ${{ github.event.inputs.reason || 'Scheduled discovery' }}" >> $GITHUB_STEP_SUMMARY
-          echo "- **AI Compass**: ${{ github.event.inputs.enable_ai_compass || 'true' }}" >> $GITHUB_STEP_SUMMARY
-          echo "- **Output Formats**: ${{ github.event.inputs.output_formats || 'json,csv,markdown' }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Reason**: ${{ github.event.inputs.reason || 'Automated discovery' }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Key Rotation**: ${{ env.ENABLE_KEY_ROTATION }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Multi-Modal**: Text, Image, Speech, Video" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
           echo "## 📊 Results" >> $GITHUB_STEP_SUMMARY
           echo "- **Status**: ${{ job.status }}" >> $GITHUB_STEP_SUMMARY
