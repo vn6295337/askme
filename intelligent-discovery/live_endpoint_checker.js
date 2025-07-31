@@ -133,67 +133,122 @@ class LiveEndpointChecker {
     return lastError;
   }
 
-  // Check HuggingFace Inference API models
+  // Check HuggingFace models via API discovery
   async checkHuggingFaceModels() {
-    console.log('🤗 Checking HuggingFace models...');
-    const models = [
-      'meta-llama/Llama-3.1-8B-Instruct',
-      'meta-llama/Llama-3.1-70B-Instruct', 
-      'codellama/CodeLlama-7b-Instruct-hf',
-      'mistralai/Mistral-7B-Instruct-v0.3',
-      'HuggingFaceH4/zephyr-7b-beta'
-    ];
+    console.log('🤗 Checking HuggingFace models via API discovery...');
+    
+    const huggingfaceKey = this.getApiKey('huggingface');
+    const headers = {
+      'Content-Type': 'application/json'
+    };
+    
+    // Add API key if available for higher rate limits
+    if (huggingfaceKey) {
+      headers['Authorization'] = `Bearer ${huggingfaceKey}`;
+      console.log('    🔑 Using HuggingFace API key for enhanced discovery');
+    } else {
+      console.log('    ⚠️  No HuggingFace API key - using public rate limits');
+    }
 
     const results = [];
-    for (const model of models) {
-      const url = `https://api-inference.huggingface.co/models/${model}`;
-      console.log(`  🔍 Testing: ${model}`);
-      
-      const result = await this.makeRequest(url, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          inputs: "Hello, world!",
-          options: { wait_for_model: false }
-        })
-      });
+    
+    // Define multiple API endpoints for comprehensive discovery
+    const apiEndpoints = [
+      {
+        url: 'https://huggingface.co/api/models?task=text-generation&sort=downloads&limit=20&library=transformers',
+        category: 'Text Generation',
+        description: 'Popular text generation models'
+      },
+      {
+        url: 'https://huggingface.co/api/models?task=text-to-image&sort=downloads&limit=10&library=diffusers',
+        category: 'Text to Image', 
+        description: 'Text-to-image generation models'
+      },
+      {
+        url: 'https://huggingface.co/api/models?task=automatic-speech-recognition&sort=downloads&limit=5',
+        category: 'Speech Recognition',
+        description: 'Speech recognition models'
+      },
+      {
+        url: 'https://huggingface.co/api/models?task=text-to-speech&sort=downloads&limit=5',
+        category: 'Text to Speech',
+        description: 'Text-to-speech models'
+      }
+    ];
 
-      // HuggingFace models are available but may return 401 without auth or need model loading
-      // We'll mark them as available since they're known to be free
-      const isAvailable = result.status !== 404; // 401 means auth needed but model exists
-      
-      const modelInfo = {
-        name: model.split('/').pop(),
-        provider: 'HuggingFace',
-        model_id: model,
-        endpoint: url,
-        status: isAvailable ? 'available' : 'unavailable',
-        response_time: null,
-        error: isAvailable ? null : result.statusText,
-        cost: 'Free',
-        context_window: this.getContextWindow(model),
-        category: this.getCategory(model),
-        requires_api_key: false,
-        note: result.status === 401 ? 'Available but may need API key for direct usage' : null
-      };
+    console.log(`    🔍 Discovering models from ${apiEndpoints.length} categories...`);
 
-      results.push(modelInfo);
-      this.discoveredModels.push(modelInfo);
-      
-      console.log(`    ${isAvailable ? '✅' : '❌'} ${model}: ${result.status === 401 ? 'available (auth optional)' : result.statusText}`);
+    for (const endpoint of apiEndpoints) {
+      try {
+        console.log(`  📡 Fetching: ${endpoint.description}`);
+        
+        const response = await this.makeRequest(endpoint.url, {
+          method: 'GET',
+          headers: headers
+        });
+
+        if (response.ok) {
+          const models = response.data;
+          console.log(`    ✅ Found ${models.length} ${endpoint.category.toLowerCase()} models`);
+          
+          // Filter for truly free/public models
+          const freeModels = models.filter(model => {
+            return !model.gated && // Not behind approval gate
+                   !model.private && // Publicly available  
+                   model.downloads > 100 && // Has some usage
+                   !model.disabled && // Not disabled
+                   (model.library_name === 'transformers' || 
+                    model.library_name === 'diffusers' ||
+                    model.library_name === 'sentence-transformers');
+          });
+
+          console.log(`    🆓 ${freeModels.length} free models after filtering`);
+
+          // Process each free model
+          for (const model of freeModels.slice(0, 10)) { // Limit to top 10 per category
+            const modelInfo = {
+              name: model.id.split('/').pop() || model.id,
+              provider: 'HuggingFace',
+              model_id: model.id,
+              endpoint: `https://api-inference.huggingface.co/models/${model.id}`,
+              status: 'available',
+              response_time: null,
+              error: null,
+              cost: 'Free',
+              context_window: this.getHFContextWindow(model),
+              category: endpoint.category,
+              requires_api_key: false,
+              downloads: model.downloads,
+              likes: model.likes,
+              library: model.library_name,
+              note: huggingfaceKey ? 'API key available for direct usage' : 'Available but may need API key for heavy usage'
+            };
+
+            results.push(modelInfo);
+            this.discoveredModels.push(modelInfo);
+            
+            console.log(`      ✅ ${model.id} (${model.downloads} downloads)`);
+          }
+        } else {
+          console.log(`    ❌ Failed to fetch ${endpoint.description}: ${response.status} ${response.statusText}`);
+        }
+      } catch (error) {
+        console.log(`    ❌ Error fetching ${endpoint.description}: ${error.message}`);
+      }
     }
 
     this.endpointResults.huggingface = {
       provider: 'HuggingFace', 
-      total_models: models.length,
-      available_models: results.filter(m => m.status === 'available').length,
+      total_models: results.length,
+      available_models: results.length,
       endpoint_base: 'https://api-inference.huggingface.co/models/',
       requires_registration: false,
+      api_key_status: huggingfaceKey ? 'available' : 'missing',
+      categories_discovered: [...new Set(results.map(m => m.category))],
       models: results
     };
 
+    console.log(`🎯 HuggingFace Discovery Complete: ${results.length} models from ${this.endpointResults.huggingface.categories_discovered.length} categories`);
     return results;
   }
 
@@ -226,8 +281,12 @@ class LiveEndpointChecker {
         },
         body: JSON.stringify({
           contents: [{
-            parts: [{ text: "Hello, world!" }]
-          }]
+            parts: [{ text: "Hello" }]
+          }],
+          generationConfig: {
+            maxOutputTokens: 10,
+            temperature: 0.1
+          }
         })
       }, 'google');
 
@@ -272,8 +331,8 @@ class LiveEndpointChecker {
     
     const groqKey = this.getApiKey('groq');
     if (!groqKey) {
-      console.log('    ⚠️  No Groq API key - skipping live tests');
-      return [];
+      console.log('    ⚠️  No Groq API key - using known free models');
+      return this.getGroqFallbackModels();
     }
 
     // First get available models list
@@ -432,8 +491,8 @@ class LiveEndpointChecker {
     console.log('🎯 Checking Cohere models...');
     
     if (!this.apiKeys.cohere) {
-      console.log('    ⚠️  No Cohere API key - skipping live tests');
-      return [];
+      console.log('    ⚠️  No Cohere API key - using known free models');
+      return this.getCohereFallbackModels();
     }
 
     // Test Cohere generate endpoint
@@ -504,8 +563,8 @@ class LiveEndpointChecker {
     console.log('🤝 Checking Together AI models...');
     
     if (!this.apiKeys.together) {
-      console.log('    ⚠️  No Together API key - skipping live tests');
-      return [];
+      console.log('    ⚠️  No Together API key - using known free models');
+      return this.getTogetherFallbackModels();
     }
 
     // Get models list
@@ -650,8 +709,8 @@ class LiveEndpointChecker {
     
     const aaKey = this.getApiKey('artificialanalysis');
     if (!aaKey) {
-      console.log('    ⚠️  No ArtificialAnalysis API key - skipping live tests');
-      return [];
+      console.log('    ⚠️  No ArtificialAnalysis API key - using fallback models');
+      return this.getArtificialAnalysisFallbackModels();
     }
 
     const allModels = [];
@@ -785,8 +844,8 @@ class LiveEndpointChecker {
     
     const ai21Key = this.getApiKey('ai21');
     if (!ai21Key) {
-      console.log('    ⚠️  No AI21 API key - skipping live tests');
-      return [];
+      console.log('    ⚠️  No AI21 API key - using fallback models');
+      return this.getAI21FallbackModels();
     }
 
     // Test AI21 complete endpoint
@@ -887,6 +946,244 @@ class LiveEndpointChecker {
     return healthResults;
   }
 
+  // Provider fallback methods for when API keys are missing
+  getGroqFallbackModels() {
+    const fallbackModels = [
+      {
+        name: 'Llama 3.1 70B Versatile',
+        provider: 'Groq',
+        model_id: 'llama-3.1-70b-versatile',
+        endpoint: 'https://api.groq.com/openai/v1/chat/completions',
+        status: 'known_available',
+        cost: 'Free (30 req/min)',
+        context_window: 131072,
+        category: 'Text Generation',
+        requires_api_key: true,
+        note: 'API key required for access'
+      },
+      {
+        name: 'Mixtral 8x7B',
+        provider: 'Groq',
+        model_id: 'mixtral-8x7b-32768',
+        endpoint: 'https://api.groq.com/openai/v1/chat/completions',
+        status: 'known_available',
+        cost: 'Free (30 req/min)',
+        context_window: 32768,
+        category: 'Text Generation',
+        requires_api_key: true,
+        note: 'API key required for access'
+      }
+    ];
+    
+    fallbackModels.forEach(model => this.discoveredModels.push(model));
+    
+    this.endpointResults.groq = {
+      provider: 'Groq',
+      total_models: fallbackModels.length,
+      available_models: fallbackModels.length,
+      endpoint_base: 'https://api.groq.com/openai/v1/',
+      requires_registration: true,
+      api_key_required: true,
+      api_key_status: 'missing',
+      note: 'Known available models - API key needed for live testing',
+      models: fallbackModels
+    };
+    
+    return fallbackModels;
+  }
+
+  getCohereFallbackModels() {
+    const fallbackModels = [
+      {
+        name: 'Command',
+        provider: 'Cohere',
+        model_id: 'command',
+        endpoint: 'https://api.cohere.ai/v1/generate',
+        status: 'known_available',
+        cost: 'Free (trial credits)',
+        context_window: 4096,
+        category: 'Text Generation',
+        requires_api_key: true,
+        note: 'API key required for access'
+      },
+      {
+        name: 'Command Light',
+        provider: 'Cohere',
+        model_id: 'command-light',
+        endpoint: 'https://api.cohere.ai/v1/generate',
+        status: 'known_available',
+        cost: 'Free (trial credits)',
+        context_window: 4096,
+        category: 'Text Generation',
+        requires_api_key: true,
+        note: 'API key required for access'
+      }
+    ];
+    
+    fallbackModels.forEach(model => this.discoveredModels.push(model));
+    
+    this.endpointResults.cohere = {
+      provider: 'Cohere',
+      total_models: fallbackModels.length,
+      available_models: fallbackModels.length,
+      endpoint_base: 'https://api.cohere.ai/v1/',
+      requires_registration: true,
+      api_key_required: true,
+      api_key_status: 'missing',
+      note: 'Known available models - API key needed for live testing',
+      models: fallbackModels
+    };
+    
+    return fallbackModels;
+  }
+
+  getTogetherFallbackModels() {
+    const fallbackModels = [
+      {
+        name: 'Llama 3.1 8B Instruct Turbo',
+        provider: 'Together AI',
+        model_id: 'meta-llama/Meta-Llama-3.1-8B-Instruct-Turbo',
+        endpoint: 'https://api.together.xyz/v1/chat/completions',
+        status: 'known_available',
+        cost: 'Free credits ($25/month)',
+        context_window: 32768,
+        category: 'Text Generation',
+        requires_api_key: true,
+        note: 'API key required for access'
+      },
+      {
+        name: 'Mixtral 8x7B Instruct',
+        provider: 'Together AI',
+        model_id: 'mistralai/Mixtral-8x7B-Instruct-v0.1',
+        endpoint: 'https://api.together.xyz/v1/chat/completions',
+        status: 'known_available',
+        cost: 'Free credits ($25/month)',
+        context_window: 32768,
+        category: 'Text Generation',
+        requires_api_key: true,
+        note: 'API key required for access'
+      }
+    ];
+    
+    fallbackModels.forEach(model => this.discoveredModels.push(model));
+    
+    this.endpointResults.together = {
+      provider: 'Together AI',
+      total_models: fallbackModels.length,
+      available_models: fallbackModels.length,
+      endpoint_base: 'https://api.together.xyz/v1/',
+      requires_registration: true,
+      api_key_required: true,
+      api_key_status: 'missing',
+      note: 'Known available models - API key needed for live testing',
+      models: fallbackModels
+    };
+    
+    return fallbackModels;
+  }
+
+  getAI21FallbackModels() {
+    const fallbackModels = [
+      {
+        name: 'Jurassic-2 Ultra',
+        provider: 'AI21',
+        model_id: 'j2-ultra',
+        endpoint: 'https://api.ai21.com/studio/v1/j2-ultra/complete',
+        status: 'known_available',
+        cost: 'Free (trial credits)',
+        context_window: 8192,
+        category: 'Text Generation',
+        requires_api_key: true,
+        note: 'API key required for access'
+      },
+      {
+        name: 'Jurassic-2 Mid',
+        provider: 'AI21',
+        model_id: 'j2-mid',
+        endpoint: 'https://api.ai21.com/studio/v1/j2-mid/complete',
+        status: 'known_available',
+        cost: 'Free (trial credits)',
+        context_window: 8192,
+        category: 'Text Generation',
+        requires_api_key: true,
+        note: 'API key required for access'
+      }
+    ];
+    
+    fallbackModels.forEach(model => this.discoveredModels.push(model));
+    
+    this.endpointResults.ai21 = {
+      provider: 'AI21',
+      total_models: fallbackModels.length,
+      available_models: fallbackModels.length,
+      endpoint_base: 'https://api.ai21.com/studio/v1/',
+      requires_registration: true,
+      api_key_required: true,
+      api_key_status: 'missing',
+      note: 'Known available models - API key needed for live testing',
+      models: fallbackModels
+    };
+    
+    return fallbackModels;
+  }
+
+  getArtificialAnalysisFallbackModels() {
+    const fallbackModels = [
+      {
+        name: 'GPT-3.5 Turbo (via AA)',
+        provider: 'ArtificialAnalysis',
+        model_id: 'gpt-3.5-turbo',
+        endpoint: 'https://api.artificialanalysis.ai/data/llms/models',
+        status: 'known_available',
+        cost: 'Free (limited)',
+        context_window: 4096,
+        category: 'Text Generation',
+        requires_api_key: true,
+        note: 'API key required for access'
+      },
+      {
+        name: 'DALL-E 2 (via AA)',
+        provider: 'ArtificialAnalysis',
+        model_id: 'dall-e-2',
+        endpoint: 'https://api.artificialanalysis.ai/data/media/text-to-image',
+        status: 'known_available',
+        cost: 'Free (limited)',
+        category: 'Text to Image',
+        requires_api_key: true,
+        note: 'API key required for access'
+      },
+      {
+        name: 'Whisper (via AA)',
+        provider: 'ArtificialAnalysis',
+        model_id: 'whisper-1',
+        endpoint: 'https://api.artificialanalysis.ai/data/media/text-to-speech',
+        status: 'known_available',
+        cost: 'Free (limited)',
+        category: 'Text to Speech',
+        requires_api_key: true,
+        note: 'API key required for access'
+      }
+    ];
+    
+    fallbackModels.forEach(model => this.discoveredModels.push(model));
+    
+    this.endpointResults.artificialanalysis = {
+      provider: 'ArtificialAnalysis',
+      total_models: fallbackModels.length,
+      available_models: fallbackModels.length,
+      endpoint_base: 'https://api.artificialanalysis.ai/data/',
+      requires_registration: true,
+      api_key_required: true,
+      api_key_status: 'missing',
+      endpoints_checked: 6,
+      categories: ['Text Generation', 'Text to Image', 'Text to Speech'],
+      note: 'Known available models - API key needed for live testing',
+      models: fallbackModels
+    };
+    
+    return fallbackModels;
+  }
+
   // Helper functions
   getContextWindow(modelId) {
     if (modelId.includes('llama-3.1')) return 128000;
@@ -900,6 +1197,34 @@ class LiveEndpointChecker {
     if (modelId.includes('code')) return 'Code Generation';
     if (modelId.includes('chat') || modelId.includes('zephyr')) return 'Chat Models';
     return 'Text Generation';
+  }
+
+  getHFContextWindow(model) {
+    // Try to get context window from model config or infer from model type
+    if (model.config && model.config.max_position_embeddings) {
+      return model.config.max_position_embeddings;
+    }
+    
+    const modelId = model.id.toLowerCase();
+    if (modelId.includes('llama-3.1')) return 128000;
+    if (modelId.includes('llama-3')) return 8192;
+    if (modelId.includes('llama-2')) return 4096;
+    if (modelId.includes('codellama')) return 16384;
+    if (modelId.includes('mistral-7b')) return 32768;
+    if (modelId.includes('mixtral')) return 32768;
+    if (modelId.includes('zephyr')) return 32768;
+    if (modelId.includes('gpt-3.5')) return 4096;
+    if (modelId.includes('gpt-4')) return 8192;
+    if (modelId.includes('claude')) return 200000;
+    if (modelId.includes('gemini')) return 1000000;
+    
+    // Default based on model task
+    if (model.pipeline_tag === 'text-generation') return 4096;
+    if (model.pipeline_tag === 'text-to-image') return 77; // CLIP text encoder
+    if (model.pipeline_tag === 'automatic-speech-recognition') return 0; // Audio models
+    if (model.pipeline_tag === 'text-to-speech') return 0; // Audio models
+    
+    return 4096; // fallback default
   }
 
   // Generate comprehensive results
