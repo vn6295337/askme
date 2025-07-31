@@ -389,7 +389,7 @@ class RealTimePerformanceMonitor {
   async calculateMetricTrends(monitorId, currentMetrics) {
     const trends = {};
 
-    for const [category, metrics] of Object.entries(currentMetrics)) {
+    for (const [category, metrics] of Object.entries(currentMetrics)) {
       if (metrics.status !== 'success') continue;
 
       trends[category] = {};

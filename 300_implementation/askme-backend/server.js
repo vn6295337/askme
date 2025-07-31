@@ -714,6 +714,15 @@ const getAPIKey = (provider) => {
     }
 };
 
+// ArtificialAnalysis API key retrieval
+const getArtificialAnalysisKey = () => {
+    const key = process.env.ARTIFICIALANALYSIS_API_KEY;
+    if (!key || key.trim() === '') {
+        throw new Error('ARTIFICIALANALYSIS_API_KEY environment variable not configured');
+    }
+    return key.trim();
+};
+
 // LLM Scout Agent configuration
 const AGENT_AUTH_TOKEN = process.env.AGENT_AUTH_TOKEN || 'scout-agent-default-token';
 const LLMS_FILE_PATH = path.join(__dirname, 'data', 'llms.json');
@@ -733,8 +742,80 @@ let githubDataCache = {
 };
 const GITHUB_CACHE_DURATION = 5 * 60 * 1000; // 5 minutes
 
+// ArtificialAnalysis API configuration and caching
+const ARTIFICIALANALYSIS_BASE_URL = 'https://artificialanalysis.ai/api/v2';
+const ARTIFICIALANALYSIS_RATE_LIMIT = 1000; // 1000 requests per day
+let artificialAnalysisCache = {
+  models: { data: null, timestamp: null },
+  media: { data: new Map(), timestamp: null }
+};
+const AA_CACHE_DURATION = 24 * 60 * 60 * 1000; // 24 hours due to rate limits
+
+// ArtificialAnalysis request counter for rate limiting
+let aaRequestCount = 0;
+let aaRequestResetTime = Date.now() + (24 * 60 * 60 * 1000);
+
 // Ensure data directory exists
 fs.ensureDirSync(path.dirname(LLMS_FILE_PATH));
+
+// ArtificialAnalysis helper functions
+const checkAATimeLimit = () => {
+  const now = Date.now();
+  if (now >= aaRequestResetTime) {
+    aaRequestCount = 0;
+    aaRequestResetTime = now + (24 * 60 * 60 * 1000);
+  }
+  return aaRequestCount < ARTIFICIALANALYSIS_RATE_LIMIT;
+};
+
+const incrementAARequestCount = () => {
+  aaRequestCount++;
+  console.log(`📊 ArtificialAnalysis requests used: ${aaRequestCount}/${ARTIFICIALANALYSIS_RATE_LIMIT}`);
+};
+
+const makeAARequest = async (endpoint, options = {}) => {
+  if (!checkAATimeLimit()) {
+    throw new Error(`Rate limit exceeded: ${aaRequestCount}/${ARTIFICIALANALYSIS_RATE_LIMIT} requests used. Resets in ${Math.round((aaRequestResetTime - Date.now()) / 3600000)} hours.`);
+  }
+
+  const apiKey = getArtificialAnalysisKey();
+  const url = `${ARTIFICIALANALYSIS_BASE_URL}${endpoint}`;
+  
+  const headers = {
+    'x-api-key': apiKey,
+    'User-Agent': 'AskMe-Discovery/1.0',
+    'Accept': 'application/json',
+    ...options.headers
+  };
+
+  console.log(`🔍 ArtificialAnalysis request: ${endpoint}`);
+  
+  try {
+    const response = await axios.get(url, { 
+      headers, 
+      timeout: 30000,
+      ...options 
+    });
+    
+    incrementAARequestCount();
+    
+    return {
+      data: response.data,
+      status: response.status,
+      headers: response.headers,
+      rateLimitRemaining: response.headers['x-ratelimit-remaining'],
+      rateLimitReset: response.headers['x-ratelimit-reset']
+    };
+  } catch (error) {
+    if (error.response) {
+      console.error(`❌ ArtificialAnalysis API Error: ${error.response.status} - ${error.response.data?.message || error.message}`);
+      throw new Error(`ArtificialAnalysis API Error: ${error.response.status} - ${error.response.data?.message || error.message}`);
+    } else {
+      console.error(`❌ ArtificialAnalysis Network Error:`, error.message);
+      throw new Error(`Network error connecting to ArtificialAnalysis: ${error.message}`);
+    }
+  }
+};
 
 // Authentication middleware for agent requests
 const authenticateAgent = (req, res, next) => {
@@ -1504,6 +1585,207 @@ app.get('/api/github/llm-health', (req, res) => {
   });
 });
 
+// ArtificialAnalysis API endpoints
+app.get('/api/artificialanalysis/models', async (req, res) => {
+  try {
+    console.log('🔍 ArtificialAnalysis: Fetching LLM models...');
+    
+    // Check cache first
+    const now = Date.now();
+    if (artificialAnalysisCache.models.data && 
+        artificialAnalysisCache.models.timestamp && 
+        (now - artificialAnalysisCache.models.timestamp < AA_CACHE_DURATION)) {
+      
+      const cacheAge = Math.round((now - artificialAnalysisCache.models.timestamp) / 1000);
+      console.log(`✅ Returning cached ArtificialAnalysis models (age: ${cacheAge}s)`);
+      
+      return res.json({
+        ...artificialAnalysisCache.models.data,
+        cached: true,
+        cacheAge,
+        attribution: 'https://artificialanalysis.ai'
+      });
+    }
+
+    // Make API request
+    const response = await makeAARequest('/data/llms/models');
+    
+    const result = {
+      models: response.data,
+      metadata: {
+        totalModels: Array.isArray(response.data) ? response.data.length : 0,
+        lastUpdated: new Date().toISOString(),
+        rateLimitRemaining: response.rateLimitRemaining,
+        rateLimitReset: response.rateLimitReset,
+        requestsUsed: aaRequestCount,
+        requestsLimit: ARTIFICIALANALYSIS_RATE_LIMIT
+      },
+      cached: false,
+      attribution: 'https://artificialanalysis.ai'
+    };
+
+    // Update cache
+    artificialAnalysisCache.models = {
+      data: result,
+      timestamp: now
+    };
+
+    console.log(`✅ ArtificialAnalysis models fetched: ${result.metadata.totalModels} models`);
+    res.json(result);
+
+  } catch (error) {
+    console.error('❌ ArtificialAnalysis models error:', error.message);
+    
+    // Return cached data if available during errors
+    if (artificialAnalysisCache.models.data) {
+      const cacheAge = Math.round((Date.now() - artificialAnalysisCache.models.timestamp) / 1000);
+      console.log('⚠️ Returning cached data due to error');
+      
+      return res.json({
+        ...artificialAnalysisCache.models.data,
+        cached: true,
+        cacheAge,
+        error: error.message,
+        attribution: 'https://artificialanalysis.ai'
+      });
+    }
+    
+    res.status(500).json({
+      error: 'Failed to fetch ArtificialAnalysis models',
+      message: error.message,
+      requestsUsed: aaRequestCount,
+      requestsLimit: ARTIFICIALANALYSIS_RATE_LIMIT,
+      attribution: 'https://artificialanalysis.ai'
+    });
+  }
+});
+
+app.get('/api/artificialanalysis/media/:type', async (req, res) => {
+  try {
+    const { type } = req.params;
+    const validTypes = ['text-to-image', 'image-editing', 'text-to-speech', 'text-to-video', 'image-to-video'];
+    
+    if (!validTypes.includes(type)) {
+      return res.status(400).json({
+        error: `Invalid media type: ${type}`,
+        validTypes: validTypes
+      });
+    }
+
+    console.log(`🎨 ArtificialAnalysis: Fetching ${type} models...`);
+    
+    // Check cache first
+    const now = Date.now();
+    const cachedData = artificialAnalysisCache.media.data.get(type);
+    
+    if (cachedData && 
+        artificialAnalysisCache.media.timestamp && 
+        (now - artificialAnalysisCache.media.timestamp < AA_CACHE_DURATION)) {
+      
+      const cacheAge = Math.round((now - artificialAnalysisCache.media.timestamp) / 1000);
+      console.log(`✅ Returning cached ${type} models (age: ${cacheAge}s)`);
+      
+      return res.json({
+        ...cachedData,
+        cached: true,
+        cacheAge,
+        attribution: 'https://artificialanalysis.ai'
+      });
+    }
+
+    // Make API request
+    const response = await makeAARequest(`/data/media/${type}`);
+    
+    const result = {
+      models: response.data,
+      mediaType: type,
+      metadata: {
+        totalModels: Array.isArray(response.data) ? response.data.length : 0,
+        lastUpdated: new Date().toISOString(),
+        rateLimitRemaining: response.rateLimitRemaining,
+        rateLimitReset: response.rateLimitReset,
+        requestsUsed: aaRequestCount,
+        requestsLimit: ARTIFICIALANALYSIS_RATE_LIMIT
+      },
+      cached: false,
+      attribution: 'https://artificialanalysis.ai'
+    };
+
+    // Update cache
+    artificialAnalysisCache.media.data.set(type, result);
+    artificialAnalysisCache.media.timestamp = now;
+
+    console.log(`✅ ArtificialAnalysis ${type} models fetched: ${result.metadata.totalModels} models`);
+    res.json(result);
+
+  } catch (error) {
+    console.error(`❌ ArtificialAnalysis ${req.params.type} error:`, error.message);
+    
+    // Return cached data if available during errors
+    const cachedData = artificialAnalysisCache.media.data.get(req.params.type);
+    if (cachedData) {
+      const cacheAge = artificialAnalysisCache.media.timestamp ? 
+        Math.round((Date.now() - artificialAnalysisCache.media.timestamp) / 1000) : null;
+      console.log('⚠️ Returning cached media data due to error');
+      
+      return res.json({
+        ...cachedData,
+        cached: true,
+        cacheAge,
+        error: error.message,
+        attribution: 'https://artificialanalysis.ai'
+      });
+    }
+    
+    res.status(500).json({
+      error: `Failed to fetch ArtificialAnalysis ${req.params.type} models`,
+      message: error.message,
+      requestsUsed: aaRequestCount,
+      requestsLimit: ARTIFICIALANALYSIS_RATE_LIMIT,
+      attribution: 'https://artificialanalysis.ai'
+    });
+  }
+});
+
+app.get('/api/artificialanalysis/status', (req, res) => {
+  const now = Date.now();
+  const hoursUntilReset = Math.round((aaRequestResetTime - now) / 3600000);
+  
+  res.json({
+    status: 'active',
+    timestamp: new Date().toISOString(),
+    rateLimit: {
+      requestsUsed: aaRequestCount,
+      requestsLimit: ARTIFICIALANALYSIS_RATE_LIMIT,
+      remaining: ARTIFICIALANALYSIS_RATE_LIMIT - aaRequestCount,
+      resetTime: new Date(aaRequestResetTime).toISOString(),
+      hoursUntilReset: Math.max(0, hoursUntilReset)
+    },
+    cache: {
+      models: {
+        hasData: !!artificialAnalysisCache.models.data,
+        age: artificialAnalysisCache.models.timestamp ? 
+          Math.round((now - artificialAnalysisCache.models.timestamp) / 1000) : null
+      },
+      media: {
+        cachedTypes: Array.from(artificialAnalysisCache.media.data.keys()),
+        age: artificialAnalysisCache.media.timestamp ? 
+          Math.round((now - artificialAnalysisCache.media.timestamp) / 1000) : null
+      }
+    },
+    endpoints: [
+      '/api/artificialanalysis/models',
+      '/api/artificialanalysis/media/text-to-image',
+      '/api/artificialanalysis/media/image-editing',
+      '/api/artificialanalysis/media/text-to-speech',
+      '/api/artificialanalysis/media/text-to-video',
+      '/api/artificialanalysis/media/image-to-video',
+      '/api/artificialanalysis/status'
+    ],
+    attribution: 'https://artificialanalysis.ai'
+  });
+});
+
 // LLM Scout Agent endpoints
 app.post('/api/llms', authenticateAgent, async (req, res) => {
   try {
@@ -1644,16 +1926,27 @@ app.listen(PORT, '0.0.0.0', () => {
   console.log(`✅ AskMe Backend Proxy server running on port ${PORT}`);
   console.log(`🌐 Health check: http://localhost:${PORT}/health`);
   console.log(`🤖 Query API: http://localhost:${PORT}/api/query`);
-  console.log(`📋 Providers: http://localhost:${PORT}/api/providers`);
+  console.log(`📋 Providers: http://localhost:${PORT}/api/providers`);  
   console.log(`🧠 Smart API: http://localhost:${PORT}/api/smart`);
   console.log(`📊 GitHub Dashboard: http://localhost:${PORT}/api/github/llm-data`);
   console.log(`🔍 GitHub Health: http://localhost:${PORT}/api/github/llm-health`);
+  console.log(`🎯 ArtificialAnalysis Models: http://localhost:${PORT}/api/artificialanalysis/models`);
+  console.log(`🎨 ArtificialAnalysis Media: http://localhost:${PORT}/api/artificialanalysis/media/:type`);
+  console.log(`📈 ArtificialAnalysis Status: http://localhost:${PORT}/api/artificialanalysis/status`);
   
   // Display key manager status
   const keyStats = keyManager.getStats();
   const loadedProviders = Object.keys(keyStats.providers);
   console.log(`🔑 Secure key manager status: ${keyStats.totalKeys} keys loaded`);
   console.log(`📊 Providers: ${loadedProviders.join(', ')}`);
+  
+  // Check ArtificialAnalysis API key
+  try {
+    getArtificialAnalysisKey();
+    console.log(`🎯 ArtificialAnalysis API: Ready (Rate limit: ${ARTIFICIALANALYSIS_RATE_LIMIT}/day)`);
+  } catch (error) {
+    console.warn('⚠️  ArtificialAnalysis API key not configured. Set ARTIFICIALANALYSIS_API_KEY environment variable.');
+  }
   
   if (keyStats.totalKeys === 0) {
     console.warn('⚠️  No API keys loaded. Check your environment variables.');
