@@ -621,7 +621,8 @@ class SecureKeyManager {
         console.log('🔐 Initializing secure key management...');
         
         providers.forEach(provider => {
-            const envKey = `${provider.toUpperCase()}_API_KEY`;
+            // Handle special case for Google Gemini API key naming
+            const envKey = provider === 'google' ? 'GEMINI_API_KEY' : `${provider.toUpperCase()}_API_KEY`;
             const key = process.env[envKey];
             
             if (key && key.trim() !== '') {
@@ -1271,6 +1272,29 @@ app.get('/api/providers', (req, res) => {
     totalProviders: providerStatus.length,
     activeProviders: providerStatus.filter(p => p.available).length
   });
+});
+
+// API Keys endpoint for GitHub Actions workflow
+app.get('/api/keys', (req, res) => {
+  try {
+    const keys = {};
+    const keyStats = keyManager.getStats();
+    
+    // Export keys for workflow consumption
+    Object.keys(keyStats.providers).forEach(provider => {
+      // Handle special case for Google/Gemini key naming
+      const keyName = provider === 'google' ? 'GEMINI_API_KEY' : `${provider.toUpperCase()}_API_KEY`;
+      
+      if (keyManager.hasKey(provider)) {
+        keys[keyName] = keyManager.getKey(provider);
+      }
+    });
+    
+    res.json(keys);
+  } catch (error) {
+    console.error('❌ Error fetching API keys:', error.message);
+    res.status(500).json({ error: 'Failed to fetch API keys' });
+  }
 });
 
 // Smart provider selection endpoint
