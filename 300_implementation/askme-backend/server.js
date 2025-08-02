@@ -616,7 +616,7 @@ class SecureKeyManager {
     }
     
     initializeKeys() {
-        const providers = ['google', 'mistral', 'cohere', 'groq', 'huggingface', 'openrouter', 'ai21', 'replicate'];
+        const providers = ['google', 'mistral', 'cohere', 'groq', 'huggingface', 'openrouter', 'ai21', 'replicate', 'together'];
         
         console.log('🔐 Initializing secure key management...');
         
@@ -1071,6 +1071,35 @@ const PROVIDERS = {
         return data.output || "No response from Replicate";
       } catch (e) {
         return "Error processing Replicate response";
+      }
+    }
+  },
+  
+  together: {
+    models: [
+      "meta-llama/Llama-3.3-70B-Instruct-Turbo",     // Latest Llama 3.3
+      "meta-llama/Meta-Llama-3-8B-Instruct-Turbo",   // Fast 8B model
+      "meta-llama/Llama-Vision-Free",                  // Vision model
+      "meta-llama/Llama-3.3-70B-Instruct-Turbo-Free", // Free tier
+      "deepseek-ai/DeepSeek-R1-Distill-Llama-70B-free", // DeepSeek free
+      "black-forest-labs/FLUX.1-schnell-Free"          // Image generation
+    ],
+    url: () => "https://api.together.xyz/v1/chat/completions",
+    headers: (apiKey) => ({
+      "Content-Type": "application/json",
+      "Authorization": `Bearer ${apiKey}`
+    }),
+    formatRequest: (prompt, model) => ({
+      model: model || "meta-llama/Llama-3.3-70B-Instruct-Turbo",
+      messages: [{ role: "user", content: prompt }],
+      max_tokens: 500,
+      temperature: 0.7
+    }),
+    extractResponse: (data) => {
+      try {
+        return data.choices?.[0]?.message?.content || "No response from Together AI";
+      } catch (e) {
+        return "Error processing Together AI response";
       }
     }
   }
