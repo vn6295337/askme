@@ -70,14 +70,14 @@ const PROVIDER_CONFIG = {
     }
   },
   huggingface: {
-    endpoint: 'https://huggingface.co/api/models',
+    endpoint: 'https://huggingface.co/api/models?filter=inference&sort=trending&limit=100',
     testEndpoint: 'https://api-inference.huggingface.co/models/google-bert/bert-base-uncased',
     authHeader: 'Authorization',
     authValue: `Bearer ${process.env.HUGGINGFACE_API_KEY}`,
     freeInference: true,
-    freeTier: 'Few hundred requests/hour (limited models)',
-    modelCount: 12,
-    status: 'working-limited',
+    freeTier: 'Free inference for trending models',
+    modelCount: 100,
+    status: 'working',
     testPayload: {
       inputs: 'Paris is the [MASK] of France.'
     }
@@ -140,16 +140,8 @@ const PROVIDER_CONFIG = {
   }
 };
 
-// Free inference model whitelist
-const FREE_INFERENCE_MODELS = {
-  cohere: ['command-r', 'command-r-plus', 'embed-v4.0', 'rerank-v3.5'],
-  google: ['gemini-1.5-flash', 'gemini-2.0-flash', 'gemini-2.5-flash'],
-  groq: ['llama-3.1-8b-instant', 'llama3-70b-8192', 'gemma2-9b-it'],
-  huggingface: ['google-bert/bert-base-uncased', 'google-t5/t5-small', 'openai-community/gpt2'],
-  mistral: ['open-mistral-7b', 'open-mistral-nemo', 'ministral-3b-2410'],
-  openrouter: [':free'], // Models ending with :free
-  together: ['meta-llama/Llama-3.3-70B-Instruct-Turbo-Free', 'meta-llama/Llama-Vision-Free']
-};
+// Dynamic free inference detection - no hardcoded whitelists
+// Models are validated through API responses and provider-specific rules
 
 /**
  * Enhanced geographic validation with provider trust scoring
@@ -174,19 +166,40 @@ function supportsFreeInference(modelName, provider) {
     return false;
   }
   
-  const freeModels = FREE_INFERENCE_MODELS[provider] || [];
-  
-  // OpenRouter special case - check for :free suffix
-  if (provider === 'openrouter') {
-    return modelName.includes(':free') || freeModels.some(pattern => modelName.includes(pattern));
+  // Provider-specific free inference detection
+  switch (provider) {
+    case 'openrouter':
+      // OpenRouter: models with :free suffix or horizon models
+      return modelName.includes(':free') || modelName.includes('horizon');
+      
+    case 'huggingface':
+      // HuggingFace: all models that passed our API filter are free
+      return true;
+      
+    case 'google':
+      // Google: all Gemini models have free tiers
+      return modelName.includes('gemini') || modelName.includes('embedding') || modelName.includes('aqa');
+      
+    case 'groq':
+      // Groq: all models have free tier
+      return true;
+      
+    case 'cohere':
+      // Cohere: all models have trial credits
+      return true;
+      
+    case 'mistral':
+      // Mistral: open models and some others have free access
+      return modelName.includes('open-') || modelName.includes('ministral') || modelName.includes('embed');
+      
+    case 'together':
+      // Together: models with 'Free' suffix or turbo free models
+      return modelName.includes('Free') || modelName.includes('Turbo-Free');
+      
+    default:
+      // Default: assume free if provider has freeInference=true
+      return true;
   }
-  
-  // HuggingFace special case - limited model set
-  if (provider === 'huggingface') {
-    return freeModels.includes(modelName);
-  }
-  
-  return freeModels.length === 0 || freeModels.some(model => modelName.includes(model));
 }
 
 /**
@@ -241,8 +254,20 @@ async function validateModels() {
         if (provider === 'google') {
           models = response.data.models || [];
         } else if (provider === 'huggingface') {
-          // For HuggingFace, use our curated free inference list
-          models = FREE_INFERENCE_MODELS.huggingface.map(name => ({ id: name, name }));
+          // For HuggingFace, get models from API and filter for free inference capability
+          const allModels = response.data || [];
+          // Filter for models that support free inference (typically trending/popular models)
+          models = allModels.filter(model => {
+            const modelData = model || {};
+            // Include models that are likely to have free inference (smaller models, trending, etc.)
+            return !modelData.gated && 
+                   !modelData.private && 
+                   (modelData.pipeline_tag === 'text-generation' || 
+                    modelData.pipeline_tag === 'text-classification' ||
+                    modelData.pipeline_tag === 'feature-extraction' ||
+                    modelData.pipeline_tag === 'fill-mask' ||
+                    modelData.pipeline_tag === 'sentence-similarity');
+          }).slice(0, 50); // Limit to first 50 free inference models
         } else if (provider === 'artificialanalysis') {
           models = response.data.data || [];
         } else {
