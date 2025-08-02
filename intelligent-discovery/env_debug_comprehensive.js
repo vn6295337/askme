@@ -44,7 +44,6 @@ expectedKeys.forEach(key => {
 console.log('\n=== ALTERNATIVE KEY NAMING PATTERNS ===');
 const alternatives = [
   'GOOGLE_API_KEY',
-  'LLAMA_API_KEY',
   'OPENAI_API_KEY',
   'ANTHROPIC_API_KEY'
 ];

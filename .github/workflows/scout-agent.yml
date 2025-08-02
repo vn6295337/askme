@@ -62,7 +62,7 @@ env:
   AI21_API_KEY: ${{ secrets.AI21_API_KEY }}
   ARTIFICIALANALYSIS_API_KEY: ${{ secrets.ARTIFICIALANALYSIS_API_KEY }}
   COHERE_API_KEY: ${{ secrets.COHERE_API_KEY }}
-  GOOGLE_API_KEY: ${{ secrets.GOOGLE_API_KEY }}
+  GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
   GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
   HUGGINGFACE_API_KEY: ${{ secrets.HUGGINGFACE_API_KEY }}
   MISTRAL_API_KEY: ${{ secrets.MISTRAL_API_KEY }}
@@ -169,7 +169,7 @@ jobs:
           [ -n "$AI21_API_KEY" ] && echo "  ✅ AI21: Available" || echo "  ❌ AI21: Missing"
           [ -n "$ARTIFICIALANALYSIS_API_KEY" ] && echo "  ✅ ArtificialAnalysis: Available" || echo "  ❌ ArtificialAnalysis: Missing"
           [ -n "$COHERE_API_KEY" ] && echo "  ✅ Cohere: Available" || echo "  ❌ Cohere: Missing"
-          [ -n "$GOOGLE_API_KEY" ] && echo "  ✅ Google: Available" || echo "  ❌ Google: Missing"
+          [ -n "$GEMINI_API_KEY" ] && echo "  ✅ Google: Available" || echo "  ❌ Google: Missing"
           [ -n "$GROQ_API_KEY" ] && echo "  ✅ Groq: Available" || echo "  ❌ Groq: Missing"
           [ -n "$HUGGINGFACE_API_KEY" ] && echo "  ✅ HuggingFace: Available" || echo "  ❌ HuggingFace: Missing"
           [ -n "$MISTRAL_API_KEY" ] && echo "  ✅ Mistral: Available" || echo "  ❌ Mistral: Missing"

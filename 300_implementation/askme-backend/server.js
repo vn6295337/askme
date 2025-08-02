@@ -616,7 +616,7 @@ class SecureKeyManager {
     }
     
     initializeKeys() {
-        const providers = ['google', 'mistral', 'llama', 'cohere', 'groq', 'huggingface', 'openrouter', 'ai21', 'replicate'];
+        const providers = ['google', 'mistral', 'cohere', 'groq', 'huggingface', 'openrouter', 'ai21', 'replicate'];
         
         console.log('🔐 Initializing secure key management...');
         
@@ -883,33 +883,6 @@ const PROVIDERS = {
     }
   },
   
-  llama: {
-    models: [
-      "meta-llama/Meta-Llama-3-8B-Instruct-Turbo",     // Fast, reliable
-      "meta-llama/Llama-3-8b-chat-hf",                 // Standard chat
-      "meta-llama/Llama-3.3-70B-Instruct-Turbo",       // UPDATED - Replaces deprecated 70B-Turbo
-      "meta-llama/Llama-2-7b-chat-hf",                 // Legacy support
-      "meta-llama/Llama-2-13b-chat-hf",                // Legacy medium
-    ],
-    url: () => "https://api.together.xyz/v1/chat/completions",
-    headers: (apiKey) => ({
-      "Content-Type": "application/json",
-      "Authorization": `Bearer ${apiKey}`
-    }),
-    formatRequest: (prompt, model) => ({
-      model: model || "meta-llama/Meta-Llama-3-8B-Instruct-Turbo",
-      messages: [{ role: "user", content: prompt }],
-      max_tokens: 500,
-      temperature: 0.7
-    }),
-    extractResponse: (data) => {
-      try {
-        return data.choices?.[0]?.message?.content || "No response from Llama";
-      } catch (e) {
-        return "Error processing Llama response";
-      }
-    }
-  },
   
   cohere: {
     models: [
@@ -1315,7 +1288,7 @@ app.post('/api/smart', async (req, res) => {
   if (promptLower.includes('code') || promptLower.includes('programming') || promptLower.includes('function')) {
     selectedProvider = 'mistral';  // Good at code
   } else if (promptLower.includes('creative') || promptLower.includes('story') || promptLower.includes('write')) {
-    selectedProvider = 'llama';    // Creative writing
+    selectedProvider = 'together';    // Creative writing with Llama models
   } else if (promptLower.includes('analysis') || promptLower.includes('research') || promptLower.includes('explain')) {
     selectedProvider = 'google';   // Analytical tasks
   } else if (promptLower.includes('math') || promptLower.includes('calculate') || promptLower.includes('solve')) {

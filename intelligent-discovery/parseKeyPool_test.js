@@ -55,7 +55,7 @@ expectedKeys.forEach(key => {
 
 // Test existing keys
 console.log('\n=== Testing Existing Keys ===');
-const existingKeys = ['GOOGLE_API_KEY', 'LLAMA_API_KEY', 'MISTRAL_API_KEY'];
+const existingKeys = ['GOOGLE_API_KEY', 'MISTRAL_API_KEY'];
 existingKeys.forEach(key => {
   const result = parseKeyPool(key);
   console.log(`\n${key}: ${result.length} keys found`);
@@ -64,5 +64,4 @@ existingKeys.forEach(key => {
 console.log('\n=== Manual Verification ===');
 console.log('process.env.GOOGLE_API_KEY exists:', !!process.env.GOOGLE_API_KEY);
 console.log('process.env.GEMINI_API_KEY exists:', !!process.env.GEMINI_API_KEY);
-console.log('process.env.LLAMA_API_KEY exists:', !!process.env.LLAMA_API_KEY);
 console.log('process.env.TOGETHER_API_KEY exists:', !!process.env.TOGETHER_API_KEY);
