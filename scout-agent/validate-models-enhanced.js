@@ -27,7 +27,7 @@ const SPECIFIC_PROVIDER = getArg('specific-provider') || 'all';
 // Enhanced provider configuration with free inference status
 const PROVIDER_CONFIG = {
   cohere: {
-    endpoint: 'https://api.cohere.ai/v1/models',
+    endpoint: 'https://api.cohere.ai/v1/models?limit=100',
     testEndpoint: 'https://api.cohere.ai/v1/chat',
     authHeader: 'Authorization',
     authValue: `Bearer ${process.env.COHERE_API_KEY}`,
@@ -55,7 +55,7 @@ const PROVIDER_CONFIG = {
     }
   },
   groq: {
-    endpoint: 'https://api.groq.com/openai/v1/models',
+    endpoint: 'https://api.groq.com/openai/v1/models?limit=100',
     testEndpoint: 'https://api.groq.com/openai/v1/chat/completions',
     authHeader: 'Authorization',
     authValue: `Bearer ${process.env.GROQ_API_KEY}`,
@@ -70,7 +70,13 @@ const PROVIDER_CONFIG = {
     }
   },
   huggingface: {
-    endpoint: 'https://huggingface.co/api/models?filter=inference&sort=trending&limit=100',
+    endpoint: 'https://huggingface.co/api/models?sort=downloads&limit=100',
+    additionalEndpoints: [
+      'https://huggingface.co/api/models?task=text-generation&sort=downloads&limit=100',
+      'https://huggingface.co/api/models?task=text-to-image&sort=downloads&limit=100', 
+      'https://huggingface.co/api/models?task=automatic-speech-recognition&sort=downloads&limit=100',
+      'https://huggingface.co/api/models?task=text-to-speech&sort=downloads&limit=100'
+    ],
     testEndpoint: 'https://api-inference.huggingface.co/models/google-bert/bert-base-uncased',
     authHeader: 'Authorization',
     authValue: `Bearer ${process.env.HUGGINGFACE_API_KEY}`,
@@ -83,7 +89,7 @@ const PROVIDER_CONFIG = {
     }
   },
   mistral: {
-    endpoint: 'https://api.mistral.ai/v1/models',
+    endpoint: 'https://api.mistral.ai/v1/models?limit=100',
     testEndpoint: 'https://api.mistral.ai/v1/chat/completions',
     authHeader: 'Authorization',
     authValue: `Bearer ${process.env.MISTRAL_API_KEY}`,
@@ -98,7 +104,7 @@ const PROVIDER_CONFIG = {
     }
   },
   openrouter: {
-    endpoint: 'https://openrouter.ai/api/v1/models',
+    endpoint: 'https://openrouter.ai/api/v1/models?limit=500',
     testEndpoint: 'https://openrouter.ai/api/v1/chat/completions',
     authHeader: 'Authorization',
     authValue: `Bearer ${process.env.OPENROUTER_API_KEY}`,
@@ -113,7 +119,7 @@ const PROVIDER_CONFIG = {
     }
   },
   together: {
-    endpoint: 'https://api.together.xyz/v1/models',
+    endpoint: 'https://api.together.xyz/v1/models?limit=200',
     testEndpoint: 'https://api.together.xyz/v1/chat/completions',
     authHeader: 'Authorization',
     authValue: `Bearer ${process.env.TOGETHER_API_KEY}`,
@@ -254,20 +260,35 @@ async function validateModels() {
         if (provider === 'google') {
           models = response.data.models || [];
         } else if (provider === 'huggingface') {
-          // For HuggingFace, get models from API and filter for free inference capability
+          // For HuggingFace, fetch from multiple task-specific endpoints like direct API approach
           const allModels = response.data || [];
-          // Filter for models that support free inference (typically trending/popular models)
-          models = allModels.filter(model => {
-            const modelData = model || {};
-            // Include models that are likely to have free inference (smaller models, trending, etc.)
-            return !modelData.gated && 
-                   !modelData.private && 
-                   (modelData.pipeline_tag === 'text-generation' || 
-                    modelData.pipeline_tag === 'text-classification' ||
-                    modelData.pipeline_tag === 'feature-extraction' ||
-                    modelData.pipeline_tag === 'fill-mask' ||
-                    modelData.pipeline_tag === 'sentence-similarity');
-          }); // No arbitrary limit - include all free inference models
+          models = [...allModels]; // Start with main endpoint
+          
+          // Fetch from additional task-specific endpoints
+          const config = PROVIDER_CONFIG[provider];
+          if (config.additionalEndpoints) {
+            for (const endpoint of config.additionalEndpoints) {
+              try {
+                const headers = {};
+                headers[config.authHeader] = config.authValue;
+                const taskResponse = await axios.get(endpoint, { headers, timeout: 15000 });
+                if (taskResponse.status === 200 && taskResponse.data) {
+                  models.push(...(taskResponse.data || []));
+                }
+              } catch (error) {
+                console.log(`⚠️ Failed to fetch ${endpoint}: ${error.message}`);
+              }
+            }
+          }
+          
+          // Remove duplicates by model ID
+          const seenIds = new Set();
+          models = models.filter(model => {
+            const id = model.id || model.modelId;
+            if (seenIds.has(id)) return false;
+            seenIds.add(id);
+            return !model.gated && !model.private; // Basic filtering only
+          });
         } else if (provider === 'artificialanalysis') {
           models = response.data.data || [];
         } else {
