@@ -7,7 +7,11 @@
 
 import fs from 'fs/promises';
 import path from 'path';
+import dotenv from 'dotenv';
 import APIKeyRotationManager from './api_key_rotation.js';
+
+// Load environment variables from .env file
+dotenv.config();
 
 class LiveEndpointChecker {
   constructor() {

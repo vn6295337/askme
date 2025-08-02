@@ -18,7 +18,7 @@ class APIKeyRotationManager {
       ai21: this.parseKeyPool('AI21_API_KEY'),
       artificialanalysis: this.parseKeyPool('ARTIFICIALANALYSIS_API_KEY'),
       cohere: this.parseKeyPool('COHERE_API_KEY'),
-      google: this.parseKeyPool('GOOGLE_API_KEY'),
+      google: this.parseKeyPool('GEMINI_API_KEY'),
       groq: this.parseKeyPool('GROQ_API_KEY'),
       huggingface: this.parseKeyPool('HUGGINGFACE_API_KEY'),
       mistral: this.parseKeyPool('MISTRAL_API_KEY'),

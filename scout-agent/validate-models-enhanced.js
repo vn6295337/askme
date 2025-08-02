@@ -330,9 +330,7 @@ async function validateModels() {
     models: validatedModels
   };
 
-  // Write both enhanced and backward-compatible outputs
   await writeFile('./validated_models_enhanced.json', JSON.stringify(output, null, 2));
-  await writeFile('./validated_models.json', JSON.stringify(output, null, 2));
   
   console.log('\n📈 ENHANCED VALIDATION SUMMARY:');
   console.log(`   Total Providers Tested: ${metadata.total_providers_tested}`);
