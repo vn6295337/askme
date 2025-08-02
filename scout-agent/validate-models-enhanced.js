@@ -267,7 +267,7 @@ async function validateModels() {
                     modelData.pipeline_tag === 'feature-extraction' ||
                     modelData.pipeline_tag === 'fill-mask' ||
                     modelData.pipeline_tag === 'sentence-similarity');
-          }).slice(0, 50); // Limit to first 50 free inference models
+          }); // No arbitrary limit - include all free inference models
         } else if (provider === 'artificialanalysis') {
           models = response.data.data || [];
         } else {
@@ -275,6 +275,10 @@ async function validateModels() {
         }
 
         console.log(`📊 Found ${models.length} models from ${provider}`);
+        console.log(`🔍 Sample models from ${provider}:`, models.slice(0, 3).map(m => m.id || m.name || m.model || 'unknown'));
+        if (models.length === 0) {
+          console.log(`⚠️  Raw response structure for ${provider}:`, JSON.stringify(response.data, null, 2).substring(0, 500) + '...');
+        }
         metadata.total_models_checked += models.length;
 
         // Filter and validate models
