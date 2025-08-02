@@ -833,11 +833,8 @@ const authenticateAgent = (req, res, next) => {
 // Provider configurations - UPDATED WITH LATEST MODELS
 const PROVIDERS = {
   google: {
-    models: [
-      "gemini-1.5-flash",           // Fast, efficient
-      "gemini-1.5-flash-8b",        // Even faster
-      "gemini-1.5-pro",             // Stable, capable
-    ],
+    // Models discovered dynamically via API
+    discoveryEndpoint: "https://generativelanguage.googleapis.com/v1beta/models",
     url: (apiKey, model) => `https://generativelanguage.googleapis.com/v1/models/${model || "gemini-1.5-flash"}:generateContent?key=${apiKey}`,
     headers: () => ({
       "Content-Type": "application/json"
@@ -857,13 +854,8 @@ const PROVIDERS = {
   },
   
   mistral: {
-    models: [
-      "mistral-small-latest",       // Fast, efficient
-      "open-mistral-7b",           // Open source
-      "open-mixtral-8x7b",         // Powerful open source
-      "open-mixtral-8x22b",        // Most powerful open
-      "mistral-medium-latest",     // Balanced performance
-    ],
+    // Models discovered dynamically via API
+    discoveryEndpoint: "https://api.mistral.ai/v1/models",
     url: () => "https://api.mistral.ai/v1/chat/completions",
     headers: (apiKey) => ({
       "Content-Type": "application/json",
@@ -886,13 +878,8 @@ const PROVIDERS = {
   
   
   cohere: {
-    models: [
-      "command",                        // Main conversational model
-      "command-light",                  // Faster, lightweight version
-      "command-nightly",                // Latest experimental features
-      "command-r",                      // Retrieval-optimized
-      "command-r-plus"                  // Enhanced retrieval
-    ],
+    // Models discovered dynamically via API
+    discoveryEndpoint: "https://api.cohere.ai/v1/models",
     url: () => "https://api.cohere.ai/v1/chat",
     headers: (apiKey) => ({
       "Content-Type": "application/json",
@@ -914,14 +901,8 @@ const PROVIDERS = {
   },
   
   groq: {
-    models: [
-      "llama-3.3-70b-versatile",        // Latest Llama 3.3
-      "llama-3.1-70b-versatile",        // Llama 3.1 70B
-      "llama-3.1-8b-instant",           // Fast 8B model
-      "mixtral-8x7b-32768",             // Mixtral with long context
-      "gemma2-9b-it",                   // Google Gemma 2
-      "gemma-7b-it"                     // Google Gemma 7B
-    ],
+    // Models discovered dynamically via API
+    discoveryEndpoint: "https://api.groq.com/openai/v1/models",
     url: () => "https://api.groq.com/openai/v1/chat/completions",
     headers: (apiKey) => ({
       "Content-Type": "application/json",
@@ -943,13 +924,8 @@ const PROVIDERS = {
   },
   
   huggingface: {
-    models: [
-      "microsoft/DialoGPT-large",       // Conversational AI
-      "microsoft/DialoGPT-medium",      // Medium conversational
-      "facebook/blenderbot-400M-distill", // Facebook's chatbot
-      "google/flan-t5-large",           // Instruction-following
-      "microsoft/CodeBERT-base"         // Code understanding
-    ],
+    // Models discovered dynamically via API
+    discoveryEndpoint: "https://huggingface.co/api/models?filter=inference&sort=trending&limit=1000",
     url: (apiKey, model) => `https://api-inference.huggingface.co/models/${model || "microsoft/DialoGPT-large"}`,
     headers: (apiKey) => ({
       "Content-Type": "application/json",
@@ -976,13 +952,8 @@ const PROVIDERS = {
   },
   
   openrouter: {
-    models: [
-      "anthropic/claude-3-haiku",       // Fast Claude model
-      "meta-llama/llama-3.1-8b-instruct", // Llama via OpenRouter
-      "mistralai/mistral-7b-instruct",  // Mistral via OpenRouter
-      "google/gemma-7b-it",             // Gemma via OpenRouter
-      "microsoft/wizardlm-2-8x22b"      // WizardLM via OpenRouter
-    ],
+    // Models discovered dynamically via API
+    discoveryEndpoint: "https://openrouter.ai/api/v1/models",
     url: () => "https://openrouter.ai/api/v1/chat/completions",
     headers: (apiKey) => ({
       "Content-Type": "application/json",
@@ -1006,12 +977,8 @@ const PROVIDERS = {
   },
   
   ai21: {
-    models: [
-      "j2-light",                       // Fast, efficient
-      "j2-mid",                         // Balanced performance
-      "j2-ultra",                       // Most capable
-      "jamba-instruct"                  // Latest instruction model
-    ],
+    // Models discovered dynamically via API
+    discoveryEndpoint: "https://api.ai21.com/studio/v1/models",
     url: (apiKey, model) => `https://api.ai21.com/studio/v1/${model || "j2-light"}/complete`,
     headers: (apiKey) => ({
       "Content-Type": "application/json",
@@ -1034,12 +1001,8 @@ const PROVIDERS = {
   },
   
   replicate: {
-    models: [
-      "meta/llama-2-70b-chat",          // Llama 2 70B
-      "meta/llama-2-13b-chat",          // Llama 2 13B
-      "mistralai/mixtral-8x7b-instruct-v0.1", // Mixtral
-      "meta/codellama-34b-instruct"     // Code-focused model
-    ],
+    // Models discovered dynamically via API
+    discoveryEndpoint: "https://api.replicate.com/v1/models?owner=meta&owner=mistralai",
     url: () => "https://api.replicate.com/v1/predictions",
     headers: (apiKey) => ({
       "Content-Type": "application/json",
@@ -1076,14 +1039,8 @@ const PROVIDERS = {
   },
   
   together: {
-    models: [
-      "meta-llama/Llama-3.3-70B-Instruct-Turbo",     // Latest Llama 3.3
-      "meta-llama/Meta-Llama-3-8B-Instruct-Turbo",   // Fast 8B model
-      "meta-llama/Llama-Vision-Free",                  // Vision model
-      "meta-llama/Llama-3.3-70B-Instruct-Turbo-Free", // Free tier
-      "deepseek-ai/DeepSeek-R1-Distill-Llama-70B-free", // DeepSeek free
-      "black-forest-labs/FLUX.1-schnell-Free"          // Image generation
-    ],
+    // Models discovered dynamically via API
+    discoveryEndpoint: "https://api.together.xyz/v1/models",
     url: () => "https://api.together.xyz/v1/chat/completions",
     headers: (apiKey) => ({
       "Content-Type": "application/json",

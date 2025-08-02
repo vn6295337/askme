@@ -21,7 +21,7 @@ const getArg = (name) => {
 
 const PROVIDERS = getArg('providers') ? getArg('providers').split(',') : ['cohere', 'google', 'groq', 'huggingface', 'mistral', 'openrouter', 'together', 'artificialanalysis'];
 const REASON = getArg('reason') || 'Enhanced validation with free inference filtering';
-const FILTER_FREE_ONLY = getArg('free-only') === 'true' || true;
+const FILTER_FREE_ONLY = getArg('free-only') === 'true'; // Default: show all models
 const SPECIFIC_PROVIDER = getArg('specific-provider') || 'all';
 
 // Enhanced provider configuration with free inference status
@@ -177,8 +177,8 @@ function supportsFreeInference(modelName, provider) {
       return true;
       
     case 'google':
-      // Google: all Gemini models have free tiers
-      return modelName.includes('gemini') || modelName.includes('embedding') || modelName.includes('aqa');
+      // Google: most models have generous free tiers
+      return true; // All Google AI models have free quotas
       
     case 'groq':
       // Groq: all models have free tier
@@ -189,12 +189,12 @@ function supportsFreeInference(modelName, provider) {
       return true;
       
     case 'mistral':
-      // Mistral: open models and some others have free access
-      return modelName.includes('open-') || modelName.includes('ministral') || modelName.includes('embed');
+      // Mistral: most models have trial access or free tiers
+      return true; // Include all - most have trial credits
       
     case 'together':
-      // Together: models with 'Free' suffix or turbo free models
-      return modelName.includes('Free') || modelName.includes('Turbo-Free');
+      // Together: most models have free credits or trial access
+      return true; // Include all - many have free access
       
     default:
       // Default: assume free if provider has freeInference=true
