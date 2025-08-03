@@ -17,22 +17,71 @@ class DirectAPIToSupabase {
     this.results = [];
     this.totalModels = 0;
     this.timestamp = new Date().toISOString();
+    this.backendKeys = null;
     
-    // Initialize Supabase client (with fallback)
+    // Initialize Supabase client (will be set up after fetching backend keys)
     this.supabaseUrl = process.env.SUPABASE_URL || 'https://pfmsevvxgvofqyrrtojk.supabase.co';
-    this.supabaseKey = process.env.SUPABASE_ANON_KEY;
+    this.supabaseKey = null;
+    this.supabase = null;
+  }
+
+  // Fetch API keys from backend (like GitHub workflow does)
+  async fetchAPIKeysFromBackend() {
+    console.log('🔑 Fetching API keys from backend...');
+    try {
+      const response = await fetch('https://askme-backend-proxy.onrender.com/api/keys');
+      
+      if (!response.ok) {
+        throw new Error(`Backend fetch failed: ${response.status}`);
+      }
+      
+      this.backendKeys = await response.json();
+      console.log('✅ Successfully fetched API keys from backend');
+      console.log(`📊 Available providers: ${Object.keys(this.backendKeys).join(', ')}`);
+      return true;
+      
+    } catch (error) {
+      console.log('❌ Failed to fetch API keys from backend:', error.message);
+      console.log('🔄 Falling back to local .env keys...');
+      this.backendKeys = null;
+      return false;
+    }
+  }
+
+  // Get API key with backend fallback
+  getAPIKey(keyName) {
+    // Try backend keys first
+    if (this.backendKeys && this.backendKeys[keyName]) {
+      return this.backendKeys[keyName];
+    }
+    
+    // Fallback to local environment
+    return process.env[keyName];
+  }
+
+  // Initialize Supabase client after fetching keys
+  initializeSupabase() {
+    console.log('🔧 Initializing Supabase client...');
+    
+    // Try to get Supabase key from backend or environment
+    this.supabaseKey = this.getAPIKey('SUPABASE_ANON_KEY') || process.env.SUPABASE_ANON_KEY;
     
     if (!this.supabaseKey) {
       console.log('⚠️ No SUPABASE_ANON_KEY found - will save to local JSON instead');
       this.supabase = null;
-    } else {
-      try {
-        this.supabase = createClient(this.supabaseUrl, this.supabaseKey);
-        console.log('✅ Supabase client initialized');
-      } catch (error) {
-        console.log('⚠️ Supabase initialization failed - will save to local JSON instead');
-        this.supabase = null;
-      }
+      return false;
+    }
+    
+    try {
+      this.supabase = createClient(this.supabaseUrl, this.supabaseKey);
+      console.log('✅ Supabase client initialized successfully');
+      console.log(`📍 Supabase URL: ${this.supabaseUrl}`);
+      return true;
+    } catch (error) {
+      console.log('⚠️ Supabase initialization failed - will save to local JSON instead');
+      console.log(`   Error: ${error.message}`);
+      this.supabase = null;
+      return false;
     }
   }
 
@@ -54,7 +103,7 @@ class DirectAPIToSupabase {
     console.log('\n🤗 HUGGINGFACE - Multiple Task Endpoints');
     console.log('=========================================');
     
-    const apiKey = process.env.HUGGINGFACE_API_KEY;
+    const apiKey = this.getAPIKey('HUGGINGFACE_API_KEY');
     if (!apiKey) {
       console.log('❌ No HuggingFace API key');
       return;
@@ -117,7 +166,7 @@ class DirectAPIToSupabase {
     console.log('\n🟦 GOOGLE GEMINI');
     console.log('================');
     
-    const apiKey = process.env.GEMINI_API_KEY || process.env.GOOGLE_API_KEY;
+    const apiKey = this.getAPIKey('GEMINI_API_KEY');
     if (!apiKey) {
       console.log('❌ No Gemini API key');
       return;
@@ -166,7 +215,7 @@ class DirectAPIToSupabase {
     console.log('\n🎯 COHERE');
     console.log('=========');
     
-    const apiKey = process.env.COHERE_API_KEY;
+    const apiKey = this.getAPIKey('COHERE_API_KEY');
     if (!apiKey) {
       console.log('❌ No Cohere API key');
       return;
@@ -217,7 +266,7 @@ class DirectAPIToSupabase {
     console.log('\n⚡ GROQ');
     console.log('=======');
     
-    const apiKey = process.env.GROQ_API_KEY;
+    const apiKey = this.getAPIKey('GROQ_API_KEY');
     if (!apiKey) {
       console.log('❌ No Groq API key');
       return;
@@ -268,7 +317,7 @@ class DirectAPIToSupabase {
     console.log('\n🌪️ MISTRAL');
     console.log('==========');
     
-    const apiKey = process.env.MISTRAL_API_KEY;
+    const apiKey = this.getAPIKey('MISTRAL_API_KEY');
     if (!apiKey) {
       console.log('❌ No Mistral API key');
       return;
@@ -319,7 +368,7 @@ class DirectAPIToSupabase {
     console.log('\n🔀 OPENROUTER');
     console.log('=============');
     
-    const apiKey = process.env.OPENROUTER_API_KEY;
+    const apiKey = this.getAPIKey('OPENROUTER_API_KEY');
     if (!apiKey) {
       console.log('❌ No OpenRouter API key');
       return;
@@ -371,7 +420,7 @@ class DirectAPIToSupabase {
     console.log('\n🤝 TOGETHER AI');
     console.log('==============');
     
-    const apiKey = process.env.TOGETHER_API_KEY;
+    const apiKey = this.getAPIKey('TOGETHER_API_KEY');
     if (!apiKey) {
       console.log('❌ No Together API key');
       return;
@@ -434,9 +483,24 @@ class DirectAPIToSupabase {
     }
 
     try {
+      // Test Supabase connection first
+      console.log('🧪 Testing Supabase connection...');
+      const { data: testData, error: testError } = await this.supabase
+        .from('validated_models')
+        .select('count(*)')
+        .limit(1);
+      
+      if (testError) {
+        console.log(`❌ Supabase connection test failed: ${testError.message}`);
+        console.log('💾 Falling back to local JSON storage...');
+        return this.saveToLocalJSON();
+      }
+      
+      console.log('✅ Supabase connection successful');
+      
       // Clear existing data (optional - or use upsert)
       console.log('🗑️ Clearing existing data...');
-      await this.supabase.from('ai_models').delete().neq('id', 0);
+      await this.supabase.from('validated_models').delete().neq('id', 0);
       
       // Insert new data in batches (Supabase has limits)
       const batchSize = 100;
@@ -448,7 +512,7 @@ class DirectAPIToSupabase {
         console.log(`📤 Pushing batch ${Math.floor(i/batchSize) + 1}: ${batch.length} models...`);
         
         const { data, error } = await this.supabase
-          .from('ai_models')
+          .from('validated_models')
           .insert(batch);
         
         if (error) {
@@ -457,7 +521,7 @@ class DirectAPIToSupabase {
           // Try individual inserts for this batch
           for (const model of batch) {
             try {
-              await this.supabase.from('ai_models').insert([model]);
+              await this.supabase.from('validated_models').insert([model]);
               inserted++;
             } catch (individualError) {
               console.error(`❌ Individual insert failed for ${model.model_name}:`, individualError.message);
@@ -498,7 +562,13 @@ class DirectAPIToSupabase {
     console.log('🚀 DIRECT API TO SUPABASE');
     console.log('=========================');
     console.log(`📅 Timestamp: ${this.timestamp}`);
-    console.log(`🎯 Target: Bypass workflow complexity, use local .env`);
+    console.log(`🎯 Target: Use backend API keys with local .env fallback`);
+    
+    // Fetch API keys from backend first
+    await this.fetchAPIKeysFromBackend();
+    
+    // Initialize Supabase with fetched keys
+    this.initializeSupabase();
     
     // Fetch from all providers
     await this.fetchHuggingFace();

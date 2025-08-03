@@ -1,0 +1,4 @@
+# Environment variables - never commit these files
+intelligent-discovery/.env
+scout-agent/.env
+*.env
