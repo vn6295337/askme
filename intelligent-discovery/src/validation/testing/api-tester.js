@@ -817,7 +817,7 @@ class APITester {
         const apiKeys = {
             'openai': process.env.OPENAI_API_KEY,
             'anthropic': process.env.ANTHROPIC_API_KEY,
-            'google': process.env.GOOGLE_API_KEY
+            'google': process.env.GEMINI_API_KEY
         };
 
         const apiKey = apiKeys[provider];

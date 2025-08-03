@@ -14,7 +14,7 @@ const configSchema = Joi.object({
   // API Keys
   OPENAI_API_KEY: Joi.string().optional(),
   ANTHROPIC_API_KEY: Joi.string().optional(),
-  GOOGLE_API_KEY: Joi.string().optional(),
+  GEMINI_API_KEY: Joi.string().optional(),
   MISTRAL_API_KEY: Joi.string().optional(),
   COHERE_API_KEY: Joi.string().optional(),
   HUGGINGFACE_API_KEY: Joi.string().optional(),

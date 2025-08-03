@@ -129,7 +129,7 @@ Current status of all targeted LLM endpoints for free model discovery.
 | ArtificialAnalysis | ✅ | Available on render.com | Ready for multi-modal deployment |
 
 **All API keys are configured at**: https://askme-backend-proxy.onrender.com  
-Environment variables: `AI21_API_KEY`, `ARTIFICIALANALYSIS_API_KEY`, `COHERE_API_KEY`, `GOOGLE_API_KEY`, `GROQ_API_KEY`, `HUGGINGFACE_API_KEY`, `MISTRAL_API_KEY`, `TOGETHER_API_KEY`
+Environment variables: `AI21_API_KEY`, `ARTIFICIALANALYSIS_API_KEY`, `COHERE_API_KEY`, `GEMINI_API_KEY`, `GROQ_API_KEY`, `HUGGINGFACE_API_KEY`, `MISTRAL_API_KEY`, `TOGETHER_API_KEY`
 
 ---
 

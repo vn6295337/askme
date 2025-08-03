@@ -27,7 +27,7 @@
 │     ├── AI21_API_KEY ────────────────────► secrets.AI21_API_KEY               │
 │     ├── ARTIFICIALANALYSIS_API_KEY ──────► secrets.ARTIFICIALANALYSIS_API_KEY │
 │     ├── COHERE_API_KEY ──────────────────► secrets.COHERE_API_KEY             │
-│     ├── GOOGLE_API_KEY ──────────────────► secrets.GOOGLE_API_KEY             │
+│     ├── GEMINI_API_KEY ──────────────────► secrets.GEMINI_API_KEY             │
 │     ├── GROQ_API_KEY ────────────────────► secrets.GROQ_API_KEY               │
 │     ├── HUGGINGFACE_API_KEY ─────────────► secrets.HUGGINGFACE_API_KEY        │
 │     ├── MISTRAL_API_KEY ─────────────────► secrets.MISTRAL_API_KEY            │

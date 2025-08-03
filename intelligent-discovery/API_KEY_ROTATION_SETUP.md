@@ -9,7 +9,7 @@ This guide explains how to configure API key rotation for the intelligent discov
 ```bash
 AI21_API_KEY=your_ai21_key_here
 COHERE_API_KEY=your_cohere_key_here
-GOOGLE_API_KEY=your_google_key_here
+GEMINI_API_KEY=your_gemini_key_here
 GROQ_API_KEY=your_groq_key_here
 MISTRAL_API_KEY=your_mistral_key_here
 OPENROUTER_API_KEY=your_openrouter_key_here
@@ -20,7 +20,7 @@ TOGETHER_API_KEY=your_together_key_here
 ```bash
 AI21_API_KEY=key1,key2,key3
 COHERE_API_KEY=key1,key2
-GOOGLE_API_KEY=key1,key2,key3,key4
+GEMINI_API_KEY=key1,key2,key3,key4
 GROQ_API_KEY=key1,key2
 MISTRAL_API_KEY=key1,key2,key3
 OPENROUTER_API_KEY=key1,key2,key3
@@ -33,9 +33,9 @@ AI21_API_KEY_1=first_key
 AI21_API_KEY_2=second_key
 AI21_API_KEY_3=third_key
 
-GOOGLE_API_KEY_1=first_google_key
-GOOGLE_API_KEY_2=second_google_key
-GOOGLE_API_KEY_3=third_google_key
+GEMINI_API_KEY_1=first_gemini_key
+GEMINI_API_KEY_2=second_gemini_key
+GEMINI_API_KEY_3=third_gemini_key
 ```
 
 ## ⚙️ Rotation Configuration
@@ -151,12 +151,12 @@ await monitor.exportStats();
 ### Environment Variables
 ```bash
 # Production
-GOOGLE_API_KEY_1=prod_key_1
-GOOGLE_API_KEY_2=prod_key_2
+GEMINI_API_KEY_1=prod_key_1
+GEMINI_API_KEY_2=prod_key_2
 
 # Staging
-GOOGLE_API_KEY_1=staging_key_1
-GOOGLE_API_KEY_2=staging_key_2
+GEMINI_API_KEY_1=staging_key_1
+GEMINI_API_KEY_2=staging_key_2
 ```
 
 ## 🚨 Troubleshooting

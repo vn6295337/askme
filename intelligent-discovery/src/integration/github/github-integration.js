@@ -101,7 +101,7 @@ class GitHubIntegration {
         env: {
           OPENAI_API_KEY: '${{ secrets.OPENAI_API_KEY }}',
           ANTHROPIC_API_KEY: '${{ secrets.ANTHROPIC_API_KEY }}',
-          GOOGLE_API_KEY: '${{ secrets.GOOGLE_API_KEY }}',
+          GEMINI_API_KEY: '${{ secrets.GEMINI_API_KEY }}',
           HUGGINGFACE_API_KEY: '${{ secrets.HUGGINGFACE_API_KEY }}',
           QDRANT_API_KEY: '${{ secrets.QDRANT_API_KEY }}',
           SUPABASE_URL: '${{ secrets.SUPABASE_URL }}',
