@@ -37,7 +37,7 @@
 "fairface_age_image_detection","HuggingFace","available","Free","4096","Text to Speech","No"
 "bert-base-uncased","HuggingFace","available","Free","4096","Text to Speech","No"
 "Horizon Beta","OpenRouter","available","Free","256000","Text Generation","No"
-"Horizon Alpha","OpenRouter","available","Free","256000","Text Generation","No"
 "Z.AI: GLM 4.5 Air (free)","OpenRouter","available","Free","131072","Text Generation","No"
 "Qwen: Qwen3 Coder  (free)","OpenRouter","available","Free","262144","Text Generation","No"
 "MoonshotAI: Kimi K2 (free)","OpenRouter","available","Free","32768","Text Generation","No"
+"Venice: Uncensored (free)","OpenRouter","available","Free","32768","Text Generation","No"
