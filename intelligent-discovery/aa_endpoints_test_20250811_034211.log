@@ -1,0 +1,9 @@
+[AA Status] 200 - https://askme-backend-proxy.onrender.com/api/artificialanalysis/status - Mon Aug 11 03:42:48 UTC 2025
+[AA Models] 200 - https://askme-backend-proxy.onrender.com/api/artificialanalysis/models - Mon Aug 11 03:42:50 UTC 2025
+[Text-to-Image] 200 - https://askme-backend-proxy.onrender.com/api/artificialanalysis/media/text-to-image - Mon Aug 11 03:42:51 UTC 2025
+[Image Editing] 200 - https://askme-backend-proxy.onrender.com/api/artificialanalysis/media/image-editing - Mon Aug 11 03:42:51 UTC 2025
+[Text-to-Speech] 200 - https://askme-backend-proxy.onrender.com/api/artificialanalysis/media/text-to-speech - Mon Aug 11 03:42:52 UTC 2025
+[Text-to-Video] 200 - https://askme-backend-proxy.onrender.com/api/artificialanalysis/media/text-to-video - Mon Aug 11 03:42:52 UTC 2025
+[Image-to-Video] 200 - https://askme-backend-proxy.onrender.com/api/artificialanalysis/media/image-to-video - Mon Aug 11 03:42:53 UTC 2025
+[Invalid Media] 400 - https://askme-backend-proxy.onrender.com/api/artificialanalysis/media/invalid-type - Mon Aug 11 03:42:53 UTC 2025
+[Health Check] 200 - https://askme-backend-proxy.onrender.com/health - Mon Aug 11 03:42:53 UTC 2025
