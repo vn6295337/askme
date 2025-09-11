@@ -35,7 +35,7 @@
 "all-MiniLM-L6-v2","HuggingFace","available","Free","4096","Text to Speech","No"
 "fairface_age_image_detection","HuggingFace","available","Free","4096","Text to Speech","No"
 "bert-base-uncased","HuggingFace","available","Free","4096","Text to Speech","No"
-"NVIDIA: Nemotron Nano 9B V2","OpenRouter","available","Free","128000","Text Generation","No"
+"NVIDIA: Nemotron Nano 9B V2 (free)","OpenRouter","available","Free","128000","Text Generation","No"
 "Sonoma Dusk Alpha","OpenRouter","available","Free","2000000","Text Generation","No"
 "Sonoma Sky Alpha","OpenRouter","available","Free","2000000","Text Generation","No"
 "DeepSeek: DeepSeek V3.1 (free)","OpenRouter","available","Free","64000","Text Generation","No"
