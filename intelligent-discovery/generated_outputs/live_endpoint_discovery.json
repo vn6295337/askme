@@ -1,7 +1,7 @@
 {
   "discovery_metadata": {
     "title": "Live Free LLM Endpoint Discovery",
-    "timestamp": "2025-09-19T02:59:08.870Z",
+    "timestamp": "2025-09-20T02:52:51.430Z",
     "total_endpoints_checked": 8,
     "total_models_discovered": 41,
     "discovery_method": "live_api_checking"
@@ -12,63 +12,63 @@
       "url": "https://huggingface.co/",
       "status": "healthy",
       "response_code": 200,
-      "checked_at": "2025-09-19T02:59:08.870Z"
+      "checked_at": "2025-09-20T02:52:51.430Z"
     },
     "google ai": {
       "name": "Google AI",
       "url": "https://ai.google.dev/",
       "status": "healthy",
       "response_code": 200,
-      "checked_at": "2025-09-19T02:59:08.870Z"
+      "checked_at": "2025-09-20T02:52:51.430Z"
     },
     "groq": {
       "name": "Groq",
       "url": "https://groq.com/",
       "status": "healthy",
       "response_code": 200,
-      "checked_at": "2025-09-19T02:59:08.870Z"
+      "checked_at": "2025-09-20T02:52:51.430Z"
     },
     "openrouter": {
       "name": "OpenRouter",
       "url": "https://openrouter.ai/",
       "status": "healthy",
       "response_code": 200,
-      "checked_at": "2025-09-19T02:59:08.870Z"
+      "checked_at": "2025-09-20T02:52:51.430Z"
     },
     "cohere": {
       "name": "Cohere",
       "url": "https://cohere.ai/",
       "status": "healthy",
       "response_code": 200,
-      "checked_at": "2025-09-19T02:59:08.870Z"
+      "checked_at": "2025-09-20T02:52:51.430Z"
     },
     "together ai": {
       "name": "Together AI",
       "url": "https://together.ai/",
       "status": "healthy",
       "response_code": 200,
-      "checked_at": "2025-09-19T02:59:08.870Z"
+      "checked_at": "2025-09-20T02:52:51.430Z"
     },
     "mistral": {
       "name": "Mistral",
       "url": "https://mistral.ai/",
       "status": "healthy",
       "response_code": 200,
-      "checked_at": "2025-09-19T02:59:08.870Z"
+      "checked_at": "2025-09-20T02:52:51.430Z"
     },
     "ai21": {
       "name": "AI21",
       "url": "https://ai21.com/",
       "status": "healthy",
       "response_code": 200,
-      "checked_at": "2025-09-19T02:59:08.870Z"
+      "checked_at": "2025-09-20T02:52:51.430Z"
     },
     "artificialanalysis": {
       "name": "ArtificialAnalysis",
       "url": "https://artificialanalysis.ai/",
       "status": "healthy",
       "response_code": 200,
-      "checked_at": "2025-09-19T02:59:08.870Z"
+      "checked_at": "2025-09-20T02:52:51.430Z"
     }
   },
   "provider_results": {
@@ -331,7 +331,7 @@
           "context_window": 4096,
           "category": "Text Generation",
           "requires_api_key": false,
-          "downloads": 96720026,
+          "downloads": 96354596,
           "likes": 819,
           "library": "transformers",
           "note": "Available but may need API key for heavy usage"
@@ -348,8 +348,8 @@
           "context_window": 4096,
           "category": "Text Generation",
           "requires_api_key": false,
-          "downloads": 89316324,
-          "likes": 3899,
+          "downloads": 88957344,
+          "likes": 3903,
           "library": "sentence-transformers",
           "note": "Available but may need API key for heavy usage"
         },
@@ -365,7 +365,7 @@
           "context_window": 4096,
           "category": "Text Generation",
           "requires_api_key": false,
-          "downloads": 58539976,
+          "downloads": 58215081,
           "likes": 40,
           "library": "transformers",
           "note": "Available but may need API key for heavy usage"
@@ -382,7 +382,7 @@
           "context_window": 4096,
           "category": "Text Generation",
           "requires_api_key": false,
-          "downloads": 56363783,
+          "downloads": 56749180,
           "likes": 2411,
           "library": "transformers",
           "note": "Available but may need API key for heavy usage"
@@ -399,7 +399,7 @@
           "context_window": 4096,
           "category": "Text Generation",
           "requires_api_key": false,
-          "downloads": 16839426,
+          "downloads": 16805532,
           "likes": 1154,
           "library": "sentence-transformers",
           "note": "Available but may need API key for heavy usage"
@@ -416,7 +416,7 @@
           "context_window": 4096,
           "category": "Text Generation",
           "requires_api_key": false,
-          "downloads": 15296458,
+          "downloads": 15212824,
           "likes": 765,
           "library": "transformers",
           "note": "Available but may need API key for heavy usage"
@@ -433,25 +433,8 @@
           "context_window": 4096,
           "category": "Text Generation",
           "requires_api_key": false,
-          "downloads": 12286402,
-          "likes": 2948,
-          "library": "transformers",
-          "note": "Available but may need API key for heavy usage"
-        },
-        {
-          "name": "distilbert-base-uncased",
-          "provider": "HuggingFace",
-          "model_id": "distilbert/distilbert-base-uncased",
-          "endpoint": "https://api-inference.huggingface.co/models/distilbert/distilbert-base-uncased",
-          "status": "available",
-          "response_time": null,
-          "error": null,
-          "cost": "Free",
-          "context_window": 4096,
-          "category": "Text Generation",
-          "requires_api_key": false,
-          "downloads": 12201728,
-          "likes": 755,
+          "downloads": 12354933,
+          "likes": 2949,
           "library": "transformers",
           "note": "Available but may need API key for heavy usage"
         },
@@ -467,16 +450,16 @@
           "context_window": 4096,
           "category": "Text Generation",
           "requires_api_key": false,
-          "downloads": 12171005,
+          "downloads": 12245890,
           "likes": 245,
           "library": "transformers",
           "note": "Available but may need API key for heavy usage"
         },
         {
-          "name": "chronos-t5-small",
+          "name": "distilbert-base-uncased",
           "provider": "HuggingFace",
-          "model_id": "amazon/chronos-t5-small",
-          "endpoint": "https://api-inference.huggingface.co/models/amazon/chronos-t5-small",
+          "model_id": "distilbert/distilbert-base-uncased",
+          "endpoint": "https://api-inference.huggingface.co/models/distilbert/distilbert-base-uncased",
           "status": "available",
           "response_time": null,
           "error": null,
@@ -484,8 +467,25 @@
           "context_window": 4096,
           "category": "Text Generation",
           "requires_api_key": false,
-          "downloads": 11891514,
-          "likes": 131,
+          "downloads": 12155798,
+          "likes": 756,
+          "library": "transformers",
+          "note": "Available but may need API key for heavy usage"
+        },
+        {
+          "name": "electra-base-discriminator",
+          "provider": "HuggingFace",
+          "model_id": "google/electra-base-discriminator",
+          "endpoint": "https://api-inference.huggingface.co/models/google/electra-base-discriminator",
+          "status": "available",
+          "response_time": null,
+          "error": null,
+          "cost": "Free",
+          "context_window": 4096,
+          "category": "Text Generation",
+          "requires_api_key": false,
+          "downloads": 11456641,
+          "likes": 64,
           "library": "transformers",
           "note": "Available but may need API key for heavy usage"
         },
@@ -501,7 +501,7 @@
           "context_window": 4096,
           "category": "Text to Image",
           "requires_api_key": false,
-          "downloads": 96720026,
+          "downloads": 96354596,
           "likes": 819,
           "library": "transformers",
           "note": "Available but may need API key for heavy usage"
@@ -518,8 +518,8 @@
           "context_window": 4096,
           "category": "Text to Image",
           "requires_api_key": false,
-          "downloads": 89316324,
-          "likes": 3899,
+          "downloads": 88957344,
+          "likes": 3903,
           "library": "sentence-transformers",
           "note": "Available but may need API key for heavy usage"
         },
@@ -535,7 +535,7 @@
           "context_window": 4096,
           "category": "Text to Image",
           "requires_api_key": false,
-          "downloads": 58539976,
+          "downloads": 58215081,
           "likes": 40,
           "library": "transformers",
           "note": "Available but may need API key for heavy usage"
@@ -552,7 +552,7 @@
           "context_window": 4096,
           "category": "Text to Image",
           "requires_api_key": false,
-          "downloads": 56363783,
+          "downloads": 56749180,
           "likes": 2411,
           "library": "transformers",
           "note": "Available but may need API key for heavy usage"
@@ -569,7 +569,7 @@
           "context_window": 4096,
           "category": "Text to Image",
           "requires_api_key": false,
-          "downloads": 16839426,
+          "downloads": 16805532,
           "likes": 1154,
           "library": "sentence-transformers",
           "note": "Available but may need API key for heavy usage"
@@ -586,7 +586,7 @@
           "context_window": 4096,
           "category": "Speech Recognition",
           "requires_api_key": false,
-          "downloads": 96720026,
+          "downloads": 96354596,
           "likes": 819,
           "library": "transformers",
           "note": "Available but may need API key for heavy usage"
@@ -603,8 +603,8 @@
           "context_window": 4096,
           "category": "Speech Recognition",
           "requires_api_key": false,
-          "downloads": 89316324,
-          "likes": 3899,
+          "downloads": 88957344,
+          "likes": 3903,
           "library": "sentence-transformers",
           "note": "Available but may need API key for heavy usage"
         },
@@ -620,7 +620,7 @@
           "context_window": 4096,
           "category": "Speech Recognition",
           "requires_api_key": false,
-          "downloads": 58539976,
+          "downloads": 58215081,
           "likes": 40,
           "library": "transformers",
           "note": "Available but may need API key for heavy usage"
@@ -637,7 +637,7 @@
           "context_window": 4096,
           "category": "Speech Recognition",
           "requires_api_key": false,
-          "downloads": 56363783,
+          "downloads": 56749180,
           "likes": 2411,
           "library": "transformers",
           "note": "Available but may need API key for heavy usage"
@@ -654,7 +654,7 @@
           "context_window": 4096,
           "category": "Text to Speech",
           "requires_api_key": false,
-          "downloads": 96720026,
+          "downloads": 96354596,
           "likes": 819,
           "library": "transformers",
           "note": "Available but may need API key for heavy usage"
@@ -671,8 +671,8 @@
           "context_window": 4096,
           "category": "Text to Speech",
           "requires_api_key": false,
-          "downloads": 89316324,
-          "likes": 3899,
+          "downloads": 88957344,
+          "likes": 3903,
           "library": "sentence-transformers",
           "note": "Available but may need API key for heavy usage"
         },
@@ -688,7 +688,7 @@
           "context_window": 4096,
           "category": "Text to Speech",
           "requires_api_key": false,
-          "downloads": 58539976,
+          "downloads": 58215081,
           "likes": 40,
           "library": "transformers",
           "note": "Available but may need API key for heavy usage"
@@ -705,7 +705,7 @@
           "context_window": 4096,
           "category": "Text to Speech",
           "requires_api_key": false,
-          "downloads": 56363783,
+          "downloads": 56749180,
           "likes": 2411,
           "library": "transformers",
           "note": "Available but may need API key for heavy usage"
@@ -720,6 +720,19 @@
       "requires_registration": false,
       "models": [
         {
+          "name": "xAI: Grok 4 Fast (free)",
+          "provider": "OpenRouter",
+          "model_id": "x-ai/grok-4-fast:free",
+          "endpoint": "https://openrouter.ai/api/v1/chat/completions",
+          "status": "available",
+          "response_time": null,
+          "error": null,
+          "cost": "Free",
+          "context_window": 2000000,
+          "category": "Text Generation",
+          "requires_api_key": false
+        },
+        {
           "name": "NVIDIA: Nemotron Nano 9B V2 (free)",
           "provider": "OpenRouter",
           "model_id": "nvidia/nemotron-nano-9b-v2:free",
@@ -729,32 +742,6 @@
           "error": null,
           "cost": "Free",
           "context_window": 128000,
-          "category": "Text Generation",
-          "requires_api_key": false
-        },
-        {
-          "name": "Sonoma Dusk Alpha",
-          "provider": "OpenRouter",
-          "model_id": "openrouter/sonoma-dusk-alpha",
-          "endpoint": "https://openrouter.ai/api/v1/chat/completions",
-          "status": "available",
-          "response_time": null,
-          "error": null,
-          "cost": "Free",
-          "context_window": 2000000,
-          "category": "Text Generation",
-          "requires_api_key": false
-        },
-        {
-          "name": "Sonoma Sky Alpha",
-          "provider": "OpenRouter",
-          "model_id": "openrouter/sonoma-sky-alpha",
-          "endpoint": "https://openrouter.ai/api/v1/chat/completions",
-          "status": "available",
-          "response_time": null,
-          "error": null,
-          "cost": "Free",
-          "context_window": 2000000,
           "category": "Text Generation",
           "requires_api_key": false
         },
@@ -781,6 +768,19 @@
           "error": null,
           "cost": "Free",
           "context_window": 32768,
+          "category": "Text Generation",
+          "requires_api_key": false
+        },
+        {
+          "name": "OpenAI: gpt-oss-20b (free)",
+          "provider": "OpenRouter",
+          "model_id": "openai/gpt-oss-20b:free",
+          "endpoint": "https://openrouter.ai/api/v1/chat/completions",
+          "status": "available",
+          "response_time": null,
+          "error": null,
+          "cost": "Free",
+          "context_window": 131072,
           "category": "Text Generation",
           "requires_api_key": false
         }
@@ -956,7 +956,7 @@
       "context_window": 4096,
       "category": "Text Generation",
       "requires_api_key": false,
-      "downloads": 96720026,
+      "downloads": 96354596,
       "likes": 819,
       "library": "transformers",
       "note": "Available but may need API key for heavy usage"
@@ -973,8 +973,8 @@
       "context_window": 4096,
       "category": "Text Generation",
       "requires_api_key": false,
-      "downloads": 89316324,
-      "likes": 3899,
+      "downloads": 88957344,
+      "likes": 3903,
       "library": "sentence-transformers",
       "note": "Available but may need API key for heavy usage"
     },
@@ -990,7 +990,7 @@
       "context_window": 4096,
       "category": "Text Generation",
       "requires_api_key": false,
-      "downloads": 58539976,
+      "downloads": 58215081,
       "likes": 40,
       "library": "transformers",
       "note": "Available but may need API key for heavy usage"
@@ -1007,7 +1007,7 @@
       "context_window": 4096,
       "category": "Text Generation",
       "requires_api_key": false,
-      "downloads": 56363783,
+      "downloads": 56749180,
       "likes": 2411,
       "library": "transformers",
       "note": "Available but may need API key for heavy usage"
@@ -1024,7 +1024,7 @@
       "context_window": 4096,
       "category": "Text Generation",
       "requires_api_key": false,
-      "downloads": 16839426,
+      "downloads": 16805532,
       "likes": 1154,
       "library": "sentence-transformers",
       "note": "Available but may need API key for heavy usage"
@@ -1041,7 +1041,7 @@
       "context_window": 4096,
       "category": "Text Generation",
       "requires_api_key": false,
-      "downloads": 15296458,
+      "downloads": 15212824,
       "likes": 765,
       "library": "transformers",
       "note": "Available but may need API key for heavy usage"
@@ -1058,25 +1058,8 @@
       "context_window": 4096,
       "category": "Text Generation",
       "requires_api_key": false,
-      "downloads": 12286402,
-      "likes": 2948,
-      "library": "transformers",
-      "note": "Available but may need API key for heavy usage"
-    },
-    {
-      "name": "distilbert-base-uncased",
-      "provider": "HuggingFace",
-      "model_id": "distilbert/distilbert-base-uncased",
-      "endpoint": "https://api-inference.huggingface.co/models/distilbert/distilbert-base-uncased",
-      "status": "available",
-      "response_time": null,
-      "error": null,
-      "cost": "Free",
-      "context_window": 4096,
-      "category": "Text Generation",
-      "requires_api_key": false,
-      "downloads": 12201728,
-      "likes": 755,
+      "downloads": 12354933,
+      "likes": 2949,
       "library": "transformers",
       "note": "Available but may need API key for heavy usage"
     },
@@ -1092,16 +1075,16 @@
       "context_window": 4096,
       "category": "Text Generation",
       "requires_api_key": false,
-      "downloads": 12171005,
+      "downloads": 12245890,
       "likes": 245,
       "library": "transformers",
       "note": "Available but may need API key for heavy usage"
     },
     {
-      "name": "chronos-t5-small",
+      "name": "distilbert-base-uncased",
       "provider": "HuggingFace",
-      "model_id": "amazon/chronos-t5-small",
-      "endpoint": "https://api-inference.huggingface.co/models/amazon/chronos-t5-small",
+      "model_id": "distilbert/distilbert-base-uncased",
+      "endpoint": "https://api-inference.huggingface.co/models/distilbert/distilbert-base-uncased",
       "status": "available",
       "response_time": null,
       "error": null,
@@ -1109,8 +1092,25 @@
       "context_window": 4096,
       "category": "Text Generation",
       "requires_api_key": false,
-      "downloads": 11891514,
-      "likes": 131,
+      "downloads": 12155798,
+      "likes": 756,
+      "library": "transformers",
+      "note": "Available but may need API key for heavy usage"
+    },
+    {
+      "name": "electra-base-discriminator",
+      "provider": "HuggingFace",
+      "model_id": "google/electra-base-discriminator",
+      "endpoint": "https://api-inference.huggingface.co/models/google/electra-base-discriminator",
+      "status": "available",
+      "response_time": null,
+      "error": null,
+      "cost": "Free",
+      "context_window": 4096,
+      "category": "Text Generation",
+      "requires_api_key": false,
+      "downloads": 11456641,
+      "likes": 64,
       "library": "transformers",
       "note": "Available but may need API key for heavy usage"
     },
@@ -1126,7 +1126,7 @@
       "context_window": 4096,
       "category": "Text to Image",
       "requires_api_key": false,
-      "downloads": 96720026,
+      "downloads": 96354596,
       "likes": 819,
       "library": "transformers",
       "note": "Available but may need API key for heavy usage"
@@ -1143,8 +1143,8 @@
       "context_window": 4096,
       "category": "Text to Image",
       "requires_api_key": false,
-      "downloads": 89316324,
-      "likes": 3899,
+      "downloads": 88957344,
+      "likes": 3903,
       "library": "sentence-transformers",
       "note": "Available but may need API key for heavy usage"
     },
@@ -1160,7 +1160,7 @@
       "context_window": 4096,
       "category": "Text to Image",
       "requires_api_key": false,
-      "downloads": 58539976,
+      "downloads": 58215081,
       "likes": 40,
       "library": "transformers",
       "note": "Available but may need API key for heavy usage"
@@ -1177,7 +1177,7 @@
       "context_window": 4096,
       "category": "Text to Image",
       "requires_api_key": false,
-      "downloads": 56363783,
+      "downloads": 56749180,
       "likes": 2411,
       "library": "transformers",
       "note": "Available but may need API key for heavy usage"
@@ -1194,7 +1194,7 @@
       "context_window": 4096,
       "category": "Text to Image",
       "requires_api_key": false,
-      "downloads": 16839426,
+      "downloads": 16805532,
       "likes": 1154,
       "library": "sentence-transformers",
       "note": "Available but may need API key for heavy usage"
@@ -1211,7 +1211,7 @@
       "context_window": 4096,
       "category": "Speech Recognition",
       "requires_api_key": false,
-      "downloads": 96720026,
+      "downloads": 96354596,
       "likes": 819,
       "library": "transformers",
       "note": "Available but may need API key for heavy usage"
@@ -1228,8 +1228,8 @@
       "context_window": 4096,
       "category": "Speech Recognition",
       "requires_api_key": false,
-      "downloads": 89316324,
-      "likes": 3899,
+      "downloads": 88957344,
+      "likes": 3903,
       "library": "sentence-transformers",
       "note": "Available but may need API key for heavy usage"
     },
@@ -1245,7 +1245,7 @@
       "context_window": 4096,
       "category": "Speech Recognition",
       "requires_api_key": false,
-      "downloads": 58539976,
+      "downloads": 58215081,
       "likes": 40,
       "library": "transformers",
       "note": "Available but may need API key for heavy usage"
@@ -1262,7 +1262,7 @@
       "context_window": 4096,
       "category": "Speech Recognition",
       "requires_api_key": false,
-      "downloads": 56363783,
+      "downloads": 56749180,
       "likes": 2411,
       "library": "transformers",
       "note": "Available but may need API key for heavy usage"
@@ -1279,7 +1279,7 @@
       "context_window": 4096,
       "category": "Text to Speech",
       "requires_api_key": false,
-      "downloads": 96720026,
+      "downloads": 96354596,
       "likes": 819,
       "library": "transformers",
       "note": "Available but may need API key for heavy usage"
@@ -1296,8 +1296,8 @@
       "context_window": 4096,
       "category": "Text to Speech",
       "requires_api_key": false,
-      "downloads": 89316324,
-      "likes": 3899,
+      "downloads": 88957344,
+      "likes": 3903,
       "library": "sentence-transformers",
       "note": "Available but may need API key for heavy usage"
     },
@@ -1313,7 +1313,7 @@
       "context_window": 4096,
       "category": "Text to Speech",
       "requires_api_key": false,
-      "downloads": 58539976,
+      "downloads": 58215081,
       "likes": 40,
       "library": "transformers",
       "note": "Available but may need API key for heavy usage"
@@ -1330,10 +1330,23 @@
       "context_window": 4096,
       "category": "Text to Speech",
       "requires_api_key": false,
-      "downloads": 56363783,
+      "downloads": 56749180,
       "likes": 2411,
       "library": "transformers",
       "note": "Available but may need API key for heavy usage"
+    },
+    {
+      "name": "xAI: Grok 4 Fast (free)",
+      "provider": "OpenRouter",
+      "model_id": "x-ai/grok-4-fast:free",
+      "endpoint": "https://openrouter.ai/api/v1/chat/completions",
+      "status": "available",
+      "response_time": null,
+      "error": null,
+      "cost": "Free",
+      "context_window": 2000000,
+      "category": "Text Generation",
+      "requires_api_key": false
     },
     {
       "name": "NVIDIA: Nemotron Nano 9B V2 (free)",
@@ -1345,32 +1358,6 @@
       "error": null,
       "cost": "Free",
       "context_window": 128000,
-      "category": "Text Generation",
-      "requires_api_key": false
-    },
-    {
-      "name": "Sonoma Dusk Alpha",
-      "provider": "OpenRouter",
-      "model_id": "openrouter/sonoma-dusk-alpha",
-      "endpoint": "https://openrouter.ai/api/v1/chat/completions",
-      "status": "available",
-      "response_time": null,
-      "error": null,
-      "cost": "Free",
-      "context_window": 2000000,
-      "category": "Text Generation",
-      "requires_api_key": false
-    },
-    {
-      "name": "Sonoma Sky Alpha",
-      "provider": "OpenRouter",
-      "model_id": "openrouter/sonoma-sky-alpha",
-      "endpoint": "https://openrouter.ai/api/v1/chat/completions",
-      "status": "available",
-      "response_time": null,
-      "error": null,
-      "cost": "Free",
-      "context_window": 2000000,
       "category": "Text Generation",
       "requires_api_key": false
     },
@@ -1397,6 +1384,19 @@
       "error": null,
       "cost": "Free",
       "context_window": 32768,
+      "category": "Text Generation",
+      "requires_api_key": false
+    },
+    {
+      "name": "OpenAI: gpt-oss-20b (free)",
+      "provider": "OpenRouter",
+      "model_id": "openai/gpt-oss-20b:free",
+      "endpoint": "https://openrouter.ai/api/v1/chat/completions",
+      "status": "available",
+      "response_time": null,
+      "error": null,
+      "cost": "Free",
+      "context_window": 131072,
       "category": "Text Generation",
       "requires_api_key": false
     }
