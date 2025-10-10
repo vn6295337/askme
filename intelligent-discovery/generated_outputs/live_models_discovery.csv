@@ -28,6 +28,7 @@
 "bert-base-uncased","HuggingFace","available","Free","4096","Text to Image","No"
 "electra-base-discriminator","HuggingFace","available","Free","4096","Text to Image","No"
 "all-mpnet-base-v2","HuggingFace","available","Free","4096","Text to Image","No"
+"roberta-large","HuggingFace","available","Free","4096","Text to Image","No"
 "all-MiniLM-L6-v2","HuggingFace","available","Free","4096","Speech Recognition","No"
 "nsfw_image_detection","HuggingFace","available","Free","4096","Speech Recognition","No"
 "fairface_age_image_detection","HuggingFace","available","Free","4096","Speech Recognition","No"
