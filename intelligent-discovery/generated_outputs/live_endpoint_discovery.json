@@ -1,7 +1,7 @@
 {
   "discovery_metadata": {
     "title": "Live Free LLM Endpoint Discovery",
-    "timestamp": "2025-10-27T03:18:28.728Z",
+    "timestamp": "2025-10-28T03:05:58.338Z",
     "total_endpoints_checked": 8,
     "total_models_discovered": 47,
     "discovery_method": "live_api_checking"
@@ -12,63 +12,63 @@
       "url": "https://huggingface.co/",
       "status": "healthy",
       "response_code": 200,
-      "checked_at": "2025-10-27T03:18:28.728Z"
+      "checked_at": "2025-10-28T03:05:58.338Z"
     },
     "google ai": {
       "name": "Google AI",
       "url": "https://ai.google.dev/",
       "status": "healthy",
       "response_code": 200,
-      "checked_at": "2025-10-27T03:18:28.728Z"
+      "checked_at": "2025-10-28T03:05:58.338Z"
     },
     "groq": {
       "name": "Groq",
       "url": "https://groq.com/",
       "status": "healthy",
       "response_code": 200,
-      "checked_at": "2025-10-27T03:18:28.728Z"
+      "checked_at": "2025-10-28T03:05:58.338Z"
     },
     "openrouter": {
       "name": "OpenRouter",
       "url": "https://openrouter.ai/",
       "status": "healthy",
       "response_code": 200,
-      "checked_at": "2025-10-27T03:18:28.728Z"
+      "checked_at": "2025-10-28T03:05:58.338Z"
     },
     "cohere": {
       "name": "Cohere",
       "url": "https://cohere.ai/",
       "status": "healthy",
       "response_code": 200,
-      "checked_at": "2025-10-27T03:18:28.728Z"
+      "checked_at": "2025-10-28T03:05:58.338Z"
     },
     "together ai": {
       "name": "Together AI",
       "url": "https://together.ai/",
       "status": "healthy",
       "response_code": 200,
-      "checked_at": "2025-10-27T03:18:28.728Z"
+      "checked_at": "2025-10-28T03:05:58.338Z"
     },
     "mistral": {
       "name": "Mistral",
       "url": "https://mistral.ai/",
       "status": "healthy",
       "response_code": 200,
-      "checked_at": "2025-10-27T03:18:28.728Z"
+      "checked_at": "2025-10-28T03:05:58.338Z"
     },
     "ai21": {
       "name": "AI21",
       "url": "https://ai21.com/",
       "status": "healthy",
       "response_code": 200,
-      "checked_at": "2025-10-27T03:18:28.728Z"
+      "checked_at": "2025-10-28T03:05:58.338Z"
     },
     "artificialanalysis": {
       "name": "ArtificialAnalysis",
       "url": "https://artificialanalysis.ai/",
       "status": "healthy",
       "response_code": 200,
-      "checked_at": "2025-10-27T03:18:28.728Z"
+      "checked_at": "2025-10-28T03:05:58.338Z"
     }
   },
   "provider_results": {
@@ -405,8 +405,8 @@
           "context_window": 4096,
           "category": "Text Generation",
           "requires_api_key": false,
-          "downloads": 132722411,
-          "likes": 4031,
+          "downloads": 133212673,
+          "likes": 4038,
           "library": "sentence-transformers",
           "note": "Available but may need API key for heavy usage"
         },
@@ -422,7 +422,7 @@
           "context_window": 4096,
           "category": "Text Generation",
           "requires_api_key": false,
-          "downloads": 105120459,
+          "downloads": 102401186,
           "likes": 862,
           "library": "transformers",
           "note": "Available but may need API key for heavy usage"
@@ -439,7 +439,7 @@
           "context_window": 4096,
           "category": "Text Generation",
           "requires_api_key": false,
-          "downloads": 75294431,
+          "downloads": 74753954,
           "likes": 67,
           "library": "transformers",
           "note": "Available but may need API key for heavy usage"
@@ -456,7 +456,7 @@
           "context_window": 4096,
           "category": "Text Generation",
           "requires_api_key": false,
-          "downloads": 60427420,
+          "downloads": 57373067,
           "likes": 47,
           "library": "transformers",
           "note": "Available but may need API key for heavy usage"
@@ -473,25 +473,8 @@
           "context_window": 4096,
           "category": "Text Generation",
           "requires_api_key": false,
-          "downloads": 52862431,
+          "downloads": 53070850,
           "likes": 2452,
-          "library": "transformers",
-          "note": "Available but may need API key for heavy usage"
-        },
-        {
-          "name": "clip-vit-base-patch32",
-          "provider": "HuggingFace",
-          "model_id": "openai/clip-vit-base-patch32",
-          "endpoint": "https://api-inference.huggingface.co/models/openai/clip-vit-base-patch32",
-          "status": "available",
-          "response_time": null,
-          "error": null,
-          "cost": "Free",
-          "context_window": 4096,
-          "category": "Text Generation",
-          "requires_api_key": false,
-          "downloads": 19542928,
-          "likes": 793,
           "library": "transformers",
           "note": "Available but may need API key for heavy usage"
         },
@@ -507,8 +490,25 @@
           "context_window": 4096,
           "category": "Text Generation",
           "requires_api_key": false,
-          "downloads": 19409395,
+          "downloads": 20126719,
           "likes": 253,
+          "library": "transformers",
+          "note": "Available but may need API key for heavy usage"
+        },
+        {
+          "name": "clip-vit-base-patch32",
+          "provider": "HuggingFace",
+          "model_id": "openai/clip-vit-base-patch32",
+          "endpoint": "https://api-inference.huggingface.co/models/openai/clip-vit-base-patch32",
+          "status": "available",
+          "response_time": null,
+          "error": null,
+          "cost": "Free",
+          "context_window": 4096,
+          "category": "Text Generation",
+          "requires_api_key": false,
+          "downloads": 19824028,
+          "likes": 793,
           "library": "transformers",
           "note": "Available but may need API key for heavy usage"
         },
@@ -524,7 +524,7 @@
           "context_window": 4096,
           "category": "Text Generation",
           "requires_api_key": false,
-          "downloads": 18122223,
+          "downloads": 18222691,
           "likes": 40,
           "library": "transformers",
           "note": "Available but may need API key for heavy usage"
@@ -541,8 +541,8 @@
           "context_window": 4096,
           "category": "Text Generation",
           "requires_api_key": false,
-          "downloads": 17739862,
-          "likes": 1174,
+          "downloads": 17692591,
+          "likes": 1177,
           "library": "sentence-transformers",
           "note": "Available but may need API key for heavy usage"
         },
@@ -558,7 +558,7 @@
           "context_window": 4096,
           "category": "Text Generation",
           "requires_api_key": false,
-          "downloads": 15866688,
+          "downloads": 15823726,
           "likes": 530,
           "library": "transformers",
           "note": "Available but may need API key for heavy usage"
@@ -575,8 +575,8 @@
           "context_window": 4096,
           "category": "Text to Image",
           "requires_api_key": false,
-          "downloads": 132722411,
-          "likes": 4031,
+          "downloads": 133212673,
+          "likes": 4038,
           "library": "sentence-transformers",
           "note": "Available but may need API key for heavy usage"
         },
@@ -592,7 +592,7 @@
           "context_window": 4096,
           "category": "Text to Image",
           "requires_api_key": false,
-          "downloads": 105120459,
+          "downloads": 102401186,
           "likes": 862,
           "library": "transformers",
           "note": "Available but may need API key for heavy usage"
@@ -609,7 +609,7 @@
           "context_window": 4096,
           "category": "Text to Image",
           "requires_api_key": false,
-          "downloads": 75294431,
+          "downloads": 74753954,
           "likes": 67,
           "library": "transformers",
           "note": "Available but may need API key for heavy usage"
@@ -626,7 +626,7 @@
           "context_window": 4096,
           "category": "Text to Image",
           "requires_api_key": false,
-          "downloads": 60427420,
+          "downloads": 57373067,
           "likes": 47,
           "library": "transformers",
           "note": "Available but may need API key for heavy usage"
@@ -643,25 +643,8 @@
           "context_window": 4096,
           "category": "Text to Image",
           "requires_api_key": false,
-          "downloads": 52862431,
+          "downloads": 53070850,
           "likes": 2452,
-          "library": "transformers",
-          "note": "Available but may need API key for heavy usage"
-        },
-        {
-          "name": "clip-vit-base-patch32",
-          "provider": "HuggingFace",
-          "model_id": "openai/clip-vit-base-patch32",
-          "endpoint": "https://api-inference.huggingface.co/models/openai/clip-vit-base-patch32",
-          "status": "available",
-          "response_time": null,
-          "error": null,
-          "cost": "Free",
-          "context_window": 4096,
-          "category": "Text to Image",
-          "requires_api_key": false,
-          "downloads": 19542928,
-          "likes": 793,
           "library": "transformers",
           "note": "Available but may need API key for heavy usage"
         },
@@ -677,8 +660,25 @@
           "context_window": 4096,
           "category": "Text to Image",
           "requires_api_key": false,
-          "downloads": 19409395,
+          "downloads": 20126719,
           "likes": 253,
+          "library": "transformers",
+          "note": "Available but may need API key for heavy usage"
+        },
+        {
+          "name": "clip-vit-base-patch32",
+          "provider": "HuggingFace",
+          "model_id": "openai/clip-vit-base-patch32",
+          "endpoint": "https://api-inference.huggingface.co/models/openai/clip-vit-base-patch32",
+          "status": "available",
+          "response_time": null,
+          "error": null,
+          "cost": "Free",
+          "context_window": 4096,
+          "category": "Text to Image",
+          "requires_api_key": false,
+          "downloads": 19824028,
+          "likes": 793,
           "library": "transformers",
           "note": "Available but may need API key for heavy usage"
         },
@@ -694,7 +694,7 @@
           "context_window": 4096,
           "category": "Text to Image",
           "requires_api_key": false,
-          "downloads": 18122223,
+          "downloads": 18222691,
           "likes": 40,
           "library": "transformers",
           "note": "Available but may need API key for heavy usage"
@@ -711,8 +711,8 @@
           "context_window": 4096,
           "category": "Text to Image",
           "requires_api_key": false,
-          "downloads": 17739862,
-          "likes": 1174,
+          "downloads": 17692591,
+          "likes": 1177,
           "library": "sentence-transformers",
           "note": "Available but may need API key for heavy usage"
         },
@@ -728,8 +728,8 @@
           "context_window": 4096,
           "category": "Speech Recognition",
           "requires_api_key": false,
-          "downloads": 132722411,
-          "likes": 4031,
+          "downloads": 133212673,
+          "likes": 4038,
           "library": "sentence-transformers",
           "note": "Available but may need API key for heavy usage"
         },
@@ -745,7 +745,7 @@
           "context_window": 4096,
           "category": "Speech Recognition",
           "requires_api_key": false,
-          "downloads": 105120459,
+          "downloads": 102401186,
           "likes": 862,
           "library": "transformers",
           "note": "Available but may need API key for heavy usage"
@@ -762,7 +762,7 @@
           "context_window": 4096,
           "category": "Speech Recognition",
           "requires_api_key": false,
-          "downloads": 75294431,
+          "downloads": 74753954,
           "likes": 67,
           "library": "transformers",
           "note": "Available but may need API key for heavy usage"
@@ -779,7 +779,7 @@
           "context_window": 4096,
           "category": "Speech Recognition",
           "requires_api_key": false,
-          "downloads": 60427420,
+          "downloads": 57373067,
           "likes": 47,
           "library": "transformers",
           "note": "Available but may need API key for heavy usage"
@@ -796,7 +796,7 @@
           "context_window": 4096,
           "category": "Speech Recognition",
           "requires_api_key": false,
-          "downloads": 52862431,
+          "downloads": 53070850,
           "likes": 2452,
           "library": "transformers",
           "note": "Available but may need API key for heavy usage"
@@ -813,8 +813,8 @@
           "context_window": 4096,
           "category": "Text to Speech",
           "requires_api_key": false,
-          "downloads": 132722411,
-          "likes": 4031,
+          "downloads": 133212673,
+          "likes": 4038,
           "library": "sentence-transformers",
           "note": "Available but may need API key for heavy usage"
         },
@@ -830,7 +830,7 @@
           "context_window": 4096,
           "category": "Text to Speech",
           "requires_api_key": false,
-          "downloads": 105120459,
+          "downloads": 102401186,
           "likes": 862,
           "library": "transformers",
           "note": "Available but may need API key for heavy usage"
@@ -847,7 +847,7 @@
           "context_window": 4096,
           "category": "Text to Speech",
           "requires_api_key": false,
-          "downloads": 75294431,
+          "downloads": 74753954,
           "likes": 67,
           "library": "transformers",
           "note": "Available but may need API key for heavy usage"
@@ -864,7 +864,7 @@
           "context_window": 4096,
           "category": "Text to Speech",
           "requires_api_key": false,
-          "downloads": 60427420,
+          "downloads": 57373067,
           "likes": 47,
           "library": "transformers",
           "note": "Available but may need API key for heavy usage"
@@ -881,7 +881,7 @@
           "context_window": 4096,
           "category": "Text to Speech",
           "requires_api_key": false,
-          "downloads": 52862431,
+          "downloads": 53070850,
           "likes": 2452,
           "library": "transformers",
           "note": "Available but may need API key for heavy usage"
@@ -1058,8 +1058,8 @@
       "context_window": 4096,
       "category": "Text Generation",
       "requires_api_key": false,
-      "downloads": 132722411,
-      "likes": 4031,
+      "downloads": 133212673,
+      "likes": 4038,
       "library": "sentence-transformers",
       "note": "Available but may need API key for heavy usage"
     },
@@ -1075,7 +1075,7 @@
       "context_window": 4096,
       "category": "Text Generation",
       "requires_api_key": false,
-      "downloads": 105120459,
+      "downloads": 102401186,
       "likes": 862,
       "library": "transformers",
       "note": "Available but may need API key for heavy usage"
@@ -1092,7 +1092,7 @@
       "context_window": 4096,
       "category": "Text Generation",
       "requires_api_key": false,
-      "downloads": 75294431,
+      "downloads": 74753954,
       "likes": 67,
       "library": "transformers",
       "note": "Available but may need API key for heavy usage"
@@ -1109,7 +1109,7 @@
       "context_window": 4096,
       "category": "Text Generation",
       "requires_api_key": false,
-      "downloads": 60427420,
+      "downloads": 57373067,
       "likes": 47,
       "library": "transformers",
       "note": "Available but may need API key for heavy usage"
@@ -1126,25 +1126,8 @@
       "context_window": 4096,
       "category": "Text Generation",
       "requires_api_key": false,
-      "downloads": 52862431,
+      "downloads": 53070850,
       "likes": 2452,
-      "library": "transformers",
-      "note": "Available but may need API key for heavy usage"
-    },
-    {
-      "name": "clip-vit-base-patch32",
-      "provider": "HuggingFace",
-      "model_id": "openai/clip-vit-base-patch32",
-      "endpoint": "https://api-inference.huggingface.co/models/openai/clip-vit-base-patch32",
-      "status": "available",
-      "response_time": null,
-      "error": null,
-      "cost": "Free",
-      "context_window": 4096,
-      "category": "Text Generation",
-      "requires_api_key": false,
-      "downloads": 19542928,
-      "likes": 793,
       "library": "transformers",
       "note": "Available but may need API key for heavy usage"
     },
@@ -1160,8 +1143,25 @@
       "context_window": 4096,
       "category": "Text Generation",
       "requires_api_key": false,
-      "downloads": 19409395,
+      "downloads": 20126719,
       "likes": 253,
+      "library": "transformers",
+      "note": "Available but may need API key for heavy usage"
+    },
+    {
+      "name": "clip-vit-base-patch32",
+      "provider": "HuggingFace",
+      "model_id": "openai/clip-vit-base-patch32",
+      "endpoint": "https://api-inference.huggingface.co/models/openai/clip-vit-base-patch32",
+      "status": "available",
+      "response_time": null,
+      "error": null,
+      "cost": "Free",
+      "context_window": 4096,
+      "category": "Text Generation",
+      "requires_api_key": false,
+      "downloads": 19824028,
+      "likes": 793,
       "library": "transformers",
       "note": "Available but may need API key for heavy usage"
     },
@@ -1177,7 +1177,7 @@
       "context_window": 4096,
       "category": "Text Generation",
       "requires_api_key": false,
-      "downloads": 18122223,
+      "downloads": 18222691,
       "likes": 40,
       "library": "transformers",
       "note": "Available but may need API key for heavy usage"
@@ -1194,8 +1194,8 @@
       "context_window": 4096,
       "category": "Text Generation",
       "requires_api_key": false,
-      "downloads": 17739862,
-      "likes": 1174,
+      "downloads": 17692591,
+      "likes": 1177,
       "library": "sentence-transformers",
       "note": "Available but may need API key for heavy usage"
     },
@@ -1211,7 +1211,7 @@
       "context_window": 4096,
       "category": "Text Generation",
       "requires_api_key": false,
-      "downloads": 15866688,
+      "downloads": 15823726,
       "likes": 530,
       "library": "transformers",
       "note": "Available but may need API key for heavy usage"
@@ -1228,8 +1228,8 @@
       "context_window": 4096,
       "category": "Text to Image",
       "requires_api_key": false,
-      "downloads": 132722411,
-      "likes": 4031,
+      "downloads": 133212673,
+      "likes": 4038,
       "library": "sentence-transformers",
       "note": "Available but may need API key for heavy usage"
     },
@@ -1245,7 +1245,7 @@
       "context_window": 4096,
       "category": "Text to Image",
       "requires_api_key": false,
-      "downloads": 105120459,
+      "downloads": 102401186,
       "likes": 862,
       "library": "transformers",
       "note": "Available but may need API key for heavy usage"
@@ -1262,7 +1262,7 @@
       "context_window": 4096,
       "category": "Text to Image",
       "requires_api_key": false,
-      "downloads": 75294431,
+      "downloads": 74753954,
       "likes": 67,
       "library": "transformers",
       "note": "Available but may need API key for heavy usage"
@@ -1279,7 +1279,7 @@
       "context_window": 4096,
       "category": "Text to Image",
       "requires_api_key": false,
-      "downloads": 60427420,
+      "downloads": 57373067,
       "likes": 47,
       "library": "transformers",
       "note": "Available but may need API key for heavy usage"
@@ -1296,25 +1296,8 @@
       "context_window": 4096,
       "category": "Text to Image",
       "requires_api_key": false,
-      "downloads": 52862431,
+      "downloads": 53070850,
       "likes": 2452,
-      "library": "transformers",
-      "note": "Available but may need API key for heavy usage"
-    },
-    {
-      "name": "clip-vit-base-patch32",
-      "provider": "HuggingFace",
-      "model_id": "openai/clip-vit-base-patch32",
-      "endpoint": "https://api-inference.huggingface.co/models/openai/clip-vit-base-patch32",
-      "status": "available",
-      "response_time": null,
-      "error": null,
-      "cost": "Free",
-      "context_window": 4096,
-      "category": "Text to Image",
-      "requires_api_key": false,
-      "downloads": 19542928,
-      "likes": 793,
       "library": "transformers",
       "note": "Available but may need API key for heavy usage"
     },
@@ -1330,8 +1313,25 @@
       "context_window": 4096,
       "category": "Text to Image",
       "requires_api_key": false,
-      "downloads": 19409395,
+      "downloads": 20126719,
       "likes": 253,
+      "library": "transformers",
+      "note": "Available but may need API key for heavy usage"
+    },
+    {
+      "name": "clip-vit-base-patch32",
+      "provider": "HuggingFace",
+      "model_id": "openai/clip-vit-base-patch32",
+      "endpoint": "https://api-inference.huggingface.co/models/openai/clip-vit-base-patch32",
+      "status": "available",
+      "response_time": null,
+      "error": null,
+      "cost": "Free",
+      "context_window": 4096,
+      "category": "Text to Image",
+      "requires_api_key": false,
+      "downloads": 19824028,
+      "likes": 793,
       "library": "transformers",
       "note": "Available but may need API key for heavy usage"
     },
@@ -1347,7 +1347,7 @@
       "context_window": 4096,
       "category": "Text to Image",
       "requires_api_key": false,
-      "downloads": 18122223,
+      "downloads": 18222691,
       "likes": 40,
       "library": "transformers",
       "note": "Available but may need API key for heavy usage"
@@ -1364,8 +1364,8 @@
       "context_window": 4096,
       "category": "Text to Image",
       "requires_api_key": false,
-      "downloads": 17739862,
-      "likes": 1174,
+      "downloads": 17692591,
+      "likes": 1177,
       "library": "sentence-transformers",
       "note": "Available but may need API key for heavy usage"
     },
@@ -1446,8 +1446,8 @@
       "context_window": 4096,
       "category": "Speech Recognition",
       "requires_api_key": false,
-      "downloads": 132722411,
-      "likes": 4031,
+      "downloads": 133212673,
+      "likes": 4038,
       "library": "sentence-transformers",
       "note": "Available but may need API key for heavy usage"
     },
@@ -1463,7 +1463,7 @@
       "context_window": 4096,
       "category": "Speech Recognition",
       "requires_api_key": false,
-      "downloads": 105120459,
+      "downloads": 102401186,
       "likes": 862,
       "library": "transformers",
       "note": "Available but may need API key for heavy usage"
@@ -1480,7 +1480,7 @@
       "context_window": 4096,
       "category": "Speech Recognition",
       "requires_api_key": false,
-      "downloads": 75294431,
+      "downloads": 74753954,
       "likes": 67,
       "library": "transformers",
       "note": "Available but may need API key for heavy usage"
@@ -1497,7 +1497,7 @@
       "context_window": 4096,
       "category": "Speech Recognition",
       "requires_api_key": false,
-      "downloads": 60427420,
+      "downloads": 57373067,
       "likes": 47,
       "library": "transformers",
       "note": "Available but may need API key for heavy usage"
@@ -1514,7 +1514,7 @@
       "context_window": 4096,
       "category": "Speech Recognition",
       "requires_api_key": false,
-      "downloads": 52862431,
+      "downloads": 53070850,
       "likes": 2452,
       "library": "transformers",
       "note": "Available but may need API key for heavy usage"
@@ -1531,8 +1531,8 @@
       "context_window": 4096,
       "category": "Text to Speech",
       "requires_api_key": false,
-      "downloads": 132722411,
-      "likes": 4031,
+      "downloads": 133212673,
+      "likes": 4038,
       "library": "sentence-transformers",
       "note": "Available but may need API key for heavy usage"
     },
@@ -1548,7 +1548,7 @@
       "context_window": 4096,
       "category": "Text to Speech",
       "requires_api_key": false,
-      "downloads": 105120459,
+      "downloads": 102401186,
       "likes": 862,
       "library": "transformers",
       "note": "Available but may need API key for heavy usage"
@@ -1565,7 +1565,7 @@
       "context_window": 4096,
       "category": "Text to Speech",
       "requires_api_key": false,
-      "downloads": 75294431,
+      "downloads": 74753954,
       "likes": 67,
       "library": "transformers",
       "note": "Available but may need API key for heavy usage"
@@ -1582,7 +1582,7 @@
       "context_window": 4096,
       "category": "Text to Speech",
       "requires_api_key": false,
-      "downloads": 60427420,
+      "downloads": 57373067,
       "likes": 47,
       "library": "transformers",
       "note": "Available but may need API key for heavy usage"
@@ -1599,7 +1599,7 @@
       "context_window": 4096,
       "category": "Text to Speech",
       "requires_api_key": false,
-      "downloads": 52862431,
+      "downloads": 53070850,
       "likes": 2452,
       "library": "transformers",
       "note": "Available but may need API key for heavy usage"
